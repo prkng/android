@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/Urby/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit/retrofit/2.0.0-beta2/880d9e0997b2d1bfc98e0d121ced33ee5d04aac4/retrofit-2.0.0-beta2.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="880d9e0997b2d1bfc98e0d121ced33ee5d04aac4">
+        <dex dex="/Users/Urby/AndroidStudioProjects/Prkng-android/app/build/intermediates/pre-dexed/debug/retrofit-2.0.0-beta2-b53b61e0b7c3398758f72c8ab29afe2ac4c46fc2.jar" />
+    </item>
+
+</items>
