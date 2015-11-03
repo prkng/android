@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mapbox_access_token">pk.eyJ1IjoiYXJuYXVkc3B1aGxlciIsImEiOiJSaEctSlVnIn0.R8cfngN9KkHYZx54JQdgJA</string>
+    <string name="mapbox_style_url">mapbox://styles/arnaudspuhler/cigfc11g0000dcnm73r4o3pi1</string>
+</resources>
