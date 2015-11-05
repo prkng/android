@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MainActivity"
-    tools:showIn="@layout/app_bar_main">
+    tools:context=".MainActivity">
 
-    <FrameLayout
-        android:id="@+id/content_frame"
+    <com.mapbox.mapboxsdk.views.MapView
+        android:id="@+id/mapview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
+        android:layout_height="match_parent"
+        app:access_token="@string/mapbox_access_token"
+        app:style_url="@string/mapbox_style_url" />
 </RelativeLayout>
