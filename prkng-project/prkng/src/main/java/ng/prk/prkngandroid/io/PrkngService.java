@@ -6,12 +6,11 @@ import ng.prk.prkngandroid.model.AnalyticsQuery;
 import ng.prk.prkngandroid.model.CheckInData;
 import ng.prk.prkngandroid.model.DeviceData;
 import ng.prk.prkngandroid.model.ErrorReportData;
+import ng.prk.prkngandroid.model.GeoJSON;
 import ng.prk.prkngandroid.model.LoginObject;
 import ng.prk.prkngandroid.model.PasswordResetData;
 import ng.prk.prkngandroid.model.UploadImageData;
-import ng.prk.prkngandroid.model.UserLoginData;
 import ng.prk.prkngandroid.model.UserProfileData;
-import ng.prk.prkngandroid.model.UserRegisterData;
 import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
@@ -26,10 +25,10 @@ import retrofit.http.Path;
 import retrofit.http.Query;
 
 public interface PrkngService {
-    String CONTENT_TYPE = "Accept: application/json";
+    String CONTENT_TYPE = "Content-type: application/json";
 
     // Send analytics event data
-    @Headers({CONTENT_TYPE})
+    @FormUrlEncoded
     @POST(Const.ApiPaths.POST_ANALYTICS_EVENT)
     Object sendEventAnalytics(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
@@ -37,7 +36,7 @@ public interface PrkngService {
     );
 
     // Send search query data
-    @Headers({CONTENT_TYPE})
+    @FormUrlEncoded
     @POST(Const.ApiPaths.POST_ANALYTICS_SEARCH)
     Object sendSearchAnalytics(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
@@ -56,8 +55,8 @@ public interface PrkngService {
     @GET(Const.ApiPaths.GET_CARSHARE_LOTS)
     Object getCarshareLots(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
-            @Query(Const.ApiArgs.LATITUDE) float latitude,
-            @Query(Const.ApiArgs.LONGITUDE) float longitude,
+            @Query(Const.ApiArgs.LATITUDE) double latitude,
+            @Query(Const.ApiArgs.LONGITUDE) double longitude,
             @Query(Const.ApiArgs.RADIUS) float radius,
             @Query(Const.ApiArgs.CARSHARE_COMPANY) float carshareCompany
     );
@@ -67,8 +66,8 @@ public interface PrkngService {
     @GET(Const.ApiPaths.GET_CARSHARE_CARS)
     Object getCarshareCars(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
-            @Query(Const.ApiArgs.LATITUDE) float latitude,
-            @Query(Const.ApiArgs.LONGITUDE) float longitude,
+            @Query(Const.ApiArgs.LATITUDE) double latitude,
+            @Query(Const.ApiArgs.LONGITUDE) double longitude,
             @Query(Const.ApiArgs.RADIUS) float radius,
             @Query(Const.ApiArgs.CARSHARE_COMPANY) float carshareCompany
     );
@@ -82,7 +81,7 @@ public interface PrkngService {
     );
 
     // Add a new checkin
-    @Headers({CONTENT_TYPE})
+    @FormUrlEncoded
     @POST(Const.ApiPaths.POST_CHECKINS)
     Object checkIn(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
@@ -105,7 +104,7 @@ public interface PrkngService {
     );
 
     // Send analytics event data
-    @Headers({CONTENT_TYPE})
+    @FormUrlEncoded
     @POST(Const.ApiPaths.POST_HELLO)
     Object hello(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
@@ -113,7 +112,7 @@ public interface PrkngService {
     );
 
     // Generate an S3 URL for image submission
-    @Headers({CONTENT_TYPE})
+    @FormUrlEncoded
     @POST(Const.ApiPaths.POST_IMAGES)
     Object generateImageUploadPaths(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
@@ -121,18 +120,13 @@ public interface PrkngService {
     );
 
     // Login and receive an API key
-    @Headers({CONTENT_TYPE})
+    @FormUrlEncoded
     @POST(Const.ApiPaths.POST_LOGIN)
     Call<LoginObject> login(
-            @Body UserLoginData userLoginData
-    );
-
-    @FormUrlEncoded
-    @Headers({CONTENT_TYPE})
-    @POST(Const.ApiPaths.POST_LOGIN)
-    Call<LoginObject> loginTest(
             @Field(Const.ApiArgs.EMAIL) String email,
-            @Field(Const.ApiArgs.PASSWORD) String password
+            @Field(Const.ApiArgs.PASSWORD) String password,
+            @Field(Const.ApiArgs.OAUTH_TOKEN) String oauthToken,
+            @Field(Const.ApiArgs.OAUTH_TYPE) String oauthType
     );
 
     // Change an account's password via reset code
@@ -142,15 +136,19 @@ public interface PrkngService {
     // Object changeUserPassword();
 
     // Register a new account
-    @Headers({CONTENT_TYPE})
+    @FormUrlEncoded
     @POST(Const.ApiPaths.POST_REGISTER)
-    Object registerUser(
-            @Header(Const.ApiArgs.API_KEY) String apiKey,
-            @Body UserRegisterData userRegisterData
+    Call<LoginObject> registerUser(
+            @Field(Const.ApiArgs.NAME) String name,
+            @Field(Const.ApiArgs.EMAIL) String email,
+            @Field(Const.ApiArgs.PASSWORD) String password,
+            @Field(Const.ApiArgs.IMAGE_URL) String imageUrl,
+            @Field(Const.ApiArgs.BIRTH_YEAR) String birthYear,
+            @Field(Const.ApiArgs.GENDER) String gender
     );
 
     // Send an account password reset code
-    @Headers({CONTENT_TYPE})
+    @FormUrlEncoded
     @POST(Const.ApiPaths.POST_PASSWD_RESET)
     Object resetUserPassword(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
@@ -162,12 +160,12 @@ public interface PrkngService {
     @GET(Const.ApiPaths.GET_LOTS)
     Object getParkingLots(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
-            @Query(Const.ApiArgs.LATITUDE) float latitude,
-            @Query(Const.ApiArgs.LONGITUDE) float longitude
+            @Query(Const.ApiArgs.LATITUDE) double latitude,
+            @Query(Const.ApiArgs.LONGITUDE) double longitude
     );
 
     // Submit a report about incorrect data
-    @Headers({CONTENT_TYPE})
+    @FormUrlEncoded
     @POST(Const.ApiPaths.POST_REPORT)
     Object reportIncorrectData(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
@@ -177,15 +175,27 @@ public interface PrkngService {
     // Returns slots around the point defined by (x, y)
     @Headers({CONTENT_TYPE})
     @GET(Const.ApiPaths.GET_SPOTS)
-    Call<Object> getParkingSpots(
+    Call<GeoJSON> getParkingSpots(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
-            @Query(Const.ApiArgs.LATITUDE) float latitude,
-            @Query(Const.ApiArgs.LONGITUDE) float longitude,
+            @Query(Const.ApiArgs.LATITUDE) double latitude,
+            @Query(Const.ApiArgs.LONGITUDE) double longitude,
             @Query(Const.ApiArgs.RADIUS) int radius,
             @Query(Const.ApiArgs.DURATION) float duration,
             @Query(Const.ApiArgs.CHECKIN_TIMESTAMP) String timestamp,
             @Query(Const.ApiArgs.USE_CARSHARE) boolean useCarshare,
             @Query(Const.ApiArgs.USE_COMPACT) boolean useCompact
+    );
+
+    @Headers({CONTENT_TYPE})
+    @GET(Const.ApiPaths.GET_SPOTS)
+    @Deprecated
+    Call<GeoJSON> getParkingSpots(
+            @Header(Const.ApiArgs.API_KEY) String apiKey,
+            @Query(Const.ApiArgs.LATITUDE) double latitude,
+            @Query(Const.ApiArgs.LONGITUDE) double longitude,
+            @Query(Const.ApiArgs.RADIUS) int radius,
+            @Query(Const.ApiArgs.DURATION) float duration,
+            @Query(Const.ApiArgs.CHECKIN_TIMESTAMP) String timestamp
     );
 
     // Returns the parking slot corresponding to the id
@@ -204,7 +214,7 @@ public interface PrkngService {
     );
 
     // Update user profile information
-    @Headers({CONTENT_TYPE})
+    @FormUrlEncoded
     @PUT(Const.ApiPaths.PUT_USER_PROFILE)
     Object updateUserProfile(
             @Header(Const.ApiArgs.API_KEY) String apiKey,

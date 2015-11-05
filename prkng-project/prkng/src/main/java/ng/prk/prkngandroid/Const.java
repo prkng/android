@@ -34,6 +34,13 @@ public class Const {
         String DURATION = "duration";
     }
 
+    public interface ApiValues {
+        String OAUTH_TYPE_FACEBOOK = "facebook";
+        String OAUTH_TYPE_GOOGLEPLUS = "google";
+        int DEFAULT_RADIUS = 300; // Radius search in meters
+        float DEFAULT_DURATION = 0.5f; // Desired Parking time in hours
+    }
+
     public interface ApiPaths {
         String PROTOCOL = "https://";
         String HOST_PROD = "api.prk.ng";
