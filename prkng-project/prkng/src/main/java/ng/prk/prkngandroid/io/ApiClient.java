@@ -6,13 +6,15 @@ import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 import java.io.IOException;
 
 import ng.prk.prkngandroid.Const;
-import ng.prk.prkngandroid.model.GeoJSON;
+import ng.prk.prkngandroid.model.LinesGeoJSON;
 import ng.prk.prkngandroid.model.LoginObject;
+import ng.prk.prkngandroid.model.PointsGeoJSON;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
 public class ApiClient {
+    private final static String TAG = "ApiClient";
 
     public static PrkngService getService() {
         return getService(false);
@@ -33,7 +35,7 @@ public class ApiClient {
         final OkHttpClient client = new OkHttpClient();
         if (httpLoggin) {
             final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
             client.interceptors().add(interceptor);
         }
 
@@ -107,15 +109,33 @@ public class ApiClient {
     }
 
     //    Returns slots around the point defined by (x, y)
-    public static GeoJSON getParkingSpots(PrkngService service, String apkKey, double latitude, double longitude) {
+    public static LinesGeoJSON getParkingSpots(PrkngService service, String apkKey, double latitude, double longitude) {
         try {
-            final Response<GeoJSON> response = service
+            final Response<LinesGeoJSON> response = service
                     .getParkingSpots(apkKey,
                             latitude,
                             longitude,
                             Const.ApiValues.DEFAULT_RADIUS,
                             Const.ApiValues.DEFAULT_DURATION,
                             null)
+                    .execute();
+            if (response != null) {
+                return response.body();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    //    Returns slots around the point defined by (x, y)
+    public static PointsGeoJSON getParkingLots(PrkngService service, String apkKey, double latitude, double longitude) {
+        try {
+            final Response<PointsGeoJSON> response = service
+                    .getParkingLots(apkKey,
+                            latitude,
+                            longitude)
                     .execute();
             if (response != null) {
                 return response.body();
