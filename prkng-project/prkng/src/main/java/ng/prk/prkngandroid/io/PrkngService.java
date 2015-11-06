@@ -6,9 +6,10 @@ import ng.prk.prkngandroid.model.AnalyticsQuery;
 import ng.prk.prkngandroid.model.CheckInData;
 import ng.prk.prkngandroid.model.DeviceData;
 import ng.prk.prkngandroid.model.ErrorReportData;
-import ng.prk.prkngandroid.model.GeoJSON;
+import ng.prk.prkngandroid.model.LinesGeoJSON;
 import ng.prk.prkngandroid.model.LoginObject;
 import ng.prk.prkngandroid.model.PasswordResetData;
+import ng.prk.prkngandroid.model.PointsGeoJSON;
 import ng.prk.prkngandroid.model.UploadImageData;
 import ng.prk.prkngandroid.model.UserProfileData;
 import retrofit.Call;
@@ -158,7 +159,7 @@ public interface PrkngService {
     // Return parking lots and garages around the point defined by (x, y)
     @Headers({CONTENT_TYPE})
     @GET(Const.ApiPaths.GET_LOTS)
-    Object getParkingLots(
+    Call<PointsGeoJSON> getParkingLots(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
             @Query(Const.ApiArgs.LATITUDE) double latitude,
             @Query(Const.ApiArgs.LONGITUDE) double longitude
@@ -175,7 +176,7 @@ public interface PrkngService {
     // Returns slots around the point defined by (x, y)
     @Headers({CONTENT_TYPE})
     @GET(Const.ApiPaths.GET_SPOTS)
-    Call<GeoJSON> getParkingSpots(
+    Call<LinesGeoJSON> getParkingSpots(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
             @Query(Const.ApiArgs.LATITUDE) double latitude,
             @Query(Const.ApiArgs.LONGITUDE) double longitude,
@@ -189,7 +190,7 @@ public interface PrkngService {
     @Headers({CONTENT_TYPE})
     @GET(Const.ApiPaths.GET_SPOTS)
     @Deprecated
-    Call<GeoJSON> getParkingSpots(
+    Call<LinesGeoJSON> getParkingSpots(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
             @Query(Const.ApiArgs.LATITUDE) double latitude,
             @Query(Const.ApiArgs.LONGITUDE) double longitude,
