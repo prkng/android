@@ -12,5 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:access_token="@string/mapbox_access_token"
+        app:attribution_visibility="gone"
+        app:logo_visibility="invisible"
+        app:my_location_enabled="true"
         app:style_url="@string/mapbox_style_url" />
 </RelativeLayout>
