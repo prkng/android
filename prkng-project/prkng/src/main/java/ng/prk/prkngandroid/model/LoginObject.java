@@ -14,7 +14,7 @@ public class LoginObject {
         return apikey;
     }
 
-    public String getAuth_id() {
+    public String getAuthId() {
         return auth_id;
     }
 
@@ -34,7 +34,7 @@ public class LoginObject {
         return id;
     }
 
-    public String getImage_url() {
+    public String getImageUrl() {
         return image_url;
     }
 

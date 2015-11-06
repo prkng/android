@@ -2,6 +2,7 @@ package ng.prk.prkngandroid.model;
 
 import android.support.annotation.NonNull;
 
+@Deprecated
 public class PasswordResetData {
     @NonNull
     private String email;

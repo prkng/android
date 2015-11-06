@@ -1,5 +1,6 @@
 package ng.prk.prkngandroid.model;
 
+@Deprecated
 public class UserProfileData  {
     protected String name;
     protected String email;

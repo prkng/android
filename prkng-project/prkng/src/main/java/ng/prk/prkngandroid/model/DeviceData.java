@@ -1,5 +1,6 @@
 package ng.prk.prkngandroid.model;
 
+@Deprecated
 public class DeviceData {
     private String lang;
     private String device_type = "android";
