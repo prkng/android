@@ -12,6 +12,7 @@ apply plugin: 'io.fabric'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+    maven { url 'http://oss.sonatype.org/content/repositories/snapshots' }
 }
 
 
@@ -43,6 +44,10 @@ dependencies {
         transitive=true
     }
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+//    compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
+    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
+    compile 'com.squareup.okhttp:logging-interceptor:2.6.0-SNAPSHOT'
+
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }
