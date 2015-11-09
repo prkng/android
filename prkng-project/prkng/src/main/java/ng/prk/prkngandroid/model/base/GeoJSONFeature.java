@@ -1,9 +1,11 @@
 package ng.prk.prkngandroid.model.base;
 
+import ng.prk.prkngandroid.model.GeoJSONFeatureProperties;
+
 public abstract class GeoJSONFeature<V extends GeoJSONFeatureGeometry> {
     protected V geometry;
     protected String id;
-    protected Object properties;
+    protected GeoJSONFeatureProperties properties;
     protected String type;
 
     public V getGeometry() {
@@ -14,7 +16,7 @@ public abstract class GeoJSONFeature<V extends GeoJSONFeatureGeometry> {
         return id;
     }
 
-    public Object getProperties() {
+    public GeoJSONFeatureProperties getProperties() {
         return properties;
     }
 
