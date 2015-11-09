@@ -28,12 +28,12 @@ public class ApiClient {
     /**
      * Get the Prkng API service
      *
-     * @param httpLoggin Enable verbose
+     * @param httpLogging Enable verbose
      * @return PrkngService
      */
-    private static PrkngService getService(boolean httpLoggin) {
+    private static PrkngService getService(boolean httpLogging) {
         final OkHttpClient client = new OkHttpClient();
-        if (httpLoggin) {
+        if (httpLogging) {
             final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
             client.interceptors().add(interceptor);
@@ -42,6 +42,7 @@ public class ApiClient {
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Const.ApiPaths.BASE_URL)
                 .client(client)
+//                .addConverterFactory(LatLngConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return retrofit.create(PrkngService.class);
@@ -109,15 +110,17 @@ public class ApiClient {
     }
 
     //    Returns slots around the point defined by (x, y)
-    public static LinesGeoJSON getParkingSpots(PrkngService service, String apkKey, double latitude, double longitude) {
+    public static LinesGeoJSON getParkingSpots(PrkngService service, String apkKey, double latitude, double longitude, int radius, float duration) {
         try {
             final Response<LinesGeoJSON> response = service
                     .getParkingSpots(apkKey,
                             latitude,
                             longitude,
-                            Const.ApiValues.DEFAULT_RADIUS,
-                            Const.ApiValues.DEFAULT_DURATION,
-                            null)
+                            radius,
+                            duration,
+                            null,
+                            null,
+                            "true")
                     .execute();
             if (response != null) {
                 return response.body();

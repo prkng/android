@@ -196,7 +196,9 @@ public interface PrkngService {
             @Query(Const.ApiArgs.LONGITUDE) double longitude,
             @Query(Const.ApiArgs.RADIUS) int radius,
             @Query(Const.ApiArgs.DURATION) float duration,
-            @Query(Const.ApiArgs.CHECKIN_TIMESTAMP) String timestamp
+            @Query(Const.ApiArgs.CHECKIN_TIMESTAMP) String timestamp,
+            @Query(Const.ApiArgs.USE_CARSHARE) String useCarshare,
+            @Query(Const.ApiArgs.USE_COMPACT) String useCompact
     );
 
     // Returns the parking slot corresponding to the id
