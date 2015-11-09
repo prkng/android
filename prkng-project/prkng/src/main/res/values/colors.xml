@@ -2,5 +2,8 @@
 <resources>
     <color name="colorPrimary">#d8534c</color>
     <color name="colorPrimaryDark">#c74c46</color>
-    <color name="colorAccent">#435059</color>
+    <color name="colorAccent">#f9f8f7</color>
+    <!--Map-->
+    <color name="mapLine">#3bb2d0</color>
+    <color name="progressBar">#d8534c</color>
 </resources>

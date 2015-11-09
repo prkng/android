@@ -1,7 +1,19 @@
 package ng.prk.prkngandroid;
 
+import com.mapbox.mapboxsdk.geometry.LatLng;
+
 public class Const {
 
+    public interface UiConfig {
+        double DEFAULT_ZOOM = 15;
+        double MIN_ZOOM = 15;
+        double SMALL_BUTTONS_ZOOM = 17;
+        double BIG_BUTTONS_ZOOM = 18;
+        double MY_LOCATION_ZOOM = 17;
+        double MIN_UPDATE_DISTACE = 25; // Metres
+        double MONTREAL_NATURAL_NORTH_ROTATION = -34f;
+        LatLng MONTREAL_LAT_LNG = new LatLng(45.5d, -73.666667d);
+    }
     public interface ApiArgs {
         String API_KEY = "X-API-KEY";
         String LATITUDE = "latitude";
@@ -74,4 +86,12 @@ public class Const {
     public interface FragmentTags {
         String MAP = "f_map";
     }
+
+    public interface RequestCodes {
+        int PERMISSION_ACCESS_LOCATION = 10;
+        int PERMISSION_ACCESS_FINE_LOCATION = 20;
+        int PERMISSION_ACCESS_COARSE_LOCATION = 30;
+    }
+
+    public static String LINE_SEPARATOR = System.getProperty("line.separator");
 }
