@@ -59,6 +59,7 @@ public class Const {
         String OAUTH_TYPE_GOOGLEPLUS = "google";
         int DEFAULT_RADIUS = 300; // Radius search in meters
         float DEFAULT_DURATION = 0.5f; // Desired Parking time in hours
+        String SPOT_TYPE_PAID = "paid";
     }
 
     public interface ApiPaths {

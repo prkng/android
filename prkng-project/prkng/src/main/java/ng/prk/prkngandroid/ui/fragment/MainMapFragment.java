@@ -18,10 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.annotations.PolylineOptions;
 import com.mapbox.mapboxsdk.annotations.Sprite;
-import com.mapbox.mapboxsdk.annotations.SpriteFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngZoom;
 import com.mapbox.mapboxsdk.views.MapView;
@@ -41,15 +41,20 @@ import ng.prk.prkngandroid.model.PointsGeoJSON;
 import ng.prk.prkngandroid.model.PointsGeoJSONFeature;
 
 public class MainMapFragment extends Fragment implements
-        MapView.OnMapChangedListener, MapView.OnMapClickListener {
+        MapView.OnMapChangedListener,
+        MapView.OnMapClickListener,
+        MapView.OnMarkerClickListener {
     private final static String TAG = "MainMapFragment";
     private final static double RADIUS_FIX = 1.4d;
 
     private CircleProgressBar mProgressBar;
     private MapView mapView;
     private String mApiKey;
-    private int mLineColor;
-    private Sprite mMarkerIcon;
+    private int mLineColorFree;
+    private int mLineWidth;
+    private int mLineColorPaid;
+    private Sprite mMarkerIconFree;
+    private Sprite mMarkerIconPaid;
     private LatLng mCenterLatLng;
     private boolean mIgnoreMinDistance;
     private int mLastRadius;
@@ -66,7 +71,6 @@ public class MainMapFragment extends Fragment implements
         final View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         mTask = new UpdateSpotsTasks();
-        mLineColor = ContextCompat.getColor(getContext(), R.color.mapLine);
 
         mProgressBar = (CircleProgressBar) view.findViewById(R.id.progressBar);
         final FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
@@ -85,7 +89,6 @@ public class MainMapFragment extends Fragment implements
         });
 
         createMapIfNecessary(view, savedInstanceState);
-        mMarkerIcon = new SpriteFactory(mapView).fromResource(R.drawable.ic_maps_my_location);
 
         return view;
     }
@@ -148,12 +151,26 @@ public class MainMapFragment extends Fragment implements
             mapView.onCreate(savedInstanceState);
             mapView.addOnMapChangedListener(this);
             mapView.setOnMapClickListener(this);
+            mapView.setOnMarkerClickListener(this);
 
             mLastZoomLevel = mapView.getZoomLevel();
             mCenterLatLng = mapView.getCenterCoordinate();
+
+            // Load map assets and colors
+            mMarkerIconPaid = mapView.getSpriteFactory().fromResource(R.drawable.ic_spot_paid);
+            mMarkerIconFree = mapView.getSpriteFactory().fromResource(R.drawable.ic_spot_free);
+
+            mLineColorPaid = ContextCompat.getColor(getContext(), R.color.mapLinePaidSpot);
+            mLineColorFree = ContextCompat.getColor(getContext(), R.color.mapLineFreeSpot);
+            mLineWidth = getActivity().getResources().getDimensionPixelSize(R.dimen.map_line_width);
         }
     }
 
+    /**
+     * Implements MapView.OnMapChangedListener
+     *
+     * @param change
+     */
     @Override
     public void onMapChanged(int change) {
 
@@ -189,6 +206,30 @@ public class MainMapFragment extends Fragment implements
                 Log.e(TAG, "onMapChanged failed");
                 break;
         }
+    }
+
+    /**
+     * Implements MapView.OnMapClickListener
+     *
+     * @param latLng
+     */
+    @Override
+    public void onMapClick(LatLng latLng) {
+        Log.v(TAG, "onMapClick "
+                + String.format("latLng = %s", latLng));
+
+    }
+
+    /**
+     * Implements MapView.OnMarkerClickListener
+     *
+     * @param marker
+     * @return
+     */
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Log.v(TAG, "onMarkerClick @ " + marker.getTitle());
+        return false;
     }
 
     public void requestPermissionIfNeeded() {
@@ -274,20 +315,21 @@ public class MainMapFragment extends Fragment implements
         }
     }
 
-    @Override
-    public void onMapClick(LatLng latLng) {
-        Log.v(TAG, "onMapClick "
-                + String.format("latLng = %s", latLng));
+    private static class SpotsAnnotations {
+        private List<PolylineOptions> polylines;
+        private List<MarkerOptions> markers;
 
-    }
+        public SpotsAnnotations() {
+            this.polylines = new ArrayList<>();
+            this.markers = new ArrayList<>();
+        }
 
-    private static class SpotAnnotation {
-        List<PolylineOptions> polylines;
-        List<MarkerOptions> markers;
+        public void addPolyline(PolylineOptions polyline) {
+            this.polylines.add(polyline);
+        }
 
-        public SpotAnnotation(List<PolylineOptions> polylines, List<MarkerOptions> markers) {
-            this.polylines = polylines;
-            this.markers = markers;
+        public void addMarker(MarkerOptions marker) {
+            this.markers.add(marker);
         }
 
         public List<PolylineOptions> getPolylines() {
@@ -299,13 +341,17 @@ public class MainMapFragment extends Fragment implements
         }
     }
 
-    private class UpdateSpotsTasks extends AsyncTask<LatLng, Void, SpotAnnotation> {
+    private class UpdateSpotsTasks extends AsyncTask<LatLng, Void, SpotsAnnotations> {
 
         private long startTime;
+        @Deprecated
+        private LatLng mCenterLatLng;
 
+        /**
+         * Display the progressbar, before processing API data
+         */
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
             try {
                 mProgressBar.setVisibility(View.VISIBLE);
             } catch (NullPointerException e) {
@@ -313,16 +359,30 @@ public class MainMapFragment extends Fragment implements
             }
         }
 
+        /**
+         * Validate if the map's zoomLevel allows showing Markers
+         *
+         * @return
+         */
+        private boolean hasMarkers() {
+            return Double.compare(Const.UiConfig.SMALL_BUTTONS_ZOOM, mLastZoomLevel) <= 0;
+        }
+
+        /**
+         * Download API data and prepare map annotations
+         *
+         * @param params
+         * @return
+         */
         @Override
-        protected SpotAnnotation doInBackground(LatLng... params) {
+        protected SpotsAnnotations doInBackground(LatLng... params) {
             Log.v(TAG, "doInBackground");
             startTime = System.currentTimeMillis();
             final LatLng centerLatLng = params[0];
 
             final PrkngService service = ApiClient.getServiceLog();
-            final List<PolylineOptions> polylines = new ArrayList<>();
-            final List<MarkerOptions> markers = new ArrayList<>();
 
+            final SpotsAnnotations spotsAnnotations = new SpotsAnnotations();
             try {
                 if (mApiKey == null || mApiKey.isEmpty()) {
                     LoginObject loginObject = ApiClient
@@ -336,8 +396,7 @@ public class MainMapFragment extends Fragment implements
                 }
 
                 if (mApiKey != null && centerLatLng != null) {
-                    Log.v(TAG, "mLastRadius 2 = " + mLastRadius);
-
+                    // Get API data
                     final LinesGeoJSON spots = ApiClient.getParkingSpots(service,
                             mApiKey,
                             centerLatLng.getLatitude(),
@@ -346,71 +405,93 @@ public class MainMapFragment extends Fragment implements
                             Const.ApiValues.DEFAULT_DURATION
                     );
 
+                    mCenterLatLng = centerLatLng;
+                    // Prepare map annotations: Polylines and Markers
                     final List<LinesGeoJSONFeature> spotsFeatures = spots.getFeatures();
                     for (LinesGeoJSONFeature feature : spotsFeatures) {
+                        final GeoJSONFeatureProperties properties = feature.getProperties();
+                        final boolean isTypePaid = Const.ApiValues.SPOT_TYPE_PAID.equals(properties.getRestrictType());
+
                         List<List<Double>> coords = feature.getGeometry().getCoordinates();
                         LatLng[] pointsArray = new LatLng[coords.size()];
                         int i = 0;
                         for (List<Double> latLng : coords) {
                             pointsArray[i++] = new LatLng(new LatLng(latLng.get(1), latLng.get(0)));
                         }
-                        polylines.add(
-                                new PolylineOptions()
-                                        .add(pointsArray)
-                                        .color(mLineColor)
-                                        .width(2));
+                        final PolylineOptions polylineOptions = new PolylineOptions()
+                                .add(pointsArray)
+                                .width(mLineWidth)
+                                .color(isTypePaid ? mLineColorPaid : mLineColorFree);
+                        spotsAnnotations.addPolyline(polylineOptions);
 
-                        final GeoJSONFeatureProperties properties = feature.getProperties();
-                        List<LatLng> buttons = properties.getButtonLocations();
-                        for (LatLng button : buttons) {
-                            String snippet = "ID: " + feature.getId();
-                            if (properties.getRestrictType() != null) {
-                                snippet += Const.LINE_SEPARATOR + "Restriction: " + properties.getRestrictType();
+                        if (hasMarkers()) {
+                            List<LatLng> buttons = properties.getButtonLocations();
+                            for (LatLng buttonLatLng : buttons) {
+                                String snippet = "ID: " + feature.getId();
+                                if (properties.getRestrictType() != null) {
+                                    snippet += Const.LINE_SEPARATOR + "Restriction: " + properties.getRestrictType();
+                                }
+                                final MarkerOptions markerOptions = new MarkerOptions()
+                                        .position(buttonLatLng)
+                                        .title(properties.getWayName())
+                                        .snippet(snippet)
+                                        .icon(isTypePaid ? mMarkerIconPaid : mMarkerIconFree);
+
+                                spotsAnnotations.addMarker(markerOptions);
                             }
-                            markers.add(
-                                    new MarkerOptions()
-                                            .position(button)
-                                            .title(properties.getWayName())
-                                            .snippet(snippet)
-                            );
-                            new MarkerOptions()
-                                    .position(new LatLng(41.885, -87.679))
-                                    .icon(mMarkerIcon);
                         }
-
                     }
-                    Log.v(TAG, "DDD");
                 }
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
 
-            return new SpotAnnotation(polylines, markers);
+            return spotsAnnotations;
         }
 
+        /**
+         * Replace attributions and hide progressbar
+         *
+         * @param spots
+         */
         @Override
-        protected void onPostExecute(SpotAnnotation spots) {
+        protected void onPostExecute(SpotsAnnotations spots) {
             Log.v(TAG, "onPostExecute");
             if (isCancelled() || mapView == null) {
                 return;
             }
+
             try {
                 if (spots != null) {
-                    mProgressBar.setVisibility(View.GONE);
-
                     Log.v(TAG, "removeAllAnnotations");
                     mapView.removeAllAnnotations();
 
                     Log.v(TAG, "addPolylines");
                     mapView.addPolylines(spots.getPolylines());
-                    Log.v(TAG, "addMarkers");
-                    mapView.addMarkers(spots.getMarkers());
+
+                    // Markers must be added after Polylines to show the dot above the line (z-order)
+                    if (hasMarkers()) {
+                        Log.v(TAG, "addMarkers");
+                        mapView.addMarkers(spots.getMarkers());
+                    }
 
 //                    drawRadius();
                     Log.v(TAG, "Sync duration: " + (System.currentTimeMillis() - startTime) + " ms");
                 } else {
-                    Log.v(TAG, "spots not found");
+                    Log.e(TAG, "No spots found..");
                 }
+
+                // Done processing: hide the progressbar
+                mProgressBar.setVisibility(View.GONE);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            try {
+                mProgressBar.setVisibility(View.GONE);
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
@@ -423,7 +504,7 @@ public class MainMapFragment extends Fragment implements
             mapView.addMarker(marker);
 
             mapView.addPolyline(new PolylineOptions()
-                    .add(new LatLng[]{mapView.getCenterCoordinate(), radiusLatLng})
+                    .add(new LatLng[]{mCenterLatLng, radiusLatLng})
                     .color(Color.GREEN)
                     .width(5));
         }
