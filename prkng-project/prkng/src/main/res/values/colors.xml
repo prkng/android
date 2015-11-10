@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--Swatch-->
+    <color name="stone">#EAE9E5</color>
+    <color name="cream">#F9F8F7</color>
+
+    <!--Theme-->
     <color name="colorPrimary">#d8534c</color>
     <color name="colorPrimaryDark">#c74c46</color>
     <color name="colorAccent">#f9f8f7</color>
+
     <!--Map-->
-    <color name="mapLine">#3bb2d0</color>
+    <color name="mapLinePaidSpot">#E6AE5C</color>
+    <color name="mapLineFreeSpot">#547B99</color>
+    <color name="mapLineSelectedSpot">#D8534C</color>
     <color name="progressBar">#d8534c</color>
 </resources>
