@@ -6,4 +6,11 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Réglages</string>
+    <string name="action_about">À propos</string>
+
+    <!--Map-->
+    <string name="map_zoom_needed">Please zoom in to update map</string>
+    <string name="map_tab_off_street">Hors rue</string>
+    <string name="map_tab_on_street">Sur rue</string>
+    <string name="map_tab_carshare">Autopartage</string>
 </resources>
