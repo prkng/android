@@ -5,6 +5,8 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import java.util.ArrayList;
 import java.util.List;
 
+import ng.prk.prkngandroid.Const;
+
 public class GeoJSONFeatureProperties {
     private List<LatLong> button_locations;
     private boolean compact;
@@ -37,5 +39,9 @@ public class GeoJSONFeatureProperties {
 
     public String getWayName() {
         return way_name;
+    }
+
+    public boolean isTypePaid() {
+        return Const.ApiValues.SPOT_TYPE_PAID.equals(restrict_typ);
     }
 }

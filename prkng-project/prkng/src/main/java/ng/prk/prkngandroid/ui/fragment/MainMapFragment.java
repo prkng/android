@@ -410,7 +410,6 @@ public class MainMapFragment extends Fragment implements
                     final List<LinesGeoJSONFeature> spotsFeatures = spots.getFeatures();
                     for (LinesGeoJSONFeature feature : spotsFeatures) {
                         final GeoJSONFeatureProperties properties = feature.getProperties();
-                        final boolean isTypePaid = Const.ApiValues.SPOT_TYPE_PAID.equals(properties.getRestrictType());
 
                         List<List<Double>> coords = feature.getGeometry().getCoordinates();
                         LatLng[] pointsArray = new LatLng[coords.size()];
@@ -421,7 +420,7 @@ public class MainMapFragment extends Fragment implements
                         final PolylineOptions polylineOptions = new PolylineOptions()
                                 .add(pointsArray)
                                 .width(mLineWidth)
-                                .color(isTypePaid ? mLineColorPaid : mLineColorFree);
+                                .color(properties.isTypePaid() ? mLineColorPaid : mLineColorFree);
                         spotsAnnotations.addPolyline(polylineOptions);
 
                         if (hasMarkers()) {
@@ -435,7 +434,7 @@ public class MainMapFragment extends Fragment implements
                                         .position(buttonLatLng)
                                         .title(properties.getWayName())
                                         .snippet(snippet)
-                                        .icon(isTypePaid ? mMarkerIconPaid : mMarkerIconFree);
+                                        .icon(properties.isTypePaid() ? mMarkerIconPaid : mMarkerIconFree);
 
                                 spotsAnnotations.addMarker(markerOptions);
                             }
