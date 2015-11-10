@@ -14,6 +14,14 @@ public class Const {
         double MONTREAL_NATURAL_NORTH_ROTATION = -34f;
         LatLng MONTREAL_LAT_LNG = new LatLng(45.5d, -73.666667d);
     }
+
+    public interface MapSections {
+        int _COUNT = 3;
+        int OFF_STREET = 0;
+        int ON_STREET = 1;
+        int CARSHARE = 2;
+    }
+
     public interface ApiArgs {
         String API_KEY = "X-API-KEY";
         String LATITUDE = "latitude";
