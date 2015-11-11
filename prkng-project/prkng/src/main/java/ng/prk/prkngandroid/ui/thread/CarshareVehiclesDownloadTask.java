@@ -63,7 +63,7 @@ public class CarshareVehiclesDownloadTask extends PrkngDataDownloadTask {
                             .position(new LatLng(new LatLng(latLng.get(1), latLng.get(0))))
                             .title(properties.getCompany() + " " + properties.getName())
                             .snippet(feature.getId())
-                            .icon(mapAssets.getMarkerIconCarshare());
+                            .icon(mapAssets.getMarkerIconCarshareVehicle(properties.getCompany()));
 
                     spotsAnnotations.addMarker(markerOptions);
                 }
