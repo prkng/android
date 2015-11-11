@@ -2,16 +2,62 @@
 <resources>
     <!--Swatch-->
     <color name="stone">#EAE9E5</color>
-    <color name="cream">#F9F8F7</color>
+    <color name="cream1">#F9F8F7</color>
+    <color name="cream2">#F4F1EF</color>
+    <color name="curry">#E6AE5C</color>
+    <color name="sand">#E0AF65</color>
+
+    <color name="turtle_green">#81B347</color>
+
+    <color name="facebook_blue">#456397</color>
+    <color name="azuro">#09ADF1</color>
+
+    <color name="beige1">#E5E0DA</color>
+    <color name="beige2">#DBD4CE</color>
+
+    <color name="red1">#EA7875</color>
+    <color name="red2">#D8534C</color>
+
+    <color name="berry1">#A63A3A</color>
+    <color name="berry2">#802D2D</color>
+
+    <color name="lipstick">#CF4F48</color>
+
+    <color name="petrol1">#5B717F</color>
+    <color name="petrol2">#485966</color>
+
+    <color name="midnight1">#435059</color>
+    <color name="midnight2">#3A4249</color>
+
+    <color name="anthracite1">#979797</color>
+    <color name="anthracite2">#929292</color>
+
+    <color name="white">#FFFFFF</color>
+
+    <color name="grey">#D9D7D4</color>
+    <color name="greyish">#BFBEBB</color>
+    <color name="dark30">#13171A30</color>
+
+    <color name="light_fx">#141719</color>
+    <color name="light_grey">#E5E1DC</color>
+
+    <color name="red_transparent">#A63A3A</color>
+
+    <!--<color name="statusBar">#D1CCC980</color>-->
+    <color name="transparentBackground">#E6303A42</color>
+    <color name="transparent_white">#33FFFFFF</color>
+    <color name="transparent_black">#19000000</color>
 
     <!--Theme-->
-    <color name="colorPrimary">#d8534c</color>
-    <color name="colorPrimaryDark">#c74c46</color>
-    <color name="colorAccent">#f9f8f7</color>
+    <color name="color_primary">@color/red2</color>
+    <color name="color_primary_dark">@color/berry2</color>
+    <color name="color_accent">@color/cream1</color>
+    <color name="color_background">@color/stone</color>
 
     <!--Map-->
-    <color name="mapLinePaidSpot">#E6AE5C</color>
-    <color name="mapLineFreeSpot">#547B99</color>
-    <color name="mapLineSelectedSpot">#D8534C</color>
-    <color name="progressBar">#d8534c</color>
+    <color name="map_line_paid_spot">@color/curry</color>
+    <color name="map_line_free_spot">@color/petrol1</color>
+    <!--<color name="map_line_free_spot">#547B99</color>`-->
+    <color name="map_line_selected_spot">@color/red2</color>
+    <color name="progress_bar">@color/red1</color>
 </resources>
