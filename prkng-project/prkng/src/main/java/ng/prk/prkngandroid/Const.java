@@ -1,25 +1,30 @@
 package ng.prk.prkngandroid;
 
+import android.os.Build;
+
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
 public class Const {
 
     public interface UiConfig {
-        double DEFAULT_ZOOM = 15;
-        double MIN_ZOOM = 15;
-        double SMALL_BUTTONS_ZOOM = 17;
-        double BIG_BUTTONS_ZOOM = 18;
-        double MY_LOCATION_ZOOM = 17;
-        double MIN_UPDATE_DISTACE = 25; // Metres
-        double MONTREAL_NATURAL_NORTH_ROTATION = -34f;
+        double DEFAULT_ZOOM = 15.0d;
+        double SPOTS_MIN_ZOOM = 15.0d;
+        double LOTS_MIN_ZOOM = 14.0d;
+        double CARSHARE_VEHICLES_MIN_ZOOM = 13.0d;
+        double SMALL_BUTTONS_ZOOM = 17.0d;
+        double BIG_BUTTONS_ZOOM = 18.0d;
+        double MY_LOCATION_ZOOM = 17.0d;
+        double MIN_UPDATE_DISTACE = 25.0d; // Metres
+        double MONTREAL_NATURAL_NORTH_ROTATION = -34.0d;
         LatLng MONTREAL_LAT_LNG = new LatLng(45.5d, -73.666667d);
     }
 
     public interface MapSections {
-        int _COUNT = 3;
+        int _COUNT = 4;
         int OFF_STREET = 0;
         int ON_STREET = 1;
-        int CARSHARE = 2;
+        int CARSHARE_SPOTS = 2;
+        int CARSHARE_VEHICLES = 3;
     }
 
     public interface ApiArgs {
@@ -29,7 +34,7 @@ public class Const {
         String EVENT = "event";
         String QUERY = "query";
         String RADIUS = "radius";
-        String CARSHARE_COMPANY = "company";
+        String CARSHARE_COMPANIES = "company";
         String LIMIT = "limit";
         String CITY = "city";
         String SPOT_ID = "slot_id";
@@ -60,6 +65,10 @@ public class Const {
         int DEFAULT_RADIUS = 300; // Radius search in meters
         float DEFAULT_DURATION = 0.5f; // Desired Parking time in hours
         String SPOT_TYPE_PAID = "paid";
+        String CARSHARE_COMPANY_CAR2GO = "car2go";
+        String CARSHARE_COMPANY_COMMUNAUTO = "communauto";
+        String CARSHARE_COMPANY_AUTOMOBILE = "auto-mobile";
+        String CARSHARE_COMPANY_ZIPCAR = "zipcar";
     }
 
     public interface ApiPaths {
@@ -73,7 +82,7 @@ public class Const {
         String POST_ANALYTICS_SEARCH = VERSION + "/analytics/search";
         String GET_AREAS = VERSION + "/areas";
         String GET_CARSHARE_LOTS = VERSION + "/carshare_lots";
-        String GET_CARSHARE_CARS = VERSION + "/carshares";
+        String GET_CARSHARE_VEHICLES = VERSION + "/carshares";
         String GET_CHECKINS = VERSION + "/checkins";
         String POST_CHECKINS = VERSION + "/checkins";
         String DELETE_CHECKIN = VERSION + "/checkins/{" + ApiArgs.CHECKIN_ID + "}";
@@ -102,5 +111,14 @@ public class Const {
         int PERMISSION_ACCESS_COARSE_LOCATION = 30;
     }
 
-    public static String LINE_SEPARATOR = System.getProperty("line.separator");
+
+    public static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
+    public static final boolean SUPPORTS_M = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    public static final boolean SUPPORTS_LOLLIPOP_MR1 = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1;
+    public static final boolean SUPPORTS_LOLLIPOP = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+    public static final boolean SUPPORTS_KITKAT = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    public static final boolean SUPPORTS_JELLY_BEAN_MR2 = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2;
+    public static final boolean SUPPORTS_JELLY_BEAN_MR1 = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
+    public static final boolean SUPPORTS_JELLY_BEAN = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN;
 }
