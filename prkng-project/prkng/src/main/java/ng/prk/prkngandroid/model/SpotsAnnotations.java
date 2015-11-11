@@ -3,11 +3,13 @@ package ng.prk.prkngandroid.model;
 
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.annotations.PolylineOptions;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SpotsAnnotations {
+    private LatLng center;
     private List<PolylineOptions> polylines;
     private List<MarkerOptions> markers;
 
@@ -30,5 +32,13 @@ public class SpotsAnnotations {
 
     public List<MarkerOptions> getMarkers() {
         return markers;
+    }
+
+    public LatLng getCenterCoordinate() {
+        return center;
+    }
+
+    public void setCenterCoordinate(LatLng center) {
+        this.center = center;
     }
 }

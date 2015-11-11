@@ -8,11 +8,25 @@ import java.util.List;
 import ng.prk.prkngandroid.Const;
 
 public class GeoJSONFeatureProperties {
+    /**
+     * Spots
+     */
     private List<LatLong> button_locations;
     private boolean compact;
     private String restrict_typ;
     private List<String> restrict_types;
     private String way_name;
+
+    /**
+     * Lots
+     */
+    private String name;
+    private String address;
+
+    /**
+     * Carshare vehicles
+     */
+    private String company;
 
     public List<LatLng> getButtonLocations() {
         if (button_locations != null) {
@@ -43,5 +57,17 @@ public class GeoJSONFeatureProperties {
 
     public boolean isTypePaid() {
         return Const.ApiValues.SPOT_TYPE_PAID.equals(restrict_typ);
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public String getName() {
+        return name;
     }
 }
