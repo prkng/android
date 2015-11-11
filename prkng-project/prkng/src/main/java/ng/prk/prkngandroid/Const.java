@@ -65,6 +65,7 @@ public class Const {
         int DEFAULT_RADIUS = 300; // Radius search in meters
         float DEFAULT_DURATION = 0.5f; // Desired Parking time in hours
         String SPOT_TYPE_PAID = "paid";
+        String CAR_TYPE_ELECTRIC = "electric";
         String CARSHARE_COMPANY_CAR2GO = "car2go";
         String CARSHARE_COMPANY_COMMUNAUTO = "communauto";
         String CARSHARE_COMPANY_AUTOMOBILE = "auto-mobile";
