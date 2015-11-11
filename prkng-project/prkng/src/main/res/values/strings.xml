@@ -12,7 +12,9 @@
     <string name="map_zoom_needed">Please zoom in to update map</string>
     <string name="map_tab_off_street">Off-Street</string>
     <string name="map_tab_on_street">On-Street</string>
-    <string name="map_tab_carshare">Carsharing</string>
+    <!--<string name="map_tab_carshare">Carsharing</string>-->
+    <string name="map_tab_carshare_spots">CarShare Spots</string>
+    <string name="map_tab_carshare_vehicles">Carshare Vehicles</string>
 
     <!--Permissions-->
     <string name="location_permission_needed">Location permission is needed for map accuracy</string>
