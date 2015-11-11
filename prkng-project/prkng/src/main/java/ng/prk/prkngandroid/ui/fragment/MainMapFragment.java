@@ -1,6 +1,7 @@
 package ng.prk.prkngandroid.ui.fragment;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
 import android.location.Location;
@@ -26,10 +27,15 @@ import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.model.MapAssets;
 import ng.prk.prkngandroid.model.MapGeometry;
-import ng.prk.prkngandroid.ui.thread.UpdateSpotsTask;
+import ng.prk.prkngandroid.ui.thread.CarshareSpotsDownloadTask;
+import ng.prk.prkngandroid.ui.thread.CarshareVehiclesDownloadTask;
+import ng.prk.prkngandroid.ui.thread.LotsDownloadTask;
+import ng.prk.prkngandroid.ui.thread.SpotsDownloadTask;
+import ng.prk.prkngandroid.ui.thread.base.PrkngDataDownloadTask;
+import ng.prk.prkngandroid.util.MapUtils;
 
 public class MainMapFragment extends Fragment implements
-        UpdateSpotsTask.MapTaskListener,
+        SpotsDownloadTask.MapTaskListener,
         MapView.OnMapChangedListener,
         MapView.OnMapClickListener,
         MapView.OnMarkerClickListener {
@@ -39,21 +45,39 @@ public class MainMapFragment extends Fragment implements
     private CircleProgressBar vProgressBar;
     private MapView vMap;
     private String mApiKey;
-    private MapAssets mMapAssets;
+    private MapAssets mapAssets;
     private MapGeometry mLastMapGeometry;
     private boolean mIgnoreMinDistance;
-    private UpdateSpotsTask mTask;
+    private PrkngDataDownloadTask mTask;
+    private OnMapMarkerClickListener listener;
+    private int mPrkngMapType;
 
     public static MainMapFragment newInstance() {
         return new MainMapFragment();
+    }
+
+    public interface OnMapMarkerClickListener {
+        void showMarkerInfo(Marker marker, int type);
+
+        void hideMarkerInfo();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            listener = (OnMapMarkerClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnMarkerClickListener");
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         final View view = inflater.inflate(R.layout.fragment_map, container, false);
-
-        mTask = UpdateSpotsTask.create();  // Initialize empty Task
 
         vProgressBar = (CircleProgressBar) view.findViewById(R.id.progressBar);
         final FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
@@ -139,8 +163,9 @@ public class MainMapFragment extends Fragment implements
             vMap.setOnMarkerClickListener(this);
 
             // Load map assets and colors
-            mMapAssets = new MapAssets(vMap);
+            mapAssets = new MapAssets(vMap);
             mLastMapGeometry = new MapGeometry(vMap.getCenterCoordinate(), vMap.getZoomLevel());
+            mPrkngMapType = Const.MapSections.ON_STREET;
         }
     }
 
@@ -159,7 +184,7 @@ public class MainMapFragment extends Fragment implements
             case MapView.DID_FINISH_LOADING_MAP:
             case MapView.REGION_DID_CHANGE_ANIMATED:
                 if (mLastMapGeometry.distanceTo(vMap.getCenterCoordinate()) >= Const.UiConfig.MIN_UPDATE_DISTACE
-                        || mIgnoreMinDistance) {
+                        || isIgnoreMinDistance()) {
                     mIgnoreMinDistance = false;
                     updateMapData(vMap.getCenterCoordinate(), vMap.getZoomLevel());
                 }
@@ -194,18 +219,25 @@ public class MainMapFragment extends Fragment implements
     public void onMapClick(LatLng latLng) {
         Log.v(TAG, "onMapClick "
                 + String.format("latLng = %s", latLng));
-
+        if (listener != null) {
+            listener.hideMarkerInfo();
+        }
     }
 
     /**
      * Implements MapView.OnMarkerClickListener
      *
      * @param marker
-     * @return
+     * @return True, to consume the event and skip showing the infoWindow
      */
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Log.v(TAG, "onMarkerClick @ " + marker.getTitle());
+        Log.v(TAG, "showMarkerInfo @ " + marker.getTitle());
+        if (listener != null) {
+            listener.showMarkerInfo(marker, mPrkngMapType);
+            return true;
+        }
+
         return false;
     }
 
@@ -260,11 +292,15 @@ public class MainMapFragment extends Fragment implements
                 Const.RequestCodes.PERMISSION_ACCESS_LOCATION);
     }
 
+    private boolean isIgnoreMinDistance() {
+        return mIgnoreMinDistance;
+    }
+
     private void updateMapData(LatLng latLng, double zoom) {
         Log.v(TAG, "updateMapData @ " + zoom);
 
-        if (Double.compare(Const.UiConfig.MIN_ZOOM, zoom) <= 0) {
-            if (mTask.getStatus() == AsyncTask.Status.RUNNING) {
+        if (MapUtils.isMinZoom(zoom, mPrkngMapType)) {
+            if (mTask != null && mTask.getStatus() == AsyncTask.Status.RUNNING) {
                 Log.e(TAG, "skipped");
                 mTask.cancel(false);
 //                return;
@@ -273,9 +309,21 @@ public class MainMapFragment extends Fragment implements
             mLastMapGeometry.setLongitude(latLng.getLongitude());
             mLastMapGeometry.setZoomAndRadius(zoom, vMap.fromScreenLocation(new PointF(0, 0)));
 
-            mTask = new UpdateSpotsTask(
-                    vMap, mMapAssets, this
-            );
+            switch (mPrkngMapType) {
+                case Const.MapSections.OFF_STREET:
+                    mTask = new LotsDownloadTask(vMap, mapAssets, this);
+                    break;
+                case Const.MapSections.ON_STREET:
+                    mTask = new SpotsDownloadTask(vMap, mapAssets, this);
+                    break;
+                case Const.MapSections.CARSHARE_SPOTS:
+                    mTask = new CarshareSpotsDownloadTask(vMap, mapAssets, this);
+                    break;
+                case Const.MapSections.CARSHARE_VEHICLES:
+                    mTask = new CarshareVehiclesDownloadTask(vMap, mapAssets, this);
+                    break;
+            }
+
             mTask.execute(mLastMapGeometry);
         } else {
             mIgnoreMinDistance = true;
@@ -283,7 +331,7 @@ public class MainMapFragment extends Fragment implements
                     .setAction(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            vMap.setZoomLevel(Const.UiConfig.MIN_ZOOM, true);
+                            vMap.setZoomLevel(MapUtils.getMinZoomPerType(mPrkngMapType), true);
                         }
                     }).show();
         }
@@ -300,6 +348,15 @@ public class MainMapFragment extends Fragment implements
                     myLocation.getLongitude(),
                     Math.max(Const.UiConfig.MY_LOCATION_ZOOM, vMap.getZoomLevel())
             ), animated);
+        }
+    }
+
+    public void setMapType(int type) {
+        Log.v(TAG, "setMapType @ " + type);
+        if (type != mPrkngMapType) {
+            vMap.removeAllAnnotations();
+            mPrkngMapType = type;
+            updateMapData(vMap.getCenterCoordinate(), vMap.getZoomLevel());
         }
     }
 

@@ -2,22 +2,26 @@ package ng.prk.prkngandroid.ui.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.mapbox.mapboxsdk.annotations.Marker;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.ui.fragment.MainMapFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        MainMapFragment.OnMapMarkerClickListener,
+        TabLayout.OnTabSelectedListener {
 
     private SlidingUpPanelLayout vSlidingUpPanel;
+    private MainMapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,21 +34,41 @@ public class MainActivity extends AppCompatActivity {
 
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_off_street), Const.MapSections.OFF_STREET);
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_on_street), Const.MapSections.ON_STREET);
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_carshare), Const.MapSections.CARSHARE);
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_on_street), Const.MapSections.ON_STREET, true);
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_carshare_spots), Const.MapSections.CARSHARE_SPOTS);
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_carshare_vehicles), Const.MapSections.CARSHARE_VEHICLES);
 
         vSlidingUpPanel = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
 
         if (savedInstanceState == null) {
             final FragmentManager fm = getSupportFragmentManager();
-            Fragment fragment = fm.findFragmentByTag(Const.FragmentTags.MAP);
-            if (fragment == null) {
-                fragment = MainMapFragment.newInstance();
+            mapFragment = (MainMapFragment) fm.findFragmentByTag(Const.FragmentTags.MAP);
+            if (mapFragment == null) {
+                mapFragment = MainMapFragment.newInstance();
                 fm.beginTransaction()
-                        .replace(R.id.content_frame, fragment, Const.FragmentTags.MAP)
+                        .replace(R.id.content_frame, mapFragment, Const.FragmentTags.MAP)
                         .commit();
             }
         }
+
+        tabLayout.setOnTabSelectedListener(this);
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mapFragment.setMapType(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                hideMarkerInfo();
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     @Override
@@ -57,11 +81,67 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
-            vSlidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+//            vSlidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else if (item.getItemId() == R.id.action_about) {
-            vSlidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+//            vSlidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Implements MainMapFragment.OnMapMarkerClickListener
+     *
+     * @param marker
+     */
+    @Override
+    public void showMarkerInfo(Marker marker, int type) {
+        if (marker == null) {
+            hideMarkerInfo();
+        } else {
+            if (vSlidingUpPanel.getPanelState() != SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                vSlidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            }
+            ((TextView) vSlidingUpPanel.findViewById(R.id.drag_handle))
+                    .setText(marker.getTitle() + Const.LINE_SEPARATOR + marker.getSnippet());
+        }
+    }
+
+    /**
+     * Implements MainMapFragment.OnMapMarkerClickListener
+     */
+    @Override
+    public void hideMarkerInfo() {
+        vSlidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+    }
+
+    /**
+     * Implements TabLayout.OnTabSelectedListener
+     *
+     * @param tab
+     */
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+
+    }
+
+    /**
+     * Implements TabLayout.OnTabSelectedListener
+     *
+     * @param tab
+     */
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    /**
+     * Implements TabLayout.OnTabSelectedListener
+     *
+     * @param tab
+     */
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
     }
 }
