@@ -109,7 +109,17 @@ public class ApiClient {
         return null;
     }
 
-    //    Returns slots around the point defined by (x, y)
+    /**
+     * Returns slots around the point defined by (x, y)
+     *
+     * @param service
+     * @param apkKey
+     * @param latitude
+     * @param longitude
+     * @param radius
+     * @param duration
+     * @return
+     */
     public static LinesGeoJSON getParkingSpots(PrkngService service, String apkKey, double latitude, double longitude, int radius, float duration) {
         try {
             final Response<LinesGeoJSON> response = service
@@ -119,8 +129,8 @@ public class ApiClient {
                             radius,
                             duration,
                             null,
-                            null,
-                            "true")
+                            false,
+                            true)
                     .execute();
             if (response != null) {
                 return response.body();
@@ -132,13 +142,120 @@ public class ApiClient {
         return null;
     }
 
-    //    Returns slots around the point defined by (x, y)
-    public static PointsGeoJSON getParkingLots(PrkngService service, String apkKey, double latitude, double longitude) {
+    /**
+     * Returns Carshare slots around the point defined by (x, y)
+     *
+     * @param service
+     * @param apkKey
+     * @param latitude
+     * @param longitude
+     * @param radius
+     * @param duration
+     * @return
+     */
+    public static LinesGeoJSON getCarshareParkingSpots(PrkngService service, String apkKey, double latitude, double longitude, int radius, float duration) {
+        try {
+            final Response<LinesGeoJSON> response = service
+                    .getParkingSpots(apkKey,
+                            latitude,
+                            longitude,
+                            radius,
+                            duration,
+                            null,
+                            true,
+                            true)
+                    .execute();
+            if (response != null) {
+                return response.body();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns slots around the point defined by (x, y)
+     *
+     * @param service
+     * @param apkKey
+     * @param latitude
+     * @param longitude
+     * @param radius
+     * @return
+     */
+    public static PointsGeoJSON getParkingLots(PrkngService service, String apkKey, double latitude, double longitude, int radius) {
         try {
             final Response<PointsGeoJSON> response = service
                     .getParkingLots(apkKey,
                             latitude,
-                            longitude)
+                            longitude,
+                            radius)
+                    .execute();
+            if (response != null) {
+                return response.body();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+//
+
+    /**
+     * Return carshare lots and data around the point defined by (x, y)
+     *
+     * @param service
+     * @param apkKey
+     * @param latitude
+     * @param longitude
+     * @param radius
+     * @return
+     */
+    public static PointsGeoJSON getCarshareLots(PrkngService service, String apkKey, double latitude, double longitude, int radius, String[] companies) {
+        try {
+            final Response<PointsGeoJSON> response = service
+                    .getCarshareLots(apkKey,
+                            latitude,
+                            longitude,
+                            radius,
+                            companies)
+                    .execute();
+            if (response != null) {
+                return response.body();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static PointsGeoJSON getCarshareVehicles(PrkngService service, String apkKey, double latitude, double longitude, int radius) {
+        return getCarshareVehicles(service, apkKey, latitude, longitude, radius, null);
+    }
+
+    /**
+     * Return available carshares around the point defined by (x, y)
+     *
+     * @param service
+     * @param apkKey
+     * @param latitude
+     * @param longitude
+     * @param radius
+     * @return
+     */
+    public static PointsGeoJSON getCarshareVehicles(PrkngService service, String apkKey, double latitude, double longitude, int radius, String[] companies) {
+        try {
+            final Response<PointsGeoJSON> response = service
+                    .getCarshareVehicles(apkKey,
+                            latitude,
+                            longitude,
+                            radius,
+                            companies)
                     .execute();
             if (response != null) {
                 return response.body();

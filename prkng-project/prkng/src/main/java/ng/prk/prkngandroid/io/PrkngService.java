@@ -54,23 +54,23 @@ public interface PrkngService {
     // Return carshare lots and data around the point defined by (x, y)
     @Headers({CONTENT_TYPE})
     @GET(Const.ApiPaths.GET_CARSHARE_LOTS)
-    Object getCarshareLots(
+    Call<PointsGeoJSON> getCarshareLots(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
             @Query(Const.ApiArgs.LATITUDE) double latitude,
             @Query(Const.ApiArgs.LONGITUDE) double longitude,
-            @Query(Const.ApiArgs.RADIUS) float radius,
-            @Query(Const.ApiArgs.CARSHARE_COMPANY) float carshareCompany
+            @Query(Const.ApiArgs.RADIUS) int radius,
+            @Query(Const.ApiArgs.CARSHARE_COMPANIES) String[] carshareCompanies
     );
 
     // Return available carshares around the point defined by (x, y)
     @Headers({CONTENT_TYPE})
-    @GET(Const.ApiPaths.GET_CARSHARE_CARS)
-    Object getCarshareCars(
+    @GET(Const.ApiPaths.GET_CARSHARE_VEHICLES)
+    Call<PointsGeoJSON> getCarshareVehicles(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
             @Query(Const.ApiArgs.LATITUDE) double latitude,
             @Query(Const.ApiArgs.LONGITUDE) double longitude,
-            @Query(Const.ApiArgs.RADIUS) float radius,
-            @Query(Const.ApiArgs.CARSHARE_COMPANY) float carshareCompany
+            @Query(Const.ApiArgs.RADIUS) int radius,
+            @Query(Const.ApiArgs.CARSHARE_COMPANIES) String[] carshareCompanies
     );
 
     // Get the list of last checkins
@@ -162,7 +162,8 @@ public interface PrkngService {
     Call<PointsGeoJSON> getParkingLots(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
             @Query(Const.ApiArgs.LATITUDE) double latitude,
-            @Query(Const.ApiArgs.LONGITUDE) double longitude
+            @Query(Const.ApiArgs.LONGITUDE) double longitude,
+            @Query(Const.ApiArgs.RADIUS) int radius
     );
 
     // Submit a report about incorrect data
@@ -185,20 +186,6 @@ public interface PrkngService {
             @Query(Const.ApiArgs.CHECKIN_TIMESTAMP) String timestamp,
             @Query(Const.ApiArgs.USE_CARSHARE) boolean useCarshare,
             @Query(Const.ApiArgs.USE_COMPACT) boolean useCompact
-    );
-
-    @Headers({CONTENT_TYPE})
-    @GET(Const.ApiPaths.GET_SPOTS)
-    @Deprecated
-    Call<LinesGeoJSON> getParkingSpots(
-            @Header(Const.ApiArgs.API_KEY) String apiKey,
-            @Query(Const.ApiArgs.LATITUDE) double latitude,
-            @Query(Const.ApiArgs.LONGITUDE) double longitude,
-            @Query(Const.ApiArgs.RADIUS) int radius,
-            @Query(Const.ApiArgs.DURATION) float duration,
-            @Query(Const.ApiArgs.CHECKIN_TIMESTAMP) String timestamp,
-            @Query(Const.ApiArgs.USE_CARSHARE) String useCarshare,
-            @Query(Const.ApiArgs.USE_COMPACT) String useCompact
     );
 
     // Returns the parking slot corresponding to the id
