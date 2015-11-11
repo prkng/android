@@ -53,5 +53,6 @@ dependencies {
         transitive = true;
     }
     compile 'com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE'
+    compile 'com.sothree.slidinguppanel:library:3.2.0'
 
 }
