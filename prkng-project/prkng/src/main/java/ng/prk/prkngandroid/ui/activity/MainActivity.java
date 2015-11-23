@@ -40,35 +40,16 @@ public class MainActivity extends AppCompatActivity implements
 
         vSlidingUpPanel = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
 
-        if (savedInstanceState == null) {
-            final FragmentManager fm = getSupportFragmentManager();
-            mapFragment = (MainMapFragment) fm.findFragmentByTag(Const.FragmentTags.MAP);
-            if (mapFragment == null) {
-                mapFragment = MainMapFragment.newInstance();
-                fm.beginTransaction()
-                        .replace(R.id.content_frame, mapFragment, Const.FragmentTags.MAP)
-                        .commit();
-            }
+        final FragmentManager fm = getSupportFragmentManager();
+        mapFragment = (MainMapFragment) fm.findFragmentByTag(Const.FragmentTags.MAP);
+        if (mapFragment == null) {
+            mapFragment = MainMapFragment.newInstance();
+            fm.beginTransaction()
+                    .replace(R.id.content_frame, mapFragment, Const.FragmentTags.MAP)
+                    .commit();
         }
 
         tabLayout.setOnTabSelectedListener(this);
-
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                mapFragment.setMapType(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                hideMarkerInfo();
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
     }
 
     @Override
@@ -122,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements
      */
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-
+        mapFragment.setMapType(tab.getPosition());
     }
 
     /**
