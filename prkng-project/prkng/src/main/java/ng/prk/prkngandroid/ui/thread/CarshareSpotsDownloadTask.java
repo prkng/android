@@ -1,7 +1,5 @@
 package ng.prk.prkngandroid.ui.thread;
 
-import android.util.Log;
-
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.annotations.PolylineOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -37,7 +35,6 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
      */
     @Override
     protected SpotsAnnotations doInBackground(MapGeometry... params) {
-        Log.v(TAG, "doInBackground");
         startTime = System.currentTimeMillis();
         final MapGeometry mapGeometry = params[0];
 
@@ -101,7 +98,8 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
                         apiKey,
                         mapGeometry.getLatitude(),
                         mapGeometry.getLongitude(),
-                        mapGeometry.getRadius()
+                        mapGeometry.getRadius(),
+                        null
                 );
 
                 // Prepare map annotations: Markers only

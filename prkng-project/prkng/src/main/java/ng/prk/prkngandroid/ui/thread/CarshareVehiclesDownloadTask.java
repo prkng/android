@@ -1,7 +1,5 @@
 package ng.prk.prkngandroid.ui.thread;
 
-import android.util.Log;
-
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.views.MapView;
@@ -33,7 +31,6 @@ public class CarshareVehiclesDownloadTask extends PrkngDataDownloadTask {
      */
     @Override
     protected SpotsAnnotations doInBackground(MapGeometry... params) {
-        Log.v(TAG, "doInBackground");
         startTime = System.currentTimeMillis();
         final MapGeometry mapGeometry = params[0];
 
