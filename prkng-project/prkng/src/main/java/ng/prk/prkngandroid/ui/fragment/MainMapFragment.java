@@ -118,7 +118,7 @@ public class MainMapFragment extends Fragment implements
         Log.v(TAG, "onResume");
 
         super.onResume();
-        vMap.onResume();
+        onMapResume();
 
         if (vMap.getMyLocation() != null) {
             moveToMyLocation(false);
@@ -134,9 +134,7 @@ public class MainMapFragment extends Fragment implements
     @Override
     public void onStop() {
         super.onStop();
-
-        vMap.removeAllAnnotations();
-        vMap.onStop();
+        onMapStop();
     }
 
     @Override
@@ -152,20 +150,42 @@ public class MainMapFragment extends Fragment implements
     }
 
     private void createMapIfNecessary(View view, Bundle savedInstanceState) {
+        vMap = (MapView) view.findViewById(R.id.mapview);
+        vMap.onCreate(savedInstanceState);
+
+        vMap.setCenterCoordinate(new LatLng(45.501689, -73.567256));
+        vMap.setZoomLevel(Const.UiConfig.DEFAULT_ZOOM);
+
+        // Load map assets and colors
+        mapAssets = new MapAssets(vMap);
+        mLastMapGeometry = new MapGeometry(vMap.getCenterCoordinate(), vMap.getZoomLevel());
+        mPrkngMapType = Const.MapSections.ON_STREET;
+    }
+
+    private void onMapResume() {
         if (vMap == null) {
-            vMap = (MapView) view.findViewById(R.id.mapview);
+            createMapIfNecessary(getView(), null);
+        }
 
-            vMap.setCenterCoordinate(new LatLng(45.501689, -73.567256));
-            vMap.setZoomLevel(Const.UiConfig.DEFAULT_ZOOM);
-            vMap.onCreate(savedInstanceState);
-            vMap.addOnMapChangedListener(this);
-            vMap.setOnMapClickListener(this);
-            vMap.setOnMarkerClickListener(this);
+        vMap.onResume();
 
-            // Load map assets and colors
-            mapAssets = new MapAssets(vMap);
-            mLastMapGeometry = new MapGeometry(vMap.getCenterCoordinate(), vMap.getZoomLevel());
-            mPrkngMapType = Const.MapSections.ON_STREET;
+        vMap.addOnMapChangedListener(this);
+        vMap.setOnMapClickListener(this);
+        vMap.setOnMarkerClickListener(this);
+    }
+
+    private void onMapStop() {
+        if (mTask != null && mTask.getStatus() == AsyncTask.Status.RUNNING) {
+            mTask.cancel(false);
+        }
+
+        if (vMap != null) {
+            vMap.onStop();
+
+            vMap.removeAllAnnotations();
+            vMap.removeOnMapChangedListener(this);
+            vMap.setOnMapClickListener(null);
+            vMap.setOnMarkerClickListener(null);
         }
     }
 
