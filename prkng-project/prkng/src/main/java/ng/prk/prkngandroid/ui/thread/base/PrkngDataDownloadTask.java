@@ -66,12 +66,16 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
                 Log.v(TAG, "removeAllAnnotations");
                 vMap.removeAllAnnotations();
 
-                Log.v(TAG, "addPolylines");
-                vMap.addPolylines(spots.getPolylines());
+                if (!spots.getPolylines().isEmpty()) {
+                    Log.v(TAG, "addPolylines");
+                    vMap.addPolylines(spots.getPolylines());
+                }
 
                 // Markers must be added after Polylines to show the dot above the line (z-order)
-                Log.v(TAG, "addMarkers");
-                vMap.addMarkers(spots.getMarkers());
+                if (!spots.getMarkers().isEmpty()) {
+                    Log.v(TAG, "addMarkers");
+                    vMap.addMarkers(spots.getMarkers());
+                }
 
 
 //                    drawRadius(spots.getCenterCoordinate());

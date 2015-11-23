@@ -59,7 +59,7 @@ public interface PrkngService {
             @Query(Const.ApiArgs.LATITUDE) double latitude,
             @Query(Const.ApiArgs.LONGITUDE) double longitude,
             @Query(Const.ApiArgs.RADIUS) int radius,
-            @Query(Const.ApiArgs.CARSHARE_COMPANIES) String[] carshareCompanies
+            @Query(Const.ApiArgs.CARSHARE_COMPANIES) String companies
     );
 
     // Return available carshares around the point defined by (x, y)
@@ -70,7 +70,7 @@ public interface PrkngService {
             @Query(Const.ApiArgs.LATITUDE) double latitude,
             @Query(Const.ApiArgs.LONGITUDE) double longitude,
             @Query(Const.ApiArgs.RADIUS) int radius,
-            @Query(Const.ApiArgs.CARSHARE_COMPANIES) String[] carshareCompanies
+            @Query(Const.ApiArgs.CARSHARE_COMPANIES) String companies
     );
 
     // Get the list of last checkins
