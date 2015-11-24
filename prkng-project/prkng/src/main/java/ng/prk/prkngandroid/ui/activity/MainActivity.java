@@ -63,7 +63,9 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
 //            vSlidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            startActivity(SettingsActivity.newIntent(this));
         } else if (item.getItemId() == R.id.action_about) {
+            startActivity(AboutActivity.newIntent(this));
 //            vSlidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         }
 
@@ -113,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements
      */
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
-
+        hideMarkerInfo();
     }
 
     /**

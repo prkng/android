@@ -52,7 +52,7 @@
     <color name="color_primary">@color/red2</color>
     <color name="color_primary_dark">@color/berry2</color>
     <color name="color_accent">@color/cream1</color>
-    <color name="color_background">@color/stone</color>
+    <color name="color_background">@color/midnight2</color>
 
     <!--Map-->
     <color name="map_line_paid_spot">@color/curry</color>

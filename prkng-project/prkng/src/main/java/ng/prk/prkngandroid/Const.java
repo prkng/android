@@ -6,6 +6,10 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 
 public class Const {
 
+    public static final String DATABASE_NAME = "prkng.db";
+    public static final String APP_PREFS_NAME = "prkngPrefs";
+    public static final int UNKNOWN_VALUE = -1;
+
     public interface UiConfig {
         double DEFAULT_ZOOM = 15.0d;
         double SPOTS_MIN_ZOOM = 15.0d;
@@ -104,6 +108,8 @@ public class Const {
 
     public interface FragmentTags {
         String MAP = "f_map";
+        String ABOUT = "f_about";
+        String SETTINGS = "f_settings";
     }
 
     public interface RequestCodes {

@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">stnmnt</string>
+    <!--Activities-->
+    <string name="activity_main">Carte</string>
+    <string name="activity_about">À propos</string>
+    <string name="activity_settings">Réglages</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <!--Links-->
+    <string name="url_faq">http://prk.ng/fr/faq/</string>
+    <string name="url_terms">http://prk.ng/fr/conditions/</string>
 
+    <!--Preferences-->
+    <string name="prefs_onboarding_title">Faire le tour</string>
+    <string name="prefs_faq_title">FAQ</string>
+    <string name="prefs_terms_title">Conditions d’utilisation</string>
+    <string name="prefs_version_title">Version</string>
+
+    <!--Menu actions-->
     <string name="action_settings">Réglages</string>
     <string name="action_about">À propos</string>
+    <string name="action_share">Partager</string>
 
     <!--Map-->
     <string name="map_zoom_needed">Please zoom in to update map</string>
@@ -15,4 +27,11 @@
     <!--<string name="map_tab_carshare">Autopartage</string>-->
     <string name="map_tab_carshare_spots">CarShare Spots</string>
     <string name="map_tab_carshare_vehicles">Carshare Vehicles</string>
+
+    <!--Permissions-->
+    <string name="location_permission_needed">L’emplacement est nécessaire pour l’affichage de la carte</string>
+
+    <!--Accessibility-->
+    <string name="navigation_drawer_open">Ouvrir le panneau de navigation</string>
+    <string name="navigation_drawer_close">Fermer le panneau de navigation</string>
 </resources>
