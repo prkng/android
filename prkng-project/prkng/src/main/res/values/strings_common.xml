@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name" translatable="false">prkng</string>
+    <string name="app_version" translatable="false">0.4 alpha</string>
+
+    <!--Mapbox-->
     <string name="mapbox_access_token" translatable="false">
         pk.eyJ1IjoiYXJuYXVkc3B1aGxlciIsImEiOiJSaEctSlVnIn0.R8cfngN9KkHYZx54JQdgJA
     </string>
     <string name="mapbox_style_url" translatable="false">
         mapbox://styles/arnaudspuhler/cigfc11g0000dcnm73r4o3pi1
     </string>
+
+    <!--Google Cloud Messaging (GCM)-->
+    <string name="google_app_id" translatable="false">1:8875871459:android:e9ba410b7f09bf67</string>
+
+    <!--Preferences keys-->
+    <string name="prefs_onboarding" translatable="false">prefs_onboarding</string>
+    <string name="prefs_terms" translatable="false">prefs_terms</string>
+    <string name="prefs_faq" translatable="false">prefs_faq</string>
+
 </resources>
