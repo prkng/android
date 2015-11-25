@@ -106,8 +106,6 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
      *
      * @return
      */
-
-
     private void drawRadius(LatLng center) {
         final LatLng radiusLatLng = vMap.fromScreenLocation(new PointF(0, 0));
         final MarkerOptions marker = new MarkerOptions();
