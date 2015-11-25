@@ -16,6 +16,7 @@
     <string name="prefs_version_title">Version</string>
 
     <!--Menu actions-->
+    <string name="action_search">Recherche</string>
     <string name="action_settings">Réglages</string>
     <string name="action_about">À propos</string>
     <string name="action_share">Partager</string>
@@ -25,8 +26,8 @@
     <string name="map_tab_off_street">Hors rue</string>
     <string name="map_tab_on_street">Sur rue</string>
     <!--<string name="map_tab_carshare">Autopartage</string>-->
-    <string name="map_tab_carshare_spots">CarShare Spots</string>
-    <string name="map_tab_carshare_vehicles">Carshare Vehicles</string>
+    <string name="map_tab_carshare_spots">Emplacements d’autopartage</string>
+    <string name="map_tab_carshare_vehicles">Véhicles d’autopartage</string>
 
     <!--Permissions-->
     <string name="location_permission_needed">L’emplacement est nécessaire pour l’affichage de la carte</string>
