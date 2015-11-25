@@ -91,6 +91,8 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
                     }
                 }
 
+
+
                 /**
                  * Carshare off-street lots
                  */
@@ -99,7 +101,7 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
                         mapGeometry.getLatitude(),
                         mapGeometry.getLongitude(),
                         mapGeometry.getRadius(),
-                        null
+                        mapAssets.getCarshareLotsCompanies()
                 );
 
                 // Prepare map annotations: Markers only

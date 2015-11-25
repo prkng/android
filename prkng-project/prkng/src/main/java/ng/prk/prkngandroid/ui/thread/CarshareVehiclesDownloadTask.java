@@ -47,7 +47,8 @@ public class CarshareVehiclesDownloadTask extends PrkngDataDownloadTask {
                         apiKey,
                         mapGeometry.getLatitude(),
                         mapGeometry.getLongitude(),
-                        mapGeometry.getRadius()
+                        mapGeometry.getRadius(),
+                        mapAssets.getCarshareVehiclesCompanies()
                 );
 
                 // Prepare map annotations: Markers only

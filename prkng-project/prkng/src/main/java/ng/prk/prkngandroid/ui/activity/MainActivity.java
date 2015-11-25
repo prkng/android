@@ -62,14 +62,25 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
-//            vSlidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
             startActivity(SettingsActivity.newIntent(this));
         } else if (item.getItemId() == R.id.action_about) {
             startActivity(AboutActivity.newIntent(this));
-//            vSlidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    /**
+     * Hide the SlidingPanel, if expanded
+     */
+    @Override
+    public void onBackPressed() {
+        if (vSlidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
+            vSlidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     /**
