@@ -3,13 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_action_search"
         android:orderInCategory="100"
+        android:title="@string/action_search"
+        android:titleCondensed="@string/action_search"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="110"
         android:title="@string/action_settings"
+        android:titleCondensed="@string/action_settings"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_about"
-        android:orderInCategory="110"
+        android:orderInCategory="120"
         android:title="@string/action_about"
+        android:titleCondensed="@string/action_about"
         app:showAsAction="never" />
 </menu>
