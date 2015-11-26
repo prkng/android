@@ -38,6 +38,7 @@ public class Const {
         String EVENT = "event";
         String QUERY = "query";
         String RADIUS = "radius";
+        String PERMITS = "permit";
         String CARSHARE_COMPANIES = "company";
         String LIMIT = "limit";
         String CITY = "city";
@@ -69,11 +70,20 @@ public class Const {
         int DEFAULT_RADIUS = 300; // Radius search in meters
         float DEFAULT_DURATION = 0.5f; // Desired Parking time in hours
         String SPOT_TYPE_PAID = "paid";
+        String SPOT_TYPE_PERMIT = "permit";
         String CAR_TYPE_ELECTRIC = "electric";
         String CARSHARE_COMPANY_CAR2GO = "car2go";
         String CARSHARE_COMPANY_COMMUNAUTO = "communauto";
         String CARSHARE_COMPANY_AUTOMOBILE = "auto-mobile";
         String CARSHARE_COMPANY_ZIPCAR = "zipcar";
+        // Following are ISO days-of-week
+        String AGENDA_DAY_MONDAY = "1";
+        String AGENDA_DAY_TUESDAY = "2";
+        String AGENDA_DAY_WEDNESDAY = "3";
+        String AGENDA_DAY_THURSDAY = "4";
+        String AGENDA_DAY_FRIDAY = "5";
+        String AGENDA_DAY_SATURDAY = "6";
+        String AGENDA_DAY_SUNDAY = "7";
     }
 
     public interface ApiPaths {
@@ -118,6 +128,13 @@ public class Const {
         int PERMISSION_ACCESS_COARSE_LOCATION = 30;
     }
 
+    public interface ParkingRestrictionType {
+        int ALLOWED = 0;
+        int FORBIDDEN = 1;
+        int TIME_MAX = 2;
+        int PAID = 3;
+        int TIME_MAX_PAID = 4;
+    }
 
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 

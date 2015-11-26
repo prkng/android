@@ -17,6 +17,8 @@ public class CalendarUtils {
     public static final int SUNDAY = 7;
 
     public static final int HOUR_IN_MINUTES = 60;
+    public static final int WEEK_IN_DAYS = 7;
+    public static final int FIRST_WEEK_IN_DAY = MONDAY;
 
     /**
      * Get ISO day of week

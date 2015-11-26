@@ -73,17 +73,19 @@ public class SpotsDownloadTask extends PrkngDataDownloadTask {
                             .color(properties.isTypePaid() ? mapAssets.getLineColorPaid() : mapAssets.getLineColorFree());
                     spotsAnnotations.addPolyline(polylineOptions);
 
-                    if (hasVisibleMarkers) {
-                        List<LatLng> buttons = properties.getButtonLocations();
-                        for (LatLng buttonLatLng : buttons) {
-                            final MarkerOptions markerOptions = new MarkerOptions()
-                                    .position(buttonLatLng)
-                                    .title(properties.getWayName())
-                                    .snippet(feature.getId())
-                                    .icon(properties.isTypePaid() ? mapAssets.getMarkerIconPaid() : mapAssets.getMarkerIconFree());
-
-                            spotsAnnotations.addMarker(markerOptions);
+                    List<LatLng> buttons = properties.getButtonLocations();
+                    for (LatLng buttonLatLng : buttons) {
+                        final MarkerOptions markerOptions = new MarkerOptions()
+                                .position(buttonLatLng)
+                                .title(properties.getWayName())
+                                .snippet(feature.getId());
+                        if (hasVisibleMarkers) {
+                            markerOptions.icon(properties.isTypePaid() ? mapAssets.getMarkerIconPaid() : mapAssets.getMarkerIconFree());
+                        } else {
+                            markerOptions.icon(mapAssets.getMarkerIconTransparent());
                         }
+
+                        spotsAnnotations.addMarker(markerOptions);
                     }
                 }
             }
