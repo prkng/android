@@ -51,6 +51,7 @@ public class SpotsDownloadTask extends PrkngDataDownloadTask {
                         mapGeometry.getLatitude(),
                         mapGeometry.getLongitude(),
                         mapGeometry.getRadius(),
+                        null,
                         Const.ApiValues.DEFAULT_DURATION
                 );
 
