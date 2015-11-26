@@ -7,6 +7,7 @@ import ng.prk.prkngandroid.model.CheckInData;
 import ng.prk.prkngandroid.model.DeviceData;
 import ng.prk.prkngandroid.model.ErrorReportData;
 import ng.prk.prkngandroid.model.LinesGeoJSON;
+import ng.prk.prkngandroid.model.LinesGeoJSONFeature;
 import ng.prk.prkngandroid.model.LoginObject;
 import ng.prk.prkngandroid.model.PasswordResetData;
 import ng.prk.prkngandroid.model.PointsGeoJSON;
@@ -182,6 +183,7 @@ public interface PrkngService {
             @Query(Const.ApiArgs.LATITUDE) double latitude,
             @Query(Const.ApiArgs.LONGITUDE) double longitude,
             @Query(Const.ApiArgs.RADIUS) int radius,
+            @Query(Const.ApiArgs.PERMITS) String permits,
             @Query(Const.ApiArgs.DURATION) float duration,
             @Query(Const.ApiArgs.CHECKIN_TIMESTAMP) String timestamp,
             @Query(Const.ApiArgs.USE_CARSHARE) boolean useCarshare,
@@ -191,9 +193,9 @@ public interface PrkngService {
     // Returns the parking slot corresponding to the id
     @Headers({CONTENT_TYPE})
     @GET(Const.ApiPaths.GET_SPOT)
-    Object getParkingSpotInfo(
+    Call<LinesGeoJSONFeature> getParkingSpotInfo(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
-            @Path(Const.ApiArgs.SPOT_ID) float spotId
+            @Path(Const.ApiArgs.SPOT_ID) String spotId
     );
 
     // Get information about a user
