@@ -15,12 +15,13 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.ui.fragment.MainMapFragment;
+import ng.prk.prkngandroid.ui.view.SlidingUpMarkerInfo;
 
 public class MainActivity extends AppCompatActivity implements
         MainMapFragment.OnMapMarkerClickListener,
         TabLayout.OnTabSelectedListener {
 
-    private SlidingUpPanelLayout vSlidingUpPanel;
+    private SlidingUpMarkerInfo vSlidingUpMarkerInfo;
     private MainMapFragment mapFragment;
 
     @Override
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements
         tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_carshare_spots), Const.MapSections.CARSHARE_SPOTS);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_carshare_vehicles), Const.MapSections.CARSHARE_VEHICLES);
 
-        vSlidingUpPanel = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        vSlidingUpMarkerInfo = (SlidingUpMarkerInfo) findViewById(R.id.sliding_layout);
 
         final FragmentManager fm = getSupportFragmentManager();
         mapFragment = (MainMapFragment) fm.findFragmentByTag(Const.FragmentTags.MAP);
@@ -76,8 +77,8 @@ public class MainActivity extends AppCompatActivity implements
      */
     @Override
     public void onBackPressed() {
-        if (vSlidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
-            vSlidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        if (vSlidingUpMarkerInfo.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
+            vSlidingUpMarkerInfo.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else {
             super.onBackPressed();
         }
@@ -93,10 +94,11 @@ public class MainActivity extends AppCompatActivity implements
         if (marker == null) {
             hideMarkerInfo();
         } else {
-            if (vSlidingUpPanel.getPanelState() != SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                vSlidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            vSlidingUpMarkerInfo.setMarkerInfo(marker.getSnippet(), type);
+            if (vSlidingUpMarkerInfo.getPanelState() != SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                vSlidingUpMarkerInfo.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
             }
-            ((TextView) vSlidingUpPanel.findViewById(R.id.drag_handle))
+            ((TextView) vSlidingUpMarkerInfo.findViewById(R.id.drag_handle))
                     .setText(marker.getTitle() + Const.LINE_SEPARATOR + marker.getSnippet());
         }
     }
@@ -106,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements
      */
     @Override
     public void hideMarkerInfo() {
-        vSlidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        vSlidingUpMarkerInfo.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 
     /**
