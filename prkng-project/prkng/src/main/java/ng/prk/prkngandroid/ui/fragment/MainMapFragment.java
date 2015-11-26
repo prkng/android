@@ -41,6 +41,8 @@ public class MainMapFragment extends Fragment implements
         MapView.OnMarkerClickListener {
     private final static String TAG = "MainMapFragment";
     private final static double RADIUS_FIX = 1.4d;
+    @Deprecated
+    private final static boolean MY_LOCATION_ENABLED = false;
 
     private CircleProgressBar vProgressBar;
     private MapView vMap;
@@ -109,7 +111,7 @@ public class MainMapFragment extends Fragment implements
 
         if (PackageManager.PERMISSION_GRANTED ==
                 ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
-            vMap.setMyLocationEnabled(true);
+            vMap.setMyLocationEnabled(MY_LOCATION_ENABLED);
         }
     }
 
@@ -253,12 +255,17 @@ public class MainMapFragment extends Fragment implements
     @Override
     public boolean onMarkerClick(Marker marker) {
         Log.v(TAG, "showMarkerInfo @ " + marker.getTitle());
-        if (listener != null) {
-            listener.showMarkerInfo(marker, mPrkngMapType);
-            return true;
-        }
 
-        return false;
+        switch (mPrkngMapType) {
+            case Const.MapSections.ON_STREET:
+            case Const.MapSections.OFF_STREET:
+                if (listener != null) {
+                    listener.showMarkerInfo(marker, mPrkngMapType);
+                }
+                return true;
+            default:
+                return false;
+        }
     }
 
     /**
@@ -359,7 +366,7 @@ public class MainMapFragment extends Fragment implements
 
     private void moveToMyLocation(boolean animated) {
         if (!vMap.isMyLocationEnabled()) {
-            vMap.setMyLocationEnabled(true);
+            vMap.setMyLocationEnabled(MY_LOCATION_ENABLED);
         }
         final Location myLocation = vMap.getMyLocation();
         if (myLocation != null) {
