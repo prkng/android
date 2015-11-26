@@ -13,9 +13,9 @@ public class GeoJSONFeatureProperties {
      */
     private List<LatLong> button_locations;
     private boolean compact;
-    private String restrict_typ;
     private List<String> restrict_types;
     private String way_name;
+    private List<SpotRule> rules;
 
     /**
      * Lots
@@ -43,10 +43,6 @@ public class GeoJSONFeatureProperties {
         return compact;
     }
 
-    public String getRestrictType() {
-        return restrict_typ;
-    }
-
     public List<String> getRestrictTypes() {
         return restrict_types;
     }
@@ -55,8 +51,13 @@ public class GeoJSONFeatureProperties {
         return way_name;
     }
 
+    public SpotRules getRules() {
+        return new SpotRules(rules);
+    }
+
     public boolean isTypePaid() {
-        return Const.ApiValues.SPOT_TYPE_PAID.equals(restrict_typ);
+        return restrict_types != null &&
+                restrict_types.contains(Const.ApiValues.SPOT_TYPE_PAID);
     }
 
     public String getAddress() {
