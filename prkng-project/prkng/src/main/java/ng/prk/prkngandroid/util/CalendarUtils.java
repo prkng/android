@@ -1,7 +1,12 @@
 package ng.prk.prkngandroid.util;
 
 
+import android.content.res.Resources;
+
 import java.util.Calendar;
+
+import ng.prk.prkngandroid.Const;
+import ng.prk.prkngandroid.R;
 
 public class CalendarUtils {
 
@@ -18,7 +23,7 @@ public class CalendarUtils {
 
     public static final int HOUR_IN_MINUTES = 60;
     public static final int WEEK_IN_DAYS = 7;
-    public static final int FIRST_WEEK_IN_DAY = MONDAY;
+    public static final int FIRST_WEEK_IN_DAY = 1; // Replacing by zero could break loops
 
     /**
      * Get ISO day of week
@@ -36,7 +41,7 @@ public class CalendarUtils {
      * Get ISO day of looped week.
      *
      * @param dayOfWeek
-     * @param offset 1 to 7. Should be equal to Today
+     * @param offset    1 to 7. Should be equal to Today
      * @return
      */
     public static int getIsoDayOfWeekLooped(int dayOfWeek, int offset) {
@@ -46,5 +51,33 @@ public class CalendarUtils {
         }
 
         return day;
+    }
+
+    /**
+     * Get the Name of the dayOfWeek
+     *
+     * @param res
+     * @param dayOfWeek 1-7
+     * @return Monday-Sunday
+     */
+    public static String getDayOfWeekName(Resources res, int dayOfWeek) {
+        final String[] week = res.getStringArray(R.array.days_of_week);
+
+        return week[dayOfWeek - 1];
+    }
+
+    // FIXME use locale to handle AM/PM and 12/24
+    public static String getTimeFromMinutesOfDay(Resources res, int minuteOfDay) {
+        if (minuteOfDay == Const.UNKNOWN_VALUE) {
+            return null;
+        }
+
+        final int hours = (int) Math.floor(minuteOfDay / 60);
+        final int minutes = minuteOfDay % 60;
+
+        return String.format(
+                res.getString(R.string.hour_minutes),
+                hours,
+                minutes);
     }
 }
