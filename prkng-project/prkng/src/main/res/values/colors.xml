@@ -44,7 +44,7 @@
     <color name="red_transparent">#A63A3A</color>
 
     <!--<color name="statusBar">#D1CCC980</color>-->
-    <color name="transparentBackground">#E6303A42</color>
+    <color name="transparent_background">#E6303A42</color>
     <color name="transparent_white">#33FFFFFF</color>
     <color name="transparent_black">#19000000</color>
 
@@ -60,4 +60,12 @@
     <!--<color name="map_line_free_spot">#547B99</color>`-->
     <color name="map_line_selected_spot">@color/red2</color>
     <color name="progress_bar">@color/red1</color>
+
+    <!--Agenda-->
+    <color name="agenda_header">@color/red2</color>
+    <color name="agenda_background">@color/midnight1</color>
+    <color name="agenda_item_background">@color/stone</color>
+    <color name="agenda_today_item_background">@color/cream1</color>
+    <color name="agenda_restr_item_text">@color/midnight1</color>
+
 </resources>
