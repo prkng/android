@@ -10,7 +10,7 @@ import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.util.CalendarUtils;
 
 /**
- * Restrictions Interval
+ * Restriction Interval
  */
 public class RestrInterval implements Comparable<RestrInterval> {
     private Interval interval;
@@ -36,14 +36,13 @@ public class RestrInterval implements Comparable<RestrInterval> {
     }
 
     /**
-     * Constructor for full-day restriction (24 hours)
+     * Constructor for full-day no-restrictions (24 hours)
      *
      * @param dayOfWeek
-     * @param type
      */
-    public RestrInterval(int dayOfWeek, int type) {
+    public RestrInterval(int dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
-        this.type = type;
+        this.type = Const.ParkingRestrType.NONE;
         this.minuteOfDayStart = Const.UNKNOWN_VALUE;
         this.minuteOfDayEnd = Const.UNKNOWN_VALUE;
     }
@@ -60,6 +59,10 @@ public class RestrInterval implements Comparable<RestrInterval> {
         return minuteOfDayEnd;
     }
 
+    /**
+     * @return Restriction type
+     * @see ng.prk.prkngandroid.Const.ParkingRestrType
+     */
     public int getType() {
         return type;
     }
@@ -98,6 +101,7 @@ public class RestrInterval implements Comparable<RestrInterval> {
         // Update minutesOfDay
         minuteOfDayStart = Math.min(minuteOfDayStart, another.getMinuteStart());
         minuteOfDayEnd = Math.max(minuteOfDayEnd, another.getMinuteEnd());
+
         // Update the Interval
         interval = new Interval(
                 minuteOfDayStart * DateUtils.MINUTE_IN_MILLIS,
