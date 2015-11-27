@@ -128,9 +128,13 @@ public class Const {
         int PERMISSION_ACCESS_COARSE_LOCATION = 30;
     }
 
-    public interface ParkingRestrictionType {
-        int ALLOWED = 0;
-        int FORBIDDEN = 1;
+    /**
+     * The agenda's different parking restriction types.
+     * Values are also used to sort when minuteStart and minuteEnd are equal
+     */
+    public interface ParkingRestrType {
+        int NONE = 0;
+        int ALL_TIMES = 1;
         int TIME_MAX = 2;
         int PAID = 3;
         int TIME_MAX_PAID = 4;

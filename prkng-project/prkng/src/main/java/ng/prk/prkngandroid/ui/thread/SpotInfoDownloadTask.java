@@ -8,16 +8,25 @@ import ng.prk.prkngandroid.io.PrkngService;
 import ng.prk.prkngandroid.model.LinesGeoJSONFeature;
 import ng.prk.prkngandroid.model.LoginObject;
 import ng.prk.prkngandroid.model.SpotRules;
+import ng.prk.prkngandroid.ui.adapter.AgendaListAdapter;
 
 public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
     private final static String TAG = "SpotInfo";
 
     private String mApiKey;
 
+    private AgendaListAdapter mAdapter;
+
+    public SpotInfoDownloadTask(AgendaListAdapter adapter) {
+        this.mAdapter = adapter;
+    }
+
     @Override
     protected SpotRules doInBackground(String... params) {
         Log.v(TAG, "doInBackground");
 
+//        String spotId = "458653"; // Arret + Interdiction
+//        String spotId = "416663"; //  tues + friday
         final String spotId = params[0];
         Log.v(TAG, "spotId = " + spotId);
 
@@ -40,7 +49,7 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
     protected void onPostExecute(SpotRules spotRules) {
         Log.v(TAG, "onPostExecute");
         Log.v(TAG, "rules = " + spotRules.toString());
-
+        mAdapter.swapDataset(spotRules.getParkingAgenda());
 
 //        SpotRuleAgenda agenda = spotRules.get(0).getAgenda();
 //        Log.v(TAG, "timeMax = " + spotRules.get(0).getTimeMaxParking());
