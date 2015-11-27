@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/agenda_background"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/restr_type"
+        android:text="Monday "
+        android:textColor="@color/agenda_restr_item_text" />
+
+    <ImageView
+        android:id="@+id/restr_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:layout_toLeftOf="@+id/restr_time"
+        android:contentDescription="@string/desc_restr_type" />
+
+    <LinearLayout
+        android:id="@+id/restr_time"
+        android:minWidth="96dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:gravity="right"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/time_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9 AM"
+            android:textColor="@color/agenda_restr_item_text" />
+
+        <TextView
+            android:id="@+id/time_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11 AM"
+            android:textColor="@color/agenda_restr_item_text" />
+    </LinearLayout>
+
+</RelativeLayout>
