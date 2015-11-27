@@ -29,11 +29,25 @@
     <string name="map_tab_carshare_spots">CarShare Spots</string>
     <string name="map_tab_carshare_vehicles">Carshare Vehicles</string>
 
+    <!--Calendar-->
+    <string name="hour_minutes">%1$s:%2$s</string>
+    <string name="all_day">24&#160;Hrs</string>
+    <array name="days_of_week">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </array>
+
     <!--Permissions-->
     <string name="location_permission_needed">Location permission is needed for map accuracy</string>
 
     <!--Accessibility-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="desc_restr_type">Restriction type</string>
 
 </resources>

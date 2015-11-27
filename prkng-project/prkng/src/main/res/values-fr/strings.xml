@@ -29,10 +29,25 @@
     <string name="map_tab_carshare_spots">Emplacements d’autopartage</string>
     <string name="map_tab_carshare_vehicles">Véhicles d’autopartage</string>
 
+    <!--Calendar-->
+    <string name="hour_minutes">%1$s&#160;h&#160;%2$s</string>
+    <string name="all_day">24&#160;h</string>
+    <array name="days_of_week">
+        <item>Lundi</item>
+        <item>Mardi</item>
+        <item>Mercredi</item>
+        <item>Jeudi</item>
+        <item>Vendredi</item>
+        <item>Samedi</item>
+        <item>Vendredi</item>
+    </array>
+
     <!--Permissions-->
     <string name="location_permission_needed">L’emplacement est nécessaire pour l’affichage de la carte</string>
 
     <!--Accessibility-->
     <string name="navigation_drawer_open">Ouvrir le panneau de navigation</string>
     <string name="navigation_drawer_close">Fermer le panneau de navigation</string>
+    <string name="desc_restr_type">Type de restriction</string>
+
 </resources>
