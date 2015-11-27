@@ -1,28 +1,49 @@
 package ng.prk.prkngandroid.ui.view;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import ng.prk.prkngandroid.Const;
+import ng.prk.prkngandroid.R;
+import ng.prk.prkngandroid.ui.adapter.AgendaListAdapter;
 import ng.prk.prkngandroid.ui.thread.SpotInfoDownloadTask;
 
 public class SlidingUpMarkerInfo extends SlidingUpPanelLayout {
 
+    private Context context;
     private String mMarkerId;
     private int mMarkerType;
+    private RecyclerView vRecyclerView;
 
     public SlidingUpMarkerInfo(Context context) {
-        super(context);
+        this(context, (AttributeSet) null);
     }
 
     public SlidingUpMarkerInfo(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
     public SlidingUpMarkerInfo(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        this.context = context;
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+
+        setDragView(R.id.drag_handle);
+
+        vRecyclerView = (RecyclerView) findViewById(R.id.recycler);
+        // Setup the recycler view
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        vRecyclerView.setLayoutManager(layoutManager);
+        vRecyclerView.setAdapter(new AgendaListAdapter(getContext(), R.layout.list_item_agenda));
     }
 
     public void setMarkerInfo(String id, int type) {
@@ -30,7 +51,7 @@ public class SlidingUpMarkerInfo extends SlidingUpPanelLayout {
         this.mMarkerType = type;
 
         if (mMarkerType == Const.MapSections.ON_STREET) {
-            (new SpotInfoDownloadTask()).execute(mMarkerId);
+            (new SpotInfoDownloadTask((AgendaListAdapter) vRecyclerView.getAdapter())).execute(mMarkerId);
         }
     }
 

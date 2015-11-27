@@ -48,13 +48,27 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
-    <TextView
-        android:id="@+id/drag_handle"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_background"
-        android:gravity="center|top"
-        android:text="The Awesome Sliding Up Panel"
-        android:textSize="16sp" />
+        android:background="@color/color_background">
+
+        <TextView
+            android:id="@+id/drag_handle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@color/agenda_header"
+            android:padding="16dp"
+            android:text="The Awesome Sliding Up Panel"
+            android:textSize="24sp" />
+
+        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/drag_handle" />
+
+    </RelativeLayout>
 </ng.prk.prkngandroid.ui.view.SlidingUpMarkerInfo>
 
