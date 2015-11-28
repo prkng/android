@@ -26,6 +26,9 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        resConfigs "en", "fr"
+        resConfigs "nodpi", "mdpi", "hdpi", "xhdpi", "xxhdpi"
     }
     buildTypes {
         release {
