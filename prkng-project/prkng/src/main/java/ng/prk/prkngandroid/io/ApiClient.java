@@ -37,7 +37,7 @@ public class ApiClient {
         final OkHttpClient client = new OkHttpClient();
         if (httpLogging) {
             final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-            interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             client.interceptors().add(interceptor);
         }
 

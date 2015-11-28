@@ -65,10 +65,13 @@ public class SpotRules {
                 }
 
                 int type;
+                int timeMax = Const.UNKNOWN_VALUE;
                 if (rule.isTypeTimeMaxPaid()) {
                     type = Const.ParkingRestrType.TIME_MAX_PAID;
+                    timeMax = rule.getTimeMaxParking();
                 } else if (rule.isTypeTimeMax()) {
                     type = Const.ParkingRestrType.TIME_MAX;
+                    timeMax = rule.getTimeMaxParking();
                 } else if (rule.isTypePaid()) {
                     type = Const.ParkingRestrType.PAID;
                 } else {
@@ -78,12 +81,22 @@ public class SpotRules {
                 // Loop over periods, for current rule and dayOfWeek
                 for (List<Float> restriction : state) {
                     // Add-Merge the day's interval, comparing it to other intervals of the same day
-                    restrList.addMerge(
-                            new RestrInterval(dayOfWeek,
-                                    restriction.get(INDEX_START),
-                                    restriction.get(INDEX_END),
-                                    type)
-                    );
+                    if (timeMax != Const.UNKNOWN_VALUE) {
+                        restrList.addMerge(
+                                new RestrInterval(dayOfWeek,
+                                        restriction.get(INDEX_START),
+                                        restriction.get(INDEX_END),
+                                        type,
+                                        timeMax)
+                        );
+                    } else {
+                        restrList.addMerge(
+                                new RestrInterval(dayOfWeek,
+                                        restriction.get(INDEX_START),
+                                        restriction.get(INDEX_END),
+                                        type)
+                        );
+                    }
                 }
             }
         }

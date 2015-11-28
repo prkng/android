@@ -130,7 +130,6 @@ public class Const {
 
     /**
      * The agenda's different parking restriction types.
-     * Values are also used to sort when minuteStart and minuteEnd are equal
      */
     public interface ParkingRestrType {
         int NONE = 0;
