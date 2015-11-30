@@ -32,28 +32,28 @@ public class ApiSimulator {
 
         if (scenario == Const.UNKNOWN_VALUE) {
             int i = 1;
-//            buildScenario01(daysMap, i++);
-//            buildScenario02(daysMap, i++);
-//
-//            // Recursive tests
-//            buildScenario03(daysMap, i++);
+            buildScenario01(daysMap, i++);
+            buildScenario02(daysMap, i++);
+
+            // Recursive tests
+            buildScenario03(daysMap, i++);
 //            buildScenario03A(daysMap, i++);
 //            buildScenario03B(daysMap, i++);
-//
-//            buildScenario04(daysMap, i++);
-//            buildScenario05(daysMap,i++);
-//            buildScenario06(daysMap, i++);
-//            buildScenario07(daysMap, i++);
-//
+
+            buildScenario04(daysMap, i++);
+            buildScenario05(daysMap, i++);
+            buildScenario06(daysMap, i++);
+            buildScenario07(daysMap, i++);
+
 //            // TimeMax + NoParking
 //            buildScenario08(daysMap, i++);
 //            buildScenario09(daysMap, i++);
-
-            // No overrules (combined TimeMaxPaid)
-            buildScenario10(daysMap, i++);
-            buildScenario11(daysMap, i++);
-            buildScenario12(daysMap, i++);
-            buildScenario12A(daysMap, i++);
+//
+//            // No overrules (combined TimeMaxPaid)
+//            buildScenario10(daysMap, i++);
+//            buildScenario11(daysMap, i++);
+//            buildScenario12(daysMap, i++);
+//            buildScenario12A(daysMap, i++);
 
         } else
             switch (scenario) {
@@ -78,6 +78,21 @@ public class ApiSimulator {
                 case 7:
                     buildScenario07(daysMap, dayOfWeek);
                     break;
+                case 8:
+                    buildScenario08(daysMap, dayOfWeek);
+                    break;
+                case 9:
+                    buildScenario09(daysMap, dayOfWeek);
+                    break;
+                case 10:
+                    buildScenario10(daysMap, dayOfWeek);
+                    break;
+                case 11:
+                    buildScenario11(daysMap, dayOfWeek);
+                    break;
+                case 12:
+                    buildScenario12(daysMap, dayOfWeek);
+                    break;
             }
 
 
@@ -87,6 +102,7 @@ public class ApiSimulator {
     /**
      * Paid 9-17
      * NoParking 12-14
+     * Result: Paid 9-12 + NoParking 12-14 + Paid 14-17
      *
      * @param daysMap
      * @param dayOfWeek
@@ -113,6 +129,7 @@ public class ApiSimulator {
     /**
      * NoParking 9-17
      * Paid 12-14
+     * Result: NoParking 9-17
      *
      * @param daysMap
      * @param dayOfWeek
@@ -141,6 +158,7 @@ public class ApiSimulator {
      * Paid 11-15
      * NoParking 14-18
      * Paid 17-19
+     * Result: NoParking 5-12 + Paid 12-14 + NoParking 14-18 + Paid 18-19
      *
      * @param daysMap
      * @param dayOfWeek
@@ -214,6 +232,7 @@ public class ApiSimulator {
      * NoParking 11-15
      * Paid 14-18
      * NoParking 17-19
+     * Result: Paid 5-11 + NoParking 11-15 + Paid 15-17 + NoParking 17-19
      *
      * @param daysMap
      * @param dayOfWeek
@@ -252,8 +271,9 @@ public class ApiSimulator {
     }
 
     /**
-     * NoParking 9-16
-     * Paid 15-18
+     * NoParking 9-14
+     * Paid 12-18
+     * Result: NoParking 9-14 + Paid 14-18
      *
      * @param daysMap
      * @param dayOfWeek
@@ -264,13 +284,13 @@ public class ApiSimulator {
         restrList.addMerge(
                 new RestrInterval(dayOfWeek,
                         9f,
-                        16f,
+                        14f,
                         Const.ParkingRestrType.ALL_TIMES,
                         Const.UNKNOWN_VALUE)
         );
         restrList.addMerge(
                 new RestrInterval(dayOfWeek,
-                        15f,
+                        12f,
                         18f,
                         Const.ParkingRestrType.PAID,
                         Const.UNKNOWN_VALUE)
@@ -280,6 +300,7 @@ public class ApiSimulator {
     /**
      * Paid 9-16
      * NoParking 15-18
+     * Result: Paid 9-15 + NoParking 15-18
      *
      * @param daysMap
      * @param dayOfWeek
@@ -306,6 +327,7 @@ public class ApiSimulator {
     /**
      * Paid 9-12
      * NoParking 14-17
+     * Result:  Paid 9-12 + NoParking 14-17
      *
      * @param daysMap
      * @param dayOfWeek
@@ -330,8 +352,9 @@ public class ApiSimulator {
     }
 
     /**
-     * TimeMax (60min) 9-12
+     * TimeMax (60min) 9-14
      * NoParking 12-17
+     * Result: TimeMax (60min) 9-12 + NoParking 12-17
      *
      * @param daysMap
      * @param dayOfWeek
@@ -342,7 +365,7 @@ public class ApiSimulator {
         restrList.addMerge(
                 new RestrInterval(dayOfWeek,
                         9f,
-                        12f,
+                        14f,
                         Const.ParkingRestrType.TIME_MAX,
                         60)
         );
@@ -358,6 +381,7 @@ public class ApiSimulator {
     /**
      * NoParking 9-17
      * TimeMax (60min) 9-12
+     * Result: NoParking 9-17
      *
      * @param daysMap
      * @param dayOfWeek
@@ -384,6 +408,7 @@ public class ApiSimulator {
     /**
      * Paid 9-14
      * TimeMax (60min) 12-17
+     * Result: Paid 9-12 + TimeMaxPaid (60min) 12-14 + TimeMax (60min) 14-17
      *
      * @param daysMap
      * @param dayOfWeek
@@ -410,6 +435,7 @@ public class ApiSimulator {
     /**
      * TimeMax (30min) 9-14
      * TimeMaxPaid (120min) 12-17
+     * Result: TimeMax (30min) 9-12 + TimeMaxPaid (30min) 12-14 + TimeMaxPaid (120min) 14-17
      *
      * @param daysMap
      * @param dayOfWeek
@@ -436,6 +462,7 @@ public class ApiSimulator {
     /**
      * Paid 9-17
      * TimeMaxPaid (60min) 12-14
+     * Result: Paid 9-12 + TimeMaxPaid (60min) 12-14 + Paid 14-17
      *
      * @param daysMap
      * @param dayOfWeek
