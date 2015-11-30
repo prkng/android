@@ -25,10 +25,11 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
     protected SpotRules doInBackground(String... params) {
         Log.v(TAG, "doInBackground");
 
-//        String spotId = "458653"; // Arret + Interdiction
+//        String spotId = "458653"; // arret + Interdiction
 //        String spotId = "416663"; //  tues + friday
-        String spotId = "462798 "; //  paid + interdiction
-//        final String spotId = params[0];
+//        String spotId = "462798"; //  paid + interdiction
+//        String spotId = "448955"; // arret + paid (ConcurrentModificationException)
+        final String spotId = params[0];
         Log.v(TAG, "spotId = " + spotId);
 
         final PrkngService service = ApiClient.getServiceLog();
@@ -49,8 +50,10 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
     @Override
     protected void onPostExecute(SpotRules spotRules) {
         Log.v(TAG, "onPostExecute");
-        Log.v(TAG, "rules = " + spotRules.toString());
-        mAdapter.swapDataset(spotRules.getParkingAgenda());
+        if (spotRules != null) {
+            Log.v(TAG, "rules = " + spotRules.toString());
+        }
+        mAdapter.swapDataset(spotRules != null ? spotRules.getParkingAgenda() : null);
 
 //        SpotRuleAgenda agenda = spotRules.get(0).getAgenda();
 //        Log.v(TAG, "timeMax = " + spotRules.get(0).getTimeMaxParking());
