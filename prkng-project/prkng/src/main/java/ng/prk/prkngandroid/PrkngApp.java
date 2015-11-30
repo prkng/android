@@ -4,8 +4,6 @@ import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
 
-import net.danlew.android.joda.JodaTimeAndroid;
-
 import io.fabric.sdk.android.Fabric;
 
 public class PrkngApp extends Application {
@@ -17,6 +15,6 @@ public class PrkngApp extends Application {
             Fabric.with(this, new Crashlytics());
         }
 
-        JodaTimeAndroid.init(this);
+//        JodaTimeAndroid.init(this);
     }
 }

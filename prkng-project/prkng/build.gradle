@@ -60,6 +60,6 @@ dependencies {
     compile 'com.sothree.slidinguppanel:library:3.2.0'
     compile 'com.google.android.gms:play-services-gcm:8.3.0'
 
-    compile 'net.danlew:android.joda:2.9.0'
+//    compile 'net.danlew:android.joda:2.9.0'
 
 }
