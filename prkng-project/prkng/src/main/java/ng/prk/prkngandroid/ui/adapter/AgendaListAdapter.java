@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
-import ng.prk.prkngandroid.model.RestrIntervalsList;
 import ng.prk.prkngandroid.model.RestrInterval;
+import ng.prk.prkngandroid.model.RestrIntervalsList;
 import ng.prk.prkngandroid.util.CalendarUtils;
 
 public class AgendaListAdapter extends RecyclerView.Adapter<AgendaListAdapter.AgendaViewHolder> {
@@ -50,9 +50,16 @@ public class AgendaListAdapter extends RecyclerView.Adapter<AgendaListAdapter.Ag
         final boolean isAllDay = parkingRestrPeriod.isAllDay();
         final String timeStart = CalendarUtils.getTimeFromMinutesOfDay(context.getResources(), parkingRestrPeriod.getMinuteStart());
         final String timeEnd = CalendarUtils.getTimeFromMinutesOfDay(context.getResources(), parkingRestrPeriod.getMinuteEnd());
+        final int timeMax = parkingRestrPeriod.getTimeMax();
         final int typeIcon = getRestrTypeIcon(parkingRestrPeriod.getType());
 
-        holder.vDay.setText(day);
+        if (timeMax != Const.UNKNOWN_VALUE) {
+            // TODO: replace with ninepatch
+            holder.vDay.setText(day + " (" + timeMax + ")");
+        } else {
+            holder.vDay.setText(day);
+        }
+
         holder.vRestrType.setImageResource(typeIcon);
         if (isAllDay) {
             holder.vTimeStart.setText(R.string.all_day);
@@ -77,6 +84,8 @@ public class AgendaListAdapter extends RecyclerView.Adapter<AgendaListAdapter.Ag
                 return R.drawable.ic_restr_type_paid;
             case Const.ParkingRestrType.TIME_MAX:
                 return R.drawable.ic_restr_type_time_max;
+            case Const.ParkingRestrType.TIME_MAX_PAID:
+                return R.drawable.ic_restr_type_time_max_paid;
             case Const.ParkingRestrType.NONE:
                 return R.drawable.ic_restr_type_none;
         }
