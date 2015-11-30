@@ -4,6 +4,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.model.LinesGeoJSON;
@@ -35,9 +36,11 @@ public class ApiClient {
      */
     private static PrkngService getService(boolean httpLogging) {
         final OkHttpClient client = new OkHttpClient();
+        client.setConnectTimeout(60, TimeUnit.SECONDS);
+        client.setReadTimeout(60, TimeUnit.SECONDS);
         if (httpLogging) {
             final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
             client.interceptors().add(interceptor);
         }
 
