@@ -2,13 +2,12 @@ package ng.prk.prkngandroid.model;
 
 import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
-import android.util.Log;
 
-import org.joda.time.Duration;
-import org.joda.time.Interval;
+import java.util.concurrent.TimeUnit;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.util.CalendarUtils;
+import ng.prk.prkngandroid.util.Interval;
 
 /**
  * Restriction Interval
@@ -31,10 +30,6 @@ public class RestrInterval implements Comparable<RestrInterval>,
      */
     public RestrInterval(int dayOfWeek) {
         this(dayOfWeek, Const.UNKNOWN_VALUE, Const.UNKNOWN_VALUE, NONE, Const.UNKNOWN_VALUE);
-        this.dayOfWeek = dayOfWeek;
-        this.type = NONE;
-        this.minuteOfDayStart = Const.UNKNOWN_VALUE;
-        this.minuteOfDayEnd = Const.UNKNOWN_VALUE;
     }
 
     /**
@@ -50,15 +45,31 @@ public class RestrInterval implements Comparable<RestrInterval>,
     }
 
     /**
+     * Constructor, without Interval
+     *
+     * @param dayOfWeek      1-7
+     * @param interval       The Interval
+     * @param type           ParkingRestrType
+     * @param minutesTimeMax Max allowed parking duration. Applies for TIME_MAX and TIME_MAX_PAID
+     */
+    public RestrInterval(int dayOfWeek, Interval interval, int type, int minutesTimeMax) {
+        this(dayOfWeek,
+                (float) interval.getStartMillis() / DateUtils.HOUR_IN_MILLIS,
+                (float) interval.getEndMillis() / DateUtils.HOUR_IN_MILLIS,
+                type,
+                minutesTimeMax);
+    }
+
+    /**
      * Constructor, full
      *
-     * @param dayOfWeek 1-7
-     * @param hourStart 0-24
-     * @param hourEnd   0-24, must be greater than or equal to hourStart
-     * @param type      ParkingRestrType
-     * @param timeMax   1-24 hours
+     * @param dayOfWeek      1-7
+     * @param hourStart      0-24
+     * @param hourEnd        0-24, must be greater than or equal to hourStart
+     * @param type           ParkingRestrType
+     * @param minutesTimeMax Max allowed parking duration. Applies for TIME_MAX and TIME_MAX_PAID
      */
-    public RestrInterval(int dayOfWeek, float hourStart, float hourEnd, int type, int timeMax) {
+    public RestrInterval(int dayOfWeek, float hourStart, float hourEnd, int type, int minutesTimeMax) {
         this.dayOfWeek = dayOfWeek;
         this.type = type;
         if (type == NONE) {
@@ -67,10 +78,11 @@ public class RestrInterval implements Comparable<RestrInterval>,
             this.interval = null;
             this.timeMax = Const.UNKNOWN_VALUE;
         } else {
-            this.minuteOfDayStart = (int) ((hourStart - 2f) * CalendarUtils.HOUR_IN_MINUTES);
-            this.minuteOfDayEnd = (int) ((hourEnd + 2f) * CalendarUtils.HOUR_IN_MINUTES);
-            this.interval = new Interval(minuteOfDayStart * DateUtils.MINUTE_IN_MILLIS, minuteOfDayEnd * DateUtils.MINUTE_IN_MILLIS);
-            this.timeMax = timeMax;
+            this.minuteOfDayStart = (int) (hourStart * CalendarUtils.HOUR_IN_MINUTES);
+            this.minuteOfDayEnd = (int) (hourEnd * CalendarUtils.HOUR_IN_MINUTES);
+//            this.interval = new Interval(minuteOfDayStart * DateUtils.MINUTE_IN_MILLIS, minuteOfDayEnd * DateUtils.MINUTE_IN_MILLIS);
+            this.interval = new Interval(minuteOfDayStart, minuteOfDayEnd, TimeUnit.MINUTES);
+            this.timeMax = minutesTimeMax;
         }
     }
 
@@ -99,19 +111,32 @@ public class RestrInterval implements Comparable<RestrInterval>,
     }
 
     /**
+     * Compares type and timeMax
+     *
+     * @param another The interval to compare to
+     * @return true if has same type and timeMax value
+     */
+    public boolean hasSameType(RestrInterval another) {
+        return (this.type == another.getType()) && (this.timeMax == another.getTimeMax());
+    }
+
+    /**
      * Check if restriction applies all day (24 hours)
      *
      * @return true for all-day restriction
      */
     public boolean isAllDay() {
-        return (interval == null) ||
-                interval.toDuration().compareTo(new Duration(DateUtils.DAY_IN_MILLIS)) >= 0;
+        if (minuteOfDayStart == Const.UNKNOWN_VALUE || minuteOfDayEnd == Const.UNKNOWN_VALUE) {
+            return true;
+        } else {
+            return minuteOfDayEnd - minuteOfDayStart >= CalendarUtils.DAY_IN_MINUTES;
+        }
     }
 
     /**
      * Get the Interval object for easier manipulation
      *
-     * @return
+     * @return Interval
      */
     public Interval getInterval() {
         return interval;
@@ -134,9 +159,7 @@ public class RestrInterval implements Comparable<RestrInterval>,
         minuteOfDayEnd = Math.max(minuteOfDayEnd, another.getMinuteEnd());
 
         // Update the Interval
-        interval = new Interval(
-                minuteOfDayStart * DateUtils.MINUTE_IN_MILLIS,
-                minuteOfDayEnd * DateUtils.MINUTE_IN_MILLIS);
+        interval.join(another.getInterval());
     }
 
     /**
@@ -173,7 +196,6 @@ public class RestrInterval implements Comparable<RestrInterval>,
      *
      * @param another the interval to examine, null means now
      * @return true if the interval abuts
-     * @since 1.1
      */
     public boolean abuts(RestrInterval another) {
         return interval.abuts(another.getInterval());
@@ -224,7 +246,16 @@ public class RestrInterval implements Comparable<RestrInterval>,
         return interval.overlaps(another.getInterval());
     }
 
+    /**
+     * Check if restriction rule is stronger.
+     * Priority order is ALL_TIMES then TIME_MAX_PAID.
+     * For PAID, TIME_MAX a merge is needed.
+     *
+     * @param another The interval to examine
+     * @return true if rule is stronger
+     */
     public boolean overrules(RestrInterval another) {
+        // TODO incomplete, adding other types can improve performance
         if (type == ALL_TIMES) {
             return true;
         } else if (type == TIME_MAX_PAID) {
@@ -240,65 +271,67 @@ public class RestrInterval implements Comparable<RestrInterval>,
     }
 
 
+    /**
+     * Subtract an interval from the current.
+     * When the other interval contains the current, result is empty.
+     * When the other interval is contained, result is 2 intervals with a gap.
+     *
+     * @param another the Interval to examine
+     * @return List of intervals, can have a gap
+     */
     public RestrIntervalsList subtract(RestrInterval another) {
-        Log.v(TAG, "--- subtract");
-        Log.v(TAG, interval.toString() + " vs " + another.getInterval().toString());
-
         final RestrIntervalsList intervalsList = new RestrIntervalsList();
 
         if (another.getInterval().contains(interval)) {
-            Log.v(TAG, "is contained");
             // The subtracted interval is bigger than current, return empty result.
             return intervalsList;
         } else if (interval.contains(another.getInterval())) {
-            Log.v(TAG, "contains");
-
             // Split current into 2 parts, surrounding the other interval
-            final RestrInterval before = new RestrInterval(
-                    dayOfWeek,
-                    (float) minuteOfDayStart / CalendarUtils.HOUR_IN_MINUTES,
-                    (float) another.getMinuteStart() / CalendarUtils.HOUR_IN_MINUTES,
-                    type,
-                    timeMax
-            );
-            intervalsList.add(before);
+            if (Float.compare(minuteOfDayStart, another.getMinuteStart()) < 0) {
+                // The first (leading) part
+                intervalsList.add(new RestrInterval(
+                        dayOfWeek,
+                        (float) minuteOfDayStart / CalendarUtils.HOUR_IN_MINUTES,
+                        (float) another.getMinuteStart() / CalendarUtils.HOUR_IN_MINUTES,
+                        type,
+                        timeMax
+                ));
+            }
 
-            final RestrInterval after = new RestrInterval(
-                    dayOfWeek,
-                    (float) another.getMinuteEnd() / CalendarUtils.HOUR_IN_MINUTES,
-                    (float) minuteOfDayEnd / CalendarUtils.HOUR_IN_MINUTES,
-                    type,
-                    timeMax
-            );
-            intervalsList.add(after);
-        } else if (interval.isBefore(another.getInterval())) {
-            Log.v(TAG, "isBefore");
+            if (Float.compare(another.getMinuteEnd(), this.minuteOfDayEnd) < 0) {
+                // The last (trailing) part
+                intervalsList.add(new RestrInterval(
+                        dayOfWeek,
+                        (float) another.getMinuteEnd() / CalendarUtils.HOUR_IN_MINUTES,
+                        (float) minuteOfDayEnd / CalendarUtils.HOUR_IN_MINUTES,
+                        type,
+                        timeMax
+                ));
+            }
+        } else if (interval.startsBefore(another.getInterval())) {
             // Keep the first (leading) part only
-            final RestrInterval before = new RestrInterval(
-                    dayOfWeek,
-                    (float) minuteOfDayStart / CalendarUtils.HOUR_IN_MINUTES,
-                    (float) another.getMinuteStart() / CalendarUtils.HOUR_IN_MINUTES,
-                    type,
-                    timeMax
-            );
-            intervalsList.add(before);
-        } else if (interval.isAfter(another.getInterval())) {
-            Log.v(TAG, "isAfter");
-
+            if (Float.compare(minuteOfDayStart, another.getMinuteStart()) < 0) {
+                intervalsList.add(new RestrInterval(
+                        dayOfWeek,
+                        (float) minuteOfDayStart / CalendarUtils.HOUR_IN_MINUTES,
+                        (float) another.getMinuteStart() / CalendarUtils.HOUR_IN_MINUTES,
+                        type,
+                        timeMax
+                ));
+            }
+        } else if (interval.startsAfter(another.getInterval())) {
             // Keep the last (trailing) part only
-            final RestrInterval after = new RestrInterval(
-                    dayOfWeek,
-                    (float) another.getMinuteEnd() / CalendarUtils.HOUR_IN_MINUTES,
-                    (float) minuteOfDayEnd / CalendarUtils.HOUR_IN_MINUTES,
-                    type,
-                    timeMax
-            );
-            intervalsList.add(after);
-        } else {
-            Log.e(TAG, "skipped?!");
+            if (Float.compare(another.getMinuteEnd(), this.minuteOfDayEnd) < 0) {
+                intervalsList.add(new RestrInterval(
+                        dayOfWeek,
+                        (float) another.getMinuteEnd() / CalendarUtils.HOUR_IN_MINUTES,
+                        (float) minuteOfDayEnd / CalendarUtils.HOUR_IN_MINUTES,
+                        type,
+                        timeMax
+                ));
+            }
         }
 
-//        intervalsList.add(this);
         return intervalsList;
     }
 
@@ -313,7 +346,7 @@ public class RestrInterval implements Comparable<RestrInterval>,
      */
     @Override
     public int compareTo(@NonNull RestrInterval another) {
-        return interval.getStart().compareTo(another.getInterval().getStart());
+        return interval.compareTo(another.getInterval());
     }
 
     @Override

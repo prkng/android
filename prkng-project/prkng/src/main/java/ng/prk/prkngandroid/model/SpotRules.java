@@ -34,6 +34,8 @@ public class SpotRules {
         final int today = CalendarUtils.getIsoDayOfWeek();
 
         final Map<Integer, RestrIntervalsList> dailyIntervals = getDailyIntervals(rules, today);
+//        final Map<Integer, RestrIntervalsList> dailyIntervals = ApiSimulator.getTestScenarios();
+
         return getWeekIntervals(dailyIntervals, today);
     }
 
@@ -135,12 +137,12 @@ public class SpotRules {
     @Override
     public String toString() {
         return "SpotRules{size: " + getSize() +
-                ", codes: " + getAllCodes() +
+                ", desc: " + getAllDescriptions() +
                 "}";
     }
 
     /**
-     * Used for debug and for {@link #toString()}
+     * Used for debug or {@link #toString()}
      *
      * @return Codes of all the rules
      */
@@ -155,6 +157,27 @@ public class SpotRules {
                 }
             }
             return ArrayUtils.join(codes);
+        }
+
+        return null;
+    }
+
+    /**
+     * Used for debug or {@link #toString()}
+     *
+     * @return Description of all the rules
+     */
+    private String getAllDescriptions() {
+        final int size = getSize();
+        if (size > 0) {
+            String[] descriptions = new String[size];
+            if (rules != null) {
+                int i = 0;
+                for (SpotRule rule : rules) {
+                    descriptions[i++] = rule.getDescription();
+                }
+            }
+            return ArrayUtils.join(descriptions, Const.LINE_SEPARATOR);
         }
 
         return null;
