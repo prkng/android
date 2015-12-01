@@ -110,20 +110,17 @@ public class ApiSimulator {
     private static void buildScenario01(Map<Integer, RestrIntervalsList> daysMap, int dayOfWeek) {
         RestrIntervalsList restrList = daysMap.get(dayOfWeek);
 
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        9f,
-                        17f,
-                        Const.ParkingRestrType.PAID,
-                        Const.UNKNOWN_VALUE)
-        );
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        12f,
-                        14f,
-                        Const.ParkingRestrType.ALL_TIMES,
-                        Const.UNKNOWN_VALUE)
-        );
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(9f)
+                .endHour(17f)
+                .type(Const.ParkingRestrType.PAID)
+                .build());
+
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(12f)
+                .endHour(14f)
+                .type(Const.ParkingRestrType.ALL_TIMES)
+                .build());
     }
 
     /**
@@ -137,20 +134,17 @@ public class ApiSimulator {
     private static void buildScenario02(Map<Integer, RestrIntervalsList> daysMap, int dayOfWeek) {
         RestrIntervalsList restrList = daysMap.get(dayOfWeek);
 
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        9f,
-                        17f,
-                        Const.ParkingRestrType.ALL_TIMES,
-                        Const.UNKNOWN_VALUE)
-        );
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        12f,
-                        14f,
-                        Const.ParkingRestrType.PAID,
-                        Const.UNKNOWN_VALUE)
-        );
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(9f)
+                .endHour(17f)
+                .type(Const.ParkingRestrType.ALL_TIMES)
+                .build());
+
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(12f)
+                .endHour(14f)
+                .type(Const.ParkingRestrType.PAID)
+                .build());
     }
 
     /**
@@ -166,34 +160,29 @@ public class ApiSimulator {
     private static void buildScenario03(Map<Integer, RestrIntervalsList> daysMap, int dayOfWeek) {
         RestrIntervalsList restrList = daysMap.get(dayOfWeek);
 
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        14f,
-                        18f,
-                        Const.ParkingRestrType.ALL_TIMES,
-                        Const.UNKNOWN_VALUE)
-        );
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        5f,
-                        12f,
-                        Const.ParkingRestrType.ALL_TIMES,
-                        Const.UNKNOWN_VALUE)
-        );
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        11f,
-                        15f,
-                        Const.ParkingRestrType.PAID,
-                        Const.UNKNOWN_VALUE)
-        );
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        17f,
-                        19f,
-                        Const.ParkingRestrType.PAID,
-                        Const.UNKNOWN_VALUE)
-        );
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(14f)
+                .endHour(18f)
+                .type(Const.ParkingRestrType.ALL_TIMES)
+                .build());
+
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(5f)
+                .endHour(12f)
+                .type(Const.ParkingRestrType.ALL_TIMES)
+                .build());
+
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(11f)
+                .endHour(15f)
+                .type(Const.ParkingRestrType.PAID)
+                .build());
+
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(17f)
+                .endHour(19f)
+                .type(Const.ParkingRestrType.PAID)
+                .build());
     }
 
 
@@ -201,13 +190,11 @@ public class ApiSimulator {
         RestrIntervalsList restrList = daysMap.get(dayOfWeek);
 
         // PAID 3-23
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        3f,
-                        23f,
-                        Const.ParkingRestrType.PAID,
-                        Const.UNKNOWN_VALUE)
-        );
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(3f)
+                .endHour(23f)
+                .type(Const.ParkingRestrType.PAID)
+                .build());
 
         buildScenario03(daysMap, dayOfWeek);
     }
@@ -218,13 +205,11 @@ public class ApiSimulator {
         RestrIntervalsList restrList = daysMap.get(dayOfWeek);
 
         // NoParking 3-23
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        3f,
-                        23f,
-                        Const.ParkingRestrType.PAID,
-                        Const.UNKNOWN_VALUE)
-        );
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(3f)
+                .endHour(23f)
+                .type(Const.ParkingRestrType.PAID)
+                .build());
     }
 
     /**
@@ -240,34 +225,29 @@ public class ApiSimulator {
     private static void buildScenario04(Map<Integer, RestrIntervalsList> daysMap, int dayOfWeek) {
         RestrIntervalsList restrList = daysMap.get(dayOfWeek);
 
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        14f,
-                        18f,
-                        Const.ParkingRestrType.PAID,
-                        Const.UNKNOWN_VALUE)
-        );
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        5f,
-                        12f,
-                        Const.ParkingRestrType.PAID,
-                        Const.UNKNOWN_VALUE)
-        );
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        11f,
-                        15f,
-                        Const.ParkingRestrType.ALL_TIMES,
-                        Const.UNKNOWN_VALUE)
-        );
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        17f,
-                        19f,
-                        Const.ParkingRestrType.ALL_TIMES,
-                        Const.UNKNOWN_VALUE)
-        );
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(14f)
+                .endHour(18f)
+                .type(Const.ParkingRestrType.PAID)
+                .build());
+
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(5f)
+                .endHour(12f)
+                .type(Const.ParkingRestrType.PAID)
+                .build());
+
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(11f)
+                .endHour(15f)
+                .type(Const.ParkingRestrType.ALL_TIMES)
+                .build());
+
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(17f)
+                .endHour(19f)
+                .type(Const.ParkingRestrType.ALL_TIMES)
+                .build());
     }
 
     /**
@@ -281,20 +261,17 @@ public class ApiSimulator {
     private static void buildScenario05(Map<Integer, RestrIntervalsList> daysMap, int dayOfWeek) {
         RestrIntervalsList restrList = daysMap.get(dayOfWeek);
 
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        9f,
-                        14f,
-                        Const.ParkingRestrType.ALL_TIMES,
-                        Const.UNKNOWN_VALUE)
-        );
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        12f,
-                        18f,
-                        Const.ParkingRestrType.PAID,
-                        Const.UNKNOWN_VALUE)
-        );
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(9f)
+                .endHour(14f)
+                .type(Const.ParkingRestrType.ALL_TIMES)
+                .build());
+
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(12f)
+                .endHour(18f)
+                .type(Const.ParkingRestrType.PAID)
+                .build());
     }
 
     /**
@@ -308,20 +285,17 @@ public class ApiSimulator {
     private static void buildScenario06(Map<Integer, RestrIntervalsList> daysMap, int dayOfWeek) {
         RestrIntervalsList restrList = daysMap.get(dayOfWeek);
 
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        9f,
-                        16f,
-                        Const.ParkingRestrType.PAID,
-                        Const.UNKNOWN_VALUE)
-        );
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        15f,
-                        18f,
-                        Const.ParkingRestrType.ALL_TIMES,
-                        Const.UNKNOWN_VALUE)
-        );
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(9f)
+                .endHour(16f)
+                .type(Const.ParkingRestrType.PAID)
+                .build());
+
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(15f)
+                .endHour(18f)
+                .type(Const.ParkingRestrType.ALL_TIMES)
+                .build());
     }
 
     /**
@@ -335,20 +309,17 @@ public class ApiSimulator {
     private static void buildScenario07(Map<Integer, RestrIntervalsList> daysMap, int dayOfWeek) {
         RestrIntervalsList restrList = daysMap.get(dayOfWeek);
 
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        9f,
-                        12f,
-                        Const.ParkingRestrType.PAID,
-                        Const.UNKNOWN_VALUE)
-        );
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        14f,
-                        17f,
-                        Const.ParkingRestrType.ALL_TIMES,
-                        Const.UNKNOWN_VALUE)
-        );
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(9f)
+                .endHour(12f)
+                .type(Const.ParkingRestrType.PAID)
+                .build());
+
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(14f)
+                .endHour(17f)
+                .type(Const.ParkingRestrType.ALL_TIMES)
+                .build());
     }
 
     /**
@@ -362,20 +333,18 @@ public class ApiSimulator {
     private static void buildScenario08(Map<Integer, RestrIntervalsList> daysMap, int dayOfWeek) {
         RestrIntervalsList restrList = daysMap.get(dayOfWeek);
 
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        9f,
-                        14f,
-                        Const.ParkingRestrType.TIME_MAX,
-                        60)
-        );
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        12f,
-                        17f,
-                        Const.ParkingRestrType.ALL_TIMES,
-                        Const.UNKNOWN_VALUE)
-        );
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(9f)
+                .endHour(14f)
+                .type(Const.ParkingRestrType.TIME_MAX)
+                .timeMax(60)
+                .build());
+
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(12f)
+                .endHour(17f)
+                .type(Const.ParkingRestrType.ALL_TIMES)
+                .build());
     }
 
     /**
@@ -389,20 +358,19 @@ public class ApiSimulator {
     private static void buildScenario09(Map<Integer, RestrIntervalsList> daysMap, int dayOfWeek) {
         RestrIntervalsList restrList = daysMap.get(dayOfWeek);
 
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        9f,
-                        17f,
-                        Const.ParkingRestrType.ALL_TIMES,
-                        Const.UNKNOWN_VALUE)
-        );
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        9f,
-                        12f,
-                        Const.ParkingRestrType.TIME_MAX,
-                        60)
-        );
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(9f)
+                .endHour(17f)
+                .type(Const.ParkingRestrType.ALL_TIMES)
+                .build());
+
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(9f)
+                .endHour(12f)
+                .type(Const.ParkingRestrType.TIME_MAX)
+                .timeMax(60)
+                .build());
+
     }
 
     /**
@@ -416,20 +384,19 @@ public class ApiSimulator {
     private static void buildScenario10(Map<Integer, RestrIntervalsList> daysMap, int dayOfWeek) {
         RestrIntervalsList restrList = daysMap.get(dayOfWeek);
 
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        9f,
-                        14f,
-                        Const.ParkingRestrType.PAID,
-                        Const.UNKNOWN_VALUE)
-        );
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        12f,
-                        17f,
-                        Const.ParkingRestrType.TIME_MAX,
-                        60)
-        );
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(9f)
+                .endHour(14f)
+                .type(Const.ParkingRestrType.PAID)
+                .build());
+
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(12f)
+                .endHour(17f)
+                .type(Const.ParkingRestrType.TIME_MAX)
+                .timeMax(60)
+                .build());
+
     }
 
     /**
@@ -443,20 +410,20 @@ public class ApiSimulator {
     private static void buildScenario11(Map<Integer, RestrIntervalsList> daysMap, int dayOfWeek) {
         RestrIntervalsList restrList = daysMap.get(dayOfWeek);
 
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        9f,
-                        14f,
-                        Const.ParkingRestrType.TIME_MAX,
-                        30)
-        );
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        12f,
-                        17f,
-                        Const.ParkingRestrType.TIME_MAX_PAID,
-                        120)
-        );
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(9f)
+                .endHour(14f)
+                .type(Const.ParkingRestrType.TIME_MAX)
+                .timeMax(30)
+                .build());
+
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(12f)
+                .endHour(17f)
+                .type(Const.ParkingRestrType.TIME_MAX_PAID)
+                .timeMax(120)
+                .build());
+
     }
 
     /**
@@ -470,20 +437,19 @@ public class ApiSimulator {
     private static void buildScenario12(Map<Integer, RestrIntervalsList> daysMap, int dayOfWeek) {
         RestrIntervalsList restrList = daysMap.get(dayOfWeek);
 
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        9f,
-                        17f,
-                        Const.ParkingRestrType.PAID,
-                        Const.UNKNOWN_VALUE)
-        );
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        12f,
-                        14f,
-                        Const.ParkingRestrType.TIME_MAX_PAID,
-                        60)
-        );
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(9f)
+                .endHour(17f)
+                .type(Const.ParkingRestrType.PAID)
+                .build());
+
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(12f)
+                .endHour(14f)
+                .type(Const.ParkingRestrType.TIME_MAX_PAID)
+                .timeMax(60)
+                .build());
+
     }
 
     private static void buildScenario12A(Map<Integer, RestrIntervalsList> daysMap, int dayOfWeek) {
@@ -492,12 +458,11 @@ public class ApiSimulator {
         RestrIntervalsList restrList = daysMap.get(dayOfWeek);
 
         // TimeMax 30min
-        restrList.addMerge(
-                new RestrInterval(dayOfWeek,
-                        3f,
-                        23f,
-                        Const.ParkingRestrType.TIME_MAX,
-                        30)
-        );
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(3f)
+                .endHour(23f)
+                .type(Const.ParkingRestrType.TIME_MAX)
+                .timeMax(30)
+                .build());
     }
 }

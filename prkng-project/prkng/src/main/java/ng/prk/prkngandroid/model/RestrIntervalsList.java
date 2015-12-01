@@ -58,12 +58,12 @@ public class RestrIntervalsList extends ArrayList<RestrInterval> {
             intervalsList.addAll(i2.subtract(i1));
 
             // Build new interval
-            intervalsList.add(new RestrInterval(
-                    i1.getDayOfWeek(),
-                    i1.getInterval().overlap(i2.getInterval()),
-                    Const.ParkingRestrType.TIME_MAX_PAID,
-                    getMinTimemax(i1.getTimeMax(), i2.getTimeMax())
-            ));
+            intervalsList.add(new RestrInterval.Builder(i1.getDayOfWeek())
+                    .interval(i1.overlap(i2))
+                    .type(Const.ParkingRestrType.TIME_MAX_PAID)
+                    .timeMax(getMinTimemax(i1.getTimeMax(), i2.getTimeMax()))
+                    .build()
+            );
         }
 
         return intervalsList;

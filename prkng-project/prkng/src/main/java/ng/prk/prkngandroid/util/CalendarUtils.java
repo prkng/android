@@ -1,9 +1,12 @@
 package ng.prk.prkngandroid.util;
 
 
+import android.content.Context;
 import android.content.res.Resources;
+import android.text.format.DateFormat;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
@@ -67,18 +70,26 @@ public class CalendarUtils {
         return week[dayOfWeek - 1];
     }
 
-    // FIXME use locale to handle AM/PM and 12/24
-    public static String getTimeFromMinutesOfDay(Resources res, int minuteOfDay) {
-        if (minuteOfDay == Const.UNKNOWN_VALUE) {
+    // TODO use locale to handle AM/PM and 12/24
+//    public static String getTimeFromMinutesOfDay(Resources res, int minuteOfDay) {
+//        if (minuteOfDay == Const.UNKNOWN_VALUE) {
+//            return null;
+//        }
+//
+//        final int hours = (int) Math.floor(minuteOfDay / 60);
+//        final int minutes = minuteOfDay % 60;
+//
+//        return String.format(
+//                res.getString(R.string.hour_minutes),
+//                hours,
+//                minutes);
+//    }
+
+    public static String getTimeFromMillis(Context context, long millis) {
+        if ((int) millis == Const.UNKNOWN_VALUE) {
             return null;
         }
 
-        final int hours = (int) Math.floor(minuteOfDay / 60);
-        final int minutes = minuteOfDay % 60;
-
-        return String.format(
-                res.getString(R.string.hour_minutes),
-                hours,
-                minutes);
+        return DateFormat.getTimeFormat(context).format(new Date(millis));
     }
 }

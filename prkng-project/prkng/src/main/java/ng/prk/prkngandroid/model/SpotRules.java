@@ -83,22 +83,12 @@ public class SpotRules {
                 // Loop over periods, for current rule and dayOfWeek
                 for (List<Float> restriction : state) {
                     // Add-Merge the day's interval, comparing it to other intervals of the same day
-                    if (timeMax != Const.UNKNOWN_VALUE) {
-                        restrList.addMerge(
-                                new RestrInterval(dayOfWeek,
-                                        restriction.get(INDEX_START),
-                                        restriction.get(INDEX_END),
-                                        type,
-                                        timeMax)
-                        );
-                    } else {
-                        restrList.addMerge(
-                                new RestrInterval(dayOfWeek,
-                                        restriction.get(INDEX_START),
-                                        restriction.get(INDEX_END),
-                                        type)
-                        );
-                    }
+                    restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                            .startHour(restriction.get(INDEX_START))
+                            .endHour(restriction.get(INDEX_END))
+                            .type(type)
+                            .timeMax(timeMax)
+                            .build());
                 }
             }
         }
@@ -122,7 +112,10 @@ public class SpotRules {
             RestrIntervalsList restrList = dailyIntervals.get(i);
             if (restrList.isEmpty()) {
                 // Add a 24hrs no-restriction rule
-                restrList.add(new RestrInterval(CalendarUtils.getIsoDayOfWeekLooped(i, today)));
+                final int day = CalendarUtils.getIsoDayOfWeekLooped(i, today);
+                restrList.add(new RestrInterval.Builder(day)
+                                .build()
+                );
             } else {
                 Collections.sort(restrList);
             }

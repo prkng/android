@@ -1,43 +1,20 @@
 package ng.prk.prkngandroid.util;
 
-import android.text.format.DateUtils;
-
-import java.util.InputMismatchException;
 import java.util.concurrent.TimeUnit;
 
 public class Interval implements Comparable<Interval> {
     private final static String TAG = "Interval";
 
-    private long startMillis;
-    private long endMillis;
+    protected long startMillis;
+    protected long endMillis;
 
-    public Interval(long start, long end, TimeUnit timeUnit) {
+    public Interval(long start, long end) {
         if (Long.valueOf(start).compareTo(end) > 0) {
-            throw new InputMismatchException();
+            throw new IllegalArgumentException("'start' cannot be greater than 'end'");
         }
 
-        if (timeUnit == TimeUnit.MILLISECONDS) {
-            this.startMillis = start;
-            this.endMillis = end;
-        } else if (timeUnit == TimeUnit.MINUTES) {
-            this.startMillis = TimeUnit.MINUTES.toMillis(start);
-            this.endMillis = TimeUnit.MINUTES.toMillis(end);
-        } else {
-            throw new InputMismatchException();
-        }
-    }
-
-    public Interval(float startHour, float endHour, TimeUnit timeUnit) {
-        if (Float.compare(startHour, endHour) > 0) {
-            throw new InputMismatchException();
-        }
-
-        if (timeUnit == TimeUnit.HOURS) {
-            this.startMillis = (long) (DateUtils.HOUR_IN_MILLIS * startHour);
-            this.endMillis = (long) (DateUtils.HOUR_IN_MILLIS * endHour);
-        } else {
-            throw new InputMismatchException();
-        }
+        this.startMillis = start;
+        this.endMillis = end;
     }
 
     public long getStartMillis() {
@@ -94,9 +71,9 @@ public class Interval implements Comparable<Interval> {
         if (!overlaps(another)) {
             return null;
         } else {
-            return new Interval(Math.max(startMillis, another.getStartMillis()),
-                    Math.min(endMillis, another.getEndMillis()),
-                    TimeUnit.MILLISECONDS
+            return new Interval(
+                    Math.max(this.startMillis, another.getStartMillis()),
+                    Math.min(this.endMillis, another.getEndMillis())
             );
         }
     }
