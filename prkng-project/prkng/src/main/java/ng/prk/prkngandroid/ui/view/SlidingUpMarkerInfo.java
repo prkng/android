@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.widget.TextView;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -18,6 +19,7 @@ public class SlidingUpMarkerInfo extends SlidingUpPanelLayout {
     private String mMarkerId;
     private int mMarkerType;
     private RecyclerView vRecyclerView;
+    private TextView vIntervalEnd;
 
     public SlidingUpMarkerInfo(Context context) {
         this(context, (AttributeSet) null);
@@ -39,6 +41,8 @@ public class SlidingUpMarkerInfo extends SlidingUpPanelLayout {
         setDragView(R.id.drag_handle);
 
         vRecyclerView = (RecyclerView) findViewById(R.id.recycler);
+        vIntervalEnd = (TextView) findViewById(R.id.interval_end);
+
         // Setup the recycler view
         final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -51,7 +55,10 @@ public class SlidingUpMarkerInfo extends SlidingUpPanelLayout {
         this.mMarkerType = type;
 
         if (mMarkerType == Const.MapSections.ON_STREET) {
-            (new SpotInfoDownloadTask((AgendaListAdapter) vRecyclerView.getAdapter())).execute(mMarkerId);
+            (new SpotInfoDownloadTask(
+                    (AgendaListAdapter) vRecyclerView.getAdapter(),
+                    vIntervalEnd)
+            ).execute(mMarkerId);
         }
     }
 

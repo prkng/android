@@ -19,7 +19,7 @@ public class RestrIntervalsList extends ArrayList<RestrInterval> {
         ListIterator<RestrInterval> iter = listIterator();
         while (iter.hasNext()) {
             final RestrInterval another = iter.next();
-            if (interval.hasSameType(another)) {
+            if (interval.isSameType(another)) {
                 if (interval.abuts(another) || interval.overlaps(another)) {
                     iter.remove();
                     interval.join(another);

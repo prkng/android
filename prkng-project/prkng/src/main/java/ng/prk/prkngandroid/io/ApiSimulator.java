@@ -54,7 +54,10 @@ public class ApiSimulator {
 //            buildScenario11(daysMap, i++);
 //            buildScenario12(daysMap, i++);
 //            buildScenario12A(daysMap, i++);
-
+//
+//            // Multi-day period
+//            buildScenario13(daysMap, i++);
+//            buildScenario13(daysMap,  i++);
         } else
             switch (scenario) {
                 case 1:
@@ -464,5 +467,30 @@ public class ApiSimulator {
                 .type(Const.ParkingRestrType.TIME_MAX)
                 .timeMax(30)
                 .build());
+    }
+
+    /**
+     * NoParking 0-5
+     * NoParking 19-24
+     * Result: NoParking 0-5 + NoParking 19-24
+     *
+     * @param daysMap
+     * @param dayOfWeek
+     */
+    private static void buildScenario13(Map<Integer, RestrIntervalsList> daysMap, int dayOfWeek) {
+        RestrIntervalsList restrList = daysMap.get(dayOfWeek);
+
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(0f)
+                .endHour(5f)
+                .type(Const.ParkingRestrType.ALL_TIMES)
+                .build());
+
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(19f)
+                .endHour(24f)
+                .type(Const.ParkingRestrType.ALL_TIMES)
+                .build());
+
     }
 }

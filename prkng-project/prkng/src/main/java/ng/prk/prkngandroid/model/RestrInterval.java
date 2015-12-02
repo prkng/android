@@ -45,11 +45,19 @@ public class RestrInterval extends Interval implements
     /**
      * Compares type and timeMax
      *
-     * @param another The interval to compare to
+     * @param another The interval to examine
      * @return true if has same type and timeMax value
      */
-    public boolean hasSameType(RestrInterval another) {
+    public boolean isSameType(RestrInterval another) {
         return (this.type == another.getType()) && (this.timeMax == another.getTimeMax());
+    }
+
+    /**
+     * @param another The interval to examine
+     * @return
+     */
+    public boolean isSameDay(RestrInterval another) {
+        return this.dayOfWeek == another.getDayOfWeek();
     }
 
     /**
@@ -103,7 +111,7 @@ public class RestrInterval extends Interval implements
             // Split current into 2 parts, surrounding the other interval
             if (Float.compare(this.startMillis, another.getStartMillis()) < 0) {
                 // The first (leading) part
-                intervalsList.add(new Builder(dayOfWeek)
+                intervalsList.add(new Builder(this.dayOfWeek)
                                 .startMillis(this.startMillis)
                                 .endMillis(another.getStartMillis())
                                 .type(this.type)
@@ -114,7 +122,7 @@ public class RestrInterval extends Interval implements
 
             if (Float.compare(another.getEndMillis(), this.endMillis) < 0) {
                 // The last (trailing) part
-                intervalsList.add(new Builder(dayOfWeek)
+                intervalsList.add(new Builder(this.dayOfWeek)
                                 .startMillis(another.getEndMillis())
                                 .endMillis(this.endMillis)
                                 .type(this.type)
@@ -125,18 +133,18 @@ public class RestrInterval extends Interval implements
         } else if (startsBefore(another)) {
             // Keep the first (leading) part only
             if (Float.compare(this.startMillis, another.getStartMillis()) < 0) {
-                intervalsList.add(new Builder(dayOfWeek)
-                        .startMillis(this.startMillis)
-                        .endMillis(another.getStartMillis())
-                        .type(this.type)
-                        .timeMax(this.timeMax)
-                        .build()
+                intervalsList.add(new Builder(this.dayOfWeek)
+                                .startMillis(this.startMillis)
+                                .endMillis(another.getStartMillis())
+                                .type(this.type)
+                                .timeMax(this.timeMax)
+                                .build()
                 );
             }
         } else if (startsAfter(another)) {
             // Keep the last (trailing) part only
             if (Float.compare(another.getEndMillis(), this.endMillis) < 0) {
-                intervalsList.add(new Builder(dayOfWeek)
+                intervalsList.add(new Builder(this.dayOfWeek)
                                 .startMillis(another.getEndMillis())
                                 .endMillis(this.endMillis)
                                 .type(this.type)
@@ -206,6 +214,12 @@ public class RestrInterval extends Interval implements
         public Builder interval(Interval interval) {
             this.startMillis = interval.getStartMillis();
             this.endMillis = interval.getEndMillis();
+            return this;
+        }
+
+        public Builder allDay() {
+            this.startMillis = 0;
+            this.endMillis = DateUtils.DAY_IN_MILLIS;
             return this;
         }
 

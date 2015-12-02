@@ -30,7 +30,7 @@
     <string name="map_tab_carshare_vehicles">Véhicles d’autopartage</string>
 
     <!--Calendar-->
-    <string name="hour_minutes">%1$s&#160;h&#160;%2$s</string>
+    <string name="hour_minutes_format">kk&#160;:&#160;mm</string>
     <string name="all_day">24&#160;h</string>
     <array name="days_of_week">
         <item>Lundi</item>

@@ -63,11 +63,19 @@
             android:text="The Awesome Sliding Up Panel"
             android:textSize="24sp" />
 
-        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        <TextView
+            android:id="@+id/interval_end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/drag_handle"
+            android:background="#666666"
+            android:padding="16dp" />
+
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/drag_handle" />
+            android:layout_below="@+id/interval_end" />
 
     </RelativeLayout>
 </ng.prk.prkngandroid.ui.view.SlidingUpMarkerInfo>

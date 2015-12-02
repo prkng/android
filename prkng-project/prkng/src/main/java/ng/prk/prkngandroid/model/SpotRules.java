@@ -1,6 +1,9 @@
 package ng.prk.prkngandroid.model;
 
 
+import android.text.format.DateUtils;
+import android.util.Log;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -114,6 +117,8 @@ public class SpotRules {
                 // Add a 24hrs no-restriction rule
                 final int day = CalendarUtils.getIsoDayOfWeekLooped(i, today);
                 restrList.add(new RestrInterval.Builder(day)
+                                .type(Const.ParkingRestrType.NONE)
+                                .allDay()
                                 .build()
                 );
             } else {
@@ -125,6 +130,41 @@ public class SpotRules {
         }
 
         return mergedList;
+    }
+
+    public static long getRemainingTime(RestrIntervalsList intervals, long now) {
+        RestrInterval currentInterval = null;
+        int nbDays = 0;
+        for (RestrInterval interval : intervals) {
+            Log.v(TAG, interval.toString());
+            if (currentInterval != null) {
+                Log.v(TAG, "AAA");
+                if (interval.isSameType(currentInterval) || interval.getType() == Const.ParkingRestrType.NONE) {
+                    if (!interval.isSameDay(currentInterval)) {
+                        nbDays++;
+                        Log.v(TAG, "BBB nbDays = " + nbDays );
+                    }
+                    currentInterval = interval;
+
+                } else {
+                    Log.v(TAG, "CCC");
+
+                    return ((nbDays * DateUtils.DAY_IN_MILLIS) + currentInterval.getEndMillis()) - now;
+                }
+            } else if (interval.contains(now) || interval.isBefore(now)) {
+                Log.v(TAG, "DDD");
+
+                currentInterval = interval;
+            }
+        }
+
+        if (currentInterval != null) {
+            Log.v(TAG, "current" + currentInterval.toString());
+        }
+
+
+        return (currentInterval == null) ? 0 :
+                (((nbDays * DateUtils.DAY_IN_MILLIS) + currentInterval.getEndMillis()) - now);
     }
 
     @Override

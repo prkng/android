@@ -30,7 +30,7 @@
     <string name="map_tab_carshare_vehicles">Carshare Vehicles</string>
 
     <!--Calendar-->
-    <string name="hour_minutes">%1$s:%2$s</string>
+    <string name="hour_minutes_format">kk:mm</string>
     <string name="all_day">24&#160;Hrs</string>
     <array name="days_of_week">
         <item>Monday</item>
