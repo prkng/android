@@ -41,8 +41,13 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
 //        String spotId = "462798"; //  paid + interdiction
 //        String spotId = "448955"; // arret + paid (ConcurrentModificationException)
 //        String spotId = "417832"; // arret mardi 9:30-10:30, timeRemaining = 7 days
+//        String spotId = "442896"; // 48h+ parking allowed
+//        String spotId = "417002"; // 6day+ parking allowed
+        String spotId = "447204"; // mercredi NoParking 9-10. looped week
 
-        final String spotId = params[0];
+        // R-AL , tourist_bus
+
+//        final String spotId = params[0];
         Log.v(TAG, "spotId = " + spotId);
 
         final PrkngService service = ApiClient.getServiceLog();

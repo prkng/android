@@ -1,10 +1,12 @@
 package ng.prk.prkngandroid.model;
 
+import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
 
 import java.util.concurrent.TimeUnit;
 
 import ng.prk.prkngandroid.Const;
+import ng.prk.prkngandroid.util.CalendarUtils;
 import ng.prk.prkngandroid.util.Interval;
 
 /**
@@ -67,6 +69,22 @@ public class RestrInterval extends Interval implements
      */
     public boolean isAllDay() {
         return endMillis - startMillis >= DateUtils.DAY_IN_MILLIS;
+    }
+
+    public boolean abutsOvernight(@NonNull RestrInterval another) {
+
+        if (CalendarUtils.areConsecutiveDaysOfWeekLooped(this.dayOfWeek, another.getDayOfWeek())) {
+            return abutsOvernight(this, another);
+        } else if (CalendarUtils.areConsecutiveDaysOfWeekLooped(another.getDayOfWeek(), this.dayOfWeek)) {
+            return abutsOvernight(another, this);
+        }
+
+        return false;
+    }
+
+    private static boolean abutsOvernight(RestrInterval firstInterval, RestrInterval secondInterval) {
+        return (Float.compare(firstInterval.getEndMillis(), DateUtils.DAY_IN_MILLIS) == 0)
+                && (Float.compare(secondInterval.getStartMillis(), 0) == 0);
     }
 
     /**

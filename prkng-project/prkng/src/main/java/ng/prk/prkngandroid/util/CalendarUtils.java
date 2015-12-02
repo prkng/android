@@ -17,6 +17,7 @@ import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 
 public class CalendarUtils {
+    private final static String TAG = "CalendarUtils";
 
     /**
      * ISO calendar days, since Android's Calendar.MONDAY=2
@@ -65,6 +66,13 @@ public class CalendarUtils {
         return day;
     }
 
+    public static boolean areConsecutiveDaysOfWeekLooped(int d1, int d2) {
+        final int diff = d2 - d1;
+
+        return (diff == 1) || (diff == (SUNDAY - MONDAY));
+    }
+
+
     /**
      * Get the Name of the dayOfWeek
      *
@@ -109,7 +117,10 @@ public class CalendarUtils {
             return null;
         }
 
-        return String.format("%.2f", (float) millis / DateUtils.HOUR_IN_MILLIS);
+        return String.format("Remaining Time = %1sh %2sm",
+                (int) Math.floor(millis / DateUtils.HOUR_IN_MILLIS),
+                (int) Math.floor((millis % DateUtils.HOUR_IN_MILLIS) / DateUtils.MINUTE_IN_MILLIS)
+        );
     }
 
     public static String getIsoTimestamp() {

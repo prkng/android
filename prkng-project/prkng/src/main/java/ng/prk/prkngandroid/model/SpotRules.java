@@ -132,40 +132,106 @@ public class SpotRules {
         return mergedList;
     }
 
-    public static long getRemainingTime(RestrIntervalsList intervals, long now) {
-        RestrInterval currentInterval = null;
-        int nbDays = 0;
-        for (RestrInterval interval : intervals) {
-            Log.v(TAG, interval.toString());
-            if (currentInterval != null) {
-                Log.v(TAG, "AAA");
-                if (interval.isSameType(currentInterval) || interval.getType() == Const.ParkingRestrType.NONE) {
-                    if (!interval.isSameDay(currentInterval)) {
-                        nbDays++;
-                        Log.v(TAG, "BBB nbDays = " + nbDays );
-                    }
+
+    public long getRemainingTime(RestrIntervalsList intervals, long now) {
+        final int today = CalendarUtils.getIsoDayOfWeek();
+
+        int idx = Const.UNKNOWN_VALUE;
+        RestrInterval previousInterval = null;
+
+        RestrInterval currentInterval = new RestrInterval.Builder(today)
+                .type(Const.ParkingRestrType.NONE)
+                .startMillis(now)
+                .endHour(24f)
+                .build();
+
+        int size = intervals.size();
+        for (int i = 0; i < size; i++) {
+            final RestrInterval interval = intervals.get(i);
+            Log.v(TAG, i + ": " + interval);
+            if (interval.getDayOfWeek() == today) {
+                Log.v(TAG, "same day");
+                // Same day
+                if (interval.contains(now)) {
+                    Log.v(TAG, "contains");
+
                     currentInterval = interval;
+                } else if (interval.isAfter(now)) {
+                    Log.v(TAG, "isAfter");
 
-                } else {
-                    Log.v(TAG, "CCC");
-
-                    return ((nbDays * DateUtils.DAY_IN_MILLIS) + currentInterval.getEndMillis()) - now;
+                    // Next interval is on the same day
+                    idx = i;
+                    break;
+                } else if (interval.isBefore(now)) {
+                    previousInterval = interval;
                 }
-            } else if (interval.contains(now) || interval.isBefore(now)) {
-                Log.v(TAG, "DDD");
-
+            } else if (currentInterval.abutsOvernight(interval) &&
+                    (interval.getType() == currentInterval.getType())) {
+                Log.v(TAG, "different type interrupts");
                 currentInterval = interval;
+            } else {
+                // Next day, any other type of restriction-interval interrupts
+                idx = i;
+                break;
             }
         }
 
-        if (currentInterval != null) {
-            Log.v(TAG, "current" + currentInterval.toString());
+        Log.v(TAG, "indexNext = " + idx);
+
+
+        if (currentInterval.getType() != Const.ParkingRestrType.NONE) {
+            Log.v(TAG, "foundContainingInterval");
+            return (currentInterval.getEndMillis() - now)
+                    + (DateUtils.DAY_IN_MILLIS * (currentInterval.getDayOfWeek() - today));
+        } else if (idx != Const.UNKNOWN_VALUE) {
+            final RestrInterval interval = intervals.get(idx);
+            return (interval.getStartMillis() - now)
+                    + (DateUtils.DAY_IN_MILLIS * (interval.getDayOfWeek() - today));
+        } else if (previousInterval != null) {
+            Log.v(TAG, "whole week, minus diff");
+            return DateUtils.WEEK_IN_MILLIS -
+                    (previousInterval.getEndMillis() - currentInterval.getStartMillis());
+        } else {
+            Log.v(TAG, "whole week, free parking");
+
+            return DateUtils.WEEK_IN_MILLIS;
         }
-
-
-        return (currentInterval == null) ? 0 :
-                (((nbDays * DateUtils.DAY_IN_MILLIS) + currentInterval.getEndMillis()) - now);
     }
+
+//    public static long getRemainingTimeX(RestrIntervalsList intervals, long now) {
+//        RestrInterval currentInterval = null;
+//        int nbDays = 0;
+//        for (RestrInterval interval : intervals) {
+//            Log.v(TAG, interval.toString());
+//            if (currentInterval != null) {
+//                Log.v(TAG, "AAA");
+//                if (interval.isSameType(currentInterval) || interval.getType() == Const.ParkingRestrType.NONE) {
+//                    if (!interval.isSameDay(currentInterval)) {
+//                        nbDays++;
+//                        Log.v(TAG, "BBB nbDays = " + nbDays);
+//                    }
+//                    currentInterval = interval;
+//
+//                } else {
+//                    Log.v(TAG, "CCC");
+//
+//                    return ((nbDays * DateUtils.DAY_IN_MILLIS) + currentInterval.getEndMillis()) - now;
+//                }
+//            } else if (interval.contains(now) || interval.isBefore(now)) {
+//                Log.v(TAG, "DDD");
+//
+//                currentInterval = interval;
+//            }
+//        }
+//
+//        if (currentInterval != null) {
+//            Log.v(TAG, "current" + currentInterval.toString());
+//        }
+//
+//
+//        return (currentInterval == null) ? 0 :
+//                (((nbDays * DateUtils.DAY_IN_MILLIS) + currentInterval.getEndMillis()) - now);
+//    }
 
     @Override
     public String toString() {
