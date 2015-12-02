@@ -4,9 +4,14 @@ package ng.prk.prkngandroid.util;
 import android.content.Context;
 import android.content.res.Resources;
 import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
@@ -28,6 +33,9 @@ public class CalendarUtils {
     public static final int DAY_IN_MINUTES = 60 * 24;
     public static final int WEEK_IN_DAYS = 7;
     public static final int FIRST_WEEK_IN_DAY = 1; // Replacing by zero could break loops
+
+    public static final String TIMEZONE_UTC = "UTC";
+    public static final String DATE_FORMAT_ISO_8601 = "yyyy-MM-dd'T'HH:mm:ss";
 
     /**
      * Get ISO day of week
@@ -90,6 +98,29 @@ public class CalendarUtils {
             return null;
         }
 
-        return DateFormat.getTimeFormat(context).format(new Date(millis));
+        return DateFormat
+                .getTimeFormat(context)
+                .format(new Date(millis - getTimezoneOffsetMillis()));
+    }
+
+
+    public static String getDurationFromMillis(Context context, long millis) {
+        if ((int) millis == Const.UNKNOWN_VALUE) {
+            return null;
+        }
+
+        return String.format("%.2f", (float) millis / DateUtils.HOUR_IN_MILLIS);
+    }
+
+    public static String getIsoTimestamp() {
+        final SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_ISO_8601, Locale.getDefault());
+
+        return sdf.format(new Date());
+    }
+
+    public static long getTimezoneOffsetMillis() {
+        Calendar mCalendar = new GregorianCalendar();
+        TimeZone mTimeZone = mCalendar.getTimeZone();
+        return mTimeZone.getRawOffset();
     }
 }
