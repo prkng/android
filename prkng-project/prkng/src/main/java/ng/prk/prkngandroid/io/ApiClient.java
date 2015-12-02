@@ -12,6 +12,7 @@ import ng.prk.prkngandroid.model.LinesGeoJSONFeature;
 import ng.prk.prkngandroid.model.LoginObject;
 import ng.prk.prkngandroid.model.PointsGeoJSON;
 import ng.prk.prkngandroid.util.ArrayUtils;
+import ng.prk.prkngandroid.util.CalendarUtils;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -128,6 +129,7 @@ public class ApiClient {
      */
     public static LinesGeoJSON getParkingSpots(PrkngService service, String apiKey, double latitude, double longitude, int radius, String[] permits, float duration) {
         try {
+            final String timestamp = CalendarUtils.getIsoTimestamp();
             final Response<LinesGeoJSON> response = service
                     .getParkingSpots(apiKey,
                             latitude,
@@ -135,7 +137,7 @@ public class ApiClient {
                             radius,
                             ArrayUtils.join(permits),
                             duration,
-                            null,
+                            timestamp,
                             false,
                             true)
                     .execute();
@@ -162,6 +164,7 @@ public class ApiClient {
      */
     public static LinesGeoJSON getCarshareParkingSpots(PrkngService service, String apiKey, double latitude, double longitude, int radius, float duration) {
         try {
+            final String timestamp = CalendarUtils.getIsoTimestamp();
             final Response<LinesGeoJSON> response = service
                     .getParkingSpots(apiKey,
                             latitude,
@@ -169,7 +172,7 @@ public class ApiClient {
                             radius,
                             null,
                             duration,
-                            null,
+                            timestamp,
                             true,
                             true)
                     .execute();
