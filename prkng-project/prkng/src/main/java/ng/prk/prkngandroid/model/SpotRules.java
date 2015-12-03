@@ -182,8 +182,13 @@ public class SpotRules {
             }
         }
 
+         if (currentInterval.getType() != Const.ParkingRestrType.NONE) {
+             if (currentInterval.getType() == Const.ParkingRestrType.ALL_TIMES) {
+                 // Special case when viewing a NoParking spot.
+                 // UX doesn't normally display SpotInfo for such spots.
+                 return 0;
+             }
 
-        if (currentInterval.getType() != Const.ParkingRestrType.NONE) {
             // Found the containing interval, and it's not initial default Interval
             // Return the time between now/today and the interval's end
             return (currentInterval.getEndMillis() - now) + (DateUtils.DAY_IN_MILLIS *
