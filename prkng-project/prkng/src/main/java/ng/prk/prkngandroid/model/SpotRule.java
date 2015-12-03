@@ -1,5 +1,6 @@
 package ng.prk.prkngandroid.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ng.prk.prkngandroid.Const;
@@ -58,15 +59,40 @@ public class SpotRule {
     }
 
     public boolean isTypePaid() {
-        return restrict_types != null &&
-                restrict_types.contains(Const.ApiValues.SPOT_TYPE_PAID);
+        return (restrict_types != null) &&
+                restrict_types.contains(Const.ApiValues.SPOT_TYPE_PAID)
+                && !isSpecialRestrType();
+    }
+
+    public boolean isTypePermit() {
+        return (restrict_types != null) &&
+                restrict_types.contains(Const.ApiValues.SPOT_TYPE_PERMIT)
+                && !isSpecialRestrType();
     }
 
     public boolean isTypeTimeMax() {
-        return time_max_parking != null;
+        return (time_max_parking != null) && !isSpecialRestrType();
     }
 
     public boolean isTypeTimeMaxPaid() {
         return isTypePaid() && isTypeTimeMax();
+    }
+
+    private boolean isSpecialRestrType() {
+        if (restrict_types == null || restrict_types.isEmpty()) {
+            return false;
+        }
+
+        final List<String> regularTypes = new ArrayList<>();
+        regularTypes.add(Const.ApiValues.SPOT_TYPE_PAID);
+        regularTypes.add(Const.ApiValues.SPOT_TYPE_PERMIT);
+
+        for (String type : restrict_types) {
+            if (!regularTypes.contains(type)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
