@@ -86,21 +86,6 @@ public class CalendarUtils {
         return week[dayOfWeek - 1];
     }
 
-    // TODO use locale to handle AM/PM and 12/24
-//    public static String getTimeFromMinutesOfDay(Resources res, int minuteOfDay) {
-//        if (minuteOfDay == Const.UNKNOWN_VALUE) {
-//            return null;
-//        }
-//
-//        final int hours = (int) Math.floor(minuteOfDay / 60);
-//        final int minutes = minuteOfDay % 60;
-//
-//        return String.format(
-//                res.getString(R.string.hour_minutes),
-//                hours,
-//                minutes);
-//    }
-
     public static String getTimeFromMillis(Context context, long millis) {
         if ((int) millis == Const.UNKNOWN_VALUE) {
             return null;
@@ -117,16 +102,48 @@ public class CalendarUtils {
             return null;
         }
 
+        if (Long.valueOf(millis).compareTo(DateUtils.WEEK_IN_MILLIS) >= 0) {
+            return "Allowed at all times";
+        }
+
         return String.format("Remaining Time = %1sh %2sm",
                 (int) Math.floor(millis / DateUtils.HOUR_IN_MILLIS),
                 (int) Math.floor((millis % DateUtils.HOUR_IN_MILLIS) / DateUtils.MINUTE_IN_MILLIS)
         );
     }
 
+    /**
+     * Get the absolute number of days between two DaysOfWeek
+     *
+     * @param day1 the day to subtract from
+     * @param day2 the the day subtracted
+     * @return absolute number of days
+     */
+    public static int subtractDaysOfWeekLooped(int day1, int day2) {
+        if (day1 < day2) {
+            return subtractDaysOfWeekLooped(day1 + WEEK_IN_DAYS, day2);
+        }
+
+        return day1 - day2;
+    }
+
     public static String getIsoTimestamp() {
         final SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_ISO_8601, Locale.getDefault());
 
         return sdf.format(new Date());
+    }
+
+    /**
+     * Get the current daytime in MilliSeconds, compatible with Intervals
+     *
+     * @return Today's milliseconds (since midnight)
+     */
+    public static long todayMillis() {
+        final Calendar cal = GregorianCalendar.getInstance();
+        cal.setTime(new Date());
+
+        return cal.get(Calendar.HOUR_OF_DAY) * DateUtils.HOUR_IN_MILLIS
+                + cal.get(Calendar.MINUTE) * DateUtils.MINUTE_IN_MILLIS;
     }
 
     public static long getTimezoneOffsetMillis() {
