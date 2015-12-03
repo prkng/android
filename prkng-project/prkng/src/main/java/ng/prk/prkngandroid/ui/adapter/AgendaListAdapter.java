@@ -70,10 +70,7 @@ public class AgendaListAdapter extends RecyclerView.Adapter<AgendaListAdapter.Ag
             holder.vTimeEnd.setVisibility(View.VISIBLE);
         }
 
-        holder.itemView.setBackgroundColor(
-                ContextCompat.getColor(
-                        context, dayOfWeek == today ? R.color.agenda_today_item_background : R.color.agenda_item_background
-                ));
+        holder.itemView.setBackgroundColor(getRowBackground(parkingRestrPeriod));
     }
 
     private int getRestrTypeIcon(int type) {
@@ -91,6 +88,21 @@ public class AgendaListAdapter extends RecyclerView.Adapter<AgendaListAdapter.Ag
         }
 
         return 0;
+    }
+
+    private int getRowBackground(RestrInterval interval) {
+        int color;
+        if (interval.getDayOfWeek() != today) {
+            color = R.color.agenda_item_background;
+        } else {
+            if (interval.isBefore(CalendarUtils.todayMillis())) {
+                color = R.color.agenda_item_background;
+            } else {
+                color = R.color.agenda_today_item_background ;
+            }
+        }
+
+        return ContextCompat.getColor(context, color);
     }
 
     @Override
