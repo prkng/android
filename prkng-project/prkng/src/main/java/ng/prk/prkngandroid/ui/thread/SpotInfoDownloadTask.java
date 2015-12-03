@@ -1,13 +1,8 @@
 package ng.prk.prkngandroid.ui.thread;
 
 import android.os.AsyncTask;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.TextView;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.io.PrkngService;
@@ -44,8 +39,8 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
 //        String spotId = "442896"; // 48h+ parking allowed
 //        String spotId = "417002"; // 6day+ parking allowed
         String spotId = "447204"; // mercredi NoParking 9-10. looped week
-
-        // R-AL , tourist_bus
+//        String spotId = "429308"; // arret x2 + paid x2
+//        String spotId = "429400"; // Allowed all week
 
 //        final String spotId = params[0];
         Log.v(TAG, "spotId = " + spotId);
@@ -73,18 +68,8 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
             final RestrIntervalsList parkingAgenda = spotRules.getParkingAgenda();
             mAdapter.swapDataset(parkingAgenda);
 
-            Calendar cal = GregorianCalendar.getInstance();
-            cal.setTime(new Date());
-            int currentHour = cal.get(Calendar.HOUR_OF_DAY);
-            int currentMinutes = cal.get(Calendar.MINUTE);
-            long millis = currentHour * DateUtils.HOUR_IN_MILLIS
-                    + currentMinutes * DateUtils.MINUTE_IN_MILLIS
-                    ;
-
-            Log.v(TAG, currentHour + ":" + currentMinutes);
-
             final long remainingTime = spotRules.getRemainingTime(parkingAgenda,
-                    millis);
+                    CalendarUtils.todayMillis());
 
             vIntervalEnd.setText(CalendarUtils.getDurationFromMillis(
                     vIntervalEnd.getContext(),
