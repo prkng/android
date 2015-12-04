@@ -59,10 +59,10 @@ public class RestrIntervalsList extends ArrayList<RestrInterval> {
 
             // Build new interval
             intervalsList.add(new RestrInterval.Builder(i1.getDayOfWeek())
-                    .interval(i1.overlap(i2))
-                    .type(Const.ParkingRestrType.TIME_MAX_PAID)
-                    .timeMax(getMinTimemax(i1.getTimeMax(), i2.getTimeMax()))
-                    .build()
+                            .interval(i1.overlap(i2))
+                            .type(Const.ParkingRestrType.TIME_MAX_PAID)
+                            .timeMax(getMinTimemax(i1.getTimeMax(), i2.getTimeMax()))
+                            .build()
             );
         }
 
@@ -78,4 +78,36 @@ public class RestrIntervalsList extends ArrayList<RestrInterval> {
             return Math.min(t1, t2);
         }
     }
+
+    public int findContainingInterval(long time) {
+        int dayOfWeek = get(0).getDayOfWeek();
+
+        for (RestrInterval interval : this) {
+            if (interval.getDayOfWeek() != dayOfWeek) {
+                // ArrayList is sorted starting today. Different day means no containing interval
+                return Const.UNKNOWN_VALUE;
+            } else if (interval.contains(time)) {
+                return indexOf(interval);
+            }
+        }
+
+        return Const.UNKNOWN_VALUE;
+    }
+
+    public int findLastAbuttingInterval(int indexInterval) {
+        RestrInterval interval = get(indexInterval);
+
+        final int size = size();
+        for (int i = indexInterval; i < size; i++) {
+            if (get(i).isSameType(interval) && get(i).abutsOvernight(interval)) {
+                interval = get(i);
+            } else {
+                break;
+            }
+        }
+
+        return indexOf(interval);
+    }
+
+
 }

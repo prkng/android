@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import ng.prk.prkngandroid.Const;
+import ng.prk.prkngandroid.io.ApiSimulator;
 import ng.prk.prkngandroid.util.ArrayUtils;
 import ng.prk.prkngandroid.util.CalendarUtils;
 
@@ -35,8 +36,8 @@ public class SpotRules {
     public RestrIntervalsList getParkingAgenda() {
         final int today = CalendarUtils.getIsoDayOfWeek();
 
-        final Map<Integer, RestrIntervalsList> dailyIntervals = getDailyIntervals(rules, today);
-//        final Map<Integer, RestrIntervalsList> dailyIntervals = ApiSimulator.getTestScenarios();
+//        final Map<Integer, RestrIntervalsList> dailyIntervals = getDailyIntervals(rules, today);
+        final Map<Integer, RestrIntervalsList> dailyIntervals = ApiSimulator.getTestScenarios();
 
         return getWeekIntervals(dailyIntervals, today);
     }
@@ -132,6 +133,22 @@ public class SpotRules {
     }
 
 
+    public long getRemainingTimeXX(RestrIntervalsList intervals, long now) {
+        if (intervals == null || intervals.isEmpty()) {
+            return DateUtils.WEEK_IN_MILLIS;
+        }
+
+        int indexCurrentInterval = intervals.findContainingInterval(now);
+
+        if (indexCurrentInterval != Const.UNKNOWN_VALUE) {
+            indexCurrentInterval = intervals.findLastAbuttingInterval(indexCurrentInterval);
+        }
+
+
+
+        return 0;
+    }
+
     /**
      * Get the time remaining (in millis) before the end of the current interval,
      * or the beginning of the next restriction interval.
@@ -182,18 +199,33 @@ public class SpotRules {
             }
         }
 
-         if (currentInterval.getType() != Const.ParkingRestrType.NONE) {
-             if (currentInterval.getType() == Const.ParkingRestrType.ALL_TIMES) {
-                 // Special case when viewing a NoParking spot.
-                 // UX doesn't normally display SpotInfo for such spots.
-                 return 0;
-             }
+        if (currentInterval.getType() != Const.ParkingRestrType.NONE) {
+            if (currentInterval.getType() == Const.ParkingRestrType.ALL_TIMES) {
+                // Special case when viewing a NoParking spot.
+                // UX doesn't normally display SpotInfo for such spots.
+                return 0;
+            }
 
             // Found the containing interval, and it's not initial default Interval
             // Return the time between now/today and the interval's end
-            return (currentInterval.getEndMillis() - now) + (DateUtils.DAY_IN_MILLIS *
+            final long time = (currentInterval.getEndMillis() - now) + (DateUtils.DAY_IN_MILLIS *
                     CalendarUtils.subtractDaysOfWeekLooped(currentInterval.getDayOfWeek(), today)
             );
+
+            if (currentInterval.getType() == Const.ParkingRestrType.TIME_MAX_PAID) {
+                // For TimeMaxPaid, time cannot be greater than TimeMax duration
+                return Math.min(time, currentInterval.getTimeMax() * DateUtils.MINUTE_IN_MILLIS);
+            } else if (currentInterval.getType() == Const.ParkingRestrType.TIME_MAX) {
+                final Long timeMaxMillis = currentInterval.getTimeMax() * DateUtils.MINUTE_IN_MILLIS;
+                if (timeMaxMillis.compareTo(time) < 0) {
+                    return timeMaxMillis;
+                } else {
+                    // TODO calculate end in next TimeMax interval
+                    return 0;
+                }
+            }
+
+            return time;
         } else if (idx != Const.UNKNOWN_VALUE) {
             // Found the following interval with restriction.
             // Current interval is of type NONE (parking allowed)
