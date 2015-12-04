@@ -32,18 +32,18 @@ public class ApiSimulator {
 
         if (scenario == Const.UNKNOWN_VALUE) {
             int i = 1;
-            buildScenario01(daysMap, i++);
-            buildScenario02(daysMap, i++);
+//            buildScenario01(daysMap, i++);
+//            buildScenario02(daysMap, i++);
 
             // Recursive tests
-            buildScenario03(daysMap, i++);
+//            buildScenario03(daysMap, i++);
 //            buildScenario03A(daysMap, i++);
 //            buildScenario03B(daysMap, i++);
 
-            buildScenario04(daysMap, i++);
-            buildScenario05(daysMap, i++);
-            buildScenario06(daysMap, i++);
-            buildScenario07(daysMap, i++);
+//            buildScenario04(daysMap, i++);
+//            buildScenario05(daysMap, i++);
+//            buildScenario06(daysMap, i++);
+//            buildScenario07(daysMap, i++);
 
 //            // TimeMax + NoParking
 //            buildScenario08(daysMap, i++);
@@ -58,6 +58,11 @@ public class ApiSimulator {
 //            // Multi-day period
 //            buildScenario13(daysMap, i++);
 //            buildScenario13(daysMap,  i++);
+
+              // TimeMax remaining time
+            buildScenario14(daysMap, i++);
+            i++;
+            buildScenario14(daysMap, i++);
         } else
             switch (scenario) {
                 case 1:
@@ -492,5 +497,24 @@ public class ApiSimulator {
                 .type(Const.ParkingRestrType.ALL_TIMES)
                 .build());
 
+    }
+
+
+    /**
+     * TimeMax 120 min 12-18h
+     * Result: NoParking 0-5 + NoParking 19-24
+     *
+     * @param daysMap
+     * @param dayOfWeek
+     */
+    private static void buildScenario14(Map<Integer, RestrIntervalsList> daysMap, int dayOfWeek) {
+        RestrIntervalsList restrList = daysMap.get(dayOfWeek);
+
+        restrList.addMerge(new RestrInterval.Builder(dayOfWeek)
+                .startHour(12f)
+                .endHour(18f)
+                .type(Const.ParkingRestrType.TIME_MAX)
+                .timeMax(120)
+                .build());
     }
 }
