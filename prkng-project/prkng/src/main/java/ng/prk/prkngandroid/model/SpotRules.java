@@ -38,8 +38,7 @@ public class SpotRules {
 
         // Initialize the days' arrays
         for (int i = 1; i <= CalendarUtils.WEEK_IN_DAYS; i++) {
-            RestrIntervalsList restrList = new RestrIntervalsList();
-            daysMap.put(i, restrList);
+            daysMap.put(i, new RestrIntervalsList());
         }
 
         // Loop over each rule
@@ -116,43 +115,11 @@ public class SpotRules {
     }
 
     /**
-     * Generate a FreeParking interval that contains the current daytime timestamp
-     *
      * @param intervals The agenda's intervals, sorted and starting today
-     * @param now       the current daytime timestamp
-     * @return RestrInterval of type NONE
+     * @param today     Today's dayOfWeek
+     * @param now       the daytime current timestamp, should be in a FreeParking interval
+     * @return RestrInterval
      */
-    private static RestrInterval buildFreeParkingInterval(RestrIntervalsList intervals, int today, long now) {
-        long startMillis = 0L;
-        long endMillis = DateUtils.DAY_IN_MILLIS;
-
-        int size = intervals.size();
-        for (int i = 0; i < size; i++) {
-            final RestrInterval interval = intervals.get(i);
-            if (interval.getDayOfWeek() == today) {
-                if (interval.isBefore(now)) {
-                    startMillis = interval.getEndMillis();
-                } else if (interval.isAfter(now)) {
-                    // Found the next interval
-                    // The FreeParking interval ends at this interval's beginning
-                    endMillis = interval.getStartMillis();
-
-                    // Exit loop
-                    break;
-                }
-            } else {
-                // Different day, so this FreeParking interval ends at previous midnight
-                break;
-            }
-        }
-
-        return new RestrInterval.Builder(today)
-                .type(Const.ParkingRestrType.NONE)
-                .startMillis(startMillis)
-                .endMillis(endMillis)
-                .build();
-    }
-
     private static RestrInterval getNextRestrIntervalWeekLooped(RestrIntervalsList intervals, int today, long now) {
         int indexNext = intervals.findNextRestrIntervalToday(now, today);
         if (indexNext == Const.UNKNOWN_VALUE) {
@@ -165,16 +132,12 @@ public class SpotRules {
     /**
      * Current interval is of type NONE (parking allowed)
      *
-     * @param intervals
-     * @param today
-     * @param now
-     * @param index
-     * @return
+     * @param intervals The agenda's intervals, sorted and starting today
+     * @param today     Today's dayOfWeek
+     * @param now       the daytime current timestamp
+     * @return Millis remaining before the end of current interval
      */
-    private static long getFreeParkingRemainingTime(RestrIntervalsList intervals, int today, long now, int index) {
-        final RestrInterval currentInterval = (index != Const.UNKNOWN_VALUE) ?
-                intervals.get(index) : buildFreeParkingInterval(intervals, today, now);
-
+    private static long getFreeParkingRemainingTime(RestrIntervalsList intervals, int today, long now) {
         final RestrInterval nextRestrInterval = getNextRestrIntervalWeekLooped(intervals, today, now);
 
         final boolean isWeekLoop = (intervals.get(0) == nextRestrInterval);
@@ -189,6 +152,14 @@ public class SpotRules {
                 + (DateUtils.DAY_IN_MILLIS * nbDays);
     }
 
+    /**
+     * For a 24/7 interval, return remaining parking time.
+     * For NONE and PAID, duration is a full week.
+     * For time-based restrictions, duration is TimeMax.
+     *
+     * @param intervals The agenda's intervals, sorted and starting today
+     * @return Millis remaining following the 24/7 interval rule
+     */
     private static long getFullWeekRemainingTime(RestrIntervalsList intervals) {
         final RestrInterval interval = intervals.get(0);
 
@@ -262,13 +233,13 @@ public class SpotRules {
                 case Const.ParkingRestrType.PAID:
                     return timeRemaining;
                 case Const.ParkingRestrType.NONE:
-                    return getFreeParkingRemainingTime(intervals, today, now, index);
+                    return getFreeParkingRemainingTime(intervals, today, now);
                 case Const.ParkingRestrType.TIME_MAX:
                     final Long timeMaxMillis = currentInterval.getTimeMaxMillis();
                     if (timeMaxMillis.compareTo(timeRemaining) < 0) {
                         return timeMaxMillis;
                     } else {
-                        return getFreeParkingRemainingTime(intervals, today, now, index);
+                        return getFreeParkingRemainingTime(intervals, today, now);
                     }
                 case Const.ParkingRestrType.TIME_MAX_PAID:
                     // For TimeMaxPaid, time cannot be greater than TimeMax duration
@@ -279,7 +250,7 @@ public class SpotRules {
                     return 0;
             }
         } else {
-            return getFreeParkingRemainingTime(intervals, today, now, Const.UNKNOWN_VALUE);
+            return getFreeParkingRemainingTime(intervals, today, now);
         }
 
         // Free parking all week long!
@@ -298,21 +269,21 @@ public class SpotRules {
      *
      * @return Codes of all the rules
      */
-    private String getAllCodes() {
-        final int size = getSize();
-        if (size > 0) {
-            String[] codes = new String[size];
-            if (rules != null) {
-                int i = 0;
-                for (SpotRule rule : rules) {
-                    codes[i++] = rule.getCode();
-                }
-            }
-            return ArrayUtils.join(codes);
-        }
-
-        return null;
-    }
+//    private String getAllCodes() {
+//        final int size = getSize();
+//        if (size > 0) {
+//            String[] codes = new String[size];
+//            if (rules != null) {
+//                int i = 0;
+//                for (SpotRule rule : rules) {
+//                    codes[i++] = rule.getCode();
+//                }
+//            }
+//            return ArrayUtils.join(codes);
+//        }
+//
+//        return null;
+//    }
 
     /**
      * Used for debug or {@link #toString()}

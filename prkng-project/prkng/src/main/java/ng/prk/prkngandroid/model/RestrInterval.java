@@ -20,6 +20,11 @@ public class RestrInterval extends Interval implements
     private int type;
     private int timeMax;
 
+    /**
+     * Private constructor to be used with Builder
+     *
+     * @param builder the RestrInterval.Builder
+     */
     private RestrInterval(Builder builder) {
         super(builder.startMillis, builder.endMillis);
 
@@ -28,6 +33,89 @@ public class RestrInterval extends Interval implements
         this.timeMax = builder.timeMax;
     }
 
+    /**
+     * Check if the first interval ends at the same midnight where the second interval starts.
+     * This is regardless of type
+     *
+     * @param firstInterval  The interval to examine
+     * @param secondInterval The interval to examine
+     * @return true if the both intervals abut at midnight, following specific order
+     */
+    private static boolean abutsOvernight(RestrInterval firstInterval, RestrInterval secondInterval) {
+        return (Float.compare(firstInterval.getEndMillis(), DateUtils.DAY_IN_MILLIS) == 0)
+                && (Float.compare(secondInterval.getStartMillis(), 0) == 0);
+    }
+
+    /**
+     * Subtract an interval from the current.
+     * When the other interval contains the current, result is empty.
+     * When the current interval contains the other, result is 2 intervals with a gap.
+     * When the current interval starts before, result is the first part (leading)
+     * When the current interval starts after, result is the second (trailing)
+     *
+     * @param current the interval to subtract from
+     * @param another the Interval to subtract
+     * @return List of intervals, can have a gap
+     */
+    private static RestrIntervalsList subtract(RestrInterval current, RestrInterval another) {
+        final RestrIntervalsList intervalsList = new RestrIntervalsList();
+
+        if (another.contains(current)) {
+            // The subtracted interval is bigger than current, return empty result.
+            return intervalsList;
+        }
+
+        if (current.contains(another) || current.startsBefore(another)) {
+            // The first (leading) part, if its remaining duration > 0
+            if (Float.compare(current.getStartMillis(), another.getStartMillis()) < 0) {
+                intervalsList.add(new Builder(current.getDayOfWeek())
+                                .startMillis(current.getStartMillis())
+                                .endMillis(another.getStartMillis())
+                                .type(current.getType())
+                                .timeMax(current.getTimeMaxMinutes())
+                                .build()
+                );
+            }
+        }
+
+        if (current.contains(another) || current.startsAfter(another)) {
+            if (Float.compare(another.getEndMillis(), current.getEndMillis()) < 0) {
+                // The last (trailing) part, if its remaining duration > 0
+                intervalsList.add(new Builder(current.getDayOfWeek())
+                                .startMillis(another.getEndMillis())
+                                .endMillis(current.getEndMillis())
+                                .type(current.getType())
+                                .timeMax(current.getTimeMaxMinutes())
+                                .build()
+                );
+            }
+        }
+
+        return intervalsList;
+    }
+
+    /**
+     * Get the shortest TimeMax, ignoring empty values (without time restriction)
+     *
+     * @param t1 TimeMax minutes
+     * @param t2 TimeMax minutes
+     * @return int shortest TimeMaxMinutes period
+     */
+    public static int getMinTimemax(int t1, int t2) {
+        if (t1 == Const.UNKNOWN_VALUE) {
+            return t2;
+        } else if (t2 == Const.UNKNOWN_VALUE) {
+            return t1;
+        } else {
+            return Math.min(t1, t2);
+        }
+    }
+
+    /**
+     * Get ISO day of week
+     *
+     * @return int day of week
+     */
     public int getDayOfWeek() {
         return dayOfWeek;
     }
@@ -40,10 +128,20 @@ public class RestrInterval extends Interval implements
         return type;
     }
 
+    /**
+     * Get TimeMax value, in minutes
+     *
+     * @return int TimeMax minutes
+     */
     public int getTimeMaxMinutes() {
         return timeMax;
     }
 
+    /**
+     * Get TimeMax value, in milliseconds
+     *
+     * @return long TimeMax millis
+     */
     public long getTimeMaxMillis() {
         return timeMax * DateUtils.MINUTE_IN_MILLIS;
     }
@@ -60,7 +158,7 @@ public class RestrInterval extends Interval implements
 
     /**
      * @param another The interval to examine
-     * @return
+     * @return true if intervals are on the same day
      */
     public boolean isSameDay(RestrInterval another) {
         return this.dayOfWeek == another.getDayOfWeek();
@@ -75,6 +173,13 @@ public class RestrInterval extends Interval implements
         return endMillis - startMillis >= DateUtils.DAY_IN_MILLIS;
     }
 
+    /**
+     * Check if the interval abuts the current at midnight. Also handles week-loop.
+     * This is regardless of type or order.
+     *
+     * @param another The interval to examine
+     * @return true if the other interval abuts at previous/following midnight
+     */
     public boolean abutsOvernight(@NonNull RestrInterval another) {
 
         if (CalendarUtils.areConsecutiveDaysOfWeekLooped(this.dayOfWeek, another.getDayOfWeek())) {
@@ -86,15 +191,10 @@ public class RestrInterval extends Interval implements
         return false;
     }
 
-    private static boolean abutsOvernight(RestrInterval firstInterval, RestrInterval secondInterval) {
-        return (Float.compare(firstInterval.getEndMillis(), DateUtils.DAY_IN_MILLIS) == 0)
-                && (Float.compare(secondInterval.getStartMillis(), 0) == 0);
-    }
-
     /**
      * Check if restriction rule is stronger.
-     * Priority order is ALL_TIMES then TIME_MAX_PAID.
-     * For PAID, TIME_MAX a merge is needed.
+     * Priority order is ALL_TIMES then TIME_MAX_PAID. The weakest being NONE.
+     * For PAID, TIME_MAX a merge is needed, so none overrules.
      *
      * @param another The interval to examine
      * @return true if rule is stronger
@@ -117,65 +217,15 @@ public class RestrInterval extends Interval implements
     /**
      * Subtract an interval from the current.
      * When the other interval contains the current, result is empty.
-     * When the other interval is contained, result is 2 intervals with a gap.
+     * When the current interval contains the other, result is 2 intervals with a gap.
+     * When the current interval starts before, result is the first part (leading)
+     * When the current interval starts after, result is the second (trailing)
      *
-     * @param another the Interval to examine
+     * @param another the Interval to subtract
      * @return List of intervals, can have a gap
      */
     public RestrIntervalsList subtract(RestrInterval another) {
-        final RestrIntervalsList intervalsList = new RestrIntervalsList();
-
-        if (another.contains(this)) {
-            // The subtracted interval is bigger than current, return empty result.
-            return intervalsList;
-        } else if (contains(another)) {
-            // Split current into 2 parts, surrounding the other interval
-            if (Float.compare(this.startMillis, another.getStartMillis()) < 0) {
-                // The first (leading) part
-                intervalsList.add(new Builder(this.dayOfWeek)
-                                .startMillis(this.startMillis)
-                                .endMillis(another.getStartMillis())
-                                .type(this.type)
-                                .timeMax(this.timeMax)
-                                .build()
-                );
-            }
-
-            if (Float.compare(another.getEndMillis(), this.endMillis) < 0) {
-                // The last (trailing) part
-                intervalsList.add(new Builder(this.dayOfWeek)
-                                .startMillis(another.getEndMillis())
-                                .endMillis(this.endMillis)
-                                .type(this.type)
-                                .timeMax(this.timeMax)
-                                .build()
-                );
-            }
-        } else if (startsBefore(another)) {
-            // Keep the first (leading) part only
-            if (Float.compare(this.startMillis, another.getStartMillis()) < 0) {
-                intervalsList.add(new Builder(this.dayOfWeek)
-                                .startMillis(this.startMillis)
-                                .endMillis(another.getStartMillis())
-                                .type(this.type)
-                                .timeMax(this.timeMax)
-                                .build()
-                );
-            }
-        } else if (startsAfter(another)) {
-            // Keep the last (trailing) part only
-            if (Float.compare(another.getEndMillis(), this.endMillis) < 0) {
-                intervalsList.add(new Builder(this.dayOfWeek)
-                                .startMillis(another.getEndMillis())
-                                .endMillis(this.endMillis)
-                                .type(this.type)
-                                .timeMax(this.timeMax)
-                                .build()
-                );
-            }
-        }
-
-        return intervalsList;
+        return subtract(this, another);
     }
 
     @Override
@@ -187,6 +237,9 @@ public class RestrInterval extends Interval implements
                 '}';
     }
 
+    /**
+     * Builder class
+     */
     public static class Builder {
         private int dayOfWeek;
         private int type;
@@ -207,8 +260,8 @@ public class RestrInterval extends Interval implements
             return this;
         }
 
-        public Builder timeMax(int timeMax) {
-            this.timeMax = timeMax;
+        public Builder timeMax(int minutes) {
+            this.timeMax = minutes;
             return this;
         }
 
