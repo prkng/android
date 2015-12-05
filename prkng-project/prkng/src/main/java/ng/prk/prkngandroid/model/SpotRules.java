@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import ng.prk.prkngandroid.Const;
-import ng.prk.prkngandroid.io.ApiSimulator;
 import ng.prk.prkngandroid.util.ArrayUtils;
 import ng.prk.prkngandroid.util.CalendarUtils;
 
@@ -24,24 +23,6 @@ public class SpotRules {
         this.rules = rules;
     }
 
-    public int getSize() {
-        return rules == null ? 0 : rules.size();
-    }
-
-    /**
-     * Get a clean list of the week's restriction intervals, merged and sorted by day and time.
-     *
-     * @return List of the week's restriction intervals
-     */
-    public RestrIntervalsList getParkingAgenda() {
-        final int today = CalendarUtils.getIsoDayOfWeek();
-
-//        final Map<Integer, RestrIntervalsList> dailyIntervals = getDailyIntervals(rules, today);
-        final Map<Integer, RestrIntervalsList> dailyIntervals = ApiSimulator.getTestScenarios();
-
-        return getWeekIntervals(dailyIntervals, today);
-    }
-
     /**
      * Merge the spot rules into a RestrIntervalsList, mapped per day for the whole week.
      * Each day has merged and sorted intervals.
@@ -54,6 +35,13 @@ public class SpotRules {
     private static Map<Integer, RestrIntervalsList> getDailyIntervals(List<SpotRule> rules, int today) {
 
         final Map<Integer, RestrIntervalsList> daysMap = new HashMap<>();
+
+        // Initialize the days' arrays
+        for (int i = 1; i <= CalendarUtils.WEEK_IN_DAYS; i++) {
+            RestrIntervalsList restrList = new RestrIntervalsList();
+            daysMap.put(i, restrList);
+        }
+
         // Loop over each rule
         for (SpotRule rule : rules) {
             final SpotRuleAgenda agenda = rule.getAgenda();
@@ -62,12 +50,7 @@ public class SpotRules {
                 final int dayOfWeek = CalendarUtils.getIsoDayOfWeekLooped(i, today);
                 List<List<Float>> state = agenda.getDay(dayOfWeek);
 
-                RestrIntervalsList restrList = daysMap.get(i);
-                if (restrList == null) {
-                    // Initialize the day's array if necessary
-                    restrList = new RestrIntervalsList();
-                    daysMap.put(i, restrList);
-                }
+                final RestrIntervalsList restrList = daysMap.get(i);
 
                 int type;
                 int timeMax = Const.UNKNOWN_VALUE;
@@ -132,21 +115,114 @@ public class SpotRules {
         return mergedList;
     }
 
+    /**
+     * Generate a FreeParking interval that contains the current daytime timestamp
+     *
+     * @param intervals The agenda's intervals, sorted and starting today
+     * @param now       the current daytime timestamp
+     * @return RestrInterval of type NONE
+     */
+    private static RestrInterval buildFreeParkingInterval(RestrIntervalsList intervals, int today, long now) {
+        long startMillis = 0L;
+        long endMillis = DateUtils.DAY_IN_MILLIS;
 
-    public long getRemainingTimeXX(RestrIntervalsList intervals, long now) {
-        if (intervals == null || intervals.isEmpty()) {
-            return DateUtils.WEEK_IN_MILLIS;
+        int size = intervals.size();
+        for (int i = 0; i < size; i++) {
+            final RestrInterval interval = intervals.get(i);
+            if (interval.getDayOfWeek() == today) {
+                if (interval.isBefore(now)) {
+                    startMillis = interval.getEndMillis();
+                } else if (interval.isAfter(now)) {
+                    // Found the next interval
+                    // The FreeParking interval ends at this interval's beginning
+                    endMillis = interval.getStartMillis();
+
+                    // Exit loop
+                    break;
+                }
+            } else {
+                // Different day, so this FreeParking interval ends at previous midnight
+                break;
+            }
         }
 
-        int indexCurrentInterval = intervals.findContainingInterval(now);
+        return new RestrInterval.Builder(today)
+                .type(Const.ParkingRestrType.NONE)
+                .startMillis(startMillis)
+                .endMillis(endMillis)
+                .build();
+    }
 
-        if (indexCurrentInterval != Const.UNKNOWN_VALUE) {
-            indexCurrentInterval = intervals.findLastAbuttingInterval(indexCurrentInterval);
+    private static RestrInterval getNextRestrIntervalWeekLooped(RestrIntervalsList intervals, int today, long now) {
+        int indexNext = intervals.findNextRestrIntervalToday(now, today);
+        if (indexNext == Const.UNKNOWN_VALUE) {
+            indexNext = 0;
         }
 
+        return intervals.get(indexNext);
+    }
 
+    /**
+     * Current interval is of type NONE (parking allowed)
+     *
+     * @param intervals
+     * @param today
+     * @param now
+     * @param index
+     * @return
+     */
+    private static long getFreeParkingRemainingTime(RestrIntervalsList intervals, int today, long now, int index) {
+        final RestrInterval currentInterval = (index != Const.UNKNOWN_VALUE) ?
+                intervals.get(index) : buildFreeParkingInterval(intervals, today, now);
 
-        return 0;
+        final RestrInterval nextRestrInterval = getNextRestrIntervalWeekLooped(intervals, today, now);
+
+        final boolean isWeekLoop = (intervals.get(0) == nextRestrInterval);
+        final int nbDays = isWeekLoop ? CalendarUtils.WEEK_IN_DAYS :
+                CalendarUtils.subtractDaysOfWeekLooped(nextRestrInterval.getDayOfWeek(), today);
+
+        final long timeMaxStartOffset = (nextRestrInterval.getType() == Const.ParkingRestrType.TIME_MAX) ?
+                nextRestrInterval.getTimeMaxMillis() : 0;
+
+        return (nextRestrInterval.getStartMillis() - now)
+                + timeMaxStartOffset
+                + (DateUtils.DAY_IN_MILLIS * nbDays);
+    }
+
+    private static long getFullWeekRemainingTime(RestrIntervalsList intervals) {
+        final RestrInterval interval = intervals.get(0);
+
+        switch (interval.getType()) {
+            case Const.ParkingRestrType.ALL_TIMES:
+                // Special case when viewing a NoParking spot.
+                // UX doesn't normally display SpotInfo for such spots.
+                return 0;
+            case Const.ParkingRestrType.TIME_MAX:
+            case Const.ParkingRestrType.TIME_MAX_PAID:
+                return interval.getTimeMaxMillis();
+            case Const.ParkingRestrType.PAID:
+            case Const.ParkingRestrType.NONE:
+            default:
+                return DateUtils.WEEK_IN_MILLIS;
+        }
+    }
+
+    public int getSize() {
+        return rules == null ? 0 : rules.size();
+    }
+
+    /**
+     * Get a clean list of the week's restriction intervals, merged and sorted by day and time.
+     *
+     * @return List of the week's restriction intervals
+     */
+    public RestrIntervalsList getParkingAgenda() {
+        final int today = CalendarUtils.getIsoDayOfWeek();
+
+        final Map<Integer, RestrIntervalsList> dailyIntervals = getDailyIntervals(rules, today);
+//        final Map<Integer, RestrIntervalsList> dailyIntervals = ApiSimulator.getTestScenarios();
+
+        return getWeekIntervals(dailyIntervals, today);
     }
 
     /**
@@ -163,90 +239,50 @@ public class SpotRules {
             return DateUtils.WEEK_IN_MILLIS;
         }
 
+        if (intervals.isTwentyFourSevenRestr()) {
+            return getFullWeekRemainingTime(intervals);
+        }
+
         final int today = CalendarUtils.getIsoDayOfWeek();
-        // Begin with a default Interval: Parking allowed till midnight
-        // Stores the interval that best describes the end of the current period
-        RestrInterval currentInterval = new RestrInterval.Builder(today)
-                .type(Const.ParkingRestrType.NONE)
-                .startMillis(now)
-                .endHour(24f)
-                .build();
 
-        int idx = Const.UNKNOWN_VALUE;  // Index of the following interval
-        int size = intervals.size();
-        for (int i = 0; i < size; i++) {
-            final RestrInterval interval = intervals.get(i);
-            if (interval.getDayOfWeek() == today) {
-                // Same day
-                if (interval.contains(now)) {
-                    // This is the current interval, containing `now`
-                    currentInterval = interval;
-                } else if (interval.isAfter(now)) {
-                    // Found the next interval on the same day, so retain index and interrupt loop
-                    // No need to check other intervals or other days
-                    idx = i;
-                    break;
-                }
-            } else if (currentInterval.abutsOvernight(interval) &&
-                    currentInterval.isSameType(interval)) {
-                // If the next day starts with an interval of the same type (multi-day 
-                // restriction), we retain this interval instead
-                currentInterval = interval;
-            } else {
-                // Next day, any other type of restriction-interval interrupts the loop.
-                idx = i;
-                break;
-            }
-        }
+        int index = intervals.findLastAbuttingInterval(
+                intervals.findContainingIntervalToday(now, today)
+        );
 
-        if (currentInterval.getType() != Const.ParkingRestrType.NONE) {
-            if (currentInterval.getType() == Const.ParkingRestrType.ALL_TIMES) {
-                // Special case when viewing a NoParking spot.
-                // UX doesn't normally display SpotInfo for such spots.
-                return 0;
-            }
+        if (index != Const.UNKNOWN_VALUE) {
+            final RestrInterval currentInterval = intervals.get(index);
 
-            // Found the containing interval, and it's not initial default Interval
-            // Return the time between now/today and the interval's end
-            final long time = (currentInterval.getEndMillis() - now) + (DateUtils.DAY_IN_MILLIS *
-                    CalendarUtils.subtractDaysOfWeekLooped(currentInterval.getDayOfWeek(), today)
-            );
+            // Time between now/today and the interval's end
+            final long timeRemaining = (currentInterval.getEndMillis() - now) +
+                    (CalendarUtils.subtractDaysOfWeekLooped(currentInterval.getDayOfWeek(), today)
+                            * DateUtils.DAY_IN_MILLIS
+                    );
 
-            if (currentInterval.getType() == Const.ParkingRestrType.TIME_MAX_PAID) {
-                // For TimeMaxPaid, time cannot be greater than TimeMax duration
-                return Math.min(time, currentInterval.getTimeMax() * DateUtils.MINUTE_IN_MILLIS);
-            } else if (currentInterval.getType() == Const.ParkingRestrType.TIME_MAX) {
-                final Long timeMaxMillis = currentInterval.getTimeMax() * DateUtils.MINUTE_IN_MILLIS;
-                if (timeMaxMillis.compareTo(time) < 0) {
-                    return timeMaxMillis;
-                } else {
-                    // TODO calculate end in next TimeMax interval
+            switch (currentInterval.getType()) {
+                case Const.ParkingRestrType.PAID:
+                    return timeRemaining;
+                case Const.ParkingRestrType.NONE:
+                    return getFreeParkingRemainingTime(intervals, today, now, index);
+                case Const.ParkingRestrType.TIME_MAX:
+                    final Long timeMaxMillis = currentInterval.getTimeMaxMillis();
+                    if (timeMaxMillis.compareTo(timeRemaining) < 0) {
+                        return timeMaxMillis;
+                    } else {
+                        return getFreeParkingRemainingTime(intervals, today, now, index);
+                    }
+                case Const.ParkingRestrType.TIME_MAX_PAID:
+                    // For TimeMaxPaid, time cannot be greater than TimeMax duration
+                    return Math.min(timeRemaining, currentInterval.getTimeMaxMillis());
+                case Const.ParkingRestrType.ALL_TIMES:
+                    // Special case when viewing a NoParking spot.
+                    // UX doesn't normally display SpotInfo for such spots.
                     return 0;
-                }
             }
-
-            return time;
-        } else if (idx != Const.UNKNOWN_VALUE) {
-            // Found the following interval with restriction.
-            // Current interval is of type NONE (parking allowed)
-            // Return the time between now/today and the interval's beginning
-            final RestrInterval nextInterval = intervals.get(idx);
-            return (nextInterval.getStartMillis() - now) + (DateUtils.DAY_IN_MILLIS *
-                    CalendarUtils.subtractDaysOfWeekLooped(nextInterval.getDayOfWeek(), today)
-            );
         } else {
-            // Didn't find current/next intervals, so check if wraps around week.
-            // The week's first interval should interrupt the current interval
-            final RestrInterval firstInterval = intervals.get(0);
-            if (!firstInterval.contains(now)) {
-                // Whole week, minus difference between now and the interval's beginning
-                // If contains now, it means that the whole week is allowed.
-                return DateUtils.WEEK_IN_MILLIS -
-                        (now - firstInterval.getStartMillis());
-            }
+            return getFreeParkingRemainingTime(intervals, today, now, Const.UNKNOWN_VALUE);
         }
 
-        // Whole week, free parking!
+        // Free parking all week long!
         return DateUtils.WEEK_IN_MILLIS;
     }
 

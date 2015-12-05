@@ -40,8 +40,12 @@ public class RestrInterval extends Interval implements
         return type;
     }
 
-    public int getTimeMax() {
+    public int getTimeMaxMinutes() {
         return timeMax;
+    }
+
+    public long getTimeMaxMillis() {
+        return timeMax * DateUtils.MINUTE_IN_MILLIS;
     }
 
     /**
@@ -51,7 +55,7 @@ public class RestrInterval extends Interval implements
      * @return true if has same type and timeMax value
      */
     public boolean isSameType(RestrInterval another) {
-        return (this.type == another.getType()) && (this.timeMax == another.getTimeMax());
+        return (this.type == another.getType()) && (this.timeMax == another.getTimeMaxMinutes());
     }
 
     /**
@@ -96,14 +100,13 @@ public class RestrInterval extends Interval implements
      * @return true if rule is stronger
      */
     public boolean overrules(RestrInterval another) {
-        // TODO incomplete, adding other types can improve performance
-        if (type == ALL_TIMES) {
+        if (type == ALL_TIMES || another.getType() == NONE) {
             return true;
         } else if (type == TIME_MAX_PAID) {
             if (another.getType() == PAID) {
                 return true;
             } else if (another.getType() == TIME_MAX) {
-                if (getTimeMax() <= another.getTimeMax()) {
+                if (getTimeMaxMinutes() <= another.getTimeMaxMinutes()) {
                     return true;
                 }
             }

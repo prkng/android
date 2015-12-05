@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 import ng.prk.prkngandroid.Const;
+import ng.prk.prkngandroid.util.CalendarUtils;
 
 /**
  * Restriction Interval ArrayList
@@ -61,7 +62,7 @@ public class RestrIntervalsList extends ArrayList<RestrInterval> {
             intervalsList.add(new RestrInterval.Builder(i1.getDayOfWeek())
                             .interval(i1.overlap(i2))
                             .type(Const.ParkingRestrType.TIME_MAX_PAID)
-                            .timeMax(getMinTimemax(i1.getTimeMax(), i2.getTimeMax()))
+                            .timeMax(getMinTimemax(i1.getTimeMaxMinutes(), i2.getTimeMaxMinutes()))
                             .build()
             );
         }
@@ -79,35 +80,87 @@ public class RestrIntervalsList extends ArrayList<RestrInterval> {
         }
     }
 
-    public int findContainingInterval(long time) {
-        int dayOfWeek = get(0).getDayOfWeek();
-
+    public int findContainingIntervalToday(long time, int today) {
+        int i = 0;
         for (RestrInterval interval : this) {
-            if (interval.getDayOfWeek() != dayOfWeek) {
-                // ArrayList is sorted starting today. Different day means no containing interval
-                return Const.UNKNOWN_VALUE;
+            if (interval.getDayOfWeek() != today) {
+                // ArrayList is sorted starting today, so stop once we reach a different day
+                break;
             } else if (interval.contains(time)) {
-                return indexOf(interval);
+                return i;
             }
+            i++;
         }
 
         return Const.UNKNOWN_VALUE;
     }
 
-    public int findLastAbuttingInterval(int indexInterval) {
-        RestrInterval interval = get(indexInterval);
+    public int findNextRestrIntervalToday(long time, int today) {
+        if (size() == 0) {
+            return Const.UNKNOWN_VALUE;
+        }
 
-        final int size = size();
-        for (int i = indexInterval; i < size; i++) {
-            if (get(i).isSameType(interval) && get(i).abutsOvernight(interval)) {
-                interval = get(i);
+        int i = 0;
+        for (RestrInterval interval : this) {
+            if ((interval.getDayOfWeek() != today) || interval.isAfter(time)) {
+                if (interval.getType() != Const.ParkingRestrType.NONE) {
+                    return i;
+                }
+            }
+            i++;
+        }
+
+        return Const.UNKNOWN_VALUE;
+    }
+
+    public int findLastAbuttingInterval(int index) {
+        if (index == Const.UNKNOWN_VALUE) {
+            return Const.UNKNOWN_VALUE;
+        }
+
+        final int s = size();
+        if (index >= s) {
+            throwIndexOutOfBoundsException(index, s);
+        }
+
+        if (1 + index > s) {
+            // Index provided is that of the last Interval
+            return index;
+        }
+
+        // Return same index if none other are found
+        int indexFound = index;
+
+        RestrInterval previous = get(index);
+        for (int i = 1 + index; i < s; i++) {
+            final RestrInterval current = get(i);
+            if (current.isSameType(previous) && current.abutsOvernight(previous)) {
+                indexFound = i;
+                previous = current;
             } else {
                 break;
             }
         }
 
-        return indexOf(interval);
+        return indexFound;
     }
 
+    public boolean isTwentyFourSevenRestr() {
+        if (size() != CalendarUtils.WEEK_IN_DAYS) {
+            return false;
+        }
 
+        int firstType = get(0).getType();
+        for (RestrInterval interval : this) {
+            if (!interval.isAllDay() || interval.getType() != firstType) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    static IndexOutOfBoundsException throwIndexOutOfBoundsException(int index, int size) {
+        throw new IndexOutOfBoundsException("Invalid index " + index + ", size is " + size);
+    }
 }

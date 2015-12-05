@@ -50,7 +50,7 @@ public class AgendaListAdapter extends RecyclerView.Adapter<AgendaListAdapter.Ag
         final boolean isAllDay = parkingRestrPeriod.isAllDay();
         final String timeStart = CalendarUtils.getTimeFromMillis(context, parkingRestrPeriod.getStartMillis());
         final String timeEnd = CalendarUtils.getTimeFromMillis(context, parkingRestrPeriod.getEndMillis());
-        final int timeMax = parkingRestrPeriod.getTimeMax();
+        final int timeMax = parkingRestrPeriod.getTimeMaxMinutes();
         final int typeIcon = getRestrTypeIcon(parkingRestrPeriod.getType());
 
         if (timeMax != Const.UNKNOWN_VALUE) {
