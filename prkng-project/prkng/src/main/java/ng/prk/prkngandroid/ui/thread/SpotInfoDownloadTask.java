@@ -41,9 +41,14 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
 //        String spotId = "447204"; // mercredi NoParking 9-10. looped week
 //        String spotId = "429308"; // arret x2 + paid x2
 //        String spotId = "429400"; // Allowed all week
-        String spotId = "419907"; // TimeMax (60) 9-16
+//        String spotId = "419907"; // TimeMax (60) 9-16
+//        String spotId = "417152"; // reserve s3r 15h-09h
+//        String spotId = "444521"; // reserve s3r 15h-09h
+//        String spotId = "448231 "; // TimeMax (120) + freeparking
+//        String spotId = "445340"; // TimeMax (60) + TimeMax (60)
+//        String spotId = "454257"; // TimeMax merged with TimeMaxPaid (60)
 
-//        final String spotId = params[0];
+        final String spotId = params[0];
         Log.v(TAG, "spotId = " + spotId);
 
         final PrkngService service = ApiClient.getServiceLog();
