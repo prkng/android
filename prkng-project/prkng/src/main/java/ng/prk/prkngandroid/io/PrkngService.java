@@ -198,6 +198,29 @@ public interface PrkngService {
             @Path(Const.ApiArgs.SPOT_ID) String spotId
     );
 
+    /**
+     * Returns the parking slot corresponding to the id
+     * If {@code filter} is not `true` then the endpoint will return all rules applicable,
+     * regardless of season or permit status.
+     * Note that `filter` is true by default, and {@code timestamp} defaults to current server date
+     *
+     * @param apiKey
+     * @param spotId
+     * @param useFilter
+     * @param timestamp
+     * @param permits
+     * @return
+     */
+    @Headers({CONTENT_TYPE})
+    @GET(Const.ApiPaths.GET_SPOT)
+    Call<LinesGeoJSONFeature> getParkingSpotInfo(
+            @Header(Const.ApiArgs.API_KEY) String apiKey,
+            @Path(Const.ApiArgs.SPOT_ID) String spotId,
+            @Path(Const.ApiArgs.USE_FILTER) boolean useFilter,
+            @Path(Const.ApiArgs.CHECKIN_TIMESTAMP) String timestamp,
+            @Query(Const.ApiArgs.PERMITS) String permits
+    );
+
     // Get information about a user
     @Headers({CONTENT_TYPE})
     @GET(Const.ApiPaths.GET_USER_PROFILE)

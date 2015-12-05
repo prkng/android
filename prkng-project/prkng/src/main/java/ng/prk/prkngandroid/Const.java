@@ -44,6 +44,7 @@ public class Const {
         String CITY = "city";
         String SPOT_ID = "slot_id";
         String CHECKIN_ID = "id";
+        String USE_FILTER = "filter";
         String LANG = "lang";
         String DEVICE_TYPE = "device_type";
         String DEVICE_ID = "device_id";
