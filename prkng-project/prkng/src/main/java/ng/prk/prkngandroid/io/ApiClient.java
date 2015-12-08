@@ -11,6 +11,7 @@ import ng.prk.prkngandroid.model.LinesGeoJSON;
 import ng.prk.prkngandroid.model.LinesGeoJSONFeature;
 import ng.prk.prkngandroid.model.LoginObject;
 import ng.prk.prkngandroid.model.PointsGeoJSON;
+import ng.prk.prkngandroid.model.PointsGeoJSONFeature;
 import ng.prk.prkngandroid.util.ArrayUtils;
 import ng.prk.prkngandroid.util.CalendarUtils;
 import retrofit.GsonConverterFactory;
@@ -286,6 +287,21 @@ public class ApiClient {
         try {
             final Response<LinesGeoJSONFeature> response = service
                     .getParkingSpotInfo(apiKey, spotId)
+                    .execute();
+            if (response != null) {
+                return response.body();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static PointsGeoJSONFeature getParkingLotInfo(PrkngService service, String apiKey, String lotId) {
+        try {
+            final Response<PointsGeoJSONFeature> response = service
+                    .getParkingLotInfo(apiKey, lotId)
                     .execute();
             if (response != null) {
                 return response.body();

@@ -11,6 +11,7 @@ import ng.prk.prkngandroid.model.LinesGeoJSONFeature;
 import ng.prk.prkngandroid.model.LoginObject;
 import ng.prk.prkngandroid.model.PasswordResetData;
 import ng.prk.prkngandroid.model.PointsGeoJSON;
+import ng.prk.prkngandroid.model.PointsGeoJSONFeature;
 import ng.prk.prkngandroid.model.UploadImageData;
 import ng.prk.prkngandroid.model.UserProfileData;
 import retrofit.Call;
@@ -165,6 +166,14 @@ public interface PrkngService {
             @Query(Const.ApiArgs.LATITUDE) double latitude,
             @Query(Const.ApiArgs.LONGITUDE) double longitude,
             @Query(Const.ApiArgs.RADIUS) int radius
+    );
+
+    // Returns the parking lot corresponding to the id
+    @Headers({CONTENT_TYPE})
+    @GET(Const.ApiPaths.GET_LOT)
+    Call<PointsGeoJSONFeature> getParkingLotInfo(
+            @Header(Const.ApiArgs.API_KEY) String apiKey,
+            @Path(Const.ApiArgs.LOT_ID) String lotId
     );
 
     // Submit a report about incorrect data

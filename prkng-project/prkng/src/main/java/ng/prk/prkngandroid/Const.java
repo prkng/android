@@ -42,6 +42,10 @@ public class Const {
         String CARSHARE_COMPANIES = "company";
         String LIMIT = "limit";
         String CITY = "city";
+        String PARTNER_NAME = "partner_name";
+        String ACCESSIBLE = "handicap";
+        String STREET_VIEW = "street_view";
+        String LOT_ID = "lot_id";
         String SPOT_ID = "slot_id";
         String CHECKIN_ID = "id";
         String USE_FILTER = "filter";
@@ -110,6 +114,7 @@ public class Const {
         String POST_REGISTER = VERSION + "/login/register";
         String POST_PASSWD_RESET = VERSION + "/login/resetpass";
         String GET_LOTS = VERSION + "/lots";
+        String GET_LOT = VERSION + "/lots/{" + ApiArgs.LOT_ID + "}";
         String POST_REPORT = VERSION + "/reports";
         String GET_SPOTS = VERSION + "/slots";
         String GET_SPOT = VERSION + "/slots/{" + ApiArgs.SPOT_ID + "}";
