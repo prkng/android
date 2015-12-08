@@ -32,6 +32,7 @@
     <!--Calendar-->
     <string name="hour_minutes_format">kk:mm</string>
     <string name="all_day">24&#160;Hrs</string>
+    <string name="time_start_end">%s1 - %s2</string>
     <array name="days_of_week">
         <item>Monday</item>
         <item>Tuesday</item>
@@ -41,6 +42,13 @@
         <item>Saturday</item>
         <item>Sunday</item>
     </array>
+
+    <!--Lot Info-->
+    <string name="lot_attr_indoor">INDOOR</string>
+    <string name="lot_attr_card">CREDIT CARD</string>
+    <string name="lot_attr_accessible">ACCESSIBLE</string>
+    <string name="lot_attr_valet">VALET</string>
+
 
     <!--Permissions-->
     <string name="location_permission_needed">Location permission is needed for map accuracy</string>

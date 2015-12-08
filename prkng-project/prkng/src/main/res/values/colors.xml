@@ -67,5 +67,9 @@
     <color name="agenda_item_background">@color/stone</color>
     <color name="agenda_today_item_background">@color/cream1</color>
     <color name="agenda_restr_item_text">@color/midnight1</color>
+    <color name="agenda_remaining_time_text">@color/petrol2</color>
 
+    <!--Lot Attrs-->
+    <color name="lot_header_background">@color/lipstick</color>
+    <color name="lot_attrs_text">@color/petrol2</color>
 </resources>
