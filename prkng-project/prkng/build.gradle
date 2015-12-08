@@ -44,7 +44,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:recyclerview-v7:23.1.0'
     compile 'com.android.support:design:23.1.0'
-    compile('com.mapbox.mapboxsdk:mapbox-android-sdk:2.3.0-SNAPSHOT@aar') {
+    compile('com.mapbox.mapboxsdk:mapbox-android-sdk:2.4.0-SNAPSHOT@aar') {
         transitive = true
     }
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
