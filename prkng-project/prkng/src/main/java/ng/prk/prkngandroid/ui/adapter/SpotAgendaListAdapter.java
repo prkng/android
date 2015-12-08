@@ -16,15 +16,15 @@ import ng.prk.prkngandroid.model.RestrInterval;
 import ng.prk.prkngandroid.model.RestrIntervalsList;
 import ng.prk.prkngandroid.util.CalendarUtils;
 
-public class AgendaListAdapter extends RecyclerView.Adapter<AgendaListAdapter.AgendaViewHolder> {
-    private static final String TAG = "AgendaListAdapter";
+public class SpotAgendaListAdapter extends RecyclerView.Adapter<SpotAgendaListAdapter.AgendaViewHolder> {
+    private static final String TAG = "SpotAgendaAdapter";
 
     private final Context context;
     private final int itemLayout;
     private final int today;
     private RestrIntervalsList mDataset;
 
-    public AgendaListAdapter(Context context, int itemLayout) {
+    public SpotAgendaListAdapter(Context context, int itemLayout) {
         this.context = context;
         this.itemLayout = itemLayout;
         this.today = CalendarUtils.getIsoDayOfWeek();

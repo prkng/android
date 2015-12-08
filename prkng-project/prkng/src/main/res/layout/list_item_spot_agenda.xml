@@ -12,7 +12,6 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/restr_type"
-        android:text="Monday "
         android:textColor="@color/agenda_restr_item_text" />
 
     <ImageView
@@ -26,26 +25,24 @@
 
     <LinearLayout
         android:id="@+id/restr_time"
-        android:minWidth="96dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:gravity="right"
+        android:minWidth="96dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/time_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="9 AM"
             android:textColor="@color/agenda_restr_item_text" />
 
         <TextView
             android:id="@+id/time_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="11 AM"
             android:textColor="@color/agenda_restr_item_text" />
     </LinearLayout>
 

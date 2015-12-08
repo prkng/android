@@ -10,7 +10,7 @@ import ng.prk.prkngandroid.model.LinesGeoJSONFeature;
 import ng.prk.prkngandroid.model.LoginObject;
 import ng.prk.prkngandroid.model.RestrIntervalsList;
 import ng.prk.prkngandroid.model.SpotRules;
-import ng.prk.prkngandroid.ui.adapter.AgendaListAdapter;
+import ng.prk.prkngandroid.ui.adapter.SpotAgendaListAdapter;
 import ng.prk.prkngandroid.util.CalendarUtils;
 
 public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
@@ -18,10 +18,10 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
 
     private String mApiKey;
 
-    private AgendaListAdapter mAdapter;
+    private SpotAgendaListAdapter mAdapter;
     private TextView vIntervalEnd;
 
-    public SpotInfoDownloadTask(AgendaListAdapter adapter, TextView intervalEnd) {
+    public SpotInfoDownloadTask(SpotAgendaListAdapter adapter, TextView intervalEnd) {
         this.mAdapter = adapter;
         this.vIntervalEnd = intervalEnd;
     }
@@ -71,7 +71,7 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
         Log.v(TAG, "onPostExecute");
         if (spotRules != null) {
             Log.v(TAG, "rules = " + spotRules.toString());
-            final RestrIntervalsList parkingAgenda = spotRules.getParkingAgenda();
+            final RestrIntervalsList parkingAgenda = spotRules.getParkingSpotAgenda();
             mAdapter.swapDataset(parkingAgenda);
 
             final long remainingTime = spotRules.getRemainingTime(parkingAgenda,

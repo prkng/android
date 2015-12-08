@@ -187,7 +187,7 @@ public class SpotRules {
      *
      * @return List of the week's restriction intervals
      */
-    public RestrIntervalsList getParkingAgenda() {
+    public RestrIntervalsList getParkingSpotAgenda() {
         final int today = CalendarUtils.getIsoDayOfWeek();
 
         final Map<Integer, RestrIntervalsList> dailyIntervals = getDailyIntervals(rules, today);

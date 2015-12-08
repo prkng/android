@@ -10,7 +10,9 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
-import ng.prk.prkngandroid.ui.adapter.AgendaListAdapter;
+import ng.prk.prkngandroid.ui.adapter.LotAgendaListAdapter;
+import ng.prk.prkngandroid.ui.adapter.SpotAgendaListAdapter;
+import ng.prk.prkngandroid.ui.thread.LotInfoDownloadTask;
 import ng.prk.prkngandroid.ui.thread.SpotInfoDownloadTask;
 
 public class SlidingUpMarkerInfo extends SlidingUpPanelLayout {
@@ -47,7 +49,6 @@ public class SlidingUpMarkerInfo extends SlidingUpPanelLayout {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         vRecyclerView.setLayoutManager(layoutManager);
-        vRecyclerView.setAdapter(new AgendaListAdapter(getContext(), R.layout.list_item_agenda));
     }
 
     public void setMarkerInfo(String id, int type) {
@@ -55,9 +56,16 @@ public class SlidingUpMarkerInfo extends SlidingUpPanelLayout {
         this.mMarkerType = type;
 
         if (mMarkerType == Const.MapSections.ON_STREET) {
+            vRecyclerView.setAdapter(new SpotAgendaListAdapter(getContext(), R.layout.list_item_spot_agenda));
             (new SpotInfoDownloadTask(
-                    (AgendaListAdapter) vRecyclerView.getAdapter(),
+                    (SpotAgendaListAdapter) vRecyclerView.getAdapter(),
                     vIntervalEnd)
+            ).execute(mMarkerId);
+        } else if (mMarkerType == Const.MapSections.OFF_STREET) {
+            vRecyclerView.setAdapter(new LotAgendaListAdapter(getContext(), R.layout.list_item_lot_agenda));
+            (new LotInfoDownloadTask(
+                    (LotAgendaListAdapter) vRecyclerView.getAdapter(),
+                    this)
             ).execute(mMarkerId);
         }
     }

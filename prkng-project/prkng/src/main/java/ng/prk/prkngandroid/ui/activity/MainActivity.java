@@ -99,7 +99,9 @@ public class MainActivity extends AppCompatActivity implements
                 vSlidingUpMarkerInfo.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
             }
             ((TextView) vSlidingUpMarkerInfo.findViewById(R.id.drag_handle))
-                    .setText(marker.getTitle() + Const.LINE_SEPARATOR + marker.getSnippet());
+                    .setText(marker.getTitle()
+//                            + Const.LINE_SEPARATOR + marker.getSnippet()
+                    );
         }
     }
 
