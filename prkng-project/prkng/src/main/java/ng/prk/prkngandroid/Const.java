@@ -21,6 +21,7 @@ public class Const {
         double MIN_UPDATE_DISTACE = 25.0d; // Metres
         double MONTREAL_NATURAL_NORTH_ROTATION = -34.0d;
         LatLng MONTREAL_LAT_LNG = new LatLng(45.5d, -73.666667d);
+        float LOT_INFO_ATTRS_OPACITY = 0.4f;
     }
 
     public interface MapSections {
@@ -143,6 +144,15 @@ public class Const {
         int TIME_MAX = 2;
         int PAID = 3;
         int TIME_MAX_PAID = 4;
+    }
+
+    /**
+     * Renaming Spot's restrictions for Lot's state
+     */
+    public interface LotAgendaType {
+        int OPEN = ParkingRestrType.PAID;
+        int CLOSED = ParkingRestrType.ALL_TIMES;
+//        int FREE = ParkingRestrType.NONE;
     }
 
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");

@@ -23,7 +23,7 @@ public class GeoJSONFeatureProperties {
      */
     private String name;
     private String address;
-    private LotAgenda agenda;
+    private LotAgendaRaw agenda;
     private LotAttrs attrs;
     private Integer available;
     private Integer capacity;
@@ -63,8 +63,8 @@ public class GeoJSONFeatureProperties {
         return way_name;
     }
 
-    public SpotRules getRules() {
-        return new SpotRules(rules);
+    public SpotRules getSpotRules() {
+        return rules == null ? null : new SpotRules(rules);
     }
 
     public boolean isTypePaid() {
@@ -77,7 +77,7 @@ public class GeoJSONFeatureProperties {
     }
 
     public LotAgenda getAgenda() {
-        return agenda;
+        return agenda == null ? null : new LotAgenda(agenda);
     }
 
     public LotAttrs getAttrs() {

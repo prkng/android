@@ -9,18 +9,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
+import ng.prk.prkngandroid.model.LotAttrs;
 import ng.prk.prkngandroid.model.RestrInterval;
 import ng.prk.prkngandroid.model.RestrIntervalsList;
 import ng.prk.prkngandroid.util.CalendarUtils;
 
-public class LotAgendaListAdapter extends RecyclerView.Adapter<LotAgendaListAdapter.AgendaViewHolder> {
+public class LotAgendaListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = "LotAgendaAdapter";
+    private static final int TYPE_HEADER = 1;
+    private static final int TYPE_FOOTER = 2;
 
     private final Context context;
     private final int itemLayout;
     private final int today;
     private RestrIntervalsList mDataset;
+    private LotAttrs mFooterAttrs;
 
     public LotAgendaListAdapter(Context context, int itemLayout) {
         this.context = context;
@@ -29,13 +34,52 @@ public class LotAgendaListAdapter extends RecyclerView.Adapter<LotAgendaListAdap
     }
 
     @Override
-    public AgendaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View v = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent, false);
-        return new AgendaViewHolder(v);
+    public int getItemViewType(int position) {
+        if (position < getHeaderSize()) {
+            return TYPE_HEADER;
+        } else if (position >= getItemCount() - getFooterSize()) {
+            return TYPE_FOOTER;
+        } else {
+            return super.getItemViewType(position);
+        }
     }
 
     @Override
-    public void onBindViewHolder(AgendaViewHolder holder, int position) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case TYPE_HEADER: {
+                final View v = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent, false);
+                return new AgendaHeaderViewHolder(v);
+            }
+            case TYPE_FOOTER: {
+                final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_footer_lot_agenda, parent, false);
+                return new AgendaFooterViewHolder(v);
+            }
+            default: {
+                final View v = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent, false);
+                return new AgendaViewHolder(v);
+            }
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        final int type = getItemViewType(position);
+        switch (type) {
+            case TYPE_HEADER:
+                onBindHeaderViewHolder((AgendaHeaderViewHolder) holder, null);
+                break;
+            case TYPE_FOOTER:
+                onBindFooterViewHolder((AgendaFooterViewHolder) holder, mFooterAttrs);
+                break;
+            default:
+                onBindItemViewHolder((AgendaViewHolder) holder, position);
+                break;
+        }
+    }
+
+    public void onBindItemViewHolder(AgendaViewHolder holder, int pos) {
+        final int position = pos - getHeaderSize();
         if (mDataset == null || mDataset.get(position) == null) {
             return;
         }
@@ -61,6 +105,26 @@ public class LotAgendaListAdapter extends RecyclerView.Adapter<LotAgendaListAdap
         }
     }
 
+    public void onBindHeaderViewHolder(AgendaHeaderViewHolder holder, Object o) {
+    }
+
+    public void onBindFooterViewHolder(AgendaFooterViewHolder holder, LotAttrs attrs) {
+        if (attrs == null) {
+            holder.itemView.setVisibility(View.GONE);
+        } else {
+            holder.itemView.setVisibility(View.VISIBLE);
+            // Set attributes opacity
+            holder.vIndoor.setAlpha(getAlphaFromAttr(attrs.isIndoor()));
+            holder.vCard.setAlpha(getAlphaFromAttr(attrs.isCard()));
+            holder.vAccessible.setAlpha(getAlphaFromAttr(attrs.isAccessible()));
+            holder.vValet.setAlpha(getAlphaFromAttr(attrs.isValet()));
+        }
+    }
+
+    private float getAlphaFromAttr(boolean enabled) {
+        return enabled ? 1f : Const.UiConfig.LOT_INFO_ATTRS_OPACITY;
+    }
+
     private int getRowBackground(RestrInterval interval) {
         int color;
         if (interval.getDayOfWeek() != today) {
@@ -78,12 +142,25 @@ public class LotAgendaListAdapter extends RecyclerView.Adapter<LotAgendaListAdap
 
     @Override
     public int getItemCount() {
-        return (mDataset == null) ? 0 : mDataset.size();
+        return (mDataset == null) ? 0 : mDataset.size() + getHeaderSize() + getFooterSize();
+    }
+
+    private int getHeaderSize() {
+//        return (mDataset == null) ? 0 : 1;
+        return 0;
+    }
+
+    private int getFooterSize() {
+        return (mDataset == null) ? 0 : 1;
     }
 
     public void swapDataset(RestrIntervalsList data) {
         mDataset = data;
         notifyDataSetChanged();
+    }
+
+    public void setFooterAttrs(LotAttrs attrs) {
+        this.mFooterAttrs = attrs;
     }
 
     public static class AgendaViewHolder extends RecyclerView.ViewHolder {
@@ -99,4 +176,25 @@ public class LotAgendaListAdapter extends RecyclerView.Adapter<LotAgendaListAdap
         }
     }
 
+    public static class AgendaHeaderViewHolder extends RecyclerView.ViewHolder {
+        public AgendaHeaderViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+    public static class AgendaFooterViewHolder extends RecyclerView.ViewHolder {
+        private TextView vIndoor;
+        private TextView vCard;
+        private TextView vAccessible;
+        private TextView vValet;
+
+        public AgendaFooterViewHolder(View itemView) {
+            super(itemView);
+
+            this.vIndoor = (TextView) itemView.findViewById(R.id.attr_indoor);
+            this.vCard = (TextView) itemView.findViewById(R.id.attr_card);
+            this.vAccessible = (TextView) itemView.findViewById(R.id.attr_accessible);
+            this.vValet = (TextView) itemView.findViewById(R.id.attr_valet);
+        }
+    }
 }

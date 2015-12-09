@@ -32,7 +32,7 @@
     <!--Calendar-->
     <string name="hour_minutes_format">kk:mm</string>
     <string name="all_day">24&#160;Hrs</string>
-    <string name="time_start_end">%s1 - %s2</string>
+    <string name="time_start_end" >%1$s – %2$s</string>
     <array name="days_of_week">
         <item>Monday</item>
         <item>Tuesday</item>

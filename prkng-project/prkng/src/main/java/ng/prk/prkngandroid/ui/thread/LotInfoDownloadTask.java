@@ -28,6 +28,8 @@ public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureP
     protected GeoJSONFeatureProperties doInBackground(String... params) {
         Log.v(TAG, "doInBackground");
 
+//        String lotId = "20";
+
         final String lotId = params[0];
         Log.v(TAG, "lotId = " + lotId);
 
@@ -47,25 +49,17 @@ public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureP
     }
 
 
-
-
     @Override
     protected void onPostExecute(GeoJSONFeatureProperties properties) {
         Log.v(TAG, "onPostExecute");
         if (properties != null) {
 
-            Log.v(TAG, properties.getAgenda().getMonday().get(0).toString());
+//            Log.v(TAG, properties.getAgenda().getMonday().get(0).toString());
             Log.v(TAG, properties.getAttrs().toString());
             Log.v(TAG, properties.getStreetView().toString());
 
-//            mAdapter.swapDataset(parkingAgenda);
-//
-//            final long remainingTime = spotRules.getRemainingTime(parkingAgenda,
-//                    CalendarUtils.todayMillis());
-//
-//            vIntervalEnd.setText(CalendarUtils.getDurationFromMillis(
-//                    vIntervalEnd.getContext(),
-//                    remainingTime));
+            mAdapter.swapDataset(properties.getAgenda().getParkingSpotAgenda());
+            mAdapter.setFooterAttrs(properties.getAttrs());
         }
     }
 

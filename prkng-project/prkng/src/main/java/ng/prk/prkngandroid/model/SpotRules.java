@@ -1,6 +1,7 @@
 package ng.prk.prkngandroid.model;
 
 
+import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
 
 import java.util.Collections;
@@ -19,7 +20,7 @@ public class SpotRules {
 
     private List<SpotRule> rules;
 
-    public SpotRules(List<SpotRule> rules) {
+    public SpotRules(@NonNull List<SpotRule> rules) {
         this.rules = rules;
     }
 

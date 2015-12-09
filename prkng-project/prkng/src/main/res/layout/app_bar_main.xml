@@ -99,58 +99,7 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/lot_attrs"
             android:layout_below="@+id/interval_end" />
-
-        <LinearLayout
-            android:id="@+id/lot_attrs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/agenda_item_background"
-            android:orientation="horizontal"
-            android:paddingBottom="16dp"
-            android:paddingTop="16dp"
-            android:weightSum="4">
-
-            <TextView
-                android:id="@+id/lot_attr_card"
-                style="@style/LotAttrsText"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/ic_lot_attrs_card"
-                android:gravity="center"
-                android:text="@string/lot_attr_card" />
-
-            <TextView
-                android:id="@+id/lot_attr_indoor"
-                style="@style/LotAttrsText"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/ic_lot_attrs_indoor"
-                android:text="@string/lot_attr_indoor" />
-
-            <TextView
-                android:id="@+id/lot_attr_accessible"
-                style="@style/LotAttrsText"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/ic_lot_attr_access"
-                android:text="@string/lot_attr_accessible" />
-
-            <TextView
-                android:id="@+id/lot_attr_valet"
-                style="@style/LotAttrsText"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/ic_lot_attrs_valet"
-                android:text="@string/lot_attr_valet" />
-
-        </LinearLayout>
 
     </RelativeLayout>
 </ng.prk.prkngandroid.ui.view.SlidingUpMarkerInfo>

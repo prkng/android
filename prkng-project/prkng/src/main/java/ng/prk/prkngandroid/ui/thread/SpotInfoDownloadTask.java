@@ -56,7 +56,7 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
             final String apiKey = getApiKey(service);
 
             LinesGeoJSONFeature spotFeatures = ApiClient.getParkingSpotInfo(service, apiKey, spotId);
-            return spotFeatures.getProperties().getRules();
+            return spotFeatures.getProperties().getSpotRules();
 
         } catch (NullPointerException e) {
             e.printStackTrace();
