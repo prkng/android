@@ -74,7 +74,7 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
             final RestrIntervalsList parkingAgenda = spotRules.getParkingSpotAgenda();
             mAdapter.swapDataset(parkingAgenda);
 
-            final long remainingTime = spotRules.getRemainingTime(parkingAgenda,
+            final long remainingTime = SpotRules.getRemainingTime(parkingAgenda,
                     CalendarUtils.todayMillis());
 
             vIntervalEnd.setText(CalendarUtils.getDurationFromMillis(

@@ -206,7 +206,7 @@ public class SpotRules {
      * @param now       the daytime current timestamp
      * @return Millis remaining before the end of current interval. Max is WEEK_IN_MILLIS
      */
-    public long getRemainingTime(RestrIntervalsList intervals, long now) {
+    public static long getRemainingTime(RestrIntervalsList intervals, long now) {
         if (intervals == null || intervals.isEmpty()) {
             return DateUtils.WEEK_IN_MILLIS;
         }
