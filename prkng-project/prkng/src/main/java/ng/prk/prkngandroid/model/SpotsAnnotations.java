@@ -34,6 +34,14 @@ public class SpotsAnnotations {
         return markers;
     }
 
+    public void clearPolylines() {
+        this.polylines = null;
+    }
+
+    public void clearMarkers() {
+        this.markers = null;
+    }
+
     public LatLng getCenterCoordinate() {
         return center;
     }

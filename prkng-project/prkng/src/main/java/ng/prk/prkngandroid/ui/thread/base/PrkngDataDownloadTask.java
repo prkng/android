@@ -68,14 +68,21 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
 
                 if (!spots.getPolylines().isEmpty()) {
                     Log.v(TAG, "addPolylines");
-                    vMap.addPolylines(spots.getPolylines());
+
+                    // Note: Mapbox's Iterator can throw a local reference table overflow exception
+                    // vMap.addPolylines(spots.getPolylines());
+                    for (PolylineOptions polylineOptions: spots.getPolylines()) {
+                        vMap.addPolyline(polylineOptions);
+                    }
                 }
+                spots.clearPolylines();
 
                 // Markers must be added after Polylines to show the dot above the line (z-order)
                 if (!spots.getMarkers().isEmpty()) {
                     Log.v(TAG, "addMarkers");
                     vMap.addMarkers(spots.getMarkers());
                 }
+                spots.clearMarkers();
 
 
 //                    drawRadius(spots.getCenterCoordinate());
