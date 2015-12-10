@@ -149,10 +149,10 @@ public class Const {
     /**
      * Renaming Spot's restrictions for Lot's state
      */
-    public interface LotAgendaType {
+    public interface BusinnessHourType {
         int OPEN = ParkingRestrType.PAID;
         int CLOSED = ParkingRestrType.ALL_TIMES;
-//        int FREE = ParkingRestrType.NONE;
+        int FREE = ParkingRestrType.NONE;
     }
 
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");

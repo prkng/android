@@ -9,45 +9,45 @@ import ng.prk.prkngandroid.util.CalendarUtils;
 
 public class LotAgendaRaw {
     @SerializedName(Const.ApiValues.AGENDA_DAY_MONDAY)
-    private List<LotAgendaDay> monday;
+    private List<LotAgendaPeriod> monday;
     @SerializedName(Const.ApiValues.AGENDA_DAY_TUESDAY)
-    private List<LotAgendaDay> tuesday;
+    private List<LotAgendaPeriod> tuesday;
     @SerializedName(Const.ApiValues.AGENDA_DAY_WEDNESDAY)
-    private List<LotAgendaDay> wednesday;
+    private List<LotAgendaPeriod> wednesday;
     @SerializedName(Const.ApiValues.AGENDA_DAY_THURSDAY)
-    private List<LotAgendaDay> thursday;
+    private List<LotAgendaPeriod> thursday;
     @SerializedName(Const.ApiValues.AGENDA_DAY_FRIDAY)
-    private List<LotAgendaDay> friday;
+    private List<LotAgendaPeriod> friday;
     @SerializedName(Const.ApiValues.AGENDA_DAY_SATURDAY)
-    private List<LotAgendaDay> saturday;
+    private List<LotAgendaPeriod> saturday;
     @SerializedName(Const.ApiValues.AGENDA_DAY_SUNDAY)
-    private List<LotAgendaDay> sunday;
+    private List<LotAgendaPeriod> sunday;
 
-    public List<LotAgendaDay> getMonday() {
+    public List<LotAgendaPeriod> getMonday() {
         return monday;
     }
 
-    public List<LotAgendaDay> getTuesday() {
+    public List<LotAgendaPeriod> getTuesday() {
         return tuesday;
     }
 
-    public List<LotAgendaDay> getWednesday() {
+    public List<LotAgendaPeriod> getWednesday() {
         return wednesday;
     }
 
-    public List<LotAgendaDay> getThursday() {
+    public List<LotAgendaPeriod> getThursday() {
         return thursday;
     }
 
-    public List<LotAgendaDay> getFriday() {
+    public List<LotAgendaPeriod> getFriday() {
         return friday;
     }
 
-    public List<LotAgendaDay> getSaturday() {
+    public List<LotAgendaPeriod> getSaturday() {
         return saturday;
     }
 
-    public List<LotAgendaDay> getSunday() {
+    public List<LotAgendaPeriod> getSunday() {
         return sunday;
     }
 
@@ -57,7 +57,7 @@ public class LotAgendaRaw {
      * @param day 1-7, starting on Monday
      * @return
      */
-    public List<LotAgendaDay> getDay(int day) {
+    public List<LotAgendaPeriod> getDay(int day) {
         switch (day) {
             case CalendarUtils.MONDAY:
                 return getMonday();

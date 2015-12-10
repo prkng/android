@@ -42,6 +42,13 @@
         <item>Vendredi</item>
     </array>
 
+    <!--Lot Info-->
+    <string name="all_day_closed">Fermé</string>
+    <string name="lot_attr_indoor">INTÉRIEUR</string>
+    <string name="lot_attr_card">CARTE DE CRÉDIT</string>
+    <string name="lot_attr_accessible">ACCESSIBLE</string>
+    <string name="lot_attr_valet">VALET</string>
+
     <!--Permissions-->
     <string name="location_permission_needed">L’emplacement est nécessaire pour l’affichage de la carte</string>
 

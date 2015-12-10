@@ -8,8 +8,10 @@ import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.io.PrkngService;
 import ng.prk.prkngandroid.model.GeoJSONFeatureProperties;
 import ng.prk.prkngandroid.model.LoginObject;
+import ng.prk.prkngandroid.model.LotCurrentStatus;
 import ng.prk.prkngandroid.model.PointsGeoJSONFeature;
 import ng.prk.prkngandroid.ui.adapter.LotAgendaListAdapter;
+import ng.prk.prkngandroid.util.CalendarUtils;
 
 public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureProperties> {
     private final static String TAG = "LotInfo";
@@ -58,6 +60,8 @@ public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureP
             Log.v(TAG, properties.getAttrs().toString());
             Log.v(TAG, properties.getStreetView().toString());
 
+            LotCurrentStatus status = properties.getAgenda().getLotCurrentStatus(CalendarUtils.todayMillis());
+            Log.v(TAG, status.toString());
             mAdapter.swapDataset(properties.getAgenda().getParkingSpotAgenda());
             mAdapter.setFooterAttrs(properties.getAttrs());
         }

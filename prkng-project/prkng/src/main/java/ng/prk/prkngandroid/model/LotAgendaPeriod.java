@@ -1,10 +1,13 @@
 package ng.prk.prkngandroid.model;
 
+import android.text.format.DateUtils;
+
 import java.util.List;
 
 import ng.prk.prkngandroid.Const;
+import ng.prk.prkngandroid.util.Interval;
 
-public class LotAgendaDay {
+public class LotAgendaPeriod {
     private final static int INDEX_START = 0;
     private final static int INDEX_END = 1;
 
@@ -13,18 +16,19 @@ public class LotAgendaDay {
     private Float max;
     private List<Float> hours;
 
-    public float getMainPrice(int today, long now) {
+    public float getMainPrice() {
         if (max != null) {
             return max;
         } else if (daily != null) {
             return daily;
-        } else if (hourly != null) {
-            // TODO return hourly price x remaining time of current period
-            return 123.45f;
+//        } else if (hourly != null) {
+//            // TODO return hourly price x remaining time of current period
+//            return 123.45f;
         }
 
         // Free
-        return 0f;
+//        return 0f;
+        return Const.UNKNOWN_VALUE;
     }
 
     public float getDaily() {
@@ -37,6 +41,10 @@ public class LotAgendaDay {
 
     public float getMax() {
         return max == null ? Const.UNKNOWN_VALUE : max;
+    }
+
+    public Interval getInterval() {
+        return new Interval(getStartMillis(), getEndMillis());
     }
 
     public float getStartHour() {
@@ -59,6 +67,14 @@ public class LotAgendaDay {
         return Const.UNKNOWN_VALUE;
     }
 
+    public long getStartMillis() {
+        return (long) (getStartHour() * DateUtils.HOUR_IN_MILLIS);
+    }
+
+    public long getEndMillis() {
+        return (long) (getEndHour() * DateUtils.HOUR_IN_MILLIS);
+    }
+
     public boolean isClosed() {
         return (daily == null) && (hourly == null) && (max == null);
     }
@@ -69,12 +85,20 @@ public class LotAgendaDay {
 
     public int getType() {
         if (isClosed()) {
-            return Const.LotAgendaType.CLOSED;
-//        } else if (isFree()) {
-//            return Const.LotAgendaType.FREE;
+            return Const.BusinnessHourType.CLOSED;
+        } else if (isFree()) {
+            return Const.BusinnessHourType.FREE;
         }
 
-        return Const.LotAgendaType.OPEN;
+        return Const.BusinnessHourType.OPEN;
+    }
+
+    public int getSimpleType() {
+        if (isClosed()) {
+            return Const.BusinnessHourType.CLOSED;
+        }
+
+        return Const.BusinnessHourType.OPEN;
     }
 
     @Override

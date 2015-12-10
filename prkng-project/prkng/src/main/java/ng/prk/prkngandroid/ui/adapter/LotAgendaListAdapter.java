@@ -11,9 +11,10 @@ import android.widget.TextView;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
+import ng.prk.prkngandroid.model.BusinessInterval;
+import ng.prk.prkngandroid.model.BusinessIntervalList;
 import ng.prk.prkngandroid.model.LotAttrs;
 import ng.prk.prkngandroid.model.RestrInterval;
-import ng.prk.prkngandroid.model.RestrIntervalsList;
 import ng.prk.prkngandroid.util.CalendarUtils;
 
 public class LotAgendaListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -24,7 +25,7 @@ public class LotAgendaListAdapter extends RecyclerView.Adapter<RecyclerView.View
     private final Context context;
     private final int itemLayout;
     private final int today;
-    private RestrIntervalsList mDataset;
+    private BusinessIntervalList mDataset;
     private LotAttrs mFooterAttrs;
 
     public LotAgendaListAdapter(Context context, int itemLayout) {
@@ -84,19 +85,20 @@ public class LotAgendaListAdapter extends RecyclerView.Adapter<RecyclerView.View
             return;
         }
 
-        final RestrInterval dailyPeriod = mDataset.get(position);
+        final BusinessInterval businessInterval = mDataset.get(position);
 
         // Get current values
-        final int dayOfWeek = dailyPeriod.getDayOfWeek();
+        final int dayOfWeek = businessInterval.getDayOfWeek();
         final String day = CalendarUtils.getDayOfWeekName(context.getResources(), dayOfWeek);
-        final boolean isAllDay = dailyPeriod.isAllDay();
-        final String timeStart = CalendarUtils.getTimeFromMillis(context, dailyPeriod.getStartMillis());
-        final String timeEnd = CalendarUtils.getTimeFromMillis(context, dailyPeriod.getEndMillis());
+        final boolean isAllDay = businessInterval.isAllDay();
+        final String timeStart = CalendarUtils.getTimeFromMillis(context, businessInterval.getStartMillis());
+        final String timeEnd = CalendarUtils.getTimeFromMillis(context, businessInterval.getEndMillis());
 
         holder.vDay.setText(day);
 
         if (isAllDay) {
-            holder.vTime.setText(R.string.all_day);
+            holder.vTime.setText(businessInterval.isClosed() ?
+                    R.string.all_day_closed : R.string.all_day);
         } else {
             holder.vTime.setText(
                     context.getResources().getString(R.string.time_start_end,
@@ -154,7 +156,7 @@ public class LotAgendaListAdapter extends RecyclerView.Adapter<RecyclerView.View
         return (mDataset == null) ? 0 : 1;
     }
 
-    public void swapDataset(RestrIntervalsList data) {
+    public void swapDataset(BusinessIntervalList data) {
         mDataset = data;
         notifyDataSetChanged();
     }
