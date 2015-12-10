@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ng.prk.prkngandroid.Const;
+import ng.prk.prkngandroid.model.BusinessInterval;
+import ng.prk.prkngandroid.model.BusinessIntervalList;
 import ng.prk.prkngandroid.model.RestrInterval;
 import ng.prk.prkngandroid.model.RestrIntervalsList;
 import ng.prk.prkngandroid.util.CalendarUtils;
@@ -59,10 +61,10 @@ public class ApiSimulator {
 //            buildScenario13(daysMap, i++);
 //            buildScenario13(daysMap,  i++);
 
-              // TimeMax remaining time
-            buildScenario14(daysMap, i++);
-            i++;
-            buildScenario14(daysMap, i++);
+            // TimeMax remaining time
+//            buildScenario14(daysMap, i++);
+//            i++;
+//            buildScenario14(daysMap, i++);
         } else
             switch (scenario) {
                 case 1:
@@ -100,6 +102,45 @@ public class ApiSimulator {
                     break;
                 case 12:
                     buildScenario12(daysMap, dayOfWeek);
+                    break;
+            }
+
+
+        return daysMap;
+    }
+
+    public static Map<Integer, BusinessIntervalList> getBusinessDays() {
+        return getBusinessDay(Const.UNKNOWN_VALUE);
+    }
+
+    public static Map<Integer, BusinessIntervalList> getBusinessDay(int scenario) {
+        final int today = CalendarUtils.getIsoDayOfWeek();
+        final int dayOfWeek = CalendarUtils.getIsoDayOfWeekLooped(1, today);
+
+        final Map<Integer, BusinessIntervalList> daysMap = new HashMap<>();
+        for (int i = 1; i <= CalendarUtils.WEEK_IN_DAYS; i++) {
+            BusinessIntervalList restrList = daysMap.get(i);
+            if (restrList == null) {
+                // Initialize the day's array if necessary
+                restrList = new BusinessIntervalList();
+                daysMap.put(i, restrList);
+            }
+        }
+
+        if (scenario == Const.UNKNOWN_VALUE) {
+            int i = 1;
+            // Lots business hours
+            buildGarargeScenario01(daysMap, i++);
+            buildGarargeScenario01(daysMap, i++);
+            buildGarargeScenario02(daysMap, i++);
+            buildGarargeScenario02(daysMap, i++);
+            buildGarargeScenario03(daysMap, i++);
+            buildGarargeScenario03(daysMap, i++);
+            buildGarargeScenario03(daysMap, i++);
+        } else
+            switch (scenario) {
+                case 1:
+                    buildGarargeScenario01(daysMap, dayOfWeek);
                     break;
             }
 
@@ -515,6 +556,61 @@ public class ApiSimulator {
                 .endHour(18f)
                 .type(Const.ParkingRestrType.TIME_MAX)
                 .timeMax(120)
+                .build());
+    }
+
+    /**
+     * Open from 17-5
+     * Result: NoParking 0-5 + NoParking 19-24
+     *
+     * @param daysMap
+     * @param dayOfWeek
+     */
+    private static void buildGarargeScenario01(Map<Integer, BusinessIntervalList> daysMap, int dayOfWeek) {
+        BusinessIntervalList restrList = daysMap.get(dayOfWeek);
+
+        restrList.addMerge(new BusinessInterval.Builder(dayOfWeek)
+                .startHour(0f)
+                .endHour(3f)
+                .type(Const.BusinnessHourType.FREE)
+                .build());
+
+        restrList.addMerge(new BusinessInterval.Builder(dayOfWeek)
+                .startHour(3f)
+                .endHour(5f)
+                .type(Const.BusinnessHourType.OPEN)
+                .build());
+
+        restrList.addMerge(new BusinessInterval.Builder(dayOfWeek)
+                .startHour(5f)
+                .endHour(19f)
+                .type(Const.BusinnessHourType.CLOSED)
+                .build());
+
+        restrList.addMerge(new BusinessInterval.Builder(dayOfWeek)
+                .startHour(19f)
+                .endHour(24f)
+                .type(Const.BusinnessHourType.OPEN)
+                .build());
+    }
+
+    private static void buildGarargeScenario02(Map<Integer, BusinessIntervalList> daysMap, int dayOfWeek) {
+        BusinessIntervalList restrList = daysMap.get(dayOfWeek);
+
+        restrList.addMerge(new BusinessInterval.Builder(dayOfWeek)
+                .startHour(0f)
+                .endHour(24f)
+                .type(Const.BusinnessHourType.FREE)
+                .build());
+    }
+
+    private static void buildGarargeScenario03(Map<Integer, BusinessIntervalList> daysMap, int dayOfWeek) {
+        BusinessIntervalList restrList = daysMap.get(dayOfWeek);
+
+        restrList.addMerge(new BusinessInterval.Builder(dayOfWeek)
+                .startHour(0f)
+                .endHour(24f)
+                .type(Const.BusinnessHourType.CLOSED)
                 .build());
     }
 }
