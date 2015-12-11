@@ -30,9 +30,15 @@ public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureP
     protected GeoJSONFeatureProperties doInBackground(String... params) {
         Log.v(TAG, "doInBackground");
 
-//        String lotId = "20";
+//        final String lotId = params[0];
+        String lotId = params[0];
 
-        final String lotId = params[0];
+//        lotId = "20";
+//        lotId = "86";
+//        lotId = "89";
+//        lotId = "95";
+//        lotId = String.valueOf(new Random().nextInt(99) + 1);
+
         Log.v(TAG, "lotId = " + lotId);
 
         final PrkngService service = ApiClient.getServiceLog();
@@ -46,10 +52,8 @@ public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureP
             e.printStackTrace();
         }
 
-
         return null;
     }
-
 
     @Override
     protected void onPostExecute(GeoJSONFeatureProperties properties) {
@@ -60,9 +64,11 @@ public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureP
             Log.v(TAG, properties.getAttrs().toString());
             Log.v(TAG, properties.getStreetView().toString());
 
+            mAdapter.swapDataset(properties.getAgenda().getLotAgenda());
             LotCurrentStatus status = properties.getAgenda().getLotCurrentStatus(CalendarUtils.todayMillis());
-            Log.v(TAG, status.toString());
-            mAdapter.swapDataset(properties.getAgenda().getParkingSpotAgenda());
+            if (status != null) {
+                Log.v(TAG, status.toString());
+            }
             mAdapter.setFooterAttrs(properties.getAttrs());
         }
     }

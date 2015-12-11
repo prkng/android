@@ -1,10 +1,12 @@
 package ng.prk.prkngandroid.model;
 
+import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
 
 import java.util.concurrent.TimeUnit;
 
 import ng.prk.prkngandroid.Const;
+import ng.prk.prkngandroid.util.CalendarUtils;
 import ng.prk.prkngandroid.util.Interval;
 
 public class BusinessInterval extends Interval implements
@@ -35,6 +37,33 @@ public class BusinessInterval extends Interval implements
         this.dayOfWeek = builder.dayOfWeek;
         this.type = builder.type;
     }
+
+    /**
+     * Join with another interval.
+     * The result interval keeps the type/pricing of the current one.
+     * Future UI changes may need a more strict join policy. The current UI version of the agenda
+     * displays business hours only.
+     *
+     * @param another Interval to join with, must abut or overlap
+     */
+    @Deprecated
+    public void join(BusinessInterval another) {
+        // TODO Define price/type join policy
+        super.join(another);
+    }
+
+    public void joinOvernight(BusinessInterval another) {
+        if (abutsOvernight(this, another)) {
+            this.endMillis = another.getEndMillis() + DateUtils.DAY_IN_MILLIS;
+        } else if (abutsOvernight(another, this)) {
+            this.dayOfWeek = another.dayOfWeek;
+            this.startMillis = another.getStartMillis();
+            this.endMillis += DateUtils.DAY_IN_MILLIS;
+            this.mainPrice = another.mainPrice;
+            this.hourlyPrice = another.hourlyPrice;
+        }
+    }
+
 
     /**
      * Check if restriction applies all day (24 hours)
@@ -75,6 +104,10 @@ public class BusinessInterval extends Interval implements
         return this.type == another.getType();
     }
 
+    public boolean isMergeableType(BusinessInterval another) {
+        return isSameType(another) || (!isClosed() && !another.isClosed());
+    }
+
     public boolean isSameDay(BusinessInterval another) {
         return this.dayOfWeek == another.getDayOfWeek();
     }
@@ -83,8 +116,50 @@ public class BusinessInterval extends Interval implements
         return dayOfWeek;
     }
 
+    /**
+     * Check if the interval abuts the current at midnight. Also handles week-loop.
+     * This is regardless of type or order.
+     *
+     * @param another The interval to examine
+     * @return true if the other interval abuts at previous/following midnight
+     */
+    public boolean abutsOvernight(@NonNull BusinessInterval another) {
+
+        if (CalendarUtils.areConsecutiveDaysOfWeekLooped(this.dayOfWeek, another.getDayOfWeek())) {
+            return abutsOvernight(this, another);
+        } else if (CalendarUtils.areConsecutiveDaysOfWeekLooped(another.getDayOfWeek(), this.dayOfWeek)) {
+            return abutsOvernight(another, this);
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Check if the first interval ends at the same midnight where the second interval starts.
+     * This is regardless of type
+     *
+     * @param firstInterval  The interval to examine
+     * @param secondInterval The interval to examine
+     * @return true if the both intervals abut at midnight, following specific order
+     */
+    private static boolean abutsOvernight(BusinessInterval firstInterval, BusinessInterval secondInterval) {
+        return (Float.compare(firstInterval.getEndMillis(), DateUtils.DAY_IN_MILLIS) == 0)
+                && (Float.compare(secondInterval.getStartMillis(), 0) == 0);
+    }
+
     public boolean isClosed() {
         return type == CLOSED;
+    }
+
+    public boolean isNaturalMerge(BusinessInterval another) {
+        if (another == null || another.isAllDay()) {
+            return false;
+        }
+
+        return isSameDay(another)
+                && isMergeableType(another)
+                && abuts(another);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package ng.prk.prkngandroid.model;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import ng.prk.prkngandroid.Const;
-import ng.prk.prkngandroid.io.ApiSimulator;
 import ng.prk.prkngandroid.util.CalendarUtils;
 import ng.prk.prkngandroid.util.Interval;
 
@@ -25,8 +23,6 @@ public class LotAgenda {
     }
 
     private static Map<Integer, BusinessIntervalList> getDailyIntervals(LotAgendaRaw agendaRaw, int today) {
-Log.v(TAG, "getDailyIntervals");
-
         final Map<Integer, BusinessIntervalList> daysMap = new HashMap<>();
 
         // Loop over days, for different states
@@ -47,34 +43,10 @@ Log.v(TAG, "getDailyIntervals");
         return daysMap;
     }
 
-    private static RestrIntervalsList getWeekIntervals(Map<Integer, RestrIntervalsList> dailyIntervals, int today) {
-
-        final RestrIntervalsList mergedList = new RestrIntervalsList();
-        // Loop over the week days. Using index (1-7) to get the HashMap in ascending days order
-        for (int i = 1; i <= CalendarUtils.WEEK_IN_DAYS; i++) {
-            RestrIntervalsList restrList = dailyIntervals.get(i);
-            if (restrList.isEmpty()) {
-                // Add a closed state for 24hrs
-                final int day = CalendarUtils.getIsoDayOfWeekLooped(i, today);
-                restrList.add(new RestrInterval.Builder(day)
-                        .type(Const.BusinnessHourType.CLOSED)
-                        .allDay()
-                        .build());
-            }
-
-            Collections.sort(restrList);
-
-            // Add the day's clean list to the week's merged array
-            mergedList.addAll(restrList);
-        }
-
-        return mergedList;
-    }
-
     private void buildBusinessIntervalsIfNecessary(int today) {
         if (businessIntervals == null) {
-//            final Map<Integer, BusinessIntervalList> dailyIntervals = getDailyIntervals(agenda, today);
-        final Map<Integer, BusinessIntervalList> dailyIntervals = ApiSimulator.getBusinessDays();
+            final Map<Integer, BusinessIntervalList> dailyIntervals = getDailyIntervals(agenda, today);
+//        final Map<Integer, BusinessIntervalList> dailyIntervals = ApiSimulator.getBusinessDays();
 
             // Free resources
             agenda = null;
@@ -91,7 +63,7 @@ Log.v(TAG, "getDailyIntervals");
      *
      * @return
      */
-    public BusinessIntervalList getParkingSpotAgenda() {
+    public BusinessIntervalList getLotAgenda() {
         final int today = CalendarUtils.getIsoDayOfWeek();
 
         buildBusinessIntervalsIfNecessary(today);
@@ -101,9 +73,6 @@ Log.v(TAG, "getDailyIntervals");
 
 
     private LotCurrentStatus getFreeLotStatus(Interval current, int indexNext, long now) {
-        Log.v(TAG, "getFreeLotStatus "
-                + String.format("current = %s, indexNext = %s, now = %s", current, indexNext, now));
-
         if (indexNext >= businessIntervals.size()) {
             return null;
         }
@@ -124,7 +93,6 @@ Log.v(TAG, "getDailyIntervals");
 
         int index = 0;
         for (BusinessInterval interval : businessIntervals) {
-            Log.v(TAG, interval.toString());
             if (interval.contains(now)) {
                 switch (interval.getType()) {
                     case Const.BusinnessHourType.CLOSED:
@@ -147,36 +115,4 @@ Log.v(TAG, "getDailyIntervals");
 
         return null;
     }
-
-//    private static RestrIntervalsList getWeekAgenda(LotAgendaRaw agendaRaw) {
-//        final int today = CalendarUtils.getIsoDayOfWeek();
-//
-//        final RestrIntervalsList intervals = new RestrIntervalsList();
-//        for (int i = 1; i <= CalendarUtils.WEEK_IN_DAYS; i++) {
-//            final int dayOfWeek = CalendarUtils.getIsoDayOfWeekLooped(i, today);
-//            List<LotAgendaDay> dailyAgenda = agendaRaw.getDay(dayOfWeek);
-//            if (dailyAgenda == null || dailyAgenda.isEmpty()) {
-//                // is closed
-//                intervals.add(new RestrInterval.Builder(dayOfWeek)
-//                        .type(Const.ParkingRestrType.ALL_TIMES)
-//                        .allDay()
-//                        .build());
-//            } else {
-//                // add and sort the day's intervals, before adding to the week's list
-//                final RestrIntervalsList dailyIntervals = new RestrIntervalsList();
-//
-//                for (LotAgendaDay agendaDay : dailyAgenda) {
-//                    dailyIntervals.add(new RestrInterval.Builder(dayOfWeek)
-//                            .type(Const.ParkingRestrType.PAID)
-//                            .startHour(agendaDay.getStartHour())
-//                            .endHour(agendaDay.getEndHour())
-//                            .build());
-//                }
-//                Collections.sort(dailyIntervals);
-//                intervals.addAll(dailyIntervals);
-//            }
-//        }
-//
-//        return intervals;
-//    }
 }
