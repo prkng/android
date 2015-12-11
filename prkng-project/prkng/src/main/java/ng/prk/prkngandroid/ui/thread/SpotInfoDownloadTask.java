@@ -51,7 +51,7 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
         final String spotId = params[0];
         Log.v(TAG, "spotId = " + spotId);
 
-        final PrkngService service = ApiClient.getServiceLog();
+        final PrkngService service = ApiClient.getService();
         try {
             final String apiKey = getApiKey(service);
 
