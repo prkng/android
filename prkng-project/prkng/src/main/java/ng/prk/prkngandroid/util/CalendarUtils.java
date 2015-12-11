@@ -69,7 +69,7 @@ public class CalendarUtils {
     public static boolean areConsecutiveDaysOfWeekLooped(int d1, int d2) {
         final int diff = d2 - d1;
 
-        return (diff == 1) || (diff == (SUNDAY - MONDAY));
+        return (diff == 1) || (diff == (MONDAY - SUNDAY));
     }
 
 
