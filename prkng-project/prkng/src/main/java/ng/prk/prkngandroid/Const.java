@@ -20,7 +20,8 @@ public class Const {
         double MY_LOCATION_ZOOM = 17.0d;
         double MIN_UPDATE_DISTACE = 25.0d; // Metres
         double MONTREAL_NATURAL_NORTH_ROTATION = -34.0d;
-        LatLng MONTREAL_LAT_LNG = new LatLng(45.5d, -73.666667d);
+        LatLng MONTREAL_LAT_LNG = new LatLng(45.501689d, -73.567256d);
+        LatLng MANHATTAN_LAT_LNG = new LatLng(40.814589d, -73.927345d);
         float LOT_INFO_ATTRS_OPACITY = 0.4f;
     }
 
@@ -153,6 +154,21 @@ public class Const {
         int FREE = ParkingRestrType.NONE; // 0
         int CLOSED = ParkingRestrType.ALL_TIMES; // 1
         int OPEN = ParkingRestrType.PAID; // 3
+    }
+
+    public static interface TypeFaces {
+        final int _COUNT = 3;
+        final String REGULAR = "fonts/intro_regular.ttf";
+        final String BOOK = "fonts/intro_book.ttf";
+        final String LIGHT = "fonts/intro_light.ttf";
+    }
+
+    public interface PrefsNames {
+        String API_KEY = "p_api_key";
+    }
+
+    public interface PrefsValues {
+
     }
 
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");

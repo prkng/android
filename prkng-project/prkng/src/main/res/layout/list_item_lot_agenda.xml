@@ -6,14 +6,14 @@
     android:orientation="horizontal"
     android:padding="16dp">
 
-    <TextView
+    <ng.prk.prkngandroid.ui.view.IntroRegularTextView
         android:id="@+id/day"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="@color/agenda_restr_item_text" />
 
-    <TextView
+    <ng.prk.prkngandroid.ui.view.IntroRegularTextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
