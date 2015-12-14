@@ -15,3 +15,37 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+###### Prkng ######
+# Retrofit GSON conversion
+-keep class ng.prk.prkngandroid.model.** { *; }
+
+
+###### Retrofit ######
+-dontwarn retrofit.**
+-keep class retrofit.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+
+
+###### Okio #######
+-keep class sun.misc.Unsafe { *; }
+-dontwarn java.nio.file.*
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-dontwarn okio.*
+
+
+###### Mapbox ######
+# Square okio, ignoring warnings,
+# see https://github.com/square/okio/issues/60
+-dontwarn okio.**
+-keep class com.mapbox.mapboxsdk.annotations.** { *; }
+-keep class com.mapbox.mapboxsdk.geometry.** { *; }
+-keep class com.mapbox.mapboxsdk.http.** { *; }
+-keep class com.mapbox.mapboxsdk.views.** { *; }
+
+
+###### Crashlytics ######
+-keep class com.crashlytics.** { *; }
+-keep class com.crashlytics.android.**
+-keepattributes SourceFile,LineNumberTable
