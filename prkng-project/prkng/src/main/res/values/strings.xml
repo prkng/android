@@ -4,12 +4,16 @@
     <string name="activity_main">Map</string>
     <string name="activity_about">About</string>
     <string name="activity_settings">Settings</string>
+    <string name="activity_login">Login</string>
+    <string name="activity_onboarding">Tutorial</string>
 
     <!--Links-->
     <string name="url_faq">http://prk.ng/faq/</string>
     <string name="url_terms">http://prk.ng/terms/</string>
 
     <!--Preferences-->
+    <string name="prefs_login_title">Login</string>
+    <string name="prefs_logout_title">Logout</string>
     <string name="prefs_onboarding_title">Take a tour</string>
     <string name="prefs_faq_title">FAQ</string>
     <string name="prefs_terms_title">Terms of use</string>
@@ -20,6 +24,9 @@
     <string name="action_settings">Settings</string>
     <string name="action_about">About</string>
     <string name="action_share">Share</string>
+
+    <!--Buttons-->
+    <string name="btn_login_email">Login</string>
 
     <!--Map-->
     <string name="map_zoom_needed">Please zoom in to update map</string>
@@ -32,7 +39,7 @@
     <!--Calendar-->
     <string name="hour_minutes_format">kk:mm</string>
     <string name="all_day">24&#160;Hrs</string>
-    <string name="time_start_end" >%1$s – %2$s</string>
+    <string name="time_start_end">%1$s – %2$s</string>
     <array name="days_of_week">
         <item>Monday</item>
         <item>Tuesday</item>
@@ -49,7 +56,21 @@
     <string name="lot_attr_card">CREDIT CARD</string>
     <string name="lot_attr_accessible">ACCESSIBLE</string>
     <string name="lot_attr_valet">VALET</string>
+    <string name="lot_daily_price">%s\r\nDay</string>
+    <string name="lot_hourly_price">%s\r\nHour</string>
+    <string name="lot_capactiy">Capacity: %d&#160;spaces</string>
 
+    <!--Authentication-->
+    <string name="auth_hint_login_email">Email</string>
+    <string name="auth_hint_login_password">Password</string>
+
+    <!--Auth validation errors-->
+    <string name="auth_error_invalid_email">Use a valid email address</string>
+    <string name="auth_error_invalid_password_short">Use at least 6 characters</string>
+
+    <!--Currency-->
+    <string name="currency_decimals">$%.2f</string>
+    <string name="currency_round">$%d</string>
 
     <!--Permissions-->
     <string name="location_permission_needed">Location permission is needed for map accuracy</string>

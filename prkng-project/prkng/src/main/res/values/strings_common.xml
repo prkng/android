@@ -31,6 +31,7 @@
     <string name="google_app_id" translatable="false">1:8875871459:android:e9ba410b7f09bf67</string>
 
     <!--Preferences keys-->
+    <string name="prefs_toggle_login" translatable="false">prefs_toggle_login</string>
     <string name="prefs_onboarding" translatable="false">prefs_onboarding</string>
     <string name="prefs_terms" translatable="false">prefs_terms</string>
     <string name="prefs_faq" translatable="false">prefs_faq</string>

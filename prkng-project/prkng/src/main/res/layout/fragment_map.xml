@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_background"
-        android:layerType="hardware"
         app:access_token="@string/mapbox_access_token"
         app:attribution_visibility="gone"
         app:logo_visibility="invisible"

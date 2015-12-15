@@ -72,4 +72,8 @@
     <!--Lot Attrs-->
     <color name="lot_header_background">@color/lipstick</color>
     <color name="lot_attrs_text">@color/petrol2</color>
+
+    <!--Authentication-->
+    <color name="edit_text">@color/cream1</color>
+    <color name="edit_text_line">@color/petrol1</color>
 </resources>

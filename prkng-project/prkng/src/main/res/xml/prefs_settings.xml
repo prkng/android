@@ -2,6 +2,9 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceScreen
+        android:key="@string/prefs_toggle_login"
+        android:title="@string/prefs_login_title" />
+    <PreferenceScreen
         android:title="Lorem Ipsum" />
 
 </PreferenceScreen>
