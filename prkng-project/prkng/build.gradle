@@ -34,6 +34,13 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "API_BASE_URL", '"https://api.prk.ng"'
+        }
+
+        debug {
+            applicationIdSuffix ".d"
+            minifyEnabled false
+            buildConfigField "String", "API_BASE_URL", '"https://test.prk.ng"'
         }
     }
 }
@@ -41,25 +48,29 @@ android {
 dependencies {
 //    compile fileTree(dir: 'libs', include: ['*.jar'])
 //    testCompile 'junit:junit:4.12'
+    // android support
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
+    // google play services
+    compile 'com.google.android.gms:play-services-gcm:8.3.0'
+    // mapbox
     compile('com.mapbox.mapboxsdk:mapbox-android-sdk:2.4.0-SNAPSHOT@aar') {
         transitive = true
     }
+    // retrofit
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
     compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
     compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
     compile 'com.squareup.okhttp:okhttp:2.7.0-SNAPSHOT'
     compile 'com.squareup.okhttp:logging-interceptor:2.7.0-SNAPSHOT'
-
+    // crashlyitcs
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }
+    // UI libs
     compile 'com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE'
     compile 'com.sothree.slidinguppanel:library:3.2.0'
-    compile 'com.google.android.gms:play-services-gcm:8.3.0'
-
-//    compile 'net.danlew:android.joda:2.9.0'
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
 
 }

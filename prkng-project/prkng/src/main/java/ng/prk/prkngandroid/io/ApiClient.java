@@ -6,6 +6,7 @@ import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import ng.prk.prkngandroid.BuildConfig;
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.model.LinesGeoJSON;
 import ng.prk.prkngandroid.model.LinesGeoJSONFeature;
@@ -47,7 +48,7 @@ public class ApiClient {
         }
 
         final Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Const.ApiPaths.BASE_URL)
+                .baseUrl(BuildConfig.API_BASE_URL)
                 .client(client)
 //                .addConverterFactory(LatLngConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())

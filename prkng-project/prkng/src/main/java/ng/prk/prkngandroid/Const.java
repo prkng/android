@@ -94,10 +94,7 @@ public class Const {
     }
 
     public interface ApiPaths {
-        String PROTOCOL = "https://";
-        String HOST_PROD = "api.prk.ng";
-        String HOST_DEV = "test.prk.ng";
-        String BASE_URL = PROTOCOL + HOST_DEV;
+        // String BASE_URL = BuildConfig.API_BASE_URL;
         String VERSION = "/v1";
 
         String POST_ANALYTICS_EVENT = VERSION + "/analytics/event";
@@ -134,6 +131,12 @@ public class Const {
         int PERMISSION_ACCESS_LOCATION = 10;
         int PERMISSION_ACCESS_FINE_LOCATION = 20;
         int PERMISSION_ACCESS_COARSE_LOCATION = 30;
+        int ONBOARDING = 40;
+        int AUTH_LOGIN = 50;
+    }
+
+    public interface BundleKeys {
+        String IS_INITIAL_ONBOARDING = "onboarding_skip_login";
     }
 
     /**
@@ -165,6 +168,9 @@ public class Const {
 
     public interface PrefsNames {
         String API_KEY = "p_api_key";
+        String IS_ONBOARDING = "p_is_onboarding";
+        // PreferenceScreens
+        String TOGGLE_LOGIN = "prefs_toggle_login";
     }
 
     public interface PrefsValues {
