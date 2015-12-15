@@ -8,6 +8,8 @@ import ng.prk.prkngandroid.Const;
 public class PrkngPrefs implements
         Const.PrefsNames,
         Const.PrefsValues {
+    private static final String TAG = "PrkngPrefs";
+
     private static PrkngPrefs instance;
 
     private SharedPreferences mPrefs;
@@ -39,5 +41,20 @@ public class PrkngPrefs implements
         }
 
         return mPrefsEditor;
+    }
+
+    public boolean isOnboarding() {
+        final boolean isInitialLaunch = mPrefs.getBoolean(IS_ONBOARDING, true);
+
+        edit().putBoolean(IS_ONBOARDING, false)
+                .apply();
+
+        return isInitialLaunch;
+    }
+
+    public boolean isLoggedIn() {
+        final String apiKey = getApiKey();
+
+        return (apiKey != null) && !apiKey.isEmpty();
     }
 }
