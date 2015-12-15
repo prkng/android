@@ -52,11 +52,35 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.MainActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.PREFERENCE" />
+            </intent-filter>
         </activity>
 
         <activity
             android:name=".ui.activity.AboutActivity"
             android:label="@string/activity_about"
+            android:parentActivityName=".ui.activity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".ui.activity.OnboardingActivity"
+            android:label="@string/activity_onboarding"
+            android:parentActivityName=".ui.activity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".ui.activity.LoginEmailActivity"
+            android:label="@string/activity_login"
             android:parentActivityName=".ui.activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
