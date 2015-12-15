@@ -1,10 +1,12 @@
 package ng.prk.prkngandroid.ui.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -14,12 +16,15 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
+import ng.prk.prkngandroid.ui.activity.base.BaseActivity;
 import ng.prk.prkngandroid.ui.fragment.MainMapFragment;
 import ng.prk.prkngandroid.ui.view.SlidingUpMarkerInfo;
+import ng.prk.prkngandroid.util.PrkngPrefs;
 
-public class MainActivity extends AppCompatActivity implements
+public class MainActivity extends BaseActivity implements
         MainMapFragment.OnMapMarkerClickListener,
         TabLayout.OnTabSelectedListener {
+    private static final String TAG = "MainActivity";
 
     private SlidingUpMarkerInfo vSlidingUpMarkerInfo;
     private MainMapFragment mapFragment;
@@ -29,6 +34,16 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.app_bar_main);
+
+        // Launch Onboarding once only
+        if (savedInstanceState == null && !isFirstClickFreeIntent(getIntent())) {
+            final PrkngPrefs prkngPrefs = PrkngPrefs.getInstance(this);
+            if (prkngPrefs.isOnboarding()) {
+                startActivityForResult(OnboardingActivity.newIntent(this, true), Const.RequestCodes.ONBOARDING);
+            } else if (isLoginRequired() && !prkngPrefs.isLoggedIn()) {
+                startActivityForResult(LoginEmailActivity.newIntent(this), Const.RequestCodes.AUTH_LOGIN);
+            }
+        }
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -141,5 +156,17 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.v(TAG, "onActivityResult "
+                + String.format("requestCode = %s, resultCode = %s", requestCode, resultCode, data));
+
+        if ((requestCode == Const.RequestCodes.AUTH_LOGIN)
+                && (resultCode != Activity.RESULT_OK)) {
+            this.finish();
+        }
     }
 }
