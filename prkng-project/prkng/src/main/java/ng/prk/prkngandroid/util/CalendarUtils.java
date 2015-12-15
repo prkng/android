@@ -97,7 +97,9 @@ public class CalendarUtils {
     }
 
 
+    @Deprecated
     public static String getDurationFromMillis(Context context, long millis) {
+        // TODO get string without prefix
         if ((int) millis == Const.UNKNOWN_VALUE) {
             return null;
         }
