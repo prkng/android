@@ -155,7 +155,7 @@ public class MainMapFragment extends Fragment implements
         vMap = (MapView) view.findViewById(R.id.mapview);
         vMap.onCreate(savedInstanceState);
 
-        vMap.setCenterCoordinate(new LatLng(45.501689, -73.567256));
+        vMap.setCenterCoordinate(Const.UiConfig.MONTREAL_LAT_LNG);
         vMap.setZoomLevel(Const.UiConfig.DEFAULT_ZOOM);
 
         // Load map assets and colors
