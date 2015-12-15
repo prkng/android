@@ -106,7 +106,8 @@ public class LotAgenda {
                         return new LotCurrentStatus(
                                 interval.getMainPrice(),
                                 interval.getHourlyPrice(),
-                                interval.getEndMillis() - now
+                                interval.getEndMillis() - now,
+                                interval.isFree()
                         );
                 }
             }

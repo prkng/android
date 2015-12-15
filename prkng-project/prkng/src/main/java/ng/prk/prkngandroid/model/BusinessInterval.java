@@ -2,6 +2,7 @@ package ng.prk.prkngandroid.model;
 
 import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import java.util.concurrent.TimeUnit;
 
@@ -39,6 +40,19 @@ public class BusinessInterval extends Interval implements
     }
 
     /**
+     * Check if the first interval ends at the same midnight where the second interval starts.
+     * This is regardless of type
+     *
+     * @param firstInterval  The interval to examine
+     * @param secondInterval The interval to examine
+     * @return true if the both intervals abut at midnight, following specific order
+     */
+    private static boolean abutsOvernight(BusinessInterval firstInterval, BusinessInterval secondInterval) {
+        return (Float.compare(firstInterval.getEndMillis(), DateUtils.DAY_IN_MILLIS) == 0)
+                && (Float.compare(secondInterval.getStartMillis(), 0) == 0);
+    }
+
+    /**
      * Join with another interval.
      * The result interval keeps the type/pricing of the current one.
      * Future UI changes may need a more strict join policy. The current UI version of the agenda
@@ -64,7 +78,6 @@ public class BusinessInterval extends Interval implements
         }
     }
 
-
     /**
      * Check if restriction applies all day (24 hours)
      *
@@ -79,7 +92,17 @@ public class BusinessInterval extends Interval implements
     }
 
     public float getMainPrice() {
-        return mainPrice;
+        if (Float.valueOf(mainPrice).compareTo((float) Const.UNKNOWN_VALUE) != 0) {
+            return mainPrice;
+        } else if ((Float.valueOf(hourlyPrice).compareTo(0f) > 0)) {
+            Log.i("BusinessInterval", "main price based on hourly");
+            final double remainingHours = Math.ceil(
+                    (endMillis - CalendarUtils.todayMillis()) / DateUtils.HOUR_IN_MILLIS);
+
+            return (float) (hourlyPrice * remainingHours);
+        } else {
+            return 0;
+        }
     }
 
     public float getMainPrice(int today, long now) {
@@ -134,22 +157,12 @@ public class BusinessInterval extends Interval implements
         return false;
     }
 
-
-    /**
-     * Check if the first interval ends at the same midnight where the second interval starts.
-     * This is regardless of type
-     *
-     * @param firstInterval  The interval to examine
-     * @param secondInterval The interval to examine
-     * @return true if the both intervals abut at midnight, following specific order
-     */
-    private static boolean abutsOvernight(BusinessInterval firstInterval, BusinessInterval secondInterval) {
-        return (Float.compare(firstInterval.getEndMillis(), DateUtils.DAY_IN_MILLIS) == 0)
-                && (Float.compare(secondInterval.getStartMillis(), 0) == 0);
-    }
-
     public boolean isClosed() {
         return type == CLOSED;
+    }
+
+    public boolean isFree() {
+        return type == FREE;
     }
 
     public boolean isNaturalMerge(BusinessInterval another) {
