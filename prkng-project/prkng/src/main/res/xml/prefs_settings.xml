@@ -4,7 +4,17 @@
     <PreferenceScreen
         android:key="@string/prefs_toggle_login"
         android:title="@string/prefs_login_title" />
-    <PreferenceScreen
-        android:title="Lorem Ipsum" />
+
+    <ListPreference
+        android:dialogTitle="@string/prefs_city_dialog_title"
+        android:entries="@array/prefs_city_entries"
+        android:entryValues="@array/prefs_city_values"
+        android:key="@string/prefs_city"
+        android:title="@string/prefs_city_title" />
+
+    <CheckBoxPreference
+        android:key="@string/prefs_notify"
+        android:summary="@string/prefs_notify_summary"
+        android:title="@string/prefs_notify_title" />
 
 </PreferenceScreen>

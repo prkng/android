@@ -3,6 +3,11 @@
     <string name="app_name" translatable="false">prkng</string>
     <string name="app_version" translatable="false">0.4 alpha</string>
 
+    <!--URLs-->
+    <string name="url_playstore" translatable="false">https://play.google.com/store/apps/details?id=ng.prk.prkngandroid</string>
+    <!--Emails-->
+    <string name="email_support" translatable="false">hello@prk.ng</string>
+
     <!--Mapbox-->
     <string name="mapbox_access_token" translatable="false">
         pk.eyJ1IjoiYXJuYXVkc3B1aGxlciIsImEiOiJSaEctSlVnIn0.R8cfngN9KkHYZx54JQdgJA
@@ -35,5 +40,24 @@
     <string name="prefs_onboarding" translatable="false">prefs_onboarding</string>
     <string name="prefs_terms" translatable="false">prefs_terms</string>
     <string name="prefs_faq" translatable="false">prefs_faq</string>
+    <string name="prefs_contact" translatable="false">prefs_contact</string>
+    <string name="prefs_share" translatable="false">prefs_share</string>
+    <string name="prefs_city" translatable="false">prefs_city</string>
+    <string name="prefs_notify" translatable="false">prefs_notify</string>
+
+    <!--Prefs arrays-->
+    <string-array name="prefs_city_entries">
+        <item>@string/city_montreal</item>
+        <item>@string/city_new_york</item>
+        <item>@string/city_quebec</item>
+        <item>@string/city_seattle</item>
+    </string-array>
+
+    <string-array name="prefs_city_values" translatable="false">
+        <item>montreal</item>
+        <item>new_york</item>
+        <item>quebec</item>
+        <item>seattle</item>
+    </string-array>
 
 </resources>

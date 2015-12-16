@@ -2,6 +2,7 @@ package ng.prk.prkngandroid.ui.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -13,11 +14,13 @@ import ng.prk.prkngandroid.ui.activity.LoginEmailActivity;
 
 public class SettingsFragment extends PreferenceFragment implements
         Const.PrefsNames,
+        Const.PrefsValues,
         SharedPreferences.OnSharedPreferenceChangeListener,
         Preference.OnPreferenceClickListener {
 
     private SharedPreferences mPrefs;
     private Preference pToggleLogin;
+    private Preference pCity;
 
 
     public static SettingsFragment newInstance() {
@@ -36,9 +39,12 @@ public class SettingsFragment extends PreferenceFragment implements
 
         mPrefs = pm.getSharedPreferences();
         pToggleLogin = findPreference(TOGGLE_LOGIN);
+        pCity = findPreference(CITY);
 
         // Listeners
         pToggleLogin.setOnPreferenceClickListener(this);
+
+        setupSummaries();
     }
 
     @Override
@@ -48,7 +54,7 @@ public class SettingsFragment extends PreferenceFragment implements
         /**
          * Set up a listener whenever a key changes
          */
-        if (mPrefs!= null) {
+        if (mPrefs != null) {
             mPrefs.registerOnSharedPreferenceChangeListener(this);
         }
     }
@@ -95,6 +101,27 @@ public class SettingsFragment extends PreferenceFragment implements
      */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (CITY.equals(key)) {
+            pCity.setSummary(getCitySummary(getResources(), mPrefs.getString(CITY, null)));
+        }
+    }
 
+    private void setupSummaries() {
+        pCity.setSummary(getCitySummary(getResources(), mPrefs.getString(CITY, null)));
+    }
+
+    private String getCitySummary(Resources res, String value) {
+        switch (value) {
+            case CITY_MONTREAL:
+                return res.getString(R.string.city_montreal);
+            case CITY_NEW_YORK:
+                return res.getString(R.string.city_new_york);
+            case CITY_QUEBEC:
+                return res.getString(R.string.city_quebec);
+            case CITY_SEATTLE:
+                return res.getString(R.string.city_seattle);
+        }
+
+        return null;
     }
 }
