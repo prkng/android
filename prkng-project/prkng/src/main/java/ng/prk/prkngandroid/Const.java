@@ -21,7 +21,7 @@ public class Const {
         double MIN_UPDATE_DISTACE = 25.0d; // Metres
         double MONTREAL_NATURAL_NORTH_ROTATION = -34.0d;
         LatLng MONTREAL_LAT_LNG = new LatLng(45.501689d, -73.567256d);
-        LatLng MANHATTAN_LAT_LNG = new LatLng(40.814589d, -73.927345d);
+        LatLng NEW_YORK_LAT_LNG = new LatLng(40.814589d, -73.927345d);
         float LOT_INFO_ATTRS_OPACITY = 0.4f;
     }
 
@@ -171,10 +171,15 @@ public class Const {
         String IS_ONBOARDING = "p_is_onboarding";
         // PreferenceScreens
         String TOGGLE_LOGIN = "prefs_toggle_login";
+        String CITY = "prefs_city";
+        String ONBOARDING = "prefs_onboarding";
     }
 
     public interface PrefsValues {
-
+        String CITY_MONTREAL = "montreal";
+        String CITY_NEW_YORK = "new_york";
+        String CITY_QUEBEC = "quebec";
+        String CITY_SEATTLE = "seattle";
     }
 
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");

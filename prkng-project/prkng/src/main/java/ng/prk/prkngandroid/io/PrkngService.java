@@ -4,7 +4,6 @@ import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.model.AnalyticsEvent;
 import ng.prk.prkngandroid.model.AnalyticsQuery;
 import ng.prk.prkngandroid.model.CheckInData;
-import ng.prk.prkngandroid.model.DeviceData;
 import ng.prk.prkngandroid.model.ErrorReportData;
 import ng.prk.prkngandroid.model.LinesGeoJSON;
 import ng.prk.prkngandroid.model.LinesGeoJSONFeature;
@@ -109,9 +108,11 @@ public interface PrkngService {
     // Send analytics event data
     @FormUrlEncoded
     @POST(Const.ApiPaths.POST_HELLO)
-    Object hello(
+    Call<Void> hello(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
-            @Body DeviceData deviceData
+            @Field(Const.ApiArgs.LANG) String lang,
+            @Field(Const.ApiArgs.DEVICE_TYPE) String deviceType,
+            @Field(Const.ApiArgs.DEVICE_ID) String deviceId
     );
 
     // Generate an S3 URL for image submission

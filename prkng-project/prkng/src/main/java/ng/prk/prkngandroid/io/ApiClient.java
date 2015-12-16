@@ -313,4 +313,16 @@ public class ApiClient {
 
         return null;
     }
+
+    public static void hello(PrkngService service, String apiKey, String lang, String deviceId) {
+        try {
+            service
+                    .hello(apiKey,
+                            lang,
+                            deviceId,
+                            "android").execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
