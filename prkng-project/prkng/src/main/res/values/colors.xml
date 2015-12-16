@@ -10,6 +10,7 @@
     <color name="turtle_green">#81B347</color>
 
     <color name="facebook_blue">#456397</color>
+    <color name="google_red">#DD4B39</color>
     <color name="azuro">#09ADF1</color>
 
     <color name="beige1">#E5E0DA</color>
@@ -53,6 +54,7 @@
     <color name="color_primary_dark">@color/berry2</color>
     <color name="color_accent">@color/cream1</color>
     <color name="color_background">@color/midnight2</color>
+    <color name="color_text">@color/cream1</color>
 
     <!--Map-->
     <color name="map_line_paid_spot">@color/curry</color>
@@ -76,4 +78,5 @@
     <!--Authentication-->
     <color name="edit_text">@color/cream1</color>
     <color name="edit_text_line">@color/petrol1</color>
+    <color name="btn_email_text">@color/anthracite1</color>
 </resources>

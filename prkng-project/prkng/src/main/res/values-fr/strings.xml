@@ -30,7 +30,7 @@
 
     <!--Prefs/About-->
     <string name="prefs_onboarding_title">Faire le tour</string>
-    <string name="prefs_faq_title">FAQ</string>
+    <string name="prefs_faq_title">Foire aux questions</string>
     <string name="prefs_terms_title">Conditions d’utilisation</string>
     <string name="prefs_version_title">Version</string>
 

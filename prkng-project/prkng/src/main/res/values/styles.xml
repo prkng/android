@@ -18,6 +18,14 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="AppTheme.Translucent">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+
     <!--Lot Info-->
     <style name="LotAttrsText">
         <item name="android:textSize">12sp</item>
@@ -30,10 +38,10 @@
 
     <!--Authentication-->
     <style name="AuthEditText">
-        <item name="android:textColor">@color/edit_text</item>
+        <!--<item name="android:textColor">@color/color_text</item>-->
         <item name="android:layout_marginBottom">16dp</item>
         <item name="met_floatingLabel">highlight</item>
-        <item name="met_baseColor">@color/edit_text</item>
+        <item name="met_baseColor">@color/color_text</item>
         <item name="met_primaryColor">@color/edit_text_line</item>
     </style>
 

@@ -8,6 +8,9 @@
     <!--Emails-->
     <string name="email_support" translatable="false">hello@prk.ng</string>
 
+    <!--Facebook-->
+    <string name="facebook_app_id" translatable="false">1043720578978201</string>
+
     <!--Mapbox-->
     <string name="mapbox_access_token" translatable="false">
         pk.eyJ1IjoiYXJuYXVkc3B1aGxlciIsImEiOiJSaEctSlVnIn0.R8cfngN9KkHYZx54JQdgJA
