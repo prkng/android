@@ -2,8 +2,10 @@ package ng.prk.prkngandroid.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import ng.prk.prkngandroid.Const;
+import ng.prk.prkngandroid.R;
 
 public class PrkngPrefs implements
         Const.PrefsNames,
@@ -24,6 +26,14 @@ public class PrkngPrefs implements
             instance = new PrkngPrefs(context);
         }
         return instance;
+    }
+
+    public static void setDefaults(Context context) {
+        PreferenceManager.setDefaultValues(context,
+                Const.APP_PREFS_NAME,
+                Context.MODE_PRIVATE,
+                R.xml.prefs_defaults,
+                false);
     }
 
     public String getApiKey() {

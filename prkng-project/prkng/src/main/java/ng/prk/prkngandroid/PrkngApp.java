@@ -5,6 +5,7 @@ import android.app.Application;
 import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
+import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public class PrkngApp extends Application {
     @Override
@@ -15,6 +16,6 @@ public class PrkngApp extends Application {
             Fabric.with(this, new Crashlytics());
         }
 
-//        JodaTimeAndroid.init(this);
+        PrkngPrefs.setDefaults(this);
     }
 }
