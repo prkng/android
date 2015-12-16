@@ -54,6 +54,9 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     // google play services
     compile 'com.google.android.gms:play-services-gcm:8.3.0'
+    compile 'com.google.android.gms:play-services-auth:8.3.0'
+    // Facebook
+    compile 'com.facebook.android:facebook-android-sdk:4.7.0'
     // mapbox
     compile('com.mapbox.mapboxsdk:mapbox-android-sdk:2.4.0-SNAPSHOT@aar') {
         transitive = true
