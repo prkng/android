@@ -15,7 +15,8 @@
         app:access_token="@string/mapbox_access_token"
         app:attribution_visibility="gone"
         app:logo_visibility="invisible"
-        app:style_url="@string/mapbox_style_url" />
+        app:style_url="@string/mapbox_style_url"
+        app:tilt_enabled="false" />
 
     <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
         android:id="@+id/progressBar"

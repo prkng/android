@@ -157,6 +157,7 @@ public class MainMapFragment extends Fragment implements
 
         vMap.setCenterCoordinate(Const.UiConfig.MONTREAL_LAT_LNG);
         vMap.setZoomLevel(Const.UiConfig.DEFAULT_ZOOM);
+        vMap.setTiltEnabled(false);
 
         // Load map assets and colors
         mapAssets = new MapAssets(vMap);
