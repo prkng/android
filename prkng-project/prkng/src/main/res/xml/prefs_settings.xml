@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceScreen
-        android:key="@string/prefs_toggle_login"
-        android:title="@string/prefs_login_title" />
 
     <ListPreference
         android:dialogTitle="@string/prefs_city_dialog_title"
@@ -16,5 +13,9 @@
         android:key="@string/prefs_notify"
         android:summary="@string/prefs_notify_summary"
         android:title="@string/prefs_notify_title" />
+
+    <PreferenceScreen
+        android:key="@string/prefs_toggle_login"
+        android:title="@string/prefs_login_title" />
 
 </PreferenceScreen>

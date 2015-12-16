@@ -150,7 +150,7 @@ public class LoginEmailActivity extends AppCompatActivity implements
                 if (loginUser != null) {
                     return ApiClient
                             .loginEmail(
-                                    ApiClient.getService(),
+                                    ApiClient.getServiceLog(),
                                     loginUser.getEmail(),
                                     loginUser.getPasswd());
                 }
@@ -171,11 +171,11 @@ public class LoginEmailActivity extends AppCompatActivity implements
                     error.printStackTrace();
                 } else {
                     Log.v(TAG, "name = " + loginObject.getName() + " email = " + loginObject.getEmail());
-                    Log.v(TAG, "mApiKey = " + loginObject.getApikey());
+//                    Log.v(TAG, "mApiKey = " + loginObject.getApikey());
 
                     PrkngPrefs
                             .getInstance(LoginEmailActivity.this)
-                            .setApiKey(loginObject.getApikey());
+                            .setAuthUser(loginObject);
 
                     setResult(Activity.RESULT_OK);
                     finish();

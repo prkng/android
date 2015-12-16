@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import ng.prk.prkngandroid.Const;
-import ng.prk.prkngandroid.ui.activity.LoginEmailActivity;
+import ng.prk.prkngandroid.ui.activity.LoginActivity;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -21,7 +21,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         // Launch Onboarding once only
         if (savedInstanceState == null
                 && isLoginRequired() && !PrkngPrefs.getInstance(this).isLoggedIn()) {
-            startActivityForResult(LoginEmailActivity.newIntent(this), Const.RequestCodes.AUTH_LOGIN);
+            startActivityForResult(LoginActivity.newIntent(this), Const.RequestCodes.AUTH_LOGIN);
         }
     }
 

@@ -91,6 +91,7 @@ public class Const {
         String AGENDA_DAY_FRIDAY = "5";
         String AGENDA_DAY_SATURDAY = "6";
         String AGENDA_DAY_SUNDAY = "7";
+        String DEVICE_TYPE_ANDROID = "android";
     }
 
     public interface ApiPaths {
@@ -133,6 +134,7 @@ public class Const {
         int PERMISSION_ACCESS_COARSE_LOCATION = 30;
         int ONBOARDING = 40;
         int AUTH_LOGIN = 50;
+        int AUTH_LOGIN_EMAIL = AUTH_LOGIN;
     }
 
     public interface BundleKeys {
@@ -167,7 +169,10 @@ public class Const {
     }
 
     public interface PrefsNames {
-        String API_KEY = "p_api_key";
+        String AUTH_API_KEY = "p_api_key";
+        String AUTH_USER_NAME = "p_auth_name";
+        String AUTH_USER_EMAIL = "p_auth_email";
+        String AUTH_USER_AVATAR = "p_auth_avatar";
         String IS_ONBOARDING = "p_is_onboarding";
         // PreferenceScreens
         String TOGGLE_LOGIN = "prefs_toggle_login";

@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
+import ng.prk.prkngandroid.model.LoginObject;
 
 public class PrkngPrefs implements
         Const.PrefsNames,
@@ -37,13 +38,33 @@ public class PrkngPrefs implements
     }
 
     public String getApiKey() {
-        return mPrefs.getString(API_KEY, null);
+        return mPrefs.getString(AUTH_API_KEY, null);
     }
 
-    public void setApiKey(String apiKey) {
-        edit().putString(API_KEY, apiKey)
-                .apply();
+    public String getAuthUserName() {
+        return mPrefs.getString(AUTH_USER_NAME, null);
     }
+
+    public String getAuthUserEmail() {
+        return mPrefs.getString(AUTH_USER_EMAIL, null);
+    }
+
+    public void setAuthUser(LoginObject user) {
+        if (user == null || user.getApikey() == null || user.getApikey().isEmpty()) {
+            edit().putString(AUTH_API_KEY, null)
+                    .putString(AUTH_USER_NAME, null)
+                    .putString(AUTH_USER_EMAIL, null)
+                    .putString(AUTH_USER_AVATAR, null)
+                    .apply();
+        } else {
+            edit().putString(AUTH_API_KEY, user.getApikey())
+                    .putString(AUTH_USER_NAME, user.getName())
+                    .putString(AUTH_USER_EMAIL, user.getEmail())
+                    .putString(AUTH_USER_AVATAR, user.getImageUrl())
+                    .apply();
+        }
+    }
+
 
     private SharedPreferences.Editor edit() {
         if (mPrefsEditor == null) {

@@ -34,18 +34,9 @@
     <!--Prefs/About-->
     <string name="prefs_onboarding_title">Take a tour</string>
     <string name="prefs_support_title">Support</string>
-    <string name="prefs_faq_title">FAQ</string>
+    <string name="prefs_faq_title">Frequently asked questions</string>
     <string name="prefs_terms_title">Terms of use</string>
     <string name="prefs_version_title">Version</string>
-
-
-    <!--<ListPreference-->
-        <!--android:dialogTitle="@string/prefs_screen_lock_status_dialog_title"-->
-        <!--android:entries="@array/prefs_screen_lock_status_entries"-->
-        <!--android:entryValues="@array/prefs_screen_lock_status_values"-->
-        <!--android:key="@string/prefs_key_screen_lock_status"-->
-        <!--android:title="@string/prefs_screen_lock_status_title" />-->
-
 
     <!--Menu actions-->
     <string name="action_search">Search</string>
@@ -90,6 +81,9 @@
     <string name="lot_capactiy">Capacity: %d&#160;spaces</string>
 
     <!--Authentication-->
+    <string name="auth_btn_facebook">FACEBOOK</string>
+    <string name="auth_btn_google">GMAIL</string>
+    <string name="auth_btn_email">OR USE YOUR EMAIL</string>
     <string name="auth_hint_login_email">Email</string>
     <string name="auth_hint_login_password">Password</string>
 

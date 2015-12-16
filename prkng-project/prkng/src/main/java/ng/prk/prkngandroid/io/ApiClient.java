@@ -43,7 +43,7 @@ public class ApiClient {
         client.setReadTimeout(60, TimeUnit.SECONDS);
         if (httpLogging) {
             final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-            interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             client.interceptors().add(interceptor);
         }
 
@@ -319,8 +319,9 @@ public class ApiClient {
             service
                     .hello(apiKey,
                             lang,
-                            deviceId,
-                            "android").execute();
+                            Const.ApiValues.DEVICE_TYPE_ANDROID,
+                            deviceId)
+                    .execute();
         } catch (IOException e) {
             e.printStackTrace();
         }

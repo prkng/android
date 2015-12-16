@@ -10,13 +10,15 @@ import android.preference.PreferenceManager;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
-import ng.prk.prkngandroid.ui.activity.LoginEmailActivity;
+import ng.prk.prkngandroid.ui.activity.LoginActivity;
+import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public class SettingsFragment extends PreferenceFragment implements
         Const.PrefsNames,
         Const.PrefsValues,
         SharedPreferences.OnSharedPreferenceChangeListener,
         Preference.OnPreferenceClickListener {
+    private static final String TAG = "SettingsFragment";
 
     private SharedPreferences mPrefs;
     private Preference pToggleLogin;
@@ -44,12 +46,13 @@ public class SettingsFragment extends PreferenceFragment implements
         // Listeners
         pToggleLogin.setOnPreferenceClickListener(this);
 
-        setupSummaries();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        setupSummaries();
 
         /**
          * Set up a listener whenever a key changes
@@ -86,7 +89,12 @@ public class SettingsFragment extends PreferenceFragment implements
         }
 
         if (TOGGLE_LOGIN.equals(key)) {
-            startActivity(LoginEmailActivity.newIntent(getActivity()));
+            final String apiKey = mPrefs.getString(AUTH_API_KEY, null);
+            if (apiKey == null || apiKey.isEmpty()) {
+                startActivity(LoginActivity.newIntent(getActivity()));
+            } else {
+                PrkngPrefs.getInstance(getActivity()).setAuthUser(null);
+            }
             return true;
         }
 
@@ -101,13 +109,34 @@ public class SettingsFragment extends PreferenceFragment implements
      */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
         if (CITY.equals(key)) {
             pCity.setSummary(getCitySummary(getResources(), mPrefs.getString(CITY, null)));
+        } else if (AUTH_USER_EMAIL.equals(key)) {
+            pToggleLogin.setSummary(mPrefs.getString(AUTH_USER_EMAIL, null));
+        } else if (AUTH_API_KEY.equals(key)) {
+            final String apiKey = mPrefs.getString(AUTH_API_KEY, null);
+            final boolean isLoggedIn = apiKey != null && !apiKey.isEmpty();
+            pToggleLogin.setTitle(isLoggedIn ? R.string.prefs_logout_title : R.string.prefs_login_title);
         }
     }
 
     private void setupSummaries() {
         pCity.setSummary(getCitySummary(getResources(), mPrefs.getString(CITY, null)));
+
+        setLoginTitleSummary();
+    }
+
+    private void setLoginTitleSummary() {
+        final String apiKey = mPrefs.getString(AUTH_API_KEY, null);
+        if (apiKey == null || apiKey.isEmpty()) {
+            pToggleLogin.setTitle(getResources().getString(R.string.prefs_login_title));
+            pToggleLogin.setSummary(null);
+        } else {
+            pToggleLogin.setTitle(getResources().getString(R.string.prefs_logout_title));
+            pToggleLogin.setSummary(
+                    mPrefs.getString(AUTH_USER_EMAIL, null));
+        }
     }
 
     private String getCitySummary(Resources res, String value) {
@@ -124,4 +153,5 @@ public class SettingsFragment extends PreferenceFragment implements
 
         return null;
     }
+
 }
