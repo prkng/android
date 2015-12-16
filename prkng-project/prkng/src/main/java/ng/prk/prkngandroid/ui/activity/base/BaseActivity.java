@@ -1,32 +1,37 @@
 package ng.prk.prkngandroid.ui.activity.base;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.ui.activity.LoginEmailActivity;
-import ng.prk.prkngandroid.ui.activity.OnboardingActivity;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
 
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-Log.v(TAG, "onCreate");
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.v(TAG, "onCreate");
 
         // Launch Onboarding once only
-        if (savedInstanceState == null && !isFirstClickFreeIntent(getIntent())) {
-            final PrkngPrefs prkngPrefs = PrkngPrefs.getInstance(this);
-            if (prkngPrefs.isOnboarding()) {
-                startActivityForResult(OnboardingActivity.newIntent(this, true), Const.RequestCodes.ONBOARDING);
-            } else if (isLoginRequired() && !prkngPrefs.isLoggedIn()) {
-                startActivityForResult(LoginEmailActivity.newIntent(this), Const.RequestCodes.AUTH_LOGIN);
-            }
+        if (savedInstanceState == null
+                && isLoginRequired() && !PrkngPrefs.getInstance(this).isLoggedIn()) {
+            startActivityForResult(LoginEmailActivity.newIntent(this), Const.RequestCodes.AUTH_LOGIN);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if ((requestCode == Const.RequestCodes.AUTH_LOGIN)
+                && (resultCode != Activity.RESULT_OK)) {
+            this.finish();
         }
     }
 
