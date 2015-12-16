@@ -42,7 +42,7 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
 
         final SpotsAnnotations spotsAnnotations = new SpotsAnnotations();
         try {
-            final String apiKey = getApiKey(service);
+            final String apiKey = getApiKey();
 
             if (apiKey != null && mapGeometry != null) {
                 /**

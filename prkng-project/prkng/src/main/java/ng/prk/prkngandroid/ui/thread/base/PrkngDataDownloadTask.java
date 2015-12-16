@@ -10,12 +10,10 @@ import com.mapbox.mapboxsdk.annotations.PolylineOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.views.MapView;
 
-import ng.prk.prkngandroid.io.ApiClient;
-import ng.prk.prkngandroid.io.PrkngService;
-import ng.prk.prkngandroid.model.LoginObject;
 import ng.prk.prkngandroid.model.MapAssets;
 import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.SpotsAnnotations;
+import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void, SpotsAnnotations> {
     private final static String TAG = "PrkngDataTask ";
@@ -71,7 +69,7 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
 
                     // Note: Mapbox's Iterator can throw a local reference table overflow exception
                     // vMap.addPolylines(spots.getPolylines());
-                    for (PolylineOptions polylineOptions: spots.getPolylines()) {
+                    for (PolylineOptions polylineOptions : spots.getPolylines()) {
                         vMap.addPolyline(polylineOptions);
                     }
                 }
@@ -125,27 +123,10 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
                 .width(5));
     }
 
-    @Deprecated
-    public String getApiKey(PrkngService service) {
-        if (mApiKey == null || mApiKey.isEmpty()) {
-            LoginObject loginObject = ApiClient
-                    .loginEmail(
-                            service,
-                            "mudar@prk.ng",
-                            "mudar123");
-            Log.v(TAG, "name = " + loginObject.getName() + " email = " + loginObject.getEmail());
-            Log.v(TAG, "mApiKey = " + loginObject.getApikey());
-            mApiKey = loginObject.getApikey();
+    protected String getApiKey() {
+        if (vMap == null) {
+            return null;
         }
-
-        return mApiKey;
-    }
-
-    public String getApiKey() {
-        return mApiKey;
-    }
-
-    public void setApiKey(String mApiKey) {
-        this.mApiKey = mApiKey;
+        return PrkngPrefs.getInstance(vMap.getContext()).getApiKey();
     }
 }

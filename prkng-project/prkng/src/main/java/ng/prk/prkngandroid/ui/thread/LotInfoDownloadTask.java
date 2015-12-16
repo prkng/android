@@ -1,5 +1,6 @@
 package ng.prk.prkngandroid.ui.thread;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -12,21 +13,23 @@ import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.io.PrkngService;
 import ng.prk.prkngandroid.model.GeoJSONFeatureProperties;
-import ng.prk.prkngandroid.model.LoginObject;
 import ng.prk.prkngandroid.model.LotCurrentStatus;
 import ng.prk.prkngandroid.model.PointsGeoJSONFeature;
 import ng.prk.prkngandroid.ui.adapter.LotAgendaListAdapter;
 import ng.prk.prkngandroid.util.CalendarUtils;
+import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureProperties> {
     private final static String TAG = "LotInfo";
 
     private String mApiKey;
 
+    private final Context context;
     private LotAgendaListAdapter mAdapter;
     private ViewGroup vHeader;
 
-    public LotInfoDownloadTask(LotAgendaListAdapter adapter, ViewGroup header) {
+    public LotInfoDownloadTask(Context context, LotAgendaListAdapter adapter, ViewGroup header) {
+        this.context = context;
         this.mAdapter = adapter;
         this.vHeader = header;
     }
@@ -47,9 +50,9 @@ public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureP
 
         Log.i(TAG, "lotId = " + lotId);
 
-        final PrkngService service = ApiClient.getServiceLog();
+        final PrkngService service = ApiClient.getService();
         try {
-            final String apiKey = getApiKey(service);
+            final String apiKey = PrkngPrefs.getInstance(context).getApiKey();
 
             PointsGeoJSONFeature spotFeatures = ApiClient.getParkingLotInfo(service, apiKey, lotId);
             return spotFeatures.getProperties();
@@ -116,29 +119,5 @@ public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureP
 
             mAdapter.setFooterAttrs(properties.getAttrs());
         }
-    }
-
-    @Deprecated
-    public String getApiKey(PrkngService service) {
-        if (mApiKey == null || mApiKey.isEmpty()) {
-            LoginObject loginObject = ApiClient
-                    .loginEmail(
-                            service,
-                            "mudar@prk.ng",
-                            "mudar123");
-            Log.v(TAG, "name = " + loginObject.getName() + " email = " + loginObject.getEmail());
-            Log.v(TAG, "mApiKey = " + loginObject.getApikey());
-            mApiKey = loginObject.getApikey();
-        }
-
-        return mApiKey;
-    }
-
-    public String getApiKey() {
-        return mApiKey;
-    }
-
-    public void setApiKey(String mApiKey) {
-        this.mApiKey = mApiKey;
     }
 }

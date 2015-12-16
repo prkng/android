@@ -64,6 +64,7 @@ public class SlidingUpMarkerInfo extends SlidingUpPanelLayout {
 
             vRecyclerView.setAdapter(new SpotAgendaListAdapter(getContext(), R.layout.list_item_spot_agenda));
             (new SpotInfoDownloadTask(
+                    context,
                     (SpotAgendaListAdapter) vRecyclerView.getAdapter(),
                     vIntervalEnd)
             ).execute(mMarkerId);
@@ -73,6 +74,7 @@ public class SlidingUpMarkerInfo extends SlidingUpPanelLayout {
 
             vRecyclerView.setAdapter(new LotAgendaListAdapter(getContext(), R.layout.list_item_lot_agenda));
             (new LotInfoDownloadTask(
+                    context,
                     (LotAgendaListAdapter) vRecyclerView.getAdapter(),
                     vLotHeader)
             ).execute(mMarkerId);

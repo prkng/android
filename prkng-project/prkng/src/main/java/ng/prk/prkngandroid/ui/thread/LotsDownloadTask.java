@@ -39,7 +39,7 @@ public class LotsDownloadTask extends PrkngDataDownloadTask {
         final SpotsAnnotations spotsAnnotations = new SpotsAnnotations();
         spotsAnnotations.setCenterCoordinate(mapGeometry);
         try {
-            final String apiKey = getApiKey(service);
+            final String apiKey = getApiKey();
 
             if (apiKey != null && mapGeometry != null) {
                 // Get API data

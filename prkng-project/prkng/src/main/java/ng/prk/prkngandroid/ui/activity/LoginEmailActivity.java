@@ -147,11 +147,13 @@ public class LoginEmailActivity extends AppCompatActivity implements
             try {
                 final LoginUser loginUser = params[0];
 
-                return ApiClient
-                        .loginEmail(
-                                ApiClient.getService(),
-                                loginUser.getEmail(),
-                                loginUser.getPasswd());
+                if (loginUser != null) {
+                    return ApiClient
+                            .loginEmail(
+                                    ApiClient.getService(),
+                                    loginUser.getEmail(),
+                                    loginUser.getPasswd());
+                }
             } catch (PrkngApiError e) {
                 error = e;
                 e.printStackTrace();
