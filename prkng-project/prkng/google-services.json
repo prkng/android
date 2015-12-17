@@ -1,1 +1,51 @@
-{"project_info":{"project_id":"prkngandroid","project_number":"8875871459","name":"PrkngAndroid"},"client":[{"client_info":{"mobilesdk_app_id":"1:8875871459:android:e9ba410b7f09bf67","client_id":"android:ng.prk.prkngandroid","client_type":1,"android_client_info":{"package_name":"ng.prk.prkngandroid"}},"oauth_client":[],"api_key":[],"services":{"analytics_service":{"status":1},"cloud_messaging_service":{"status":2,"apns_config":[]},"appinvite_service":{"status":1,"other_platform_oauth_client":[]},"google_signin_service":{"status":1},"ads_service":{"status":1}}}],"client_info":[],"ARTIFACT_VERSION":"1"}
+{
+  "project_info": {
+    "project_id": "propane-passkey-858",
+    "project_number": "632562278503",
+    "name": "prkng"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632562278503:android:e9ba410b7f09bf67",
+        "client_id": "android:ng.prk.prkngandroid",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "ng.prk.prkngandroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "632562278503-cp99g9bmko4emgra1va5q5odg9tfrd6l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ng.prk.prkngandroid",
+            "certificate_hash": "F4BBD6A34211B1986D55BA28F44B3DB33C2C87F1"
+          }
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
