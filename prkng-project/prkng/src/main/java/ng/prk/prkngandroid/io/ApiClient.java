@@ -45,6 +45,7 @@ public class ApiClient {
             final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             client.interceptors().add(interceptor);
+            client.interceptors().add(new HttpErrorInterceptor());
         }
 
         final Retrofit retrofit = new Retrofit.Builder()
@@ -60,12 +61,8 @@ public class ApiClient {
         return login(service, email, password, null, null);
     }
 
-    public static LoginObject loginFacebook(PrkngService service, String token) {
-        return login(service, null, null, token, Const.ApiValues.OAUTH_TYPE_FACEBOOK);
-    }
-
-    public static LoginObject loginGoogleplus(PrkngService service, String token) {
-        return login(service, null, null, token, Const.ApiValues.OAUTH_TYPE_GOOGLEPLUS);
+    public static LoginObject loginSocial(PrkngService service, String token, String type) {
+        return login(service, null, null, token, type);
     }
 
     /**

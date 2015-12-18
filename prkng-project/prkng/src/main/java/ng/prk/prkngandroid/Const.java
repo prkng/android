@@ -135,6 +135,7 @@ public class Const {
         int ONBOARDING = 40;
         int AUTH_LOGIN = 50;
         int AUTH_LOGIN_GOOGLE = 60;
+        int AUTH_LOGIN_GOOGLE_RESOLVE = 61;
         int AUTH_LOGIN_EMAIL = AUTH_LOGIN;
         int AUTH_LOGIN_FACEBOOK = 64206; // 0xface
     }
