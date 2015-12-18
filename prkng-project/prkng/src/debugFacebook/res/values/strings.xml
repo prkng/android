@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Placeholders-->
+    <string name="login_email">mudar@prk.ng</string>
+    <string name="login_password">mudar123</string>
+</resources>

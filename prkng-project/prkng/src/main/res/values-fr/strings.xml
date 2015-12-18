@@ -40,8 +40,12 @@
     <string name="action_about">À propos</string>
     <string name="action_share">Partager</string>
 
+    <!--Snackbar-->
+    <string name="snackbar_map_zoom_needed">Please zoom in to update map</string>
+    <string name="snackbar_location_permission_needed">L’emplacement est nécessaire pour l’affichage de la carte</string>
+    <string name="snackbar_auth_error_facebook">Erreur Facebook: %s</string>
+
     <!--Map-->
-    <string name="map_zoom_needed">Please zoom in to update map</string>
     <string name="map_tab_off_street">Hors rue</string>
     <string name="map_tab_on_street">Sur rue</string>
     <!--<string name="map_tab_carshare">Autopartage</string>-->
@@ -74,9 +78,6 @@
     <!--Currency-->
     <string name="currency_decimals">%.2f&#160;$</string>
     <string name="currency_round">%d&#160;$</string>
-
-    <!--Permissions-->
-    <string name="location_permission_needed">L’emplacement est nécessaire pour l’affichage de la carte</string>
 
     <!--Accessibility-->
     <string name="navigation_drawer_open">Ouvrir le panneau de navigation</string>

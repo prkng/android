@@ -10,6 +10,17 @@
 
     <!--Facebook-->
     <string name="facebook_app_id" translatable="false">1043720578978201</string>
+    <string name="facebook_permissions" translatable="false">email</string>
+
+    <!--Google Sign-In-->
+    <array name="google_sign_in_scopes">
+        <item>https://www.googleapis.com/auth/plus.me</item>
+        <!--<item>https://www.googleapis.com/auth/userinfo.email</item>-->
+        <!--<item>https://www.googleapis.com/auth/userinfo.profile</item>-->
+        <item>profile</item>
+        <item>email</item>
+        <item>openid</item>
+    </array>
 
     <!--Mapbox-->
     <string name="mapbox_access_token" translatable="false">
@@ -36,7 +47,13 @@
     </array>
 
     <!--Google Cloud Messaging (GCM)-->
-    <string name="google_app_id" translatable="false">1:8875871459:android:e9ba410b7f09bf67</string>
+    <!--<string name="google_app_id" translatable="false">1:8875871459:android:e9ba410b7f09bf67</string>-->
+    <string name="android_client_id" translatable="false">632562278503-cp99g9bmko4emgra1va5q5odg9tfrd6l.apps.googleusercontent.com</string>
+    <string name="web_client_id" translatable="false">632562278503-4c9tkt6hsk8qm2c70b3cjom7vjq7158k.apps.googleusercontent.com</string>
+    <string name="mudar_web_client_id" translatable="false">8875871459-lu5athmt4kglvki1dah5usd96epq00cc.apps.googleusercontent.com</string>
+    <string name="server_client_id" translatable="false">AIzaSyBmdx2I4cv12g-zgQwqw6nIDtZ3yssMvJU</string>
+    <string name="project_id" translatable="false">propane-passkey-858</string>
+    <string name="web_oauth_client_id" translatable="false">632562278503-lceq0ir5d5pqs6fofojdr4opimj8q3l2.apps.googleusercontent.com</string>
 
     <!--Preferences keys-->
     <string name="prefs_toggle_login" translatable="false">prefs_toggle_login</string>

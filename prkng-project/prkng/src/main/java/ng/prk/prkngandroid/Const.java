@@ -134,7 +134,9 @@ public class Const {
         int PERMISSION_ACCESS_COARSE_LOCATION = 30;
         int ONBOARDING = 40;
         int AUTH_LOGIN = 50;
+        int AUTH_LOGIN_GOOGLE = 60;
         int AUTH_LOGIN_EMAIL = AUTH_LOGIN;
+        int AUTH_LOGIN_FACEBOOK = 64206; // 0xface
     }
 
     public interface BundleKeys {
@@ -172,7 +174,7 @@ public class Const {
         String AUTH_API_KEY = "p_api_key";
         String AUTH_USER_NAME = "p_auth_name";
         String AUTH_USER_EMAIL = "p_auth_email";
-        String AUTH_USER_AVATAR = "p_auth_avatar";
+        String AUTH_USER_PICTURE = "p_auth_picture";
         String IS_ONBOARDING = "p_is_onboarding";
         // PreferenceScreens
         String TOGGLE_LOGIN = "prefs_toggle_login";
