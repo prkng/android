@@ -16,7 +16,6 @@
     <string name="share_app_subject">Discover Prkng on Google Play</string>
     <string name="share_app_body">@string/url_playstore</string>
 
-
     <!--Cities-->
     <string name="city_montreal">Montréal, QC</string>
     <string name="city_new_york">New York, NY</string>
@@ -29,7 +28,7 @@
     <string name="prefs_city_title">City</string>
     <string name="prefs_city_dialog_title">Select city</string>
     <string name="prefs_notify_title">Notifications</string>
-    <string name="prefs_notify_summary">Receive a reminder 30 min before expiry</string>
+    <string name="prefs_notify_summary">Receive a reminder 30 min before check-in expiry</string>
 
     <!--Prefs/About-->
     <string name="prefs_onboarding_title">Take a tour</string>
@@ -48,8 +47,12 @@
     <!--Buttons-->
     <string name="btn_login_email">Login</string>
 
+    <!--Snackbar-->
+    <string name="snackbar_map_zoom_needed">Please zoom in to update map</string>
+    <string name="snackbar_location_permission_needed">Location permission is needed for map accuracy</string>
+    <string name="snackbar_auth_error_facebook">Facebook error: %s</string>
+
     <!--Map-->
-    <string name="map_zoom_needed">Please zoom in to update map</string>
     <string name="map_tab_off_street">Off-Street</string>
     <string name="map_tab_on_street">On-Street</string>
     <!--<string name="map_tab_carshare">Carsharing</string>-->
@@ -94,9 +97,6 @@
     <!--Currency-->
     <string name="currency_decimals">$%.2f</string>
     <string name="currency_round">$%d</string>
-
-    <!--Permissions-->
-    <string name="location_permission_needed">Location permission is needed for map accuracy</string>
 
     <!--Accessibility-->
     <string name="navigation_drawer_open">Open navigation drawer</string>

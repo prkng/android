@@ -297,7 +297,7 @@ public class MainMapFragment extends Fragment implements
             // Provide an additional rationale to the user if the permission was not granted
             // and the user would benefit from additional context for the use of the permission.
             // For example if the user has previously denied the permission.
-            Snackbar.make(vMap, R.string.location_permission_needed, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(vMap, R.string.snackbar_location_permission_needed, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok,
                             new View.OnClickListener() {
                                 @Override
@@ -355,7 +355,7 @@ public class MainMapFragment extends Fragment implements
             mTask.execute(mLastMapGeometry);
         } else {
             mIgnoreMinDistance = true;
-            Snackbar.make(vMap, R.string.map_zoom_needed, Snackbar.LENGTH_LONG)
+            Snackbar.make(vMap, R.string.snackbar_map_zoom_needed, Snackbar.LENGTH_LONG)
                     .setAction(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
