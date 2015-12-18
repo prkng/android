@@ -8,7 +8,7 @@ import android.preference.PreferenceManager;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
-import ng.prk.prkngandroid.ui.activity.OnboardingActivity;
+import ng.prk.prkngandroid.ui.activity.TutorialActivity;
 
 public class AboutFragment extends PreferenceFragment implements
         Const.PrefsNames, Preference.OnPreferenceClickListener {
@@ -35,7 +35,7 @@ public class AboutFragment extends PreferenceFragment implements
         final String key = preference.getKey();
 
         if (ONBOARDING.equals(key)) {
-            startActivity(OnboardingActivity.newIntent(getActivity(), false));
+            startActivity(TutorialActivity.newIntent(getActivity(), false));
         }
 
         return false;

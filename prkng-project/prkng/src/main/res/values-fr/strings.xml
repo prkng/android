@@ -82,6 +82,13 @@
     <string name="currency_decimals">%.2f&#160;$</string>
     <string name="currency_round">%d&#160;$</string>
 
+
+    <!--Tutorial-->
+    <string name="tutorial_desc_01">Sarah va bruncher avec sa mère et devra se stationner près du restaurant. Voyez comment elle utilise prkng!</string>
+    <string name="tutorial_desc_02">Arrivée à destination, elle utilise le mode “Carte” afin de vérifier les rues autorisées.</string>
+    <string name="tutorial_desc_03">Sarah est une femme brillante: elle enregistre sa localisation afin d’être avertie 30 minutes avant l’heure limite, question d’éviter les ennuis.</string>
+    <string name="tutorial_desc_04">Fini les maux de tête et les contraventions: faites comme Sarah et utilisez prkng pour trouver votre prochain stationnement gratuit!</string>
+
     <!--Accessibility-->
     <string name="navigation_drawer_open">Ouvrir le panneau de navigation</string>
     <string name="navigation_drawer_close">Fermer le panneau de navigation</string>

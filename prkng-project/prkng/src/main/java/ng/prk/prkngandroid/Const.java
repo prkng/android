@@ -33,6 +33,15 @@ public class Const {
         int CARSHARE_VEHICLES = 3;
     }
 
+    public interface TutorialSections {
+        int _COUNT = 4;
+        int ONE = 0;
+        int TWO = 1;
+        int THREE = 2;
+        int FOUR = 3;
+        int LOGIN = 4;
+    }
+
     public interface ApiArgs {
         String API_KEY = "X-API-KEY";
         String LATITUDE = "latitude";
@@ -142,6 +151,7 @@ public class Const {
 
     public interface BundleKeys {
         String IS_INITIAL_ONBOARDING = "onboarding_skip_login";
+        String PAGE = "page";
     }
 
     /**

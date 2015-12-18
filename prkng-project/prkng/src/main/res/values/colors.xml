@@ -79,4 +79,7 @@
     <color name="edit_text">@color/cream1</color>
     <color name="edit_text_line">@color/petrol1</color>
     <color name="btn_email_text">@color/anthracite1</color>
+
+    <!--Tutorial-->
+    <color name="tutorial_background_opaque">@color/midnight2</color>
 </resources>

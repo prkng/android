@@ -36,7 +36,7 @@ public class MainActivity extends BaseActivity implements
         // Launch Onboarding once only
         if (savedInstanceState == null && !isFirstClickFreeIntent(getIntent())) {
             if (PrkngPrefs.getInstance(this).isOnboarding()) {
-                startActivityForResult(OnboardingActivity.newIntent(this, true), Const.RequestCodes.ONBOARDING);
+                startActivityForResult(TutorialActivity.newIntent(this, true), Const.RequestCodes.ONBOARDING);
             }
         }
 
