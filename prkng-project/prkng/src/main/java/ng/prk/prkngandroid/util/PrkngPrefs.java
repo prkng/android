@@ -54,13 +54,13 @@ public class PrkngPrefs implements
             edit().putString(AUTH_API_KEY, null)
                     .putString(AUTH_USER_NAME, null)
                     .putString(AUTH_USER_EMAIL, null)
-                    .putString(AUTH_USER_AVATAR, null)
+                    .putString(AUTH_USER_PICTURE, null)
                     .apply();
         } else {
             edit().putString(AUTH_API_KEY, user.getApikey())
                     .putString(AUTH_USER_NAME, user.getName())
                     .putString(AUTH_USER_EMAIL, user.getEmail())
-                    .putString(AUTH_USER_AVATAR, user.getImageUrl())
+                    .putString(AUTH_USER_PICTURE, user.getImageUrl())
                     .apply();
         }
     }
