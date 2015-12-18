@@ -27,8 +27,8 @@ android {
         versionCode 1
         versionName "1.0"
 
-        resConfigs "en", "fr"
-        resConfigs "nodpi", "mdpi", "hdpi", "xhdpi", "xxhdpi"
+//        resConfigs "en", "fr"
+//        resConfigs "nodpi", "mdpi", "hdpi", "xhdpi", "xxhdpi"
     }
     buildTypes {
         release {
@@ -41,6 +41,12 @@ android {
             applicationIdSuffix ".d"
             minifyEnabled false
             buildConfigField "String", "API_BASE_URL", '"https://test.prk.ng"'
+        }
+
+        debugFacebook.initWith(buildTypes.debug)
+
+        debugFacebook {
+            applicationIdSuffix ""
         }
     }
 }
@@ -65,8 +71,8 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
     compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
     compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
-    compile 'com.squareup.okhttp:okhttp:2.7.0-SNAPSHOT'
-    compile 'com.squareup.okhttp:logging-interceptor:2.7.0-SNAPSHOT'
+    compile 'com.squareup.okhttp:okhttp:2.7.0'
+    compile 'com.squareup.okhttp:logging-interceptor:2.7.0'
     // crashlyitcs
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
