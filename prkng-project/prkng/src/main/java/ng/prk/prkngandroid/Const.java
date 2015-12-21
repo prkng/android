@@ -34,12 +34,12 @@ public class Const {
     }
 
     public interface TutorialSections {
-        int _COUNT = 4;
+        int _COUNT = 5;
         int ONE = 0;
         int TWO = 1;
         int THREE = 2;
         int FOUR = 3;
-        int LOGIN = 4;
+        int LAST = 4;
     }
 
     public interface ApiArgs {

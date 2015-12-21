@@ -40,6 +40,11 @@
     <string name="action_about">À propos</string>
     <string name="action_share">Partager</string>
 
+    <!--Buttons-->
+    <string name="btn_login">Connexion</string>
+    <string name="btn_skip">Ignorer</string>
+    <string name="btn_done">Terminer</string>
+
     <!--Snackbar-->
     <string name="snackbar_map_zoom_needed">Please zoom in to update map</string>
     <string name="snackbar_location_permission_needed">L’emplacement est nécessaire pour l’affichage de la carte</string>

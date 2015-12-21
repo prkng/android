@@ -45,7 +45,9 @@
     <string name="action_rate">Rate</string>
 
     <!--Buttons-->
-    <string name="btn_login_email">Login</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_skip">Skip</string>
+    <string name="btn_done">Done</string>
 
     <!--Snackbar-->
     <string name="snackbar_map_zoom_needed">Please zoom in to update map</string>

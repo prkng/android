@@ -1,0 +1,23 @@
+<resources>
+    <!--Tutorial-->
+    <style name="TutorialImage">
+        <item name="layout_marginLeftPercent">10%</item>
+        <item name="layout_marginRightPercent">5%</item>
+        <item name="layout_widthPercent">35%</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+    <style name="TutorialText">
+        <item name="layout_marginRightPercent">10%</item>
+        <item name="layout_widthPercent">40%</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textColor">@color/color_text</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:lineSpacingMultiplier">1.3</item>
+    </style>
+
+</resources>

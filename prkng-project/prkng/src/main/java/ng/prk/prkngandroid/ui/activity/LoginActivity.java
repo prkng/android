@@ -51,6 +51,13 @@ public class LoginActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Launch Onboarding once only
+        if (savedInstanceState == null && !isFirstClickFreeIntent(getIntent())) {
+            if (PrkngPrefs.getInstance(this).isOnboarding()) {
+                startActivityForResult(TutorialActivity.newIntent(this, true), Const.RequestCodes.ONBOARDING);
+            }
+        }
+
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         setContentView(R.layout.activity_login);

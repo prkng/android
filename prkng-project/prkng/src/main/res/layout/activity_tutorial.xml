@@ -1,9 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
-    tools:context="eu.fiskur.pennineway.tutorial.TutorialActivity">
+    android:background="@android:color/transparent">
 
     <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pager"
@@ -20,25 +18,35 @@
         android:gravity="center_vertical"
         android:orientation="horizontal" />
 
-    <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+    <Button
         android:id="@+id/skip"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/tutorial_circles_height"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="16dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:gravity="center_vertical"
-        android:text="Skip" />
+        android:gravity="center"
+        android:text="@string/btn_skip" />
 
-    <ImageButton
-        android:id="@+id/next"
+    <Button
+        android:id="@+id/done"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/tutorial_circles_height"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:text="@string/btn_done"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/next"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/tutorial_circles_height"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:minWidth="64dp"
         android:src="@drawable/ic_image_navigate_next" />
 
 </RelativeLayout>

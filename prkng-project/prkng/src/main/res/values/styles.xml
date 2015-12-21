@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat">
@@ -12,6 +12,12 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.NoStatusBar" parent="AppTheme.Translucent">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -46,16 +52,27 @@
     </style>
 
     <!--Tutorial-->
-    <style name="TutorialIntro">
-        <item name="android:drawablePadding">32dp</item>
+    <style name="TutorialImage">
+        <item name="layout_marginLeftPercent">15%</item>
+        <item name="layout_marginRightPercent">15%</item>
+        <item name="layout_widthPercent">70%</item>
+        <item name="layout_heightPercent">40%</item>
+        <item name="layout_marginTopPercent">10%</item>
         <item name="android:gravity">center_horizontal</item>
-        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+    <style name="TutorialText">
+        <item name="layout_marginLeftPercent">15%</item>
+        <item name="layout_marginRightPercent">15%</item>
+        <item name="layout_widthPercent">70%</item>
+        <item name="layout_marginTopPercent">50%</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:textColor">@color/color_text</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:maxWidth">440dp</item>
-        <item name="android:layout_marginRight">48dp</item>
-        <item name="android:layout_marginLeft">48dp</item>
-        <item name="android:lineSpacingMultiplier">1.2</item>
+        <item name="android:lineSpacingMultiplier">1.3</item>
     </style>
 
 </resources>

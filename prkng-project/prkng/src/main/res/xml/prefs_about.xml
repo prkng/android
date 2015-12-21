@@ -7,19 +7,11 @@
 
     <PreferenceScreen
         android:key="@string/prefs_terms"
-        android:title="@string/prefs_terms_title">
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:data="@string/url_terms" />
-    </PreferenceScreen>
+        android:title="@string/prefs_terms_title" />
 
     <Preference
         android:key="@string/prefs_faq"
-        android:title="@string/prefs_faq_title">
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:data="@string/url_faq" />
-    </Preference>
+        android:title="@string/prefs_faq_title" />
 
     <Preference
         android:summary="@string/email_support"

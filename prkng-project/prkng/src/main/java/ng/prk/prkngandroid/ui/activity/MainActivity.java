@@ -33,13 +33,6 @@ public class MainActivity extends BaseActivity implements
 
         setContentView(R.layout.app_bar_main);
 
-        // Launch Onboarding once only
-        if (savedInstanceState == null && !isFirstClickFreeIntent(getIntent())) {
-            if (PrkngPrefs.getInstance(this).isOnboarding()) {
-                startActivityForResult(TutorialActivity.newIntent(this, true), Const.RequestCodes.ONBOARDING);
-            }
-        }
-
         helloApi();
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

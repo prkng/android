@@ -14,9 +14,9 @@ public class CrossfadePageTransformer implements ViewPager.PageTransformer {
     public void transformPage(View view, float position) {
 
         final int pageWidth = view.getWidth();
-        final View vBackground = view.findViewById(R.id.img_tutorial);
-        final View vContent = view.findViewById(R.id.desc_tutorial);
-        final View vActionButton = null;//view.findViewById(R.id.onboarding_login_btn);
+        final View vBackground = view.findViewById(R.id.tutorial_background);
+        final View vImage = view.findViewById(R.id.tutorial_image);
+        final View vText = view.findViewById(R.id.tutorial_text);
 
         if (Float.compare(position, -1.0f) < 0) { // [-Infinity,-1)
             // This page is way off-screen to the left
@@ -26,15 +26,15 @@ public class CrossfadePageTransformer implements ViewPager.PageTransformer {
             // Counteract the default swipe
             view.setTranslationX(pageWidth * -position);
             if (vBackground != null) {
-                // Fade the image in
                 vBackground.setAlpha(1 + position);
             }
-            if (vContent != null) {
-                // But swipe the contentView
-                vContent.setTranslationX(pageWidth * position);
+            if (vImage != null) {
+                // Fade the image in
+                vImage.setAlpha(1 + position);
             }
-            if (vActionButton != null) {
-                vActionButton.setTranslationX(pageWidth * position);
+            if (vText != null) {
+                // But swipe the contentView
+                vText.setTranslationX(pageWidth * position);
             }
         } else if (Float.compare(position, 1.0f) <= 0) { // (0,1]
             // This page is moving in from the right
@@ -42,15 +42,15 @@ public class CrossfadePageTransformer implements ViewPager.PageTransformer {
             // Counteract the default swipe
             view.setTranslationX(pageWidth * -position);
             if (vBackground != null) {
-                // Fade the image out
                 vBackground.setAlpha(1 - position);
             }
-            if (vContent != null) {
-                // But swipe the contentView
-                vContent.setTranslationX(pageWidth * position);
+            if (vImage != null) {
+                // Fade the image out
+                vImage.setAlpha(1 - position);
             }
-            if (vActionButton != null) {
-                vActionButton.setTranslationX(pageWidth * position);
+            if (vText != null) {
+                // But swipe the contentView
+                vText.setTranslationX(pageWidth * position);
             }
         } else { // (1,+Infinity]
             // This page is way off-screen to the right
