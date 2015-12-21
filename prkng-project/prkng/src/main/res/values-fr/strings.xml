@@ -4,10 +4,14 @@
     <string name="activity_main">Carte</string>
     <string name="activity_about">À propos</string>
     <string name="activity_settings">Réglages</string>
+    <string name="activity_terms">Conditions d’utilisation</string>
+    <string name="activity_faq">Foire aux questions</string>
 
     <!--Links-->
-    <string name="url_faq">http://prk.ng/fr/faq/</string>
-    <string name="url_terms">http://prk.ng/fr/conditions/</string>
+    <string name="url_faq">http://prk.ng/fr/faq/?embed=true</string>
+    <string name="url_terms">http://prk.ng/fr/conditions/?embed=true</string>
+    <string name="asset_faq">file:///android_asset/fr-faq.html</string>
+    <string name="asset_terms">file:///android_asset/fr-terms.html</string>
 
     <!--Emails and Sharing-->
     <string name="mail_to_contact">mailto:hello@prk.ng?subject=À propos de Prkng Android</string>

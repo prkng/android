@@ -29,6 +29,8 @@
 
     <color name="midnight1">#435059</color>
     <color name="midnight2">#3A4249</color>
+    <color name="midnight2A">#384248</color>
+    <color name="midnight3">#23282c</color>
 
     <color name="anthracite1">#979797</color>
     <color name="anthracite2">#929292</color>
@@ -54,6 +56,7 @@
     <color name="color_primary_dark">@color/berry2</color>
     <color name="color_accent">@color/cream1</color>
     <color name="color_background">@color/midnight2</color>
+    <color name="color_background_inv">@color/cream1</color>
     <color name="color_text">@color/cream1</color>
 
     <!--Map-->
@@ -82,4 +85,7 @@
 
     <!--Tutorial-->
     <color name="tutorial_background_opaque">@color/midnight2</color>
+
+    <!--About-->
+    <color name="webview_background">@color/cream1</color>
 </resources>

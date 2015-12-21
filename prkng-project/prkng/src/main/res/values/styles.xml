@@ -9,6 +9,14 @@
         <item name="android:windowBackground">@color/color_background</item>
     </style>
 
+    <style name="AppTheme.Dark" parent="Theme.AppCompat">
+        <!-- prkng custom theme here -->
+        <item name="colorPrimary">@color/midnight2</item>
+        <item name="colorPrimaryDark">@color/midnight3</item>
+        <item name="colorAccent">@color/color_primary_dark</item>
+        <item name="android:windowBackground">@color/color_background_inv</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

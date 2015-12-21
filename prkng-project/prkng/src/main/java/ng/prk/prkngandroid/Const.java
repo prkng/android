@@ -152,6 +152,7 @@ public class Const {
     public interface BundleKeys {
         String IS_INITIAL_ONBOARDING = "onboarding_skip_login";
         String PAGE = "page";
+        String URL = "url";
     }
 
     /**
@@ -191,6 +192,8 @@ public class Const {
         String TOGGLE_LOGIN = "prefs_toggle_login";
         String CITY = "prefs_city";
         String ONBOARDING = "prefs_onboarding";
+        String TERMS = "prefs_terms";
+        String FAQ = "prefs_faq";
     }
 
     public interface PrefsValues {
