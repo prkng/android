@@ -65,22 +65,6 @@ public class MainActivity extends BaseActivity implements
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_settings) {
-            startActivity(SettingsActivity.newIntent(this));
-
-            return true;
-        } else if (item.getItemId() == R.id.action_about) {
-            startActivity(AboutActivity.newIntent(this));
-
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
     /**
      * Hide the SlidingPanel, if expanded
      */

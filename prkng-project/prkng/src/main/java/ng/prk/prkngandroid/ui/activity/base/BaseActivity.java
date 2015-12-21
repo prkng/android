@@ -2,27 +2,82 @@ package ng.prk.prkngandroid.ui.activity.base;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 
 import ng.prk.prkngandroid.Const;
+import ng.prk.prkngandroid.R;
+import ng.prk.prkngandroid.ui.activity.AboutActivity;
 import ng.prk.prkngandroid.ui.activity.LoginActivity;
+import ng.prk.prkngandroid.ui.activity.SettingsActivity;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
 
+    private SharedPreferences.OnSharedPreferenceChangeListener listener;
+    private boolean hasLoggedOut = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.v(TAG, "onCreate");
 
         // Launch Onboarding once only
         if (savedInstanceState == null
                 && isLoginRequired() && !PrkngPrefs.getInstance(this).isLoggedIn()) {
             startActivityForResult(LoginActivity.newIntent(this), Const.RequestCodes.AUTH_LOGIN);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (listener != null) {
+            /**
+             * Unregister the prefsChangeListener, and finish() if user logged-out
+             * while in Settings
+             */
+            PrkngPrefs.getInstance(this).unregisterPrefsChangeListener(listener);
+            listener = null;
+
+            if (hasLoggedOut) {
+                finish();
+            }
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+
+            /**
+             * Register a prefsChangeListener to check if user logged-out while in Settings
+             */
+            listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+                @Override
+                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                    if (Const.PrefsNames.AUTH_API_KEY.equals(key)) {
+                        final String apiKey = sharedPreferences.getString(key, null);
+                        hasLoggedOut = (apiKey == null || apiKey.isEmpty());
+                    }
+                }
+            };
+            PrkngPrefs.getInstance(this).registerPrefsChangeListener(listener);
+
+            startActivity(SettingsActivity.newIntent(this));
+
+            return true;
+        } else if (item.getItemId() == R.id.action_about) {
+            startActivity(AboutActivity.newIntent(this));
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

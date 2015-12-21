@@ -49,19 +49,24 @@ public class PrkngPrefs implements
         return mPrefs.getString(AUTH_USER_EMAIL, null);
     }
 
+    /**
+     * Authentication data is stored using commit() to avoid delay when leaving login activity
+     *
+     * @param user
+     */
     public void setAuthUser(LoginObject user) {
         if (user == null || user.getApikey() == null || user.getApikey().isEmpty()) {
             edit().putString(AUTH_API_KEY, null)
                     .putString(AUTH_USER_NAME, null)
                     .putString(AUTH_USER_EMAIL, null)
                     .putString(AUTH_USER_PICTURE, null)
-                    .apply();
+                    .commit();
         } else {
             edit().putString(AUTH_API_KEY, user.getApikey())
                     .putString(AUTH_USER_NAME, user.getName())
                     .putString(AUTH_USER_EMAIL, user.getEmail())
                     .putString(AUTH_USER_PICTURE, user.getImageUrl())
-                    .apply();
+                    .commit();
         }
     }
 
@@ -87,5 +92,13 @@ public class PrkngPrefs implements
         final String apiKey = getApiKey();
 
         return (apiKey != null) && !apiKey.isEmpty();
+    }
+
+    public void registerPrefsChangeListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
+        mPrefs.registerOnSharedPreferenceChangeListener(listener);
+    }
+
+    public void unregisterPrefsChangeListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
+        mPrefs.unregisterOnSharedPreferenceChangeListener(listener);
     }
 }
