@@ -24,6 +24,7 @@
 
     <Button
         android:id="@+id/btn_email"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/auth_btn_email" />
