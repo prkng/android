@@ -62,6 +62,7 @@
 
         <activity
             android:name=".ui.activity.AboutActivity"
+            android:exported="false"
             android:label="@string/activity_about"
             android:parentActivityName=".ui.activity.MainActivity">
             <meta-data
@@ -71,11 +72,13 @@
 
         <activity
             android:name=".ui.activity.TutorialActivity"
+            android:exported="false"
             android:label="@string/activity_onboarding"
             android:theme="@style/AppTheme.NoStatusBar" />
 
         <activity
             android:name=".ui.activity.WebViewActivity"
+            android:exported="false"
             android:label="@string/app_name"
             android:parentActivityName=".ui.activity.AboutActivity"
             android:theme="@style/AppTheme.Dark">
@@ -86,10 +89,12 @@
 
         <activity
             android:name=".ui.activity.LoginActivity"
+            android:exported="false"
             android:label="@string/activity_login" />
 
         <activity
             android:name=".ui.activity.LoginEmailActivity"
+            android:exported="false"
             android:label="@string/activity_login"
             android:parentActivityName=".ui.activity.LoginActivity">
             <meta-data
