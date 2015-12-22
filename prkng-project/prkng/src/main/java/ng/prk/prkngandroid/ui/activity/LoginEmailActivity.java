@@ -141,8 +141,8 @@ public class LoginEmailActivity extends AppCompatActivity implements
                 .setAction(R.string.btn_try_again, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        vEmail.setText(null);
                         vEmail.requestFocus();
-                        vPassword.setText(null);
                     }
                 })
                 .show();
