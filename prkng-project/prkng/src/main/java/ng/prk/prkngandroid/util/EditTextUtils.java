@@ -23,7 +23,6 @@ public class EditTextUtils {
         try {
             inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
                     InputMethodManager.HIDE_NOT_ALWAYS);
-            // SongComments version:
             // inputManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
         } catch (NullPointerException e) {
             // Keyboard is already hidden
