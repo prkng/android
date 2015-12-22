@@ -3,7 +3,7 @@ package ng.prk.prkngandroid.model;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
-import com.mapbox.mapboxsdk.annotations.Sprite;
+import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.views.MapView;
 
 import ng.prk.prkngandroid.Const;
@@ -15,25 +15,25 @@ public class MapAssets {
     private int lineColorPaid;
     private String[] carshareLotsCompanies;
     private String[] carshareVehiclesCompanies;
-    private Sprite markerIconFree;
-    private Sprite markerIconPaid;
-    private Sprite markerIconTransparent;
-    private Sprite markerIconCarshareCommunauto;
-    private Sprite markerIconCarshareAutomobile;
-    private Sprite markerIconCarshareCar2go;
-    private Sprite markerIconCarshareZipcar;
+    private Icon markerIconFree;
+    private Icon markerIconPaid;
+    private Icon markerIconTransparent;
+    private Icon markerIconCarshareCommunauto;
+    private Icon markerIconCarshareAutomobile;
+    private Icon markerIconCarshareCar2go;
+    private Icon markerIconCarshareZipcar;
 
     public MapAssets(MapView mapView) {
         final Context context = mapView.getContext();
-        markerIconPaid = mapView.getSpriteFactory().fromResource(R.drawable.ic_spot_paid);
-        markerIconFree = mapView.getSpriteFactory().fromResource(R.drawable.ic_spot_free);
-        markerIconTransparent = mapView.getSpriteFactory().fromDrawable(
+        markerIconPaid = mapView.getIconFactory().fromResource(R.drawable.ic_spot_paid);
+        markerIconFree = mapView.getIconFactory().fromResource(R.drawable.ic_spot_free);
+        markerIconTransparent = mapView.getIconFactory().fromDrawable(
                 ContextCompat.getDrawable(context, R.drawable.ic_spot_transparent));
 
-        markerIconCarshareCommunauto = mapView.getSpriteFactory().fromResource(R.drawable.ic_maps_carshare_communauto);
-        markerIconCarshareAutomobile = mapView.getSpriteFactory().fromResource(R.drawable.ic_maps_carshare_automobile);
-        markerIconCarshareCar2go = mapView.getSpriteFactory().fromResource(R.drawable.ic_maps_carshare_car2go);
-        markerIconCarshareZipcar = mapView.getSpriteFactory().fromResource(R.drawable.ic_maps_carshare_zipcar);
+        markerIconCarshareCommunauto = mapView.getIconFactory().fromResource(R.drawable.ic_maps_carshare_communauto);
+        markerIconCarshareAutomobile = mapView.getIconFactory().fromResource(R.drawable.ic_maps_carshare_automobile);
+        markerIconCarshareCar2go = mapView.getIconFactory().fromResource(R.drawable.ic_maps_carshare_car2go);
+        markerIconCarshareZipcar = mapView.getIconFactory().fromResource(R.drawable.ic_maps_carshare_zipcar);
 
         lineColorPaid = ContextCompat.getColor(context, R.color.map_line_paid_spot);
         lineColorFree = ContextCompat.getColor(context, R.color.map_line_free_spot);
@@ -54,15 +54,15 @@ public class MapAssets {
         return lineColorPaid;
     }
 
-    public Sprite getMarkerIconFree() {
+    public Icon getMarkerIconFree() {
         return markerIconFree;
     }
 
-    public Sprite getMarkerIconPaid() {
+    public Icon getMarkerIconPaid() {
         return markerIconPaid;
     }
 
-    public Sprite getMarkerIconTransparent() {
+    public Icon getMarkerIconTransparent() {
         return markerIconTransparent;
     }
 
@@ -74,7 +74,7 @@ public class MapAssets {
         return carshareVehiclesCompanies;
     }
 
-    public Sprite getCarshareVehicleMarkerIcon(String company) {
+    public Icon getCarshareVehicleMarkerIcon(String company) {
         switch (company) {
             case Const.ApiValues.CARSHARE_COMPANY_COMMUNAUTO:
                 return markerIconCarshareCommunauto;
