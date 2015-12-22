@@ -60,6 +60,8 @@
     <color name="color_text">@color/cream1</color>
 
     <!--Map-->
+    <color name="my_location_ring">#4d802c2c</color>
+
     <color name="map_line_paid_spot">@color/curry</color>
     <color name="map_line_free_spot">@color/petrol1</color>
     <!--<color name="map_line_free_spot">#547B99</color>`-->
