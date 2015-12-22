@@ -34,7 +34,6 @@ public class HelloTask extends AsyncTask<String, Void, Void> {
             }
         } catch (PrkngApiError e) {
             error = e;
-            e.printStackTrace();
         }
 
         return null;

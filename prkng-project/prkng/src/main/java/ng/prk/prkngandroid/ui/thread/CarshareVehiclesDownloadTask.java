@@ -71,7 +71,6 @@ public class CarshareVehiclesDownloadTask extends PrkngDataDownloadTask {
             e.printStackTrace();
         } catch (PrkngApiError e) {
             setBackgroundError(e);
-            e.printStackTrace();
         }
 
         return spotsAnnotations;

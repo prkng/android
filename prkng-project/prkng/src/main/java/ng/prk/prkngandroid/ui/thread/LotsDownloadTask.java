@@ -70,7 +70,6 @@ public class LotsDownloadTask extends PrkngDataDownloadTask {
             e.printStackTrace();
         } catch (PrkngApiError e) {
             setBackgroundError(e);
-            e.printStackTrace();
         }
 
         return spotsAnnotations;
