@@ -25,7 +25,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "0.5"
 
 //        resConfigs "en", "fr"
 //        resConfigs "nodpi", "mdpi", "hdpi", "xhdpi", "xxhdpi"
@@ -65,8 +65,8 @@ dependencies {
     // Facebook
     compile 'com.facebook.android:facebook-android-sdk:4.7.0'
     // mapbox
-    compile('com.mapbox.mapboxsdk:mapbox-android-sdk:2.4.0-SNAPSHOT@aar') {
-        transitive = true
+    compile ('com.mapbox.mapboxsdk:mapbox-android-sdk:3.1.0-SNAPSHOT@aar'){
+        transitive=true
     }
     // retrofit
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
