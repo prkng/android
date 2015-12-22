@@ -23,8 +23,8 @@ Park Smarter. Discover spots around you, instantly. Check out parking lots nearb
 * [Crashlytics SDK for Android](https://fabric.io/kits/android/crashlytics/summary): Version 2.5.2.
 * [Retrofit](http://square.github.io/retrofit/): A type-safe REST client for Android and Java. Version 2.0.0-beta2.
 * [Google Play Services](http://developer.android.com/google/play-services/): auth, gcm. Version 8.3.0.
-* [Android Support Library v4 &amp; v7](http://developer.android.com/tools/support-library/): appcompat-v7, recyclerview-v7, design, percent. Version 23.1.1.
-* [Material Loading ProgressBar](): Provide a styled ProgressBar which looks like SwipeRefreshLayout's loading indicator. Version 0.5.8-RELEASE.
+* [Android Support Library](http://developer.android.com/tools/support-library/): appcompat-v7, recyclerview-v7, design, percent. Version 23.1.1.
+* [Material Loading ProgressBar](https://github.com/lsjwzh/MaterialLoadingProgressBar): Provide a styled ProgressBar which looks like SwipeRefreshLayout's loading indicator. Version 0.5.8-RELEASE.
 * [Android Sliding Up Panel](https://github.com/umano/AndroidSlidingUpPanel): Simple way to add a draggable sliding up panel. Version 3.2.0.
 * [Material EditText](https://github.com/rengwuxian/MaterialEditText): EditText in Material Design. Version 2.1.4.
 
