@@ -20,8 +20,7 @@ public class Const {
         double MY_LOCATION_ZOOM = 17.0d;
         double MIN_UPDATE_DISTACE = 25.0d; // Metres
         double MONTREAL_NATURAL_NORTH_ROTATION = -34.0d;
-        LatLng MONTREAL_LAT_LNG = new LatLng(45.501689d, -73.567256d);
-        LatLng NEW_YORK_LAT_LNG = new LatLng(40.814589d, -73.927345d);
+        LatLng MONTREAL_LAT_LNG = new LatLng(45.5016889d, -73.567256d);
         float LOT_INFO_ATTRS_OPACITY = 0.4f;
     }
 
