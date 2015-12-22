@@ -88,6 +88,21 @@ public class SpotsDownloadTask extends PrkngDataDownloadTask {
 
                         spotsAnnotations.addMarker(markerOptions);
                     }
+
+                    // Add first/last points as invisible buttons too
+                    final MarkerOptions firstMarkerOptions = new MarkerOptions()
+                            .position(pointsArray[0])
+                            .title(properties.getWayName())
+                            .snippet(feature.getId());
+                    firstMarkerOptions.icon(mapAssets.getMarkerIconTransparent());
+                    spotsAnnotations.addMarker(firstMarkerOptions);
+
+                    final MarkerOptions lastMarkerOptions = new MarkerOptions()
+                            .position(pointsArray[pointsArray.length -1])
+                            .title(properties.getWayName())
+                            .snippet(feature.getId());
+                    lastMarkerOptions.icon(mapAssets.getMarkerIconTransparent());
+                    spotsAnnotations.addMarker(lastMarkerOptions);
                 }
             }
         } catch (NullPointerException e) {
