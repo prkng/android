@@ -10,6 +10,7 @@ import com.mapbox.mapboxsdk.annotations.PolylineOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.views.MapView;
 
+import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.model.MapAssets;
 import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.SpotsAnnotations;
@@ -23,6 +24,7 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
     private MapView vMap;
     private String mApiKey;
     protected long startTime;
+    private PrkngApiError error = null;
 
     public interface MapTaskListener {
         void onPreExecute();
@@ -56,6 +58,11 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
     protected void onPostExecute(SpotsAnnotations spots) {
         Log.v(TAG, "onPostExecute");
         if (isCancelled() || vMap == null) {
+            return;
+        }
+
+        if (error != null) {
+            error.showSnackbar(vMap);
             return;
         }
 
@@ -128,5 +135,9 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
             return null;
         }
         return PrkngPrefs.getInstance(vMap.getContext()).getApiKey();
+    }
+
+    protected void setBackgroundError(PrkngApiError e) {
+        this.error = e;
     }
 }

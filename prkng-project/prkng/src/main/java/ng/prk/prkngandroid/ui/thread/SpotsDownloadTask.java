@@ -9,6 +9,7 @@ import java.util.List;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.io.ApiClient;
+import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.io.PrkngService;
 import ng.prk.prkngandroid.model.GeoJSONFeatureProperties;
 import ng.prk.prkngandroid.model.LinesGeoJSON;
@@ -98,7 +99,7 @@ public class SpotsDownloadTask extends PrkngDataDownloadTask {
                     spotsAnnotations.addMarker(firstMarkerOptions);
 
                     final MarkerOptions lastMarkerOptions = new MarkerOptions()
-                            .position(pointsArray[pointsArray.length -1])
+                            .position(pointsArray[pointsArray.length - 1])
                             .title(properties.getWayName())
                             .snippet(feature.getId());
                     lastMarkerOptions.icon(mapAssets.getMarkerIconTransparent());
@@ -106,6 +107,9 @@ public class SpotsDownloadTask extends PrkngDataDownloadTask {
                 }
             }
         } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (PrkngApiError e) {
+            setBackgroundError(e);
             e.printStackTrace();
         }
 

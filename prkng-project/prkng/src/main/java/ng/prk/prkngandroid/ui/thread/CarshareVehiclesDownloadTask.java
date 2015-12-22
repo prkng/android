@@ -7,6 +7,7 @@ import com.mapbox.mapboxsdk.views.MapView;
 import java.util.List;
 
 import ng.prk.prkngandroid.io.ApiClient;
+import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.io.PrkngService;
 import ng.prk.prkngandroid.model.GeoJSONFeatureProperties;
 import ng.prk.prkngandroid.model.MapAssets;
@@ -67,6 +68,9 @@ public class CarshareVehiclesDownloadTask extends PrkngDataDownloadTask {
                 }
             }
         } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (PrkngApiError e) {
+            setBackgroundError(e);
             e.printStackTrace();
         }
 

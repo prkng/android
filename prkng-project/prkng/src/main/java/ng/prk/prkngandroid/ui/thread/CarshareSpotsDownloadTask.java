@@ -9,6 +9,7 @@ import java.util.List;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.io.ApiClient;
+import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.io.PrkngService;
 import ng.prk.prkngandroid.model.GeoJSONFeatureProperties;
 import ng.prk.prkngandroid.model.LinesGeoJSON;
@@ -120,6 +121,9 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
                 }
             }
         } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (PrkngApiError e) {
+            setBackgroundError(e);
             e.printStackTrace();
         }
 
