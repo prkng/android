@@ -4,6 +4,8 @@ import android.content.res.Resources;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
+import java.net.HttpURLConnection;
+
 import ng.prk.prkngandroid.R;
 
 public class PrkngApiError extends RuntimeException {
@@ -36,5 +38,13 @@ public class PrkngApiError extends RuntimeException {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isUnauthorized() {
+        return this.code == HttpURLConnection.HTTP_UNAUTHORIZED;
+    }
+
+    public boolean isNotFound() {
+        return this.code == HttpURLConnection.HTTP_NOT_FOUND;
     }
 }

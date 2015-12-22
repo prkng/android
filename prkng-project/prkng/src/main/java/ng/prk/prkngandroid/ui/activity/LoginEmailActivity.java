@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -60,8 +60,6 @@ public class LoginEmailActivity extends AppCompatActivity implements
      */
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        Log.v(TAG, "onEditorAction");
-
         if (actionId == EditorInfo.IME_ACTION_NEXT) {
             // return true for invalid value, to block action
             return !((MaterialEditText) v).validate();
@@ -83,8 +81,6 @@ public class LoginEmailActivity extends AppCompatActivity implements
      */
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        Log.v(TAG, "onFocusChange");
-
         if (!hasFocus) {
             ((MaterialEditText) v).validate();
         }
@@ -138,6 +134,20 @@ public class LoginEmailActivity extends AppCompatActivity implements
         }
     }
 
+    private void showLoginErrorMessage() {
+        Snackbar.make(findViewById(R.id.root_view),
+                R.string.snackbar_login_fail,
+                Snackbar.LENGTH_LONG)
+                .setAction(R.string.btn_try_again, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vEmail.requestFocus();
+                        vPassword.setText(null);
+                    }
+                })
+                .show();
+    }
+
     private class LoginTask extends AsyncTask<LoginUser, Void, LoginObject> {
 
         private PrkngApiError error = null;
@@ -156,7 +166,6 @@ public class LoginEmailActivity extends AppCompatActivity implements
                 }
             } catch (PrkngApiError e) {
                 error = e;
-                e.printStackTrace();
             }
 
             return null;
@@ -166,13 +175,12 @@ public class LoginEmailActivity extends AppCompatActivity implements
         protected void onPostExecute(LoginObject loginObject) {
             try {
                 if (error != null) {
-                    // TODO handle API errors
-                    Log.e(TAG, "PrkngApiError");
-                    error.printStackTrace();
+                    if (error.isUnauthorized()) {
+                        showLoginErrorMessage();
+                    } else {
+                        error.showSnackbar(findViewById(R.id.root_view));
+                    }
                 } else {
-                    Log.v(TAG, "name = " + loginObject.getName() + " email = " + loginObject.getEmail());
-//                    Log.v(TAG, "mApiKey = " + loginObject.getApikey());
-
                     PrkngPrefs
                             .getInstance(LoginEmailActivity.this)
                             .setAuthUser(loginObject);
