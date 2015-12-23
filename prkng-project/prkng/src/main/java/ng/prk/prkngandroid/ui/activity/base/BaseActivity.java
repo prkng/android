@@ -52,7 +52,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_settings) {
+        final int id = item.getItemId();
+        if (id  == R.id.action_settings) {
 
             /**
              * Register a prefsChangeListener to check if user logged-out while in Settings
@@ -71,7 +72,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             startActivity(SettingsActivity.newIntent(this));
 
             return true;
-        } else if (item.getItemId() == R.id.action_about) {
+        } else if (id == R.id.action_about) {
             startActivity(AboutActivity.newIntent(this));
 
             return true;
