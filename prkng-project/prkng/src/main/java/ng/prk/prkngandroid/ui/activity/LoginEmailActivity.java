@@ -9,6 +9,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
@@ -49,9 +51,29 @@ public class LoginEmailActivity extends AppCompatActivity implements
         addValidators();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_login_email, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_help) {
+            final String email = EditTextUtils.getText(vEmail);
+
+            startActivity(LoginForgotPasswordActivity.newIntent(this,
+                            AuthValidation.isValidEmail(email) ? email : null)
+            );
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     /**
      * Implements OnEditorActionListener
-     * Validate fields on IME_ACTION_NEXT
+     * Validate fields on IME_ACTION_NEXT or IME_ACTION_DONE
      *
      * @param v
      * @param actionId
@@ -63,7 +85,7 @@ public class LoginEmailActivity extends AppCompatActivity implements
         if (actionId == EditorInfo.IME_ACTION_NEXT) {
             // return true for invalid value, to block action
             return !((MaterialEditText) v).validate();
-        } else if (actionId == EditorInfo.IME_ACTION_DONE) {
+        } else if (actionId == EditorInfo.IME_ACTION_GO) {
             if (((MaterialEditText) v).validate()) {
                 submitAuthLoginEmail();
             }
@@ -127,10 +149,10 @@ public class LoginEmailActivity extends AppCompatActivity implements
         EditTextUtils.hideKeyboard(this);
 
         if (vEmail.validate() && vPassword.validate()) {
-            final String emailUsername = EditTextUtils.getText(vEmail);
+            final String email = EditTextUtils.getText(vEmail);
             final String password = EditTextUtils.getText(vPassword);
 
-            new LoginTask().execute(new LoginUser(emailUsername, password));
+            new LoginTask().execute(new LoginUser(email, password));
         }
     }
 

@@ -323,4 +323,14 @@ public class ApiClient {
             e.printStackTrace();
         }
     }
+
+    public static void resetUserPassword(PrkngService service, String email) {
+        try {
+            service
+                    .resetUserPassword(email)
+                    .execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -152,6 +152,7 @@ public class Const {
         String IS_INITIAL_ONBOARDING = "onboarding_skip_login";
         String PAGE = "page";
         String URL = "url";
+        String EMAIL = "email";
     }
 
     /**

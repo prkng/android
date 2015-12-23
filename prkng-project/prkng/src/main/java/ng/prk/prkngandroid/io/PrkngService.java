@@ -8,7 +8,6 @@ import ng.prk.prkngandroid.model.ErrorReportData;
 import ng.prk.prkngandroid.model.LinesGeoJSON;
 import ng.prk.prkngandroid.model.LinesGeoJSONFeature;
 import ng.prk.prkngandroid.model.LoginObject;
-import ng.prk.prkngandroid.model.PasswordResetData;
 import ng.prk.prkngandroid.model.PointsGeoJSON;
 import ng.prk.prkngandroid.model.PointsGeoJSONFeature;
 import ng.prk.prkngandroid.model.UploadImageData;
@@ -154,9 +153,8 @@ public interface PrkngService {
     // Send an account password reset code
     @FormUrlEncoded
     @POST(Const.ApiPaths.POST_PASSWD_RESET)
-    Object resetUserPassword(
-            @Header(Const.ApiArgs.API_KEY) String apiKey,
-            @Body PasswordResetData passwordResetData
+    Call<Void> resetUserPassword(
+            @Field(Const.ApiArgs.EMAIL) String gender
     );
 
     // Return parking lots and garages around the point defined by (x, y)

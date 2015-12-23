@@ -103,6 +103,16 @@
         </activity>
 
         <activity
+            android:name=".ui.activity.LoginForgotPasswordActivity"
+            android:exported="false"
+            android:label="@string/activity_forgot_password"
+            android:parentActivityName=".ui.activity.LoginActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.LoginActivity" />
+        </activity>
+
+        <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
