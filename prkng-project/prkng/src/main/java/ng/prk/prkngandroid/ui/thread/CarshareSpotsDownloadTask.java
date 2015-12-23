@@ -75,7 +75,7 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
                             .add(pointsArray)
                             .width(mapAssets.getLineWidth())
                             .color(properties.isTypePaid() ? mapAssets.getLineColorPaid() : mapAssets.getLineColorFree());
-                    spotsAnnotations.addPolyline(polylineOptions);
+                    spotsAnnotations.addPolyline(feature.getId(), polylineOptions);
 
                     // Add the polylines dots
                     if (hasVisibleMarkers) {
@@ -87,7 +87,7 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
                                     .snippet(feature.getId())
                                     .icon(properties.isTypePaid() ? mapAssets.getMarkerIconPaid() : mapAssets.getMarkerIconFree());
 
-                            spotsAnnotations.addMarker(markerOptions);
+                            spotsAnnotations.addMarker(feature.getId(), markerOptions);
                         }
                     }
                 }
@@ -117,7 +117,7 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
                             .snippet(feature.getId());
 //                            .icon(properties.isTypePaid() ? mapAssets.getMarkerIconPaid() : mapAssets.getMarkerIconFree());
 
-                    spotsAnnotations.addMarker(markerOptions);
+                    spotsAnnotations.addMarker(feature.getId(), markerOptions);
                 }
             }
         } catch (NullPointerException e) {

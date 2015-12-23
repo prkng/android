@@ -63,7 +63,7 @@ public class LotsDownloadTask extends PrkngDataDownloadTask {
                             .snippet(feature.getId());
 //                            .icon(properties.isTypePaid() ? mapAssets.getMarkerIconPaid() : mapAssets.getMarkerIconFree());
 
-                    spotsAnnotations.addMarker(markerOptions);
+                    spotsAnnotations.addMarker(feature.getId(), markerOptions);
                 }
             }
         } catch (NullPointerException e) {

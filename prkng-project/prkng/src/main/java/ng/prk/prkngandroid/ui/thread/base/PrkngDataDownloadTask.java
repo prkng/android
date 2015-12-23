@@ -5,10 +5,17 @@ import android.graphics.PointF;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.annotations.Polyline;
 import com.mapbox.mapboxsdk.annotations.PolylineOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.views.MapView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.model.MapAssets;
@@ -25,17 +32,21 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
     private String mApiKey;
     protected long startTime;
     private PrkngApiError error = null;
+    private HashMap<String, List<Long>> featureAnnotsList;
 
     public interface MapTaskListener {
         void onPreExecute();
 
         void onPostExecute();
+
+        void setAnnotationsList(HashMap<String, List<Long>> annotations);
     }
 
     public PrkngDataDownloadTask(MapView mapView, MapAssets mapAssets, MapTaskListener listener) {
         this.vMap = mapView;
         this.mapAssets = mapAssets;
         this.listener = listener;
+        this.featureAnnotsList = new HashMap<>();
     }
 
     /**
@@ -65,7 +76,6 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
             error.showSnackbar(vMap);
             return;
         }
-
         try {
             if (spots != null) {
                 Log.v(TAG, "removeAllAnnotations");
@@ -76,8 +86,9 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
 
                     // Note: Mapbox's Iterator can throw a local reference table overflow exception
                     // vMap.addPolylines(spots.getPolylines());
-                    for (PolylineOptions polylineOptions : spots.getPolylines()) {
-                        vMap.addPolyline(polylineOptions);
+                    for (Map.Entry<PolylineOptions, String> entry : spots.getPolylines().entrySet()) {
+                        Polyline p = vMap.addPolyline(entry.getKey());
+                        addToAnnotationsList(entry.getValue(), p.getId());
                     }
                 }
                 spots.clearPolylines();
@@ -85,7 +96,10 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
                 // Markers must be added after Polylines to show the dot above the line (z-order)
                 if (!spots.getMarkers().isEmpty()) {
                     Log.v(TAG, "addMarkers");
-                    vMap.addMarkers(spots.getMarkers());
+                    for (Map.Entry<MarkerOptions, String> entry : spots.getMarkers().entrySet()) {
+                        Marker m = vMap.addMarker(entry.getKey());
+                        addToAnnotationsList(entry.getValue(), m.getId());
+                    }
                 }
                 spots.clearMarkers();
 
@@ -98,11 +112,21 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
 
             // Done processing: hide the progressbar
             if (listener != null) {
+                listener.setAnnotationsList(featureAnnotsList);
                 listener.onPostExecute();
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+    }
+
+    private void addToAnnotationsList(String featureId, Long annotId) {
+        List<Long> annots = featureAnnotsList.get(featureId);
+        if (annots == null) {
+            annots = new ArrayList<>();
+        }
+        annots.add(annotId);
+        featureAnnotsList.put(featureId, annots);
     }
 
     @Override

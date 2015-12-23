@@ -73,7 +73,7 @@ public class SpotsDownloadTask extends PrkngDataDownloadTask {
                             .add(pointsArray)
                             .width(mapAssets.getLineWidth())
                             .color(properties.isTypePaid() ? mapAssets.getLineColorPaid() : mapAssets.getLineColorFree());
-                    spotsAnnotations.addPolyline(polylineOptions);
+                    spotsAnnotations.addPolyline(feature.getId(), polylineOptions);
 
                     List<LatLng> buttons = properties.getButtonLocations();
                     for (LatLng buttonLatLng : buttons) {
@@ -87,7 +87,7 @@ public class SpotsDownloadTask extends PrkngDataDownloadTask {
                             markerOptions.icon(mapAssets.getMarkerIconTransparent());
                         }
 
-                        spotsAnnotations.addMarker(markerOptions);
+                        spotsAnnotations.addMarker(feature.getId(), markerOptions);
                     }
 
                     // Add first/last points as invisible buttons too
@@ -96,14 +96,14 @@ public class SpotsDownloadTask extends PrkngDataDownloadTask {
                             .title(properties.getWayName())
                             .snippet(feature.getId());
                     firstMarkerOptions.icon(mapAssets.getMarkerIconTransparent());
-                    spotsAnnotations.addMarker(firstMarkerOptions);
+                    spotsAnnotations.addMarker(feature.getId(), firstMarkerOptions);
 
                     final MarkerOptions lastMarkerOptions = new MarkerOptions()
                             .position(pointsArray[pointsArray.length - 1])
                             .title(properties.getWayName())
                             .snippet(feature.getId());
                     lastMarkerOptions.icon(mapAssets.getMarkerIconTransparent());
-                    spotsAnnotations.addMarker(lastMarkerOptions);
+                    spotsAnnotations.addMarker(feature.getId(), lastMarkerOptions);
                 }
             }
         } catch (NullPointerException e) {
