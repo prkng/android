@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.rengwuxian.materialedittext.validation.METValidator;
 
+import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.io.PrkngApiError;
@@ -52,9 +52,7 @@ public class LoginSignUpActivity extends LoginEmailActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_login_email, menu);
-
-        return true;
+        return false;
     }
 
     @Override
@@ -70,6 +68,17 @@ public class LoginSignUpActivity extends LoginEmailActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if ((requestCode == Const.RequestCodes.AUTH_LOGIN_EMAIL)
+                && (resultCode == Activity.RESULT_OK)) {
+            setResult(Activity.RESULT_OK);
+            this.finish();
+        }
+    }
+
     private void setListeners() {
         vName.setOnEditorActionListener(this);
 
@@ -83,9 +92,9 @@ public class LoginSignUpActivity extends LoginEmailActivity implements
 
     private void startLoginActivity() {
         final String email = EditTextUtils.getText(vEmail);
-        Log.v(TAG, "email = " + email );
-        startActivity(LoginEmailActivity.newIntent(LoginSignUpActivity.this,
-                        AuthValidation.isValidEmail(email) ? email : null)
+        startActivityForResult(LoginEmailActivity.newIntent(LoginSignUpActivity.this,
+                        AuthValidation.isValidEmail(email) ? email : null),
+                Const.RequestCodes.AUTH_LOGIN_EMAIL
         );
     }
 
@@ -100,12 +109,7 @@ public class LoginSignUpActivity extends LoginEmailActivity implements
     }
 
     @Override
-    protected void submitAuthLoginEmail() {
-//        super.submitAuthLoginEmail();
-        submitSignUp();
-    }
-
-    protected void submitSignUp() {
+    protected void submitForm() {
         // Hide the keyboard
         EditTextUtils.hideKeyboard(this);
 

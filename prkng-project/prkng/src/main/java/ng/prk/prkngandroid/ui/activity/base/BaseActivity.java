@@ -85,7 +85,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if ((requestCode == Const.RequestCodes.AUTH_LOGIN)
+        if (isLoginRequired() && (requestCode == Const.RequestCodes.AUTH_LOGIN)
                 && (resultCode != Activity.RESULT_OK)) {
             this.finish();
         }

@@ -61,7 +61,9 @@ public class LoginEmailActivity extends AppCompatActivity implements
         vPassword = (MaterialEditText) findViewById(R.id.password);
 
         final String email = getIntent().getStringExtra(Const.BundleKeys.EMAIL);
-        vEmail.setText(email);
+        if (email != null) {
+            vEmail.setText(email);
+        }
 
         setListeners();
         addValidators();
@@ -103,7 +105,7 @@ public class LoginEmailActivity extends AppCompatActivity implements
             return !((MaterialEditText) v).validate();
         } else if (actionId == EditorInfo.IME_ACTION_GO) {
             if (((MaterialEditText) v).validate()) {
-                submitAuthLoginEmail();
+                submitForm();
             }
         }
 
@@ -137,7 +139,7 @@ public class LoginEmailActivity extends AppCompatActivity implements
         findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submitAuthLoginEmail();
+                submitForm();
             }
         });
     }
@@ -160,7 +162,7 @@ public class LoginEmailActivity extends AppCompatActivity implements
         });
     }
 
-    private void submitAuthLoginEmail() {
+    protected void submitForm() {
         // Hide the keyboard
         EditTextUtils.hideKeyboard(this);
 
