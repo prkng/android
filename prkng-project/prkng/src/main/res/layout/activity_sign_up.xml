@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/name"
+        style="@style/AuthEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/auth_hint_login_name"
+        android:inputType="textPersonName|textCapWords|textAutoCorrect" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/email"
+        style="@style/AuthEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/auth_hint_login_email"
+        android:inputType="textEmailAddress"
+        android:text="@string/login_email" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/password"
+        style="@style/AuthEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/auth_hint_login_password"
+        android:imeOptions="actionGo"
+        android:inputType="textPassword" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <ng.prk.prkngandroid.ui.view.IntroBookButton
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/btn_register" />
+
+        <ng.prk.prkngandroid.ui.view.IntroBookButton
+            android:id="@+id/btn_login_email"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_login_email" />
+    </LinearLayout>
+
+</LinearLayout>

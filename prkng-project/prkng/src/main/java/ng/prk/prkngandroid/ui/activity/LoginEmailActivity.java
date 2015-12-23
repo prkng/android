@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.rengwuxian.materialedittext.validation.METValidator;
 
+import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.io.PrkngApiError;
@@ -31,21 +32,36 @@ public class LoginEmailActivity extends AppCompatActivity implements
         TextView.OnEditorActionListener {
     private static final String TAG = "LoginEmailActivity";
 
-    private MaterialEditText vEmail;
-    private MaterialEditText vPassword;
+    protected MaterialEditText vEmail;
+    protected MaterialEditText vPassword;
 
-    public static Intent newIntent(Context context) {
-        return new Intent(context, LoginEmailActivity.class);
+    public static Intent newIntent(Context context, String email) {
+        final Intent intent = new Intent(context, LoginEmailActivity.class);
+
+        if (email != null && !email.isEmpty()) {
+            final Bundle bundle = new Bundle();
+            bundle.putString(Const.BundleKeys.EMAIL, email);
+            intent.putExtras(bundle);
+        }
+
+        return intent;
+    }
+
+    protected int getLayoutResource() {
+        return R.layout.activity_email_login;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_email_login);
+        setContentView(getLayoutResource());
 
         vEmail = (MaterialEditText) findViewById(R.id.email);
         vPassword = (MaterialEditText) findViewById(R.id.password);
+
+        final String email = getIntent().getStringExtra(Const.BundleKeys.EMAIL);
+        vEmail.setText(email);
 
         setListeners();
         addValidators();
@@ -216,7 +232,7 @@ public class LoginEmailActivity extends AppCompatActivity implements
         }
     }
 
-    private class LoginUser {
+    protected class LoginUser {
         public final String email;
         public final String passwd;
 

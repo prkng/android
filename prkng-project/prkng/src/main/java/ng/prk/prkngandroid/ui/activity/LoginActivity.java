@@ -86,7 +86,7 @@ public class LoginActivity extends BaseActivity implements
             startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient),
                     Const.RequestCodes.AUTH_LOGIN_GOOGLE);
         } else if (id == R.id.btn_email) {
-            startActivityForResult(LoginEmailActivity.newIntent(this),
+            startActivityForResult(LoginSignUpActivity.newIntent(this),
                     Const.RequestCodes.AUTH_LOGIN_EMAIL);
         }
     }

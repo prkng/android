@@ -47,4 +47,8 @@ public class PrkngApiError extends RuntimeException {
     public boolean isNotFound() {
         return this.code == HttpURLConnection.HTTP_NOT_FOUND;
     }
+
+    public boolean isConflict() {
+        return this.code == HttpURLConnection.HTTP_CONFLICT;
+    }
 }

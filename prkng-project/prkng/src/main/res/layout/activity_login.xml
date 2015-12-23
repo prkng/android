@@ -12,11 +12,12 @@
         android:src="@drawable/bg_login" />
 
     <ng.prk.prkngandroid.ui.view.IntroBookTextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
         android:layout_above="@+id/btn_facebook"
+        android:textSize="16sp"
         android:layout_margin="16dp"
+        android:gravity="center_horizontal"
         android:text="@string/auth_subtitle" />
 
     <com.facebook.login.widget.LoginButton

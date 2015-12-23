@@ -53,6 +53,7 @@
     <!--Buttons-->
     <string name="btn_login">Login</string>
     <string name="btn_register">Create account</string>
+    <string name="btn_login_email">I already have an account</string>
     <string name="btn_skip">Skip</string>
     <string name="btn_done">Done</string>
     <string name="btn_try_again">Retry</string>
@@ -66,6 +67,7 @@
     <string name="snackbar_api_error_code">Server error: code %d</string>
     <string name="snackbar_api_error_message">Server error: %1$s [%2$d]</string>
     <string name="snackbar_login_fail">Wrong email or password. Please check the values provided</string>
+    <string name="snackbar_sign_up_fail">User already exists. Login or forgot password?</string>
 
     <!--Map-->
     <string name="map_tab_off_street">Off-Street</string>
@@ -103,6 +105,7 @@
     <string name="auth_btn_facebook">FACEBOOK</string>
     <string name="auth_btn_google">GMAIL</string>
     <string name="auth_btn_email">OR USE YOUR EMAIL</string>
+    <string name="auth_hint_login_name">Name</string>
     <string name="auth_hint_login_email">Email</string>
     <string name="auth_hint_login_password">Password</string>
     <string name="auth_confirm_password_reset">Please check your email!\r\nYou&#160;will receive instructions on how to enter your new password…</string>
@@ -110,6 +113,7 @@
     <!--Auth validation errors-->
     <string name="auth_error_invalid_email">Use a valid email address</string>
     <string name="auth_error_invalid_password_short">Use at least 6 characters</string>
+    <string name="auth_error_invalid_name_short">Use at least 2 characters</string>
 
     <!--Currency-->
     <string name="currency_decimals">$%.2f</string>
@@ -118,7 +122,7 @@
     <!--Tutorial-->
     <string name="tutorial_desc_01">Sarah is having lunch with her mom. She’ll need to park when she gets there. See how she uses prkng!</string>
     <string name="tutorial_desc_02">Once arrived at her destination, the “map” feature shows her the spots where she’s allowed to park.</string>
-    <string name="tutorial_desc_03">Sarah’s a bright woman: She taps “parked” so she’ll be notified to move her car before the cops do.</string>
+    <string name="tutorial_desc_03">Sarah’s a bright woman: She taps “parked” so she’ll be notified to move her car before towing does.</string>
     <string name="tutorial_desc_04">No more headaches, no more surprise tickets: join Sarah in using prkng to find your next free spot!</string>
 
     <!--Accessibility-->
