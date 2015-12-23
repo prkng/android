@@ -105,6 +105,7 @@
     <string name="auth_btn_email">OR USE YOUR EMAIL</string>
     <string name="auth_hint_login_email">Email</string>
     <string name="auth_hint_login_password">Password</string>
+    <string name="auth_confirm_password_reset">Please check your email!\r\nYou&#160;will receive instructions on how to enter your new password…</string>
 
     <!--Auth validation errors-->
     <string name="auth_error_invalid_email">Use a valid email address</string>

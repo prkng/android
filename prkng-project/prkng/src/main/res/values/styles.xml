@@ -71,16 +71,20 @@
         <item name="android:scaleType">fitCenter</item>
     </style>
 
-    <style name="TutorialText">
-        <item name="layout_marginLeftPercent">15%</item>
-        <item name="layout_marginRightPercent">15%</item>
-        <item name="layout_widthPercent">70%</item>
-        <item name="layout_marginTopPercent">50%</item>
+    <style name="BigText">
         <item name="android:gravity">center_horizontal</item>
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:textColor">@color/color_text</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:lineSpacingMultiplier">1.3</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
     </style>
+
+    <style name="TutorialText" parent="@style/BigText">
+        <item name="layout_marginLeftPercent">15%</item>
+        <item name="layout_marginRightPercent">15%</item>
+        <item name="layout_widthPercent">70%</item>
+        <item name="layout_marginTopPercent">50%</item>
+    </style>
+
 
 </resources>
