@@ -7,6 +7,7 @@ import android.graphics.PointF;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -18,15 +19,26 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.mapbox.mapboxsdk.annotations.Annotation;
 import com.mapbox.mapboxsdk.annotations.Marker;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.annotations.Polyline;
+import com.mapbox.mapboxsdk.annotations.PolylineOptions;
+import com.mapbox.mapboxsdk.constants.MyBearingTracking;
+import com.mapbox.mapboxsdk.constants.MyLocationTracking;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngZoom;
 import com.mapbox.mapboxsdk.views.MapView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.model.MapAssets;
 import ng.prk.prkngandroid.model.MapGeometry;
+import ng.prk.prkngandroid.model.ui.SelectedFeature;
 import ng.prk.prkngandroid.ui.thread.CarshareSpotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.CarshareVehiclesDownloadTask;
 import ng.prk.prkngandroid.ui.thread.LotsDownloadTask;
@@ -42,7 +54,7 @@ public class MainMapFragment extends Fragment implements
     private final static String TAG = "MainMapFragment";
     private final static double RADIUS_FIX = 1.4d;
     @Deprecated
-    private final static boolean MY_LOCATION_ENABLED = false;
+    private final static boolean MY_LOCATION_ENABLED = true;
 
     private CircleProgressBar vProgressBar;
     private MapView vMap;
@@ -53,6 +65,9 @@ public class MainMapFragment extends Fragment implements
     private PrkngDataDownloadTask mTask;
     private OnMapMarkerClickListener listener;
     private int mPrkngMapType;
+    private HashMap<String, List<Annotation>> mFeatureAnnotsList;
+    private List<Annotation> mSelectedAnnotsList;
+    private SelectedFeature mSelectedFeature;
 
     public static MainMapFragment newInstance() {
         return new MainMapFragment();
@@ -112,6 +127,7 @@ public class MainMapFragment extends Fragment implements
         if (PackageManager.PERMISSION_GRANTED ==
                 ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
             vMap.setMyLocationEnabled(MY_LOCATION_ENABLED);
+            vMap.setMyLocationTrackingMode(MyLocationTracking.TRACKING_NONE);
         }
     }
 
@@ -158,9 +174,12 @@ public class MainMapFragment extends Fragment implements
         vMap.setCenterCoordinate(Const.UiConfig.MONTREAL_LAT_LNG);
         vMap.setZoomLevel(Const.UiConfig.DEFAULT_ZOOM);
         vMap.setTiltEnabled(false);
+        vMap.setMyBearingTrackingMode(MyBearingTracking.NONE);
 
         // Load map assets and colors
-        mapAssets = new MapAssets(vMap);
+        if (mapAssets == null) {
+            mapAssets = new MapAssets(vMap);
+        }
         mLastMapGeometry = new MapGeometry(vMap.getCenterCoordinate(), vMap.getZoomLevel());
         mPrkngMapType = Const.MapSections.ON_STREET;
     }
@@ -194,8 +213,9 @@ public class MainMapFragment extends Fragment implements
 
     /**
      * Implements MapView.OnMapChangedListener
+     * Called when the displayed map view changes.
      *
-     * @param change
+     * @param change The type of map change event
      */
     @Override
     public void onMapChanged(int change) {
@@ -235,30 +255,44 @@ public class MainMapFragment extends Fragment implements
 
     /**
      * Implements MapView.OnMapClickListener
+     * Called when the user clicks on the map view.
      *
-     * @param latLng
+     * @param point The projected map coordinate the user clicked on.
      */
     @Override
-    public void onMapClick(LatLng latLng) {
-        Log.v(TAG, "onMapClick "
-                + String.format("latLng = %s", latLng));
+    public void onMapClick(@NonNull LatLng point) {
         if (listener != null) {
             listener.hideMarkerInfo();
         }
+        unselectFeatureIfNecessary();
     }
 
     /**
      * Implements MapView.OnMarkerClickListener
+     * Called when the user clicks on a marker.
      *
      * @param marker
      * @return True, to consume the event and skip showing the infoWindow
      */
     @Override
-    public boolean onMarkerClick(Marker marker) {
-        Log.v(TAG, "showMarkerInfo @ " + marker.getTitle());
+    public boolean onMarkerClick(@NonNull Marker marker) {
+        final String featureId = marker.getSnippet();
+        final String selectedId = mSelectedFeature == null ? null : mSelectedFeature.getId();
+        if (featureId != null && featureId.equals(selectedId)) {
+            // Skip if re-clicked the same Feature
+            return true;
+        }
 
         switch (mPrkngMapType) {
-            case Const.MapSections.ON_STREET:
+            case Const.MapSections.ON_STREET: {
+                unselectFeatureIfNecessary();
+                selectFeature(marker.getSnippet());
+
+                if (listener != null) {
+                    listener.showMarkerInfo(marker, mPrkngMapType);
+                }
+                return true;
+            }
             case Const.MapSections.OFF_STREET:
                 if (listener != null) {
                     listener.showMarkerInfo(marker, mPrkngMapType);
@@ -286,6 +320,17 @@ public class MainMapFragment extends Fragment implements
     public void onPostExecute() {
         if (vProgressBar != null) {
             vProgressBar.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void setAnnotationsList(HashMap<String, List<Annotation>> annotations) {
+        mFeatureAnnotsList = annotations;
+        mSelectedAnnotsList = new ArrayList<>();
+        mSelectedFeature = null;
+
+        if (listener != null) {
+            listener.hideMarkerInfo();
         }
     }
 
@@ -368,6 +413,7 @@ public class MainMapFragment extends Fragment implements
     private void moveToMyLocation(boolean animated) {
         if (!vMap.isMyLocationEnabled()) {
             vMap.setMyLocationEnabled(MY_LOCATION_ENABLED);
+            vMap.setMyLocationTrackingMode(MyLocationTracking.TRACKING_NONE);
         }
         final Location myLocation = vMap.getMyLocation();
         if (myLocation != null) {
@@ -388,4 +434,109 @@ public class MainMapFragment extends Fragment implements
         }
     }
 
+    private void selectFeature(String featureId) {
+        // Store the selected feature's ID, for restore
+        mSelectedFeature = new SelectedFeature(featureId);
+        final List<Annotation> annotations = mFeatureAnnotsList.get(featureId);
+
+        // Reset the selection array
+        mSelectedAnnotsList = new ArrayList<>();
+
+        for (Annotation annot : annotations) {
+            if (annot instanceof Marker) {
+                final Marker m = ((Marker) annot);
+
+                if (!m.getIcon().getId().equals(mapAssets.getMarkerIconTransparent().getId())) {
+                    // Store the selected feature's marker Icon, for restore
+                    mSelectedFeature.setMarkerIcon(m.getIcon());
+
+                    // Change the marker's Icon
+                    final Marker selectedMarker = vMap.addMarker(
+                            MapUtils.extractMarkerOptions(m)
+                                    .icon(mapAssets.getMarkerIconSelected())
+                    );
+
+                    // Add to the selection array
+                    mSelectedAnnotsList.add(selectedMarker);
+
+                    // Remove old marker from Map
+                    vMap.removeAnnotation(m);
+                } else {
+                    // Store transparent buttons without any changes
+                    mSelectedAnnotsList.add(m);
+                }
+            } else if (annot instanceof Polyline) {
+                final Polyline p = ((Polyline) annot);
+                // Store the selected feature's polyline Color, for restore
+                mSelectedFeature.setPolylineColor(p.getColor());
+
+                // Change the polyline's color
+                final Polyline selected = vMap.addPolyline(
+                        MapUtils.extractPolylineOptions(p)
+                                .color(mapAssets.getLineColorSelected())
+                );
+                // Add to the selection array
+                mSelectedAnnotsList.add(selected);
+
+                // Remove old polyline from Map
+                vMap.removeAnnotation(p);
+            }
+        }
+
+        // Update the global feature-annotations reference list
+        mFeatureAnnotsList.put(featureId, mSelectedAnnotsList);
+    }
+
+    private void unselectFeatureIfNecessary() {
+        if (mSelectedFeature == null) {
+            return;
+        }
+
+        final List<Annotation> restoredAnnotsList = new ArrayList<>();
+
+        for (Annotation annot : mSelectedAnnotsList) {
+            if (annot instanceof Marker) {
+                final Marker m = ((Marker) annot);
+                if (!m.getIcon().getId().equals(mapAssets.getMarkerIconTransparent().getId())) {
+                    // Create a marker with original Icon
+                    final MarkerOptions markerOptions = MapUtils
+                            .extractMarkerOptions(m)
+                            .icon(mSelectedFeature.getMarkerIcon());
+
+                    // Add the restored marker to map
+                    final Marker selected = vMap.addMarker(markerOptions);
+
+                    // Add the restored marker to the the global feature-annotations reference list
+                    restoredAnnotsList.add(selected);
+
+                    // Remove selected marker from map
+                    vMap.removeAnnotation(m);
+                } else {
+                    // Restore the invisible buttons
+                    restoredAnnotsList.add(m);
+                }
+            } else if (annot instanceof Polyline) {
+                final Polyline p = ((Polyline) annot);
+                // Create a polyline with original color
+                final PolylineOptions polylineOptions = MapUtils
+                        .extractPolylineOptions(p)
+                        .color(mSelectedFeature.getPolylineColor());
+
+                // Add the restored polyline to map
+                final Polyline selected = vMap.addPolyline(polylineOptions);
+
+                // Add the restored polyline to the the global feature-annotations reference list
+                restoredAnnotsList.add(selected);
+
+                // Remove selected polyline from map
+                vMap.removeAnnotation(p);
+            }
+        }
+        // Update the global feature-annotations reference list
+        mFeatureAnnotsList.put(mSelectedFeature.getId(), restoredAnnotsList);
+
+        // Clear the selected Feature
+        mSelectedFeature = null;
+        mSelectedAnnotsList = new ArrayList<>();
+    }
 }
