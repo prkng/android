@@ -76,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:background="@color/agenda_item_background"
-                android:drawableRight="@drawable/ic_spot_agenda"
+                android:drawableRight="@drawable/ic_agenda"
                 android:gravity="center_vertical"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
