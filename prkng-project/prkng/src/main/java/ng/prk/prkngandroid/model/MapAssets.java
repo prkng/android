@@ -30,8 +30,7 @@ public class MapAssets {
         markerIconFree = mapView.getIconFactory().fromResource(R.drawable.ic_spot_free);
         markerIconPaid = mapView.getIconFactory().fromResource(R.drawable.ic_spot_paid);
         markerIconSelected = mapView.getIconFactory().fromResource(R.drawable.ic_spot_selected);
-        markerIconTransparent = mapView.getIconFactory().fromDrawable(
-                ContextCompat.getDrawable(context, R.drawable.ic_spot_transparent));
+        markerIconTransparent = mapView.getIconFactory().fromResource(R.drawable.ic_spot_transparent);
 
         markerIconCarshareCommunauto = mapView.getIconFactory().fromResource(R.drawable.ic_maps_carshare_communauto);
         markerIconCarshareAutomobile = mapView.getIconFactory().fromResource(R.drawable.ic_maps_carshare_automobile);
