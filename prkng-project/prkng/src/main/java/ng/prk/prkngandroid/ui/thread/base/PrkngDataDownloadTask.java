@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import ng.prk.prkngandroid.io.PrkngApiError;
-import ng.prk.prkngandroid.model.MapAssets;
+import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.SpotsAnnotations;
 import ng.prk.prkngandroid.util.PrkngPrefs;

@@ -10,7 +10,7 @@ import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.io.PrkngService;
 import ng.prk.prkngandroid.model.GeoJSONFeatureProperties;
-import ng.prk.prkngandroid.model.MapAssets;
+import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.PointsGeoJSON;
 import ng.prk.prkngandroid.model.PointsGeoJSONFeature;

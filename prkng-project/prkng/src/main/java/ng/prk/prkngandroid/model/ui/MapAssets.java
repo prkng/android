@@ -1,4 +1,4 @@
-package ng.prk.prkngandroid.model;
+package ng.prk.prkngandroid.model.ui;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;

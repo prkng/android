@@ -36,7 +36,7 @@ import java.util.List;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
-import ng.prk.prkngandroid.model.MapAssets;
+import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.ui.SelectedFeature;
 import ng.prk.prkngandroid.ui.thread.CarshareSpotsDownloadTask;
