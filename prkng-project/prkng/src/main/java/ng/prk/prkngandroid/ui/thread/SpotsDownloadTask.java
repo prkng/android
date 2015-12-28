@@ -75,6 +75,23 @@ public class SpotsDownloadTask extends PrkngDataDownloadTask {
                             .color(properties.isTypePaid() ? mapAssets.getLineColorPaid() : mapAssets.getLineColorFree());
                     spotsAnnotations.addPolyline(feature.getId(), polylineOptions);
 
+                    // Add first/last points as invisible buttons too
+                    // For z-index, must be added before the visible ones
+                    final MarkerOptions firstMarkerOptions = new MarkerOptions()
+                            .position(pointsArray[0])
+                            .title(properties.getWayName())
+                            .snippet(feature.getId());
+                    firstMarkerOptions.icon(mapAssets.getMarkerIconTransparent());
+                    spotsAnnotations.addMarker(feature.getId(), firstMarkerOptions);
+
+                    final MarkerOptions lastMarkerOptions = new MarkerOptions()
+                            .position(pointsArray[pointsArray.length - 1])
+                            .title(properties.getWayName())
+                            .snippet(feature.getId());
+                    lastMarkerOptions.icon(mapAssets.getMarkerIconTransparent());
+                    spotsAnnotations.addMarker(feature.getId(), lastMarkerOptions);
+
+                    // Add the visible buttons
                     List<LatLng> buttons = properties.getButtonLocations();
                     for (LatLng buttonLatLng : buttons) {
                         final MarkerOptions markerOptions = new MarkerOptions()
@@ -89,21 +106,6 @@ public class SpotsDownloadTask extends PrkngDataDownloadTask {
 
                         spotsAnnotations.addMarker(feature.getId(), markerOptions);
                     }
-
-                    // Add first/last points as invisible buttons too
-                    final MarkerOptions firstMarkerOptions = new MarkerOptions()
-                            .position(pointsArray[0])
-                            .title(properties.getWayName())
-                            .snippet(feature.getId());
-                    firstMarkerOptions.icon(mapAssets.getMarkerIconTransparent());
-                    spotsAnnotations.addMarker(feature.getId(), firstMarkerOptions);
-
-                    final MarkerOptions lastMarkerOptions = new MarkerOptions()
-                            .position(pointsArray[pointsArray.length - 1])
-                            .title(properties.getWayName())
-                            .snippet(feature.getId());
-                    lastMarkerOptions.icon(mapAssets.getMarkerIconTransparent());
-                    spotsAnnotations.addMarker(feature.getId(), lastMarkerOptions);
                 }
             }
         } catch (NullPointerException e) {
