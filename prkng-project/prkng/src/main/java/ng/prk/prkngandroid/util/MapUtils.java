@@ -1,5 +1,10 @@
 package ng.prk.prkngandroid.util;
 
+import com.mapbox.mapboxsdk.annotations.Marker;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.annotations.Polyline;
+import com.mapbox.mapboxsdk.annotations.PolylineOptions;
+
 import ng.prk.prkngandroid.Const;
 
 public class MapUtils {
@@ -23,4 +28,29 @@ public class MapUtils {
 
         return Double.compare(minZoom, zoom) <= 0;
     }
+
+    public static MarkerOptions extractMarkerOptions(Marker marker) {
+        final MarkerOptions options = new MarkerOptions();
+        if (marker != null) {
+            options.position(marker.getPosition())
+                    .icon(marker.getIcon())
+                    .title(marker.getTitle())
+                    .snippet(marker.getSnippet());
+        }
+
+        return options;
+    }
+
+    public static PolylineOptions extractPolylineOptions(Polyline polyline) {
+        final PolylineOptions options = new PolylineOptions();
+        if (polyline != null) {
+            options.addAll(polyline.getPoints())
+                    .width(polyline.getWidth())
+                    .color(polyline.getColor());
+        }
+
+        return options;
+    }
+
+
 }
