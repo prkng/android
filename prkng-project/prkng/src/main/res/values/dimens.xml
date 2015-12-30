@@ -9,6 +9,7 @@
 
     <!--Map-->
     <dimen name="map_line_width">1dp</dimen>
+    <dimen name="lot_marker_text">10sp</dimen>
 
     <!--Tutorial-->
     <dimen name="tutorial_circles_height">80dp</dimen>
