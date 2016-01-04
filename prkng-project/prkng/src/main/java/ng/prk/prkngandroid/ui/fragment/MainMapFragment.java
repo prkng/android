@@ -7,6 +7,7 @@ import android.graphics.PointF;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 import com.mapbox.mapboxsdk.annotations.Annotation;
+import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.annotations.Polyline;
@@ -36,8 +38,8 @@ import java.util.List;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
-import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.model.MapGeometry;
+import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.model.ui.SelectedFeature;
 import ng.prk.prkngandroid.ui.thread.CarshareSpotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.CarshareVehiclesDownloadTask;
@@ -58,11 +60,12 @@ public class MainMapFragment extends Fragment implements
 
     private CircleProgressBar vProgressBar;
     private MapView vMap;
-    private String mApiKey;
     private MapAssets mapAssets;
     private MapGeometry mLastMapGeometry;
     private boolean mIgnoreMinDistance;
     private PrkngDataDownloadTask mTask;
+    private Handler mHandler = new Handler();
+    private Runnable mRunnable;
     private OnMapMarkerClickListener listener;
     private int mPrkngMapType;
     private HashMap<String, List<Annotation>> mFeatureAnnotsList;
@@ -222,12 +225,15 @@ public class MainMapFragment extends Fragment implements
 
         switch (change) {
             case MapView.REGION_DID_CHANGE:
-                updateMapData(vMap.getCenterCoordinate(), vMap.getZoomLevel());
+                if (isSignificantChange() || isIgnoreMinDistance()) {
+                    mIgnoreMinDistance = false;
+                    updateMapData(vMap.getCenterCoordinate(), vMap.getZoomLevel());
+                }
                 break;
             case MapView.DID_FINISH_LOADING_MAP:
+                mIgnoreMinDistance = true;
             case MapView.REGION_DID_CHANGE_ANIMATED:
-                if (mLastMapGeometry.distanceTo(vMap.getCenterCoordinate()) >= Const.UiConfig.MIN_UPDATE_DISTACE
-                        || isIgnoreMinDistance()) {
+                if (isSignificantChange() || isIgnoreMinDistance()) {
                     mIgnoreMinDistance = false;
                     updateMapData(vMap.getCenterCoordinate(), vMap.getZoomLevel());
                 }
@@ -284,16 +290,11 @@ public class MainMapFragment extends Fragment implements
         }
 
         switch (mPrkngMapType) {
-            case Const.MapSections.ON_STREET: {
+            case Const.MapSections.ON_STREET:
+            case Const.MapSections.OFF_STREET:
                 unselectFeatureIfNecessary();
                 selectFeature(marker.getSnippet());
 
-                if (listener != null) {
-                    listener.showMarkerInfo(marker, mPrkngMapType);
-                }
-                return true;
-            }
-            case Const.MapSections.OFF_STREET:
                 if (listener != null) {
                     listener.showMarkerInfo(marker, mPrkngMapType);
                 }
@@ -365,6 +366,27 @@ public class MainMapFragment extends Fragment implements
                 Const.RequestCodes.PERMISSION_ACCESS_LOCATION);
     }
 
+    /**
+     * Verifies if changes to Zoom (0.4) or distance to center (25m) are worth an update.
+     * Also verifies if user has crossed over the SMALL_BUTTONS_ZOOM value while zooming in/out.
+     *
+     * @return true if changes are noteworthy
+     */
+    private boolean isSignificantChange() {
+        double centerDistance = Math.round(mLastMapGeometry.distanceTo(vMap.getCenterCoordinate()));
+        double zoomChange = mLastMapGeometry.getZoom() - vMap.getZoomLevel();
+
+        // Toggle if the two zooms are on the same "side" of SMALL_BUTTONS_ZOOM (17)
+        // Ex1, TRUE:  compare(17, 15) * compare(17, 19) = 1 * -1 = -1
+        // Ex2, FALSE: compare(17, 18) * compare(17, 19) = 1 *  1 =  1
+        boolean toggleButtonsVisibility = (Double.compare(Const.UiConfig.SMALL_BUTTONS_ZOOM, mLastMapGeometry.getZoom())
+                * Double.compare(Const.UiConfig.SMALL_BUTTONS_ZOOM, vMap.getZoomLevel())) < 0;
+
+        return Double.compare(zoomChange, 0.4d) >= 0 ||
+                Double.compare(centerDistance, Const.UiConfig.MIN_UPDATE_DISTACE) >= 0 ||
+                toggleButtonsVisibility;
+    }
+
     private boolean isIgnoreMinDistance() {
         return mIgnoreMinDistance;
     }
@@ -397,7 +419,15 @@ public class MainMapFragment extends Fragment implements
                     break;
             }
 
-            mTask.execute(mLastMapGeometry);
+            mHandler.removeCallbacks(mRunnable);
+            mRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    mTask.execute(mLastMapGeometry);
+                }
+            };
+            mHandler.postDelayed(mRunnable, 500);
+
         } else {
             mIgnoreMinDistance = true;
             Snackbar.make(vMap, R.string.snackbar_map_zoom_needed, Snackbar.LENGTH_LONG)
@@ -442,6 +472,17 @@ public class MainMapFragment extends Fragment implements
         // Reset the selection array
         mSelectedAnnotsList = new ArrayList<>();
 
+        Icon icon;
+        switch (mPrkngMapType) {
+            case Const.MapSections.OFF_STREET:
+                icon = mapAssets.getLotMarkerIconSelected(Const.UNKNOWN_VALUE);
+                break;
+            case Const.MapSections.ON_STREET:
+            default:
+                icon = mapAssets.getMarkerIconSelected();
+                break;
+        }
+
         for (Annotation annot : annotations) {
             if (annot instanceof Marker) {
                 final Marker m = ((Marker) annot);
@@ -453,7 +494,7 @@ public class MainMapFragment extends Fragment implements
                     // Change the marker's Icon
                     final Marker selectedMarker = vMap.addMarker(
                             MapUtils.extractMarkerOptions(m)
-                                    .icon(mapAssets.getMarkerIconSelected())
+                                    .icon(icon)
                     );
 
                     // Add to the selection array
