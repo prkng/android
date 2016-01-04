@@ -144,6 +144,22 @@ public class MapAssets {
         return null;
     }
 
+    public Icon getLotMarkerIconSelected(int price) {
+        final Icon cachedIcon = getCacheIconSelected(price);
+        if (cachedIcon != null) {
+            return cachedIcon;
+        }
+
+        Bitmap bitmap = markerBitmapSelected.copy(markerBitmapSelected.getConfig(), true);
+
+        final Icon icon = getTextIcon(bitmap, price);
+
+        // Save icon to cache
+        setCacheIconSelected(icon, price);
+
+        return icon;
+    }
+
     public Icon getLotMarkerIcon(int price, int type, boolean isBest) {
         // First, verify if same icon exists in cache
         final Icon cachedIcon = getCacheIcon(price, type, isBest);
@@ -161,25 +177,30 @@ public class MapAssets {
             bitmap = markerBitmapOpen.copy(markerBitmapOpen.getConfig(), true);
         }
 
-        // Create Paint
-        final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(Color.WHITE);
-        paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(markerTextSize);
-
-        // Draw text on Canvas, center-aligned
-        final Canvas canvas = new Canvas(bitmap);
-        canvas.drawText(String.format(markerTextTemplate, price),
-                X_CENTER * bitmap.getWidth(),
-                Y_CENTER * bitmap.getHeight(),
-                paint);
-
-        final Icon icon = iconFactory.fromBitmap(bitmap);
+        final Icon icon = getTextIcon(bitmap, price);
 
         // Save icon to cache
         setCacheIcon(icon, price, type, isBest);
 
         return icon;
+    }
+
+    private Icon getTextIcon(Bitmap bitmap, int price) {
+        if (price != Const.UNKNOWN_VALUE) {
+            // Create Paint
+            final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            paint.setColor(Color.WHITE);
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setTextSize(markerTextSize);
+
+            // Draw text on Canvas, center-aligned
+            final Canvas canvas = new Canvas(bitmap);
+            canvas.drawText(String.format(markerTextTemplate, price),
+                    X_CENTER * bitmap.getWidth(),
+                    Y_CENTER * bitmap.getHeight(),
+                    paint);
+        }
+        return iconFactory.fromBitmap(bitmap);
     }
 
     private void setCacheIcon(Icon icon, int price, int type, boolean isBest) {
@@ -200,5 +221,13 @@ public class MapAssets {
         } else {
             return openMarkersCache.get(price, null);
         }
+    }
+
+    private Icon getCacheIconSelected(int price) {
+        return selectedMarkersCache.get(price, null);
+    }
+
+    private void setCacheIconSelected(Icon icon, int price) {
+        selectedMarkersCache.append(price, icon);
     }
 }
