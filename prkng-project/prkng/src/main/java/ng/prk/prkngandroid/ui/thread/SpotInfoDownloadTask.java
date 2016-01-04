@@ -17,8 +17,6 @@ import ng.prk.prkngandroid.util.PrkngPrefs;
 public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
     private final static String TAG = "SpotInfo";
 
-    private String mApiKey;
-
     private final Context context;
     private SpotAgendaListAdapter mAdapter;
     private TextView vIntervalEnd;

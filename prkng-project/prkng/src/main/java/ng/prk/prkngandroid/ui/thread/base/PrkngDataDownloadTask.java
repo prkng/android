@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Map;
 
 import ng.prk.prkngandroid.io.PrkngApiError;
-import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.SpotsAnnotations;
+import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void, SpotsAnnotations> {
@@ -30,7 +30,6 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
     private MapTaskListener listener;
     protected MapAssets mapAssets;
     private MapView vMap;
-    private String mApiKey;
     protected long startTime;
     private PrkngApiError error = null;
     private HashMap<String, List<Annotation>> featureAnnotsList;
@@ -59,6 +58,12 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
             listener.onPreExecute();
         }
         startTime = System.currentTimeMillis();
+    }
+
+    @Override
+    protected SpotsAnnotations doInBackground(MapGeometry... params) {
+        // This should be in `onPreExecute()`, but can
+        return null;
     }
 
     /**
@@ -93,9 +98,13 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
 
                 // Markers must be added after Polylines to show the dot above the line (z-order)
                 if (!spots.getMarkers().isEmpty()) {
+                    // TODO refactor the hashmap
+                    final List<Marker> markersList = vMap.addMarkers(new ArrayList<>(spots.getMarkers().keySet()));
+                    int i = 0;
                     for (Map.Entry<MarkerOptions, String> entry : spots.getMarkers().entrySet()) {
-                        Marker m = vMap.addMarker(entry.getKey());
-                        addToAnnotationsList(entry.getValue(), m);
+                        // Note: Mapbox si very slowe when adding markers individually
+//                        Marker m = vMap.addMarker(entry.getKey());
+                        addToAnnotationsList(entry.getValue(), markersList.get(i++));
                     }
                 }
                 spots.clearMarkers();

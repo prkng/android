@@ -14,9 +14,9 @@ import ng.prk.prkngandroid.io.PrkngService;
 import ng.prk.prkngandroid.model.GeoJSONFeatureProperties;
 import ng.prk.prkngandroid.model.LinesGeoJSON;
 import ng.prk.prkngandroid.model.LinesGeoJSONFeature;
-import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.SpotsAnnotations;
+import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.ui.thread.base.PrkngDataDownloadTask;
 
 public class SpotsDownloadTask extends PrkngDataDownloadTask {
