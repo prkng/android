@@ -103,31 +103,30 @@ public class Const {
     }
 
     public interface ApiPaths {
-        // String BASE_URL = BuildConfig.API_BASE_URL;
-        String VERSION = "/v1";
+        // String BASE_URL = BuildConfig.API_BASE_URL; // "https://{api|test}.prk.ng/v1/"
 
-        String POST_ANALYTICS_EVENT = VERSION + "/analytics/event";
-        String POST_ANALYTICS_SEARCH = VERSION + "/analytics/search";
-        String GET_AREAS = VERSION + "/areas";
-        String GET_CARSHARE_LOTS = VERSION + "/carshare_lots";
-        String GET_CARSHARE_VEHICLES = VERSION + "/carshares";
-        String GET_CHECKINS = VERSION + "/checkins";
-        String POST_CHECKINS = VERSION + "/checkins";
-        String DELETE_CHECKIN = VERSION + "/checkins/{" + ApiArgs.CHECKIN_ID + "}";
-        String GET_CITIES = VERSION + "/cities";
-        String POST_HELLO = VERSION + "/hello";
-        String POST_IMAGES = VERSION + "/images";
-        String POST_LOGIN = VERSION + "/login";
-        //        String POST_PASSWD_CHANGE = VERSION + "/login/changepass";
-        String POST_REGISTER = VERSION + "/login/register";
-        String POST_PASSWD_RESET = VERSION + "/login/resetpass";
-        String GET_LOTS = VERSION + "/lots";
-        String GET_LOT = VERSION + "/lots/{" + ApiArgs.LOT_ID + "}";
-        String POST_REPORT = VERSION + "/reports";
-        String GET_SPOTS = VERSION + "/slots";
-        String GET_SPOT = VERSION + "/slots/{" + ApiArgs.SPOT_ID + "}";
-        String GET_USER_PROFILE = VERSION + "/user/profile";
-        String PUT_USER_PROFILE = VERSION + "/user/profile";
+        String POST_ANALYTICS_EVENT = "analytics/event";
+        String POST_ANALYTICS_SEARCH = "analytics/search";
+        String GET_AREAS = "areas";
+        String GET_CARSHARE_LOTS = "carshare_lots";
+        String GET_CARSHARE_VEHICLES = "carshares";
+        String GET_CHECKINS = "checkins";
+        String POST_CHECKINS = "checkins";
+        String DELETE_CHECKIN = "checkins/{" + ApiArgs.CHECKIN_ID + "}";
+        String GET_CITIES = "cities";
+        String POST_HELLO = "hello";
+        String POST_IMAGES = "images";
+        String POST_LOGIN = "login";
+        //        String POST_PASSWD_CHANGE = "login/changepass";
+        String POST_REGISTER = "login/register";
+        String POST_PASSWD_RESET = "login/resetpass";
+        String GET_LOTS = "lots";
+        String GET_LOT = "lots/{" + ApiArgs.LOT_ID + "}";
+        String POST_REPORT = "reports";
+        String GET_SPOTS = "slots";
+        String GET_SPOT = "slots/{" + ApiArgs.SPOT_ID + "}";
+        String GET_USER_PROFILE = "user/profile";
+        String PUT_USER_PROFILE = "user/profile";
     }
 
     public interface FragmentTags {

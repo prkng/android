@@ -34,13 +34,13 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "API_BASE_URL", '"https://api.prk.ng"'
+            buildConfigField "String", "API_BASE_URL", '"https://api.prk.ng/v1/"'
         }
 
         debug {
             applicationIdSuffix ".d"
             minifyEnabled false
-            buildConfigField "String", "API_BASE_URL", '"https://test.prk.ng"'
+            buildConfigField "String", "API_BASE_URL", '"https://test.prk.ng/v1/"'
         }
 
         debugFacebook.initWith(buildTypes.debug)
