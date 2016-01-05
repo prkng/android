@@ -12,10 +12,11 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
+import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.ui.activity.base.BaseActivity;
 import ng.prk.prkngandroid.ui.fragment.MainMapFragment;
-import ng.prk.prkngandroid.ui.thread.HelloTask;
 import ng.prk.prkngandroid.ui.view.SlidingUpMarkerInfo;
+import ng.prk.prkngandroid.util.Installation;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public class MainActivity extends BaseActivity implements
@@ -138,7 +139,11 @@ public class MainActivity extends BaseActivity implements
     private void helloApi() {
         final String apiKey = PrkngPrefs.getInstance(this).getApiKey();
         if (apiKey != null && !apiKey.isEmpty()) {
-            new HelloTask(this).execute(apiKey);
+            final String deviceId = Installation.id(this);
+            ApiClient.hello(
+                    ApiClient.getService(),
+                    apiKey,
+                    deviceId);
         }
     }
 

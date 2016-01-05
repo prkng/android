@@ -1,9 +1,12 @@
 package ng.prk.prkngandroid.io;
 
+import android.util.Log;
+
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import ng.prk.prkngandroid.BuildConfig;
@@ -15,6 +18,7 @@ import ng.prk.prkngandroid.model.PointsGeoJSON;
 import ng.prk.prkngandroid.model.PointsGeoJSONFeature;
 import ng.prk.prkngandroid.util.ArrayUtils;
 import ng.prk.prkngandroid.util.CalendarUtils;
+import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -56,6 +60,19 @@ public class ApiClient {
                 .build();
         return retrofit.create(PrkngService.class);
     }
+
+    private final static Callback CALLBACK = new Callback<Void>() {
+        @Override
+        public void onResponse(Response<Void> response, Retrofit retrofit) {
+
+        }
+
+        @Override
+        public void onFailure(Throwable t) {
+            Log.v(TAG, "onFailure");
+            t.printStackTrace();
+        }
+    };
 
     public static LoginObject loginEmail(PrkngService service, String email, String password) {
         return login(service, email, password, null, null);
@@ -311,17 +328,15 @@ public class ApiClient {
         return null;
     }
 
-    public static void hello(PrkngService service, String apiKey, String lang, String deviceId) {
-        try {
-            service
-                    .hello(apiKey,
-                            lang,
-                            Const.ApiValues.DEVICE_TYPE_ANDROID,
-                            deviceId)
-                    .execute();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void hello(PrkngService service, String apiKey, String deviceId) {
+        final String lang = Locale.getDefault().getLanguage();
+
+        service
+                .hello(apiKey,
+                        lang,
+                        Const.ApiValues.DEVICE_TYPE_ANDROID,
+                        deviceId)
+                .enqueue(CALLBACK);
     }
 
     public static void resetUserPassword(PrkngService service, String email) {
