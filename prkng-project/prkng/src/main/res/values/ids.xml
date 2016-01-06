@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="spot_id_tag" type="id" />
+    <item name="remaining_time_tag" type="id" />
+    <!--<item name="lot_id_tag" type="id" />-->
+</resources>
