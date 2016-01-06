@@ -87,14 +87,10 @@ public class MainActivity extends BaseActivity implements
         if (marker == null) {
             hideMarkerInfo();
         } else {
-            vSlidingUpMarkerInfo.setMarkerInfo(marker.getSnippet(), type);
+            vSlidingUpMarkerInfo.setMarkerInfo(marker.getSnippet(), marker.getTitle(), type);
             if (vSlidingUpMarkerInfo.getPanelState() != SlidingUpPanelLayout.PanelState.COLLAPSED) {
                 vSlidingUpMarkerInfo.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
             }
-            ((TextView) vSlidingUpMarkerInfo.findViewById(R.id.drag_handle))
-                    .setText(marker.getTitle()
-//                            + Const.LINE_SEPARATOR + marker.getSnippet()
-                    );
         }
     }
 
@@ -143,7 +139,8 @@ public class MainActivity extends BaseActivity implements
             ApiClient.hello(
                     ApiClient.getService(),
                     apiKey,
-                    deviceId);
+                    deviceId,
+                    null);
         }
     }
 
