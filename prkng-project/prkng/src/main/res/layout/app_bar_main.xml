@@ -61,9 +61,20 @@
             android:background="@color/agenda_header"
             android:gravity="center_vertical"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+            android:paddingRight="64dp"
             android:text="The Awesome Sliding Up Panel"
             android:textSize="24sp" />
+
+        <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:layout_marginTop="36dp"
+            android:src="@drawable/ic_fab_checkin"
+            app:backgroundTint="@color/fab_background" />
 
         <FrameLayout
             android:id="@+id/list_header"
@@ -76,10 +87,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:background="@color/agenda_item_background"
-                android:drawableRight="@drawable/ic_agenda"
+                android:drawableLeft="@drawable/ic_agenda"
                 android:gravity="center_vertical"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp"
+                android:paddingRight="64dp"
                 android:textColor="@color/agenda_remaining_time_text"
                 android:textSize="16sp" />
 
