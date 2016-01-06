@@ -56,6 +56,7 @@
     <string name="btn_login_email">I already have an account</string>
     <string name="btn_skip">Skip</string>
     <string name="btn_done">Done</string>
+    <string name="btn_checkout">Checkout</string>
     <string name="btn_try_again">Retry</string>
     <string name="btn_reset_password">Reset password</string>
 
@@ -109,6 +110,10 @@
     <string name="auth_hint_login_email">Email</string>
     <string name="auth_hint_login_password">Password</string>
     <string name="auth_confirm_password_reset">Please check your email!\r\nYou&#160;will receive instructions on how to enter your new password…</string>
+
+    <!--Notifications-->
+    <string name="notify_checkin_text">Parked on %s</string>
+
 
     <!--Auth validation errors-->
     <string name="auth_error_invalid_email">Use a valid email address</string>
