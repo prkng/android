@@ -70,6 +70,39 @@ public class PrkngPrefs implements
         }
     }
 
+    public void setCheckout() {
+        edit().putLong(CHECKIN_ID, Const.UNKNOWN_VALUE)
+                .putString(CHECKIN_NAME, null)
+                .putLong(CHECKIN_START_AT, Const.UNKNOWN_VALUE)
+                .putLong(CHECKIN_END_AT, Const.UNKNOWN_VALUE)
+                .putLong(CHECKIN_SMART_REMINDER, Const.UNKNOWN_VALUE)
+                .commit();
+        edit().remove(CHECKIN_ID)
+                .remove(CHECKIN_NAME)
+                .remove(CHECKIN_START_AT)
+                .remove(CHECKIN_END_AT)
+                .remove(CHECKIN_SMART_REMINDER)
+                .commit();
+    }
+
+    public void setCheckin(long checkinId, String address, long startAt) {
+        setCheckin(checkinId, address, startAt, Const.UNKNOWN_VALUE);
+    }
+
+    public void setCheckin(long checkinId, String address, long startAt, long endAt) {
+        edit().putLong(CHECKIN_ID, checkinId)
+                .putString(CHECKIN_NAME, address)
+                .putLong(CHECKIN_START_AT, startAt)
+                .putLong(CHECKIN_END_AT, endAt)
+                .apply();
+    }
+
+    public void setCheckinReminder(long end, long smartReminder) {
+        edit().putLong(CHECKIN_END_AT, end)
+                .putLong(CHECKIN_SMART_REMINDER, smartReminder)
+                .apply();
+    }
+
 
     private SharedPreferences.Editor edit() {
         if (mPrefsEditor == null) {
@@ -101,4 +134,5 @@ public class PrkngPrefs implements
     public void unregisterPrefsChangeListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
         mPrefs.unregisterOnSharedPreferenceChangeListener(listener);
     }
+
 }
