@@ -18,7 +18,7 @@ public class LoginObject {
         return auth_id;
     }
 
-    public String getCreated() {
+    public String getCreatedAt() {
         return created;
     }
 
