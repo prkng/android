@@ -45,6 +45,8 @@ public class Const {
         String API_KEY = "X-API-KEY";
         String LATITUDE = "latitude";
         String LONGITUDE = "longitude";
+        String GEO_LAT = "lat";
+        String GEO_LNG = "long";
         String EVENT = "event";
         String QUERY = "query";
         String RADIUS = "radius";
@@ -55,6 +57,7 @@ public class Const {
         String PARTNER_NAME = "partner_name";
         String ACCESSIBLE = "handicap";
         String STREET_VIEW = "street_view";
+        String USER_ID = "user_id";
         String LOT_ID = "lot_id";
         String SPOT_ID = "slot_id";
         String CHECKIN_ID = "id";
@@ -182,11 +185,18 @@ public class Const {
     }
 
     public interface PrefsNames {
+        String IS_ONBOARDING = "p_is_onboarding";
+        // Authentication
         String AUTH_API_KEY = "p_api_key";
         String AUTH_USER_NAME = "p_auth_name";
         String AUTH_USER_EMAIL = "p_auth_email";
         String AUTH_USER_PICTURE = "p_auth_picture";
-        String IS_ONBOARDING = "p_is_onboarding";
+        // Checkin
+        String CHECKIN_ID = "p_checkin_id";
+        String CHECKIN_NAME = "p_checkin_name";
+        String CHECKIN_START_AT = "p_checkin_start_at";
+        String CHECKIN_END_AT = "p_checkin_end_at";
+        String CHECKIN_SMART_REMINDER = "p_checkin_smart_reminder";
         // PreferenceScreens
         String TOGGLE_LOGIN = "prefs_toggle_login";
         String CITY = "prefs_city";

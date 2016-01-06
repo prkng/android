@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import ng.prk.prkngandroid.BuildConfig;
 import ng.prk.prkngandroid.Const;
+import ng.prk.prkngandroid.model.CheckinObject;
 import ng.prk.prkngandroid.model.LinesGeoJSON;
 import ng.prk.prkngandroid.model.LinesGeoJSONFeature;
 import ng.prk.prkngandroid.model.LoginObject;
@@ -64,7 +65,6 @@ public class ApiClient {
     private final static Callback CALLBACK = new Callback<Void>() {
         @Override
         public void onResponse(Response<Void> response, Retrofit retrofit) {
-
         }
 
         @Override
@@ -328,7 +328,7 @@ public class ApiClient {
         return null;
     }
 
-    public static void hello(PrkngService service, String apiKey, String deviceId) {
+    public static void hello(PrkngService service, String apiKey, String deviceId, Callback<Void> cb) {
         final String lang = Locale.getDefault().getLanguage();
 
         service
@@ -336,7 +336,7 @@ public class ApiClient {
                         lang,
                         Const.ApiValues.DEVICE_TYPE_ANDROID,
                         deviceId)
-                .enqueue(CALLBACK);
+                .enqueue(cb != null ? cb : CALLBACK);
     }
 
     public static void resetUserPassword(PrkngService service, String email) {
@@ -346,6 +346,18 @@ public class ApiClient {
                     .execute();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void checkin(PrkngService service, String apiKey, String slotId, Callback<CheckinObject> cb) {
+        try {
+            service
+                    .checkin(apiKey,
+                            Long.valueOf(slotId))
+                    .enqueue(cb != null ? cb : CALLBACK);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            CALLBACK.onFailure(e);
         }
     }
 }
