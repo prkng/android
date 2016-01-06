@@ -3,7 +3,6 @@ package ng.prk.prkngandroid.ui.thread;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.TextView;
 
 import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.io.PrkngService;
@@ -11,6 +10,7 @@ import ng.prk.prkngandroid.model.LinesGeoJSONFeature;
 import ng.prk.prkngandroid.model.RestrIntervalsList;
 import ng.prk.prkngandroid.model.SpotRules;
 import ng.prk.prkngandroid.ui.adapter.SpotAgendaListAdapter;
+import ng.prk.prkngandroid.ui.thread.base.MarkerInfoUpdateListener;
 import ng.prk.prkngandroid.util.CalendarUtils;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 
@@ -18,13 +18,13 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
     private final static String TAG = "SpotInfo";
 
     private final Context context;
+    private final MarkerInfoUpdateListener listener;
     private SpotAgendaListAdapter mAdapter;
-    private TextView vIntervalEnd;
 
-    public SpotInfoDownloadTask(Context context, SpotAgendaListAdapter adapter, TextView intervalEnd) {
+    public SpotInfoDownloadTask(Context context, SpotAgendaListAdapter adapter, MarkerInfoUpdateListener listener) {
         this.context = context;
+        this.listener = listener;
         this.mAdapter = adapter;
-        this.vIntervalEnd = intervalEnd;
     }
 
     @Override
@@ -75,12 +75,9 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
             final RestrIntervalsList parkingAgenda = spotRules.getParkingSpotAgenda();
             mAdapter.swapDataset(parkingAgenda);
 
-            final long remainingTime = SpotRules.getRemainingTime(parkingAgenda,
-                    CalendarUtils.todayMillis());
-
-            vIntervalEnd.setText(CalendarUtils.getDurationFromMillis(
-                    vIntervalEnd.getContext(),
-                    remainingTime));
+            listener.setRemainingTime(
+                    SpotRules.getRemainingTime(parkingAgenda, CalendarUtils.todayMillis())
+            );
         }
 
 //        SpotRuleAgenda agenda = spotRules.get(0).getAgenda();
