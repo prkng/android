@@ -79,6 +79,8 @@ public class Const {
         String USE_CARSHARE = "carsharing";
         String USE_COMPACT = "compact";
         String CHECKIN_TIMESTAMP = "checkin";
+        String CHECKIN_START_TIME = "checkin_time";
+        String CHECKIN_END_TIME = "checkout_time";
         String DURATION = "duration";
     }
 
@@ -148,6 +150,7 @@ public class Const {
         int AUTH_LOGIN_GOOGLE_RESOLVE = 61;
         int AUTH_LOGIN_EMAIL = AUTH_LOGIN;
         int AUTH_LOGIN_FACEBOOK = 64206; // 0xface
+        int NOTIFY_CHECKIN = 100; // 0xface
     }
 
     public interface BundleKeys {
@@ -155,6 +158,9 @@ public class Const {
         String PAGE = "page";
         String URL = "url";
         String EMAIL = "email";
+        String LATITUDE = "latitude";
+        String LONGITUDE = "longitude";
+        String ZOOM = "zoom";
     }
 
     /**
@@ -193,10 +199,12 @@ public class Const {
         String AUTH_USER_PICTURE = "p_auth_picture";
         // Checkin
         String CHECKIN_ID = "p_checkin_id";
-        String CHECKIN_NAME = "p_checkin_name";
+        String CHECKIN_ADDRESS = "p_checkin_address";
         String CHECKIN_START_AT = "p_checkin_start_at";
         String CHECKIN_END_AT = "p_checkin_end_at";
         String CHECKIN_SMART_REMINDER = "p_checkin_smart_reminder";
+        String CHECKIN_LAT = "p_checkin_lat";
+        String CHECKIN_LNG = "p_checkin_lng";
         // PreferenceScreens
         String TOGGLE_LOGIN = "prefs_toggle_login";
         String CITY = "prefs_city";

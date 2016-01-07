@@ -136,6 +136,11 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
+        <receiver
+            android:name=".receiver.CheckinReminderReceiver"
+            android:enabled="true"
+            android:exported="false"
+            android:label="@string/receiver_reminder" />
     </application>
 
 </manifest>

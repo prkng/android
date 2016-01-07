@@ -1,13 +1,17 @@
 package ng.prk.prkngandroid.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
-import android.widget.TextView;
 
 import com.mapbox.mapboxsdk.annotations.Marker;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.geometry.LatLngZoom;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import ng.prk.prkngandroid.Const;
@@ -27,8 +31,26 @@ public class MainActivity extends BaseActivity implements
     private SlidingUpMarkerInfo vSlidingUpMarkerInfo;
     private MainMapFragment mapFragment;
 
+    public static Intent newIntent(Context context, LatLng center) {
+        return newIntent(context, new LatLngZoom(center, Const.UiConfig.MY_LOCATION_ZOOM));
+    }
+
+    public static Intent newIntent(Context context, LatLngZoom center) {
+        final Intent intent = new Intent(context, MainActivity.class);
+
+        final Bundle bundle = new Bundle();
+        bundle.putDouble(Const.BundleKeys.LATITUDE, center.getLatitude());
+        bundle.putDouble(Const.BundleKeys.LONGITUDE, center.getLongitude());
+        bundle.putDouble(Const.BundleKeys.ZOOM, center.getZoom());
+        intent.putExtras(bundle);
+
+        return intent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.v(TAG, "onCreate");
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.app_bar_main);
@@ -49,7 +71,15 @@ public class MainActivity extends BaseActivity implements
         final FragmentManager fm = getSupportFragmentManager();
         mapFragment = (MainMapFragment) fm.findFragmentByTag(Const.FragmentTags.MAP);
         if (mapFragment == null) {
-            mapFragment = MainMapFragment.newInstance();
+            final double latitude = getIntent().getDoubleExtra(Const.BundleKeys.LATITUDE, Const.UNKNOWN_VALUE);
+            final double longitude = getIntent().getDoubleExtra(Const.BundleKeys.LONGITUDE, Const.UNKNOWN_VALUE);
+            final double zoom = getIntent().getDoubleExtra(Const.BundleKeys.ZOOM, Const.UNKNOWN_VALUE);
+
+            if (Double.valueOf(Const.UNKNOWN_VALUE).equals(latitude) || Double.valueOf(Const.UNKNOWN_VALUE).equals(longitude)) {
+                mapFragment = MainMapFragment.newInstance();
+            } else {
+                mapFragment = MainMapFragment.newInstance(new LatLngZoom(latitude, longitude, zoom));
+            }
             fm.beginTransaction()
                     .replace(R.id.content_frame, mapFragment, Const.FragmentTags.MAP)
                     .commit();
