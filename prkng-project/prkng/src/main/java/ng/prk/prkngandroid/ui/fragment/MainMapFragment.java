@@ -26,7 +26,6 @@ import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.annotations.Polyline;
 import com.mapbox.mapboxsdk.annotations.PolylineOptions;
-import com.mapbox.mapboxsdk.constants.MyBearingTracking;
 import com.mapbox.mapboxsdk.constants.MyLocationTracking;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngZoom;
@@ -38,6 +37,7 @@ import java.util.List;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
+import ng.prk.prkngandroid.model.CheckinData;
 import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.model.ui.SelectedFeature;
@@ -47,6 +47,7 @@ import ng.prk.prkngandroid.ui.thread.LotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.SpotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.PrkngDataDownloadTask;
 import ng.prk.prkngandroid.util.MapUtils;
+import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public class MainMapFragment extends Fragment implements
         SpotsDownloadTask.MapTaskListener,
@@ -54,6 +55,7 @@ public class MainMapFragment extends Fragment implements
         MapView.OnMapClickListener,
         MapView.OnMarkerClickListener {
     private final static String TAG = "MainMapFragment";
+    private final static String MARKER_ID_CHECKIN = "checkin_marker";
     private final static double RADIUS_FIX = 1.4d;
     @Deprecated
     private final static boolean MY_LOCATION_ENABLED = true;
@@ -74,6 +76,18 @@ public class MainMapFragment extends Fragment implements
 
     public static MainMapFragment newInstance() {
         return new MainMapFragment();
+    }
+
+    public static MainMapFragment newInstance(LatLngZoom center) {
+        final MainMapFragment fragment = new MainMapFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putDouble(Const.BundleKeys.LATITUDE, center.getLatitude());
+        bundle.putDouble(Const.BundleKeys.LONGITUDE, center.getLongitude());
+        bundle.putDouble(Const.BundleKeys.ZOOM, center.getZoom());
+        fragment.setArguments(bundle);
+
+        return fragment;
     }
 
     public interface OnMapMarkerClickListener {
@@ -177,7 +191,6 @@ public class MainMapFragment extends Fragment implements
         vMap.setCenterCoordinate(Const.UiConfig.MONTREAL_LAT_LNG);
         vMap.setZoomLevel(Const.UiConfig.DEFAULT_ZOOM);
         vMap.setTiltEnabled(false);
-        vMap.setMyBearingTrackingMode(MyBearingTracking.NONE);
 
         // Load map assets and colors
         if (mapAssets == null) {
@@ -185,6 +198,18 @@ public class MainMapFragment extends Fragment implements
         }
         mLastMapGeometry = new MapGeometry(vMap.getCenterCoordinate(), vMap.getZoomLevel());
         mPrkngMapType = Const.MapSections.ON_STREET;
+
+        addCheckinMarker();
+    }
+
+    private void addCheckinMarker() {
+        CheckinData checkin = PrkngPrefs.getInstance(getActivity()).getCheckinData();
+        if (checkin != null) {
+            vMap.addMarker(new MarkerOptions()
+                    .snippet(MARKER_ID_CHECKIN)
+                    .position(checkin.getLatLng()));
+        }
+        vMap.setCenterCoordinate(getCheckinCoordinate());
     }
 
     private void onMapResume() {
@@ -289,6 +314,11 @@ public class MainMapFragment extends Fragment implements
             return true;
         }
 
+        if (featureId == MARKER_ID_CHECKIN) {
+            Log.v(TAG, "MARKER_ID_CHECKIN");
+            return true;
+        }
+
         switch (mPrkngMapType) {
             case Const.MapSections.ON_STREET:
             case Const.MapSections.OFF_STREET:
@@ -322,6 +352,7 @@ public class MainMapFragment extends Fragment implements
         if (vProgressBar != null) {
             vProgressBar.setVisibility(View.GONE);
         }
+        addCheckinMarker();
     }
 
     @Override
@@ -391,6 +422,19 @@ public class MainMapFragment extends Fragment implements
         return mIgnoreMinDistance;
     }
 
+    private LatLngZoom getCheckinCoordinate() {
+        final double latitude = getArguments().getDouble(Const.BundleKeys.LATITUDE, Const.UNKNOWN_VALUE);
+        final double longitude = getArguments().getDouble(Const.BundleKeys.LONGITUDE, Const.UNKNOWN_VALUE);
+        final double zoom = getArguments().getDouble(Const.BundleKeys.ZOOM, Const.UNKNOWN_VALUE);
+
+
+        if (Double.valueOf(Const.UNKNOWN_VALUE).equals(latitude) || Double.valueOf(Const.UNKNOWN_VALUE).equals(longitude)) {
+            return null;
+        } else {
+            return new LatLngZoom(latitude, longitude, zoom);
+        }
+    }
+
     private void updateMapData(LatLng latLng, double zoom) {
         Log.v(TAG, "updateMapData @ " + zoom);
 
@@ -442,8 +486,11 @@ public class MainMapFragment extends Fragment implements
 
     private void moveToMyLocation(boolean animated) {
         if (!vMap.isMyLocationEnabled()) {
-            vMap.setMyLocationEnabled(MY_LOCATION_ENABLED);
-            vMap.setMyLocationTrackingMode(MyLocationTracking.TRACKING_NONE);
+            if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                    && PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                vMap.setMyLocationEnabled(MY_LOCATION_ENABLED);
+                vMap.setMyLocationTrackingMode(MyLocationTracking.TRACKING_NONE);
+            }
         }
         final Location myLocation = vMap.getMyLocation();
         if (myLocation != null) {
