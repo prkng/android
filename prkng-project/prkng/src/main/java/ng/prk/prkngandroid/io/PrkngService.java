@@ -92,9 +92,9 @@ public interface PrkngService {
     // Deactivate an existing checkin
     @Headers({CONTENT_TYPE})
     @DELETE(Const.ApiPaths.DELETE_CHECKIN)
-    Object checkOut(
+    Call<Void> checkOut(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
-            @Path(Const.ApiArgs.CHECKIN_ID) float checkInId
+            @Path(Const.ApiArgs.CHECKIN_ID) long checkInId
     );
 
     // Returns coverage area information

@@ -1,6 +1,7 @@
 package ng.prk.prkngandroid;
 
 import android.os.Build;
+import android.text.format.DateUtils;
 
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
@@ -24,6 +25,13 @@ public class Const {
         float LOT_INFO_ATTRS_OPACITY = 0.4f;
     }
 
+    public interface NotifationConfig {
+        long EXPIRY = DateUtils.MINUTE_IN_MILLIS * 30;
+        long SMART_DAY_OFFSET = DateUtils.DAY_IN_MILLIS; // Smart alert is on the day before
+        int SMART_HOUR_OF_DAY = 20; // Smart alert is around 20:00
+        int SMART_MINUTE = 0; // Smart alert is around 20:00
+    }
+
     public interface MapSections {
         int _COUNT = 4;
         int OFF_STREET = 0;
@@ -39,6 +47,17 @@ public class Const {
         int THREE = 2;
         int FOUR = 3;
         int LAST = 4;
+    }
+
+    public interface NotificationTypes {
+        int EXPIRY = 0;
+        int SMART = 1;
+//        int GEOFENCE = 2;
+    }
+
+    public interface IntentActions {
+        String NOTIFY_EXPIRY = "ng.prk.prkngandroid.NOTIFY_EXPIRY";
+        String NOTIFY_SMART = "ng.prk.prkngandroid.NOTIFY_SMART";
     }
 
     public interface ApiArgs {
@@ -150,7 +169,9 @@ public class Const {
         int AUTH_LOGIN_GOOGLE_RESOLVE = 61;
         int AUTH_LOGIN_EMAIL = AUTH_LOGIN;
         int AUTH_LOGIN_FACEBOOK = 64206; // 0xface
-        int NOTIFY_CHECKIN = 100; // 0xface
+        int NOTIFY_CHECKIN = 100;
+        int CHECKIN_REMINDER = 110;
+        int CHECKIN_SMART_REMINDER = 111;
     }
 
     public interface BundleKeys {
@@ -161,6 +182,8 @@ public class Const {
         String LATITUDE = "latitude";
         String LONGITUDE = "longitude";
         String ZOOM = "zoom";
+        String CHECKIN_ID = "checkin_id";
+        String IS_ = "checkin_id";
     }
 
     /**

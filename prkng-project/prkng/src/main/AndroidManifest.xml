@@ -140,7 +140,16 @@
             android:name=".receiver.CheckinReminderReceiver"
             android:enabled="true"
             android:exported="false"
-            android:label="@string/receiver_reminder" />
+            android:label="@string/receiver_reminder">
+            <intent-filter>
+                <action android:name="ng.prk.prkngandroid.NOTIFY_EXPIRY" />
+                <action android:name="ng.prk.prkngandroid.NOTIFY_SMART" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".service.CheckoutService"
+            android:exported="false" />
     </application>
 
 </manifest>
