@@ -54,7 +54,7 @@
     <!--Theme-->
     <color name="color_primary">@color/red2</color>
     <color name="color_primary_dark">@color/berry2</color>
-    <color name="color_accent">@color/cream1</color>
+    <color name="color_accent">@color/red2</color>
     <color name="color_background">@color/midnight2</color>
     <color name="color_background_inv">@color/cream1</color>
     <color name="color_text">@color/cream1</color>
@@ -66,7 +66,8 @@
     <!--<color name="map_line_free_spot">#547B99</color>`-->
     <color name="map_line_selected_spot">@color/red2</color>
     <color name="progress_bar">@color/red1</color>
-    <color name="fab_background">@color/berry2</color>
+    <color name="fab_checkin_background">@color/berry2</color>
+    <color name="fab_mylocation_background">@color/cream1</color>
 
 
     <!--Agenda-->
@@ -80,6 +81,9 @@
     <!--Lot Attrs-->
     <color name="lot_header_background">@color/lipstick</color>
     <color name="lot_attrs_text">@color/petrol2</color>
+
+    <!--Notifications-->
+    <color name="notify_color">@color/color_accent</color>
 
     <!--Authentication-->
     <color name="edit_text">@color/cream1</color>

@@ -6,6 +6,10 @@
     <string name="activity_settings">Réglages</string>
     <string name="activity_terms">Conditions d’utilisation</string>
     <string name="activity_faq">Foire aux questions</string>
+    <string name="activity_login">Connexion</string>
+    <string name="activity_forgot_password">Réinitialiser le mot de passe</string>
+    <string name="activity_onboarding">Tutoriel</string>
+    <string name="receiver_reminder">Prkng mémento</string>
 
     <!--Links-->
     <string name="url_faq">http://prk.ng/fr/faq/?embed=true</string>

@@ -30,12 +30,13 @@
         app:mlpb_progress_stoke_width="3dp"
         app:mlpb_show_arrow="false" />
 
-    <android.support.design.widget.FloatingActionButton
+    <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_maps_my_location" />
+        android:src="@drawable/ic_maps_my_location"
+        app:backgroundTint="@color/fab_mylocation_background" />
 
 </android.support.design.widget.CoordinatorLayout>

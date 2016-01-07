@@ -9,6 +9,7 @@
     <string name="activity_onboarding">Tutorial</string>
     <string name="activity_terms">Terms of use</string>
     <string name="activity_faq">FAQ</string>
+    <string name="receiver_reminder">Prkng Memento</string>
 
     <!--Links-->
     <string name="url_faq">http://prk.ng/faq/?embed=true</string>
@@ -113,6 +114,7 @@
 
     <!--Notifications-->
     <string name="notify_checkin_text">Parked on %s</string>
+    <string name="notify_checkout_text">Parking time is over</string>
 
 
     <!--Auth validation errors-->
