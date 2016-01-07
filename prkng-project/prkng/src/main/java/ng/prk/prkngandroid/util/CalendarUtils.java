@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -96,6 +97,9 @@ public class CalendarUtils {
                 .format(new Date(millis - getTimezoneOffsetMillis()));
     }
 
+    public static boolean isWeekLongDuration(long millis) {
+        return Long.valueOf(millis).compareTo(DateUtils.WEEK_IN_MILLIS) >= 0;
+    }
 
     @Deprecated
     public static String getDurationFromMillis(Context context, long millis) {
@@ -106,7 +110,7 @@ public class CalendarUtils {
 
         if (Long.valueOf(millis).compareTo(0L) == 0) {
             return "Parking not allowed";
-        } else if (Long.valueOf(millis).compareTo(DateUtils.WEEK_IN_MILLIS) >= 0) {
+        } else if (isWeekLongDuration(millis)) {
             return "Allowed at all times";
         }
 
@@ -135,6 +139,11 @@ public class CalendarUtils {
         final SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_ISO_8601, Locale.getDefault());
 
         return sdf.format(new Date());
+    }
+
+    public static long parseIsoTimestamp(String timestamp) throws ParseException {
+        final SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_ISO_8601, Locale.getDefault());
+        return sdf.parse(timestamp).getTime();
     }
 
     /**

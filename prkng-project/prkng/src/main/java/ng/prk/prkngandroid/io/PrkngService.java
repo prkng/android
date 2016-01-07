@@ -3,7 +3,7 @@ package ng.prk.prkngandroid.io;
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.model.AnalyticsEvent;
 import ng.prk.prkngandroid.model.AnalyticsQuery;
-import ng.prk.prkngandroid.model.CheckinObject;
+import ng.prk.prkngandroid.model.CheckinData;
 import ng.prk.prkngandroid.model.ErrorReportData;
 import ng.prk.prkngandroid.model.LinesGeoJSON;
 import ng.prk.prkngandroid.model.LinesGeoJSONFeature;
@@ -84,7 +84,7 @@ public interface PrkngService {
     // Add a new checkin
     @FormUrlEncoded
     @POST(Const.ApiPaths.POST_CHECKINS)
-    Call<CheckinObject> checkin(
+    Call<CheckinData> checkin(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
             @Field(Const.ApiArgs.SPOT_ID) long spotId
     );

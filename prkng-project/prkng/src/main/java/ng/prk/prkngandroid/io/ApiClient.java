@@ -2,6 +2,8 @@ package ng.prk.prkngandroid.io;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
@@ -11,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import ng.prk.prkngandroid.BuildConfig;
 import ng.prk.prkngandroid.Const;
-import ng.prk.prkngandroid.model.CheckinObject;
+import ng.prk.prkngandroid.model.CheckinData;
 import ng.prk.prkngandroid.model.LinesGeoJSON;
 import ng.prk.prkngandroid.model.LinesGeoJSONFeature;
 import ng.prk.prkngandroid.model.LoginObject;
@@ -53,11 +55,15 @@ public class ApiClient {
             client.interceptors().add(new HttpErrorInterceptor());
         }
 
+        final Gson gson = new GsonBuilder()
+                .setDateFormat(CalendarUtils.DATE_FORMAT_ISO_8601)
+                .create();
+
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BuildConfig.API_BASE_URL)
                 .client(client)
 //                .addConverterFactory(LatLngConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         return retrofit.create(PrkngService.class);
     }
@@ -349,7 +355,7 @@ public class ApiClient {
         }
     }
 
-    public static void checkin(PrkngService service, String apiKey, String slotId, Callback<CheckinObject> cb) {
+    public static void checkin(PrkngService service, String apiKey, String slotId, Callback<CheckinData> cb) {
         try {
             service
                     .checkin(apiKey,
