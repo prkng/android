@@ -2,34 +2,38 @@ package ng.prk.prkngandroid.receiver;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.IBinder;
 import android.support.v4.content.WakefulBroadcastReceiver;
-import android.util.Log;
 
+import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.util.CheckinUtils;
 
-public class CheckinReminderReceiver extends WakefulBroadcastReceiver {
+public class CheckinReminderReceiver extends WakefulBroadcastReceiver implements
+        Const.NotificationTypes {
     private final static String TAG = "CheckinReceiver";
 
-    public static Intent newIntent(Context context) {
-        return new Intent(context, CheckinReminderReceiver.class);
+    public static Intent newIntent(Context context, int type) {
+        final Intent intent = new Intent(context, CheckinReminderReceiver.class);
+
+        switch (type) {
+            case EXPIRY:
+                intent.setAction(Const.IntentActions.NOTIFY_EXPIRY);
+                break;
+            case SMART:
+                intent.setAction(Const.IntentActions.NOTIFY_SMART);
+                break;
+        }
+
+        return intent;
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.v(TAG, "onReceive");
-        CheckinUtils.startCheckout(context);
-    }
+        final String action = intent.getAction();
 
-    public CheckinReminderReceiver() {
-        super();
-        Log.v(TAG, "CheckinReminderReceiver");
-    }
-
-    @Override
-    public IBinder peekService(Context myContext, Intent service) {
-        Log.v(TAG, "peekService");
-
-        return super.peekService(myContext, service);
+        if (Const.IntentActions.NOTIFY_EXPIRY.equals(action)) {
+            CheckinUtils.showExpiryReminder(context);
+        } else if (Const.IntentActions.NOTIFY_SMART.equals(action)) {
+            CheckinUtils.showSmartReminder(context);
+        }
     }
 }
