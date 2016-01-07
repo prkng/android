@@ -16,7 +16,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.io.ApiClient;
-import ng.prk.prkngandroid.model.CheckinObject;
+import ng.prk.prkngandroid.model.CheckinData;
 import ng.prk.prkngandroid.model.LotCurrentStatus;
 import ng.prk.prkngandroid.ui.adapter.LotAgendaListAdapter;
 import ng.prk.prkngandroid.ui.adapter.SpotAgendaListAdapter;
@@ -24,7 +24,7 @@ import ng.prk.prkngandroid.ui.thread.LotInfoDownloadTask;
 import ng.prk.prkngandroid.ui.thread.SpotInfoDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.MarkerInfoUpdateListener;
 import ng.prk.prkngandroid.util.CalendarUtils;
-import ng.prk.prkngandroid.util.NotifyUtils;
+import ng.prk.prkngandroid.util.CheckinUtils;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 import retrofit.Callback;
 import retrofit.Response;
@@ -140,12 +140,16 @@ public class SlidingUpMarkerInfo extends SlidingUpPanelLayout implements
         }
     }
 
-    private final Callback checkinCallback = new Callback<CheckinObject>() {
+    private final Callback checkinCallback = new Callback<CheckinData>() {
 
         @Override
         public void onResponse(Response response, Retrofit retrofit) {
             Log.v(TAG, "onResponse");
-            NotifyUtils.setReminder(getContext(), mRemainingTime, mAddress);
+
+            CheckinUtils.startCheckin(getContext(),
+                    (CheckinData) response.body(),
+                    mAddress,
+                    mRemainingTime);
         }
 
         @Override
@@ -155,6 +159,7 @@ public class SlidingUpMarkerInfo extends SlidingUpPanelLayout implements
         }
     };
 
+    @Override
     public void setRemainingTime(long time) {
         mRemainingTime = time;
 

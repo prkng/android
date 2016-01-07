@@ -4,8 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.mapbox.mapboxsdk.geometry.LatLng;
+
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
+import ng.prk.prkngandroid.model.CheckinData;
 import ng.prk.prkngandroid.model.LoginObject;
 
 public class PrkngPrefs implements
@@ -72,37 +75,61 @@ public class PrkngPrefs implements
 
     public void setCheckout() {
         edit().putLong(CHECKIN_ID, Const.UNKNOWN_VALUE)
-                .putString(CHECKIN_NAME, null)
+                .putString(CHECKIN_ADDRESS, null)
                 .putLong(CHECKIN_START_AT, Const.UNKNOWN_VALUE)
                 .putLong(CHECKIN_END_AT, Const.UNKNOWN_VALUE)
                 .putLong(CHECKIN_SMART_REMINDER, Const.UNKNOWN_VALUE)
                 .commit();
         edit().remove(CHECKIN_ID)
-                .remove(CHECKIN_NAME)
+                .remove(CHECKIN_ADDRESS)
                 .remove(CHECKIN_START_AT)
                 .remove(CHECKIN_END_AT)
                 .remove(CHECKIN_SMART_REMINDER)
                 .commit();
     }
 
-    public void setCheckin(long checkinId, String address, long startAt) {
-        setCheckin(checkinId, address, startAt, Const.UNKNOWN_VALUE);
+    public void setCheckin(CheckinData checkin, String address) {
+        setCheckin(checkin, address, Const.UNKNOWN_VALUE);
     }
 
-    public void setCheckin(long checkinId, String address, long startAt, long endAt) {
-        edit().putLong(CHECKIN_ID, checkinId)
-                .putString(CHECKIN_NAME, address)
-                .putLong(CHECKIN_START_AT, startAt)
-                .putLong(CHECKIN_END_AT, endAt)
-                .apply();
+    public void setCheckin(CheckinData checkin, String address, long endAt) {
+        edit().putLong(CHECKIN_ID, checkin.getId())
+                .putString(CHECKIN_ADDRESS, address)
+                .putLong(CHECKIN_START_AT, checkin.getCheckinAt())
+                .putLong(CHECKIN_LAT, Double.doubleToRawLongBits(checkin.getLatitude()))
+                .putLong(CHECKIN_LNG, Double.doubleToRawLongBits(checkin.getLongitude()));
+
+        if (Long.valueOf(Const.UNKNOWN_VALUE).equals(endAt)) {
+            // For week-long durations (allowed at all times), ignore end time
+            edit().remove(CHECKIN_END_AT);
+        } else {
+            edit().putLong(CHECKIN_END_AT, endAt);
+        }
+
+        edit().apply();
     }
 
-    public void setCheckinReminder(long end, long smartReminder) {
+    public void setCheckinSmartReminder(long end, long smartReminder) {
         edit().putLong(CHECKIN_END_AT, end)
                 .putLong(CHECKIN_SMART_REMINDER, smartReminder)
                 .apply();
     }
 
+    public CheckinData getCheckinData() {
+        final long id = mPrefs.getLong(CHECKIN_ID, Const.UNKNOWN_VALUE);
+        if (Long.valueOf(Const.UNKNOWN_VALUE).equals(id)) {
+            return null;
+        }
+        final double lat = Double.longBitsToDouble(mPrefs.getLong(CHECKIN_LAT, Const.UNKNOWN_VALUE));
+        final double lng = Double.longBitsToDouble(mPrefs.getLong(CHECKIN_LNG, Const.UNKNOWN_VALUE));
+
+        return new CheckinData(id,
+                mPrefs.getLong(CHECKIN_START_AT, Const.UNKNOWN_VALUE),
+                mPrefs.getLong(CHECKIN_END_AT, Const.UNKNOWN_VALUE),
+                mPrefs.getString(CHECKIN_ADDRESS, null),
+                new LatLng(lat, lng)
+        );
+    }
 
     private SharedPreferences.Editor edit() {
         if (mPrefsEditor == null) {
