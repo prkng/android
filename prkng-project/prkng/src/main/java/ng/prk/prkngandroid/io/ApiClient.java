@@ -1,5 +1,6 @@
 package ng.prk.prkngandroid.io;
 
+import android.support.annotation.WorkerThread;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -80,10 +81,12 @@ public class ApiClient {
         }
     };
 
+    @WorkerThread
     public static LoginObject loginEmail(PrkngService service, String email, String password) {
         return login(service, email, password, null, null);
     }
 
+    @WorkerThread
     public static LoginObject loginSocial(PrkngService service, String token, String type) {
         return login(service, null, null, token, type);
     }
@@ -98,6 +101,7 @@ public class ApiClient {
      * @param type     login type (facebook, google, etc). required for OAuth2
      * @return
      */
+    @WorkerThread
     private static LoginObject login(PrkngService service, String email, String password, String token, String type) {
         try {
             final Response<LoginObject> response = service
@@ -122,6 +126,7 @@ public class ApiClient {
      * @param password
      * @return
      */
+    @WorkerThread
     public static LoginObject registerUser(PrkngService service, String name, String email, String password) {
         try {
             final Response<LoginObject> response = service
@@ -149,6 +154,7 @@ public class ApiClient {
      * @param duration
      * @return
      */
+    @WorkerThread
     public static LinesGeoJSON getParkingSpots(PrkngService service, String apiKey, double latitude, double longitude, int radius, String[] permits, float duration) {
         try {
             final String timestamp = CalendarUtils.getIsoTimestamp();
@@ -184,6 +190,7 @@ public class ApiClient {
      * @param duration
      * @return
      */
+    @WorkerThread
     public static LinesGeoJSON getCarshareParkingSpots(PrkngService service, String apiKey, double latitude, double longitude, int radius, float duration) {
         try {
             final String timestamp = CalendarUtils.getIsoTimestamp();
@@ -218,6 +225,7 @@ public class ApiClient {
      * @param radius
      * @return
      */
+    @WorkerThread
     public static PointsGeoJSON getParkingLots(PrkngService service, String apiKey, double latitude, double longitude, int radius) {
         try {
             final Response<PointsGeoJSON> response = service
@@ -236,6 +244,7 @@ public class ApiClient {
         return null;
     }
 
+    @WorkerThread
     public static PointsGeoJSON getCarshareLots(PrkngService service, String apiKey, double latitude, double longitude, int radius) {
         return getCarshareLots(service, apiKey, latitude, longitude, radius, null);
     }
@@ -251,6 +260,7 @@ public class ApiClient {
      * @param companies
      * @return
      */
+    @WorkerThread
     public static PointsGeoJSON getCarshareLots(PrkngService service, String apiKey, double latitude, double longitude, int radius, String[] companies) {
         try {
             final Response<PointsGeoJSON> response = service
@@ -270,6 +280,7 @@ public class ApiClient {
         return null;
     }
 
+    @WorkerThread
     public static PointsGeoJSON getCarshareVehicles(PrkngService service, String apiKey, double latitude, double longitude, int radius) {
         return getCarshareVehicles(service, apiKey, latitude, longitude, radius, null);
     }
@@ -285,6 +296,7 @@ public class ApiClient {
      * @param companies
      * @return
      */
+    @WorkerThread
     public static PointsGeoJSON getCarshareVehicles(PrkngService service, String apiKey, double latitude, double longitude, int radius, String[] companies) {
         try {
             final Response<PointsGeoJSON> response = service
@@ -304,6 +316,7 @@ public class ApiClient {
         return null;
     }
 
+    @WorkerThread
     public static LinesGeoJSONFeature getParkingSpotInfo(PrkngService service, String apiKey, String spotId) {
         try {
             final Response<LinesGeoJSONFeature> response = service
@@ -319,6 +332,7 @@ public class ApiClient {
         return null;
     }
 
+    @WorkerThread
     public static PointsGeoJSONFeature getParkingLotInfo(PrkngService service, String apiKey, String lotId) {
         try {
             final Response<PointsGeoJSONFeature> response = service
@@ -345,6 +359,7 @@ public class ApiClient {
                 .enqueue(cb != null ? cb : CALLBACK);
     }
 
+    @WorkerThread
     public static void resetUserPassword(PrkngService service, String email) {
         try {
             service
@@ -355,11 +370,23 @@ public class ApiClient {
         }
     }
 
-    public static void checkin(PrkngService service, String apiKey, String slotId, Callback<CheckinData> cb) {
+    public static void checkin(PrkngService service, String apiKey, String slotId, Callback<Void> cb) {
         try {
             service
                     .checkin(apiKey,
                             Long.valueOf(slotId))
+                    .enqueue(cb != null ? cb : CALLBACK);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            CALLBACK.onFailure(e);
+        }
+    }
+
+    public static void checkout(PrkngService service, String apiKey, long checkinId, Callback<CheckinData> cb) {
+        try {
+            service
+                    .checkOut(apiKey,
+                            checkinId)
                     .enqueue(cb != null ? cb : CALLBACK);
         } catch (NumberFormatException e) {
             e.printStackTrace();

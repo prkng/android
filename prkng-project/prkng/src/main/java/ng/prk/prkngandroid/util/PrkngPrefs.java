@@ -73,7 +73,7 @@ public class PrkngPrefs implements
         }
     }
 
-    public void setCheckout() {
+    public void setCheckout(long id) {
         edit().putLong(CHECKIN_ID, Const.UNKNOWN_VALUE)
                 .putString(CHECKIN_ADDRESS, null)
                 .putLong(CHECKIN_START_AT, Const.UNKNOWN_VALUE)
@@ -85,7 +85,7 @@ public class PrkngPrefs implements
                 .remove(CHECKIN_START_AT)
                 .remove(CHECKIN_END_AT)
                 .remove(CHECKIN_SMART_REMINDER)
-                .commit();
+                .apply();
     }
 
     public void setCheckin(CheckinData checkin, String address) {

@@ -75,16 +75,18 @@ public class MainMapFragment extends Fragment implements
     private SelectedFeature mSelectedFeature;
 
     public static MainMapFragment newInstance() {
-        return new MainMapFragment();
+        return newInstance(null);
     }
 
     public static MainMapFragment newInstance(LatLngZoom center) {
         final MainMapFragment fragment = new MainMapFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putDouble(Const.BundleKeys.LATITUDE, center.getLatitude());
-        bundle.putDouble(Const.BundleKeys.LONGITUDE, center.getLongitude());
-        bundle.putDouble(Const.BundleKeys.ZOOM, center.getZoom());
+        if (center != null) {
+            bundle.putDouble(Const.BundleKeys.LATITUDE, center.getLatitude());
+            bundle.putDouble(Const.BundleKeys.LONGITUDE, center.getLongitude());
+            bundle.putDouble(Const.BundleKeys.ZOOM, center.getZoom());
+        }
         fragment.setArguments(bundle);
 
         return fragment;

@@ -146,7 +146,7 @@ public class SlidingUpMarkerInfo extends SlidingUpPanelLayout implements
         public void onResponse(Response response, Retrofit retrofit) {
             Log.v(TAG, "onResponse");
 
-            CheckinUtils.startCheckin(getContext(),
+            CheckinUtils.checkin(getContext(),
                     (CheckinData) response.body(),
                     mAddress,
                     mRemainingTime);
