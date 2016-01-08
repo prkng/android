@@ -25,7 +25,7 @@ import ng.prk.prkngandroid.ui.thread.LotInfoDownloadTask;
 import ng.prk.prkngandroid.ui.thread.SpotInfoDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.MarkerInfoUpdateListener;
 import ng.prk.prkngandroid.util.CalendarUtils;
-import ng.prk.prkngandroid.util.CheckinUtils;
+import ng.prk.prkngandroid.util.CheckinHelper;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 import retrofit.Callback;
 import retrofit.Response;
@@ -147,7 +147,7 @@ public class SlidingUpMarkerInfo extends SlidingUpPanelLayout implements
         public void onResponse(Response response, Retrofit retrofit) {
             Log.v(TAG, "onResponse");
 
-            CheckinUtils.checkin(getContext(),
+            CheckinHelper.checkin(getContext(),
                     (CheckinData) response.body(),
                     mAddress,
                     mRemainingTime);

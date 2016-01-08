@@ -71,4 +71,16 @@ public class CheckinData {
     public long getUserId() {
         return userId;
     }
+
+    public void setCheckoutAt(Date checkoutAt) {
+        this.checkoutAt = checkoutAt;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public long getDuration() {
+        return checkoutAt.getTime() - checkinAt.getTime();
+    }
 }

@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
-import ng.prk.prkngandroid.util.CheckinUtils;
+import ng.prk.prkngandroid.util.CheckinHelper;
 
 public class CheckoutService extends IntentService {
     private final static String TAG = "CheckoutService";
@@ -33,7 +33,7 @@ public class CheckoutService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        final boolean res = CheckinUtils.checkout(CheckoutService.this,
+        final boolean res = CheckinHelper.checkout(CheckoutService.this,
                 intent.getLongExtra(Const.BundleKeys.CHECKIN_ID, Const.UNKNOWN_VALUE));
 
         mHandler.post(new Runnable() {

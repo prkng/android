@@ -118,7 +118,8 @@
 
     <!--Notifications-->
     <string name="notify_checkin_text">Parked on %s</string>
-    <string name="notify_checkout_text">Parking time is over</string>
+    <string name="notify_expiry_smart_reminder_text">Parking expires tomorrow</string>
+    <string name="notify_expiry_reminder_text">30 min to parking expiry</string>
 
 
     <!--Auth validation errors-->

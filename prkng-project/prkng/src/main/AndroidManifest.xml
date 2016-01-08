@@ -137,13 +137,13 @@
             android:value="@string/facebook_app_id" />
 
         <receiver
-            android:name=".receiver.CheckinReminderReceiver"
+            android:name=".receiver.CheckinMementoReceiver"
             android:enabled="true"
             android:exported="false"
             android:label="@string/receiver_reminder">
             <intent-filter>
+                <action android:name="ng.prk.prkngandroid.NOTIFY_SMART_REMINDER" />
                 <action android:name="ng.prk.prkngandroid.NOTIFY_EXPIRY" />
-                <action android:name="ng.prk.prkngandroid.NOTIFY_SMART" />
             </intent-filter>
         </receiver>
 

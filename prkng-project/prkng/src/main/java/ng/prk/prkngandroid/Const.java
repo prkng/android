@@ -50,14 +50,15 @@ public class Const {
     }
 
     public interface NotificationTypes {
-        int EXPIRY = 0;
-        int SMART = 1;
-//        int GEOFENCE = 2;
+        int START = 0;
+        int SMART_REMINDER = 1;
+        int EXPIRY = 2;
+//        int GEOFENCE = 3;
     }
 
     public interface IntentActions {
+        String NOTIFY_SMART_REMINDER = "ng.prk.prkngandroid.NOTIFY_SMART_REMINDER";
         String NOTIFY_EXPIRY = "ng.prk.prkngandroid.NOTIFY_EXPIRY";
-        String NOTIFY_SMART = "ng.prk.prkngandroid.NOTIFY_SMART";
     }
 
     public interface ApiArgs {
