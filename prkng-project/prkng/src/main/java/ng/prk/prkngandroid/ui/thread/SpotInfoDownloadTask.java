@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import ng.prk.prkngandroid.io.ApiClient;
+import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.io.PrkngService;
 import ng.prk.prkngandroid.model.LinesGeoJSONFeature;
 import ng.prk.prkngandroid.model.RestrIntervalsList;
@@ -20,6 +21,7 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
     private final Context context;
     private final MarkerInfoUpdateListener listener;
     private SpotAgendaListAdapter mAdapter;
+    private PrkngApiError error;
 
     public SpotInfoDownloadTask(Context context, SpotAgendaListAdapter adapter, MarkerInfoUpdateListener listener) {
         this.context = context;
@@ -29,8 +31,6 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
 
     @Override
     protected SpotRules doInBackground(String... params) {
-        Log.v(TAG, "doInBackground");
-
 //        String spotId = "416753"; // arret + Interdiction
 //        String spotId = "458653"; // arret + Interdiction
 //        String spotId = "416663"; //  tues + friday
@@ -61,27 +61,30 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
 
         } catch (NullPointerException e) {
             e.printStackTrace();
+        } catch (PrkngApiError e) {
+            error = e;
         }
-
 
         return null;
     }
 
     @Override
     protected void onPostExecute(SpotRules spotRules) {
-        Log.v(TAG, "onPostExecute");
-        if (spotRules != null) {
-            Log.v(TAG, "rules = " + spotRules.toString());
-            final RestrIntervalsList parkingAgenda = spotRules.getParkingSpotAgenda();
-            mAdapter.swapDataset(parkingAgenda);
+        try {
+            if (error != null) {
+                listener.onFailure(error);
+            }
+            if (spotRules != null) {
+                Log.v(TAG, "rules = " + spotRules.toString());
+                final RestrIntervalsList parkingAgenda = spotRules.getParkingSpotAgenda();
+                mAdapter.swapDataset(parkingAgenda);
 
-            listener.setRemainingTime(
-                    SpotRules.getRemainingTime(parkingAgenda, CalendarUtils.todayMillis())
-            );
+                listener.setRemainingTime(
+                        SpotRules.getRemainingTime(parkingAgenda, CalendarUtils.todayMillis())
+                );
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-
-//        SpotRuleAgenda agenda = spotRules.get(0).getAgenda();
-//        Log.v(TAG, "timeMax = " + spotRules.get(0).getTimeMaxParking());
-//        Log.v(TAG, "monday = " + agenda.getMonday().get(0));
     }
 }

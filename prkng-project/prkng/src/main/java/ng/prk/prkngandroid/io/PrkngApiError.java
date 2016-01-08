@@ -4,11 +4,12 @@ import android.content.res.Resources;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 
 import ng.prk.prkngandroid.R;
 
-public class PrkngApiError extends RuntimeException {
+public class PrkngApiError extends IOException {
     private final static String TAG = "PrkngApiError";
 
     private int code;

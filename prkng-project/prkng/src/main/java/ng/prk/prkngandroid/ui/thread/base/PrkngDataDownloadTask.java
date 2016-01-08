@@ -40,6 +40,8 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
         void onPostExecute();
 
         void setAnnotationsList(HashMap<String, List<Annotation>> annotations);
+
+        void onFailure(PrkngApiError e);
     }
 
     public PrkngDataDownloadTask(MapView mapView, MapAssets mapAssets, MapTaskListener listener) {
@@ -78,11 +80,10 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
             return;
         }
 
-        if (error != null) {
-            error.showSnackbar(vMap);
-            return;
-        }
         try {
+            if (error != null) {
+                listener.onFailure(error);
+            }
             if (spots != null) {
                 vMap.removeAllAnnotations();
 

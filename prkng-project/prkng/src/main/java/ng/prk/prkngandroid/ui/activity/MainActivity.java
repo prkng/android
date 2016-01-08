@@ -16,6 +16,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
+import ng.prk.prkngandroid.io.ApiCallback;
 import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.ui.activity.base.BaseActivity;
 import ng.prk.prkngandroid.ui.fragment.MainMapFragment;
@@ -170,7 +171,7 @@ public class MainActivity extends BaseActivity implements
                     ApiClient.getService(),
                     apiKey,
                     deviceId,
-                    null);
+                    new ApiCallback<Void>(this, findViewById(R.id.sliding_layout)));
         }
     }
 

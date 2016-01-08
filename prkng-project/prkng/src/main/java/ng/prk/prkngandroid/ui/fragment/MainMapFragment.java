@@ -37,10 +37,12 @@ import java.util.List;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
+import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.model.CheckinData;
 import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.model.ui.SelectedFeature;
+import ng.prk.prkngandroid.ui.activity.LoginActivity;
 import ng.prk.prkngandroid.ui.thread.CarshareSpotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.CarshareVehiclesDownloadTask;
 import ng.prk.prkngandroid.ui.thread.LotsDownloadTask;
@@ -365,6 +367,16 @@ public class MainMapFragment extends Fragment implements
 
         if (listener != null) {
             listener.hideMarkerInfo();
+        }
+    }
+
+    @Override
+    public void onFailure(PrkngApiError e) {
+        if (e.isUnauthorized()) {
+            startActivity(LoginActivity.newIntent(getActivity()));
+            getActivity().finish();
+        } else {
+            e.showSnackbar(vMap);
         }
     }
 

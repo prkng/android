@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import ng.prk.prkngandroid.io.ApiClient;
+import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.io.PrkngService;
 import ng.prk.prkngandroid.model.GeoJSONFeatureProperties;
 import ng.prk.prkngandroid.model.LotCurrentStatus;
@@ -20,6 +21,7 @@ public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureP
     private final Context context;
     private final MarkerInfoUpdateListener listener;
     private LotAgendaListAdapter mAdapter;
+    private PrkngApiError error;
 
     public LotInfoDownloadTask(Context context, LotAgendaListAdapter adapter, MarkerInfoUpdateListener listener) {
         this.context = context;
@@ -29,11 +31,7 @@ public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureP
 
     @Override
     protected GeoJSONFeatureProperties doInBackground(String... params) {
-        Log.v(TAG, "doInBackground");
-
-//        final String lotId = params[0];
-        String lotId = params[0];
-
+        final String lotId = params[0];
 //        lotId = "20";
 //        lotId = "86";
 //        lotId = "89";
@@ -41,7 +39,7 @@ public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureP
 //        lotId = "185";
 //        lotId = String.valueOf(new Random().nextInt(99) + 1);
 
-        Log.i(TAG, "lotId = " + lotId);
+//        Log.i(TAG, "lotId = " + lotId);
 
         final PrkngService service = ApiClient.getService();
         try {
@@ -52,6 +50,8 @@ public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureP
 
         } catch (NullPointerException e) {
             e.printStackTrace();
+        } catch (PrkngApiError e) {
+            error = e;
         }
 
         return null;
@@ -59,19 +59,25 @@ public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureP
 
     @Override
     protected void onPostExecute(GeoJSONFeatureProperties properties) {
-        Log.v(TAG, "onPostExecute");
-        if (properties != null) {
-//            Log.v(TAG, properties.getAgenda().getMonday().get(0).toString());
-            Log.v(TAG, properties.getAttrs().toString());
-            Log.v(TAG, properties.getStreetView().toString());
+        try {
+            if (error != null) {
+                listener.onFailure(error);
+            }
 
-            mAdapter.swapDataset(properties.getAgenda().getLotAgenda());
-            LotCurrentStatus status = properties.getAgenda().getLotCurrentStatus(CalendarUtils.todayMillis());
+            if (properties != null) {
+                Log.v(TAG, properties.getAttrs().toString());
+                Log.v(TAG, properties.getStreetView().toString());
 
-            final int capacity = properties.getCapacity();
-            listener.setCurrentStatus(status, capacity );
+                mAdapter.swapDataset(properties.getAgenda().getLotAgenda());
+                LotCurrentStatus status = properties.getAgenda().getLotCurrentStatus(CalendarUtils.todayMillis());
 
-            mAdapter.setFooterAttrs(properties.getAttrs());
+                final int capacity = properties.getCapacity();
+                listener.setCurrentStatus(status, capacity);
+
+                mAdapter.setFooterAttrs(properties.getAttrs());
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
     }
 }

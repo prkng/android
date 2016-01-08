@@ -16,6 +16,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.io.ApiClient;
+import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.model.CheckinData;
 import ng.prk.prkngandroid.model.LotCurrentStatus;
 import ng.prk.prkngandroid.ui.adapter.LotAgendaListAdapter;
@@ -215,5 +216,10 @@ public class SlidingUpMarkerInfo extends SlidingUpPanelLayout implements
         } else {
             vLotHeader.findViewById(R.id.lot_capacity).setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    public void onFailure(PrkngApiError e) {
+        e.showSnackbar(this);
     }
 }

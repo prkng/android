@@ -1,7 +1,6 @@
 package ng.prk.prkngandroid.io;
 
 import android.support.annotation.WorkerThread;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,12 +48,12 @@ public class ApiClient {
         final OkHttpClient client = new OkHttpClient();
         client.setConnectTimeout(60, TimeUnit.SECONDS);
         client.setReadTimeout(60, TimeUnit.SECONDS);
-        if (httpLogging) {
-            final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            client.interceptors().add(interceptor);
-            client.interceptors().add(new HttpErrorInterceptor());
-        }
+
+        final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(httpLogging ? HttpLoggingInterceptor.Level.BODY :
+                HttpLoggingInterceptor.Level.NONE);
+        client.interceptors().add(new HttpErrorInterceptor());
+        client.interceptors().add(interceptor);
 
         final Gson gson = new GsonBuilder()
                 .setDateFormat(CalendarUtils.DATE_FORMAT_ISO_8601)
@@ -69,25 +68,13 @@ public class ApiClient {
         return retrofit.create(PrkngService.class);
     }
 
-    private final static Callback CALLBACK = new Callback<Void>() {
-        @Override
-        public void onResponse(Response<Void> response, Retrofit retrofit) {
-        }
-
-        @Override
-        public void onFailure(Throwable t) {
-            Log.v(TAG, "onFailure");
-            t.printStackTrace();
-        }
-    };
-
     @WorkerThread
-    public static LoginObject loginEmail(PrkngService service, String email, String password) {
+    public static LoginObject loginEmail(PrkngService service, String email, String password) throws PrkngApiError {
         return login(service, email, password, null, null);
     }
 
     @WorkerThread
-    public static LoginObject loginSocial(PrkngService service, String token, String type) {
+    public static LoginObject loginSocial(PrkngService service, String token, String type) throws PrkngApiError {
         return login(service, null, null, token, type);
     }
 
@@ -102,7 +89,7 @@ public class ApiClient {
      * @return
      */
     @WorkerThread
-    private static LoginObject login(PrkngService service, String email, String password, String token, String type) {
+    private static LoginObject login(PrkngService service, String email, String password, String token, String type) throws PrkngApiError {
         try {
             final Response<LoginObject> response = service
                     .login(email, password, token, type)
@@ -111,7 +98,7 @@ public class ApiClient {
                 return response.body();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw (PrkngApiError) e;
         }
 
         return null;
@@ -127,7 +114,7 @@ public class ApiClient {
      * @return
      */
     @WorkerThread
-    public static LoginObject registerUser(PrkngService service, String name, String email, String password) {
+    public static LoginObject registerUser(PrkngService service, String name, String email, String password) throws PrkngApiError {
         try {
             final Response<LoginObject> response = service
                     .registerUser(name, email, password, null, null, null)
@@ -136,7 +123,7 @@ public class ApiClient {
                 return response.body();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw (PrkngApiError) e;
         }
 
         return null;
@@ -155,7 +142,7 @@ public class ApiClient {
      * @return
      */
     @WorkerThread
-    public static LinesGeoJSON getParkingSpots(PrkngService service, String apiKey, double latitude, double longitude, int radius, String[] permits, float duration) {
+    public static LinesGeoJSON getParkingSpots(PrkngService service, String apiKey, double latitude, double longitude, int radius, String[] permits, float duration) throws PrkngApiError {
         try {
             final String timestamp = CalendarUtils.getIsoTimestamp();
             final Response<LinesGeoJSON> response = service
@@ -173,7 +160,7 @@ public class ApiClient {
                 return response.body();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw (PrkngApiError) e;
         }
 
         return null;
@@ -191,7 +178,7 @@ public class ApiClient {
      * @return
      */
     @WorkerThread
-    public static LinesGeoJSON getCarshareParkingSpots(PrkngService service, String apiKey, double latitude, double longitude, int radius, float duration) {
+    public static LinesGeoJSON getCarshareParkingSpots(PrkngService service, String apiKey, double latitude, double longitude, int radius, float duration) throws PrkngApiError {
         try {
             final String timestamp = CalendarUtils.getIsoTimestamp();
             final Response<LinesGeoJSON> response = service
@@ -209,7 +196,7 @@ public class ApiClient {
                 return response.body();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw (PrkngApiError) e;
         }
 
         return null;
@@ -226,7 +213,7 @@ public class ApiClient {
      * @return
      */
     @WorkerThread
-    public static PointsGeoJSON getParkingLots(PrkngService service, String apiKey, double latitude, double longitude, int radius) {
+    public static PointsGeoJSON getParkingLots(PrkngService service, String apiKey, double latitude, double longitude, int radius) throws PrkngApiError {
         try {
             final Response<PointsGeoJSON> response = service
                     .getParkingLots(apiKey,
@@ -238,14 +225,14 @@ public class ApiClient {
                 return response.body();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw (PrkngApiError) e;
         }
 
         return null;
     }
 
     @WorkerThread
-    public static PointsGeoJSON getCarshareLots(PrkngService service, String apiKey, double latitude, double longitude, int radius) {
+    public static PointsGeoJSON getCarshareLots(PrkngService service, String apiKey, double latitude, double longitude, int radius) throws PrkngApiError {
         return getCarshareLots(service, apiKey, latitude, longitude, radius, null);
     }
 
@@ -261,7 +248,7 @@ public class ApiClient {
      * @return
      */
     @WorkerThread
-    public static PointsGeoJSON getCarshareLots(PrkngService service, String apiKey, double latitude, double longitude, int radius, String[] companies) {
+    public static PointsGeoJSON getCarshareLots(PrkngService service, String apiKey, double latitude, double longitude, int radius, String[] companies) throws PrkngApiError {
         try {
             final Response<PointsGeoJSON> response = service
                     .getCarshareLots(apiKey,
@@ -274,14 +261,14 @@ public class ApiClient {
                 return response.body();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw (PrkngApiError) e;
         }
 
         return null;
     }
 
     @WorkerThread
-    public static PointsGeoJSON getCarshareVehicles(PrkngService service, String apiKey, double latitude, double longitude, int radius) {
+    public static PointsGeoJSON getCarshareVehicles(PrkngService service, String apiKey, double latitude, double longitude, int radius) throws PrkngApiError {
         return getCarshareVehicles(service, apiKey, latitude, longitude, radius, null);
     }
 
@@ -297,7 +284,7 @@ public class ApiClient {
      * @return
      */
     @WorkerThread
-    public static PointsGeoJSON getCarshareVehicles(PrkngService service, String apiKey, double latitude, double longitude, int radius, String[] companies) {
+    public static PointsGeoJSON getCarshareVehicles(PrkngService service, String apiKey, double latitude, double longitude, int radius, String[] companies) throws PrkngApiError {
         try {
             final Response<PointsGeoJSON> response = service
                     .getCarshareVehicles(apiKey,
@@ -310,14 +297,14 @@ public class ApiClient {
                 return response.body();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw (PrkngApiError) e;
         }
 
         return null;
     }
 
     @WorkerThread
-    public static LinesGeoJSONFeature getParkingSpotInfo(PrkngService service, String apiKey, String spotId) {
+    public static LinesGeoJSONFeature getParkingSpotInfo(PrkngService service, String apiKey, String spotId) throws PrkngApiError {
         try {
             final Response<LinesGeoJSONFeature> response = service
                     .getParkingSpotInfo(apiKey, spotId)
@@ -326,14 +313,14 @@ public class ApiClient {
                 return response.body();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw (PrkngApiError) e;
         }
 
         return null;
     }
 
     @WorkerThread
-    public static PointsGeoJSONFeature getParkingLotInfo(PrkngService service, String apiKey, String lotId) {
+    public static PointsGeoJSONFeature getParkingLotInfo(PrkngService service, String apiKey, String lotId) throws PrkngApiError {
         try {
             final Response<PointsGeoJSONFeature> response = service
                     .getParkingLotInfo(apiKey, lotId)
@@ -342,7 +329,7 @@ public class ApiClient {
                 return response.body();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw (PrkngApiError) e;
         }
 
         return null;
@@ -356,41 +343,39 @@ public class ApiClient {
                         lang,
                         Const.ApiValues.DEVICE_TYPE_ANDROID,
                         deviceId)
-                .enqueue(cb != null ? cb : CALLBACK);
+                .enqueue(cb != null ? cb : new ApiCallback<Void>());
     }
 
     @WorkerThread
-    public static void resetUserPassword(PrkngService service, String email) {
+    public static void resetUserPassword(PrkngService service, String email) throws PrkngApiError {
         try {
             service
                     .resetUserPassword(email)
                     .execute();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw (PrkngApiError) e;
         }
     }
 
-    public static void checkin(PrkngService service, String apiKey, String slotId, Callback<Void> cb) {
+    public static void checkin(PrkngService service, String apiKey, String slotId, Callback<CheckinData> cb) {
         try {
             service
                     .checkin(apiKey,
                             Long.valueOf(slotId))
-                    .enqueue(cb != null ? cb : CALLBACK);
+                    .enqueue(cb != null ? cb : new ApiCallback<CheckinData>());
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            CALLBACK.onFailure(e);
         }
     }
 
-    public static void checkout(PrkngService service, String apiKey, long checkinId, Callback<CheckinData> cb) {
+    public static void checkout(PrkngService service, String apiKey, long checkinId, Callback<Void> cb) {
         try {
             service
                     .checkOut(apiKey,
                             checkinId)
-                    .enqueue(cb != null ? cb : CALLBACK);
+                    .enqueue(cb != null ? cb : new ApiCallback<Void>());
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            CALLBACK.onFailure(e);
         }
     }
 }
