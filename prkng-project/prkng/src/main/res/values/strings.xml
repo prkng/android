@@ -71,6 +71,10 @@
     <string name="snackbar_login_fail">Wrong email or password. Please check the values provided</string>
     <string name="snackbar_sign_up_fail">User already exists. Login or forgot password?</string>
 
+    <!--Toast-->
+    <string name="toast_checkout_ok">prkng checked out successfully</string>
+    <string name="toast_checkout_error">prkng checkout error</string>
+
     <!--Map-->
     <string name="map_tab_off_street">Off-Street</string>
     <string name="map_tab_on_street">On-Street</string>
