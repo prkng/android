@@ -53,7 +53,7 @@ public class SpotsDownloadTask extends PrkngDataDownloadTask {
                         mapGeometry.getLongitude(),
                         mapGeometry.getRadius(),
                         null,
-                        Const.ApiValues.DEFAULT_DURATION
+                        getDuration()
                 );
 
                 final boolean hasVisibleMarkers = hasVisibleMarkers(mapGeometry.getZoom());

@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ng.prk.prkngandroid.Const;
+import ng.prk.prkngandroid.PrkngApp;
 import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.SpotsAnnotations;
@@ -166,6 +168,15 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
             return null;
         }
         return PrkngPrefs.getInstance(vMap.getContext()).getApiKey();
+    }
+
+    protected float getDuration() {
+        if (vMap == null) {
+            return Const.UiConfig.DURATIONS[Const.UiConfig.DEFAULT_DURATION_INDEX];
+        }
+
+        return PrkngApp.getInstance(vMap.getContext())
+                .getMapDurationFilter();
     }
 
     protected void setBackgroundError(PrkngApiError e) {
