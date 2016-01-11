@@ -44,6 +44,7 @@
 
     <!--Menu actions-->
     <string name="action_search">Recherche</string>
+    <string name="action_timer">Durée</string>
     <string name="action_settings">Réglages</string>
     <string name="action_about">À propos</string>
     <string name="action_share">Partager</string>
@@ -52,6 +53,9 @@
     <string name="btn_login">Connexion</string>
     <string name="btn_skip">Ignorer</string>
     <string name="btn_done">Terminer</string>
+
+    <!--Dialogs-->
+    <string name="dialog_durations_title">Choisir la durée</string>
 
     <!--Snackbar-->
     <string name="snackbar_map_zoom_needed">Please zoom in to update map</string>
@@ -79,6 +83,17 @@
         <item>Vendredi</item>
         <item>Samedi</item>
         <item>Vendredi</item>
+    </array>
+
+    <!--Duration-->
+    <array name="durations_filter">
+        <item>30 minutes</item>
+        <item>1 heure</item>
+        <item>2 heures</item>
+        <item>4 heures</item>
+        <item>8 heures</item>
+        <item>12 heures</item>
+        <item>24 heures</item>
     </array>
 
     <!--Lot Info-->

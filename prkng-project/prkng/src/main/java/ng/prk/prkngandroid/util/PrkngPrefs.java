@@ -154,6 +154,14 @@ public class PrkngPrefs implements
         return (apiKey != null) && !apiKey.isEmpty();
     }
 
+    public float getDuration() {
+        return mPrefs.getFloat(DURATION, Const.UiConfig.DURATIONS[Const.UiConfig.DEFAULT_DURATION_INDEX]);
+    }
+
+    public void setDuration(float duration) {
+        edit().putFloat(DURATION, duration).apply();
+    }
+
     public void registerPrefsChangeListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
         mPrefs.registerOnSharedPreferenceChangeListener(listener);
     }

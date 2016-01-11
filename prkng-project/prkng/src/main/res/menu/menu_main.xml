@@ -10,6 +10,13 @@
         android:titleCondensed="@string/action_search"
         app:showAsAction="always" />
     <item
+        android:id="@+id/action_timer"
+        android:icon="@drawable/ic_action_timer"
+        android:orderInCategory="105"
+        android:title="@string/action_timer"
+        android:titleCondensed="@string/action_timer"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="110"
         android:title="@string/action_settings"

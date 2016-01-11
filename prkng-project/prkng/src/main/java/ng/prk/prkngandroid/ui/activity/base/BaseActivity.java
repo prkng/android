@@ -9,10 +9,12 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import ng.prk.prkngandroid.Const;
+import ng.prk.prkngandroid.PrkngApp;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.ui.activity.AboutActivity;
 import ng.prk.prkngandroid.ui.activity.LoginActivity;
 import ng.prk.prkngandroid.ui.activity.SettingsActivity;
+import ng.prk.prkngandroid.ui.dialog.DurationDialog;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -75,6 +77,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         } else if (id == R.id.action_about) {
             startActivity(AboutActivity.newIntent(this));
 
+            return true;
+        } else if (id == R.id.action_timer) {
+            final DurationDialog dialog = DurationDialog.newInstance(
+                    PrkngApp.getInstance(this).getMapDurationFilter()
+            );
+
+            dialog.show(getSupportFragmentManager(), Const.FragmentTags.DIALOG_DURATIONS);
             return true;
         }
 

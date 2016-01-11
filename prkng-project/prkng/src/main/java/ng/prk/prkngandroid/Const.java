@@ -23,6 +23,8 @@ public class Const {
         double MONTREAL_NATURAL_NORTH_ROTATION = -34.0d;
         LatLng MONTREAL_LAT_LNG = new LatLng(45.5016889d, -73.567256d);
         float LOT_INFO_ATTRS_OPACITY = 0.4f;
+        float[] DURATIONS = new float[] {0.5f, 1f, 2f, 4f, 8f, 12f, 24f}; // ref: R.array.durations_filter
+        int DEFAULT_DURATION_INDEX = 0;
     }
 
     public interface NotifationConfig {
@@ -158,6 +160,7 @@ public class Const {
         String MAP = "f_map";
         String ABOUT = "f_about";
         String SETTINGS = "f_settings";
+        String DIALOG_DURATIONS = "d_durations";
     }
 
     public interface RequestCodes {
@@ -185,6 +188,7 @@ public class Const {
         String ZOOM = "zoom";
         String CHECKIN_ID = "checkin_id";
         String IS_ = "checkin_id";
+        String CURRENT_INDEX = "current_index";
     }
 
     /**
@@ -221,6 +225,8 @@ public class Const {
         String AUTH_USER_NAME = "p_auth_name";
         String AUTH_USER_EMAIL = "p_auth_email";
         String AUTH_USER_PICTURE = "p_auth_picture";
+        // Map
+        String DURATION = "p_duration";
         // Checkin
         String CHECKIN_ID = "p_checkin_id";
         String CHECKIN_ADDRESS = "p_checkin_address";
