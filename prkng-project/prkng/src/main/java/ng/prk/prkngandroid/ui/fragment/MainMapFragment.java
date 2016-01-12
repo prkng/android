@@ -354,10 +354,13 @@ public class MainMapFragment extends Fragment implements
      */
     @Override
     public void onPostExecute() {
-        if (vProgressBar != null) {
+        try {
             vProgressBar.setVisibility(View.GONE);
+
+            addCheckinMarker();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        addCheckinMarker();
     }
 
     @Override
