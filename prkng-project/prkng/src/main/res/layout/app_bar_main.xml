@@ -11,11 +11,12 @@
     app:umanoOverlay="true"
     app:umanoPanelHeight="128dp"
     app:umanoShadowHeight="4dp"
-    tools:context=".MainActivity">
+    tools:context=".ui.activity.MainActivity">
 
-    <android.support.design.widget.CoordinatorLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -43,10 +44,9 @@
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/color_background"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            android:background="@color/color_background" />
 
-    </android.support.design.widget.CoordinatorLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
