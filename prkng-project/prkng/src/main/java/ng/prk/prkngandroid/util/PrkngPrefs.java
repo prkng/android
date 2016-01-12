@@ -98,7 +98,7 @@ public class PrkngPrefs implements
 
                 .putLong(CHECKIN_LAT, Double.doubleToRawLongBits(checkin.getLatitude()))
                 .putLong(CHECKIN_LNG, Double.doubleToRawLongBits(checkin.getLongitude()));
-        if (checkin.getCheckinAt() != null) {
+        if (Long.valueOf(Const.UNKNOWN_VALUE).equals(checkin.getCheckinAt())) {
             edit().putLong(CHECKIN_START_AT, checkin.getCheckinAt());
         } else {
             edit().remove(CHECKIN_START_AT);
