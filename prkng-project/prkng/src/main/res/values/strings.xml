@@ -2,6 +2,7 @@
 <resources>
     <!--Activities-->
     <string name="activity_main">Map</string>
+    <string name="activity_checkin">Checkin</string>
     <string name="activity_about">About</string>
     <string name="activity_settings">Settings</string>
     <string name="activity_login">Login</string>
@@ -99,6 +100,8 @@
         <item>Saturday</item>
         <item>Sunday</item>
     </array>
+    <string name="allowed_all_week">Available all week long</string>
+
 
     <!--Duration-->
     <array name="durations_filter">
@@ -120,6 +123,11 @@
     <string name="lot_daily_price">%s\r\nDay</string>
     <string name="lot_hourly_price">%s\r\nHour</string>
     <string name="lot_capactiy">Capacity: %d&#160;spaces</string>
+
+    <!--Checkin/ User Activity-->
+    <string name="checkin_title">You are checked in on</string>
+    <string name="checkin_expiry">Available until</string>
+
 
     <!--Authentication-->
     <string name="auth_subtitle">SIGN UP WITH</string>

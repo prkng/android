@@ -42,6 +42,7 @@ import ng.prk.prkngandroid.model.CheckinData;
 import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.model.ui.SelectedFeature;
+import ng.prk.prkngandroid.ui.activity.CheckinActivity;
 import ng.prk.prkngandroid.ui.activity.LoginActivity;
 import ng.prk.prkngandroid.ui.thread.CarshareSpotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.CarshareVehiclesDownloadTask;
@@ -319,7 +320,7 @@ public class MainMapFragment extends Fragment implements
         }
 
         if (featureId == MARKER_ID_CHECKIN) {
-            Log.v(TAG, "MARKER_ID_CHECKIN");
+            startActivity(CheckinActivity.newIntent(getActivity()));
             return true;
         }
 

@@ -61,6 +61,16 @@
         </activity>
 
         <activity
+            android:name=".ui.activity.CheckinActivity"
+            android:exported="false"
+            android:label="@string/activity_checkin"
+            android:parentActivityName=".ui.activity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.MainActivity" />
+        </activity>
+
+        <activity
             android:name=".ui.activity.AboutActivity"
             android:exported="false"
             android:label="@string/activity_about"

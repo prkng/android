@@ -26,7 +26,8 @@ public class CheckinData {
     public CheckinData(long id, long checkinAt, long checkoutAt, String address, LatLng latLng) {
         this.id = id;
         this.checkinAt = new Date(checkinAt);
-        this.checkoutAt = new Date(checkoutAt);
+        this.checkoutAt = !Long.valueOf(Const.UNKNOWN_VALUE).equals(checkoutAt) ?
+                new Date(checkoutAt) : null;
         this.address = address;
         this.latitude = latLng.getLatitude();
         this.longitude = latLng.getLongitude();
@@ -80,7 +81,22 @@ public class CheckinData {
         this.address = address;
     }
 
+    @Deprecated
     public long getDuration() {
+        // TODO should be getReaminingTime
         return checkoutAt.getTime() - checkinAt.getTime();
+    }
+
+    @Override
+    public String toString() {
+        return "CheckinData{" +
+                "id=" + id +
+                ", active=" + active +
+                ", checkinAt=" + checkinAt +
+                ", checkoutAt=" + checkoutAt +
+                ", address='" + address + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
 }

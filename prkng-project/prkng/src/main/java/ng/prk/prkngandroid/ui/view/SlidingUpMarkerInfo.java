@@ -19,6 +19,7 @@ import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.model.CheckinData;
 import ng.prk.prkngandroid.model.LotCurrentStatus;
+import ng.prk.prkngandroid.ui.activity.CheckinActivity;
 import ng.prk.prkngandroid.ui.adapter.LotAgendaListAdapter;
 import ng.prk.prkngandroid.ui.adapter.SpotAgendaListAdapter;
 import ng.prk.prkngandroid.ui.thread.LotInfoDownloadTask;
@@ -48,7 +49,7 @@ public class SlidingUpMarkerInfo extends SlidingUpPanelLayout implements
     private FloatingActionButton vFAB;
 
     public SlidingUpMarkerInfo(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public SlidingUpMarkerInfo(Context context, AttributeSet attrs) {
@@ -151,6 +152,7 @@ public class SlidingUpMarkerInfo extends SlidingUpPanelLayout implements
                     (CheckinData) response.body(),
                     mAddress,
                     mRemainingTime);
+            context.startActivity(CheckinActivity.newIntent(context));
         }
 
         @Override
