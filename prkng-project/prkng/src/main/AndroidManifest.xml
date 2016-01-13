@@ -46,6 +46,7 @@
         </activity>
 
         <activity
+            android:theme="@style/AppTheme.Light"
             android:name=".ui.activity.SettingsActivity"
             android:label="@string/activity_settings"
             android:parentActivityName=".ui.activity.MainActivity">
@@ -71,6 +72,7 @@
         </activity>
 
         <activity
+            android:theme="@style/AppTheme.Light"
             android:name=".ui.activity.AboutActivity"
             android:exported="false"
             android:label="@string/activity_about"

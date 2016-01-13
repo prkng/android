@@ -17,6 +17,14 @@
         <item name="android:windowBackground">@color/color_background_inv</item>
     </style>
 
+    <style name="AppTheme.Light" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- prkng custom theme here -->
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="android:windowBackground">@color/color_background_inv</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
