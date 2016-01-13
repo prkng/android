@@ -534,6 +534,23 @@ public class MainMapFragment extends Fragment implements
             vMap.removeAllAnnotations();
             mPrkngMapType = type;
             updateMapData(vMap.getCenterCoordinate(), vMap.getZoomLevel());
+
+            double zoom = Const.UiConfig.DEFAULT_ZOOM;
+            switch (type) {
+                case Const.MapSections.OFF_STREET:
+                    zoom = Const.UiConfig.LOTS_MIN_ZOOM;
+                    break;
+                case Const.MapSections.ON_STREET:
+                    zoom = Const.UiConfig.SPOTS_MIN_ZOOM;
+                    break;
+                case Const.MapSections.CARSHARE_SPOTS:
+                    zoom = Const.UiConfig.CARSHARE_SPOTS_MIN_ZOOM;
+                    break;
+                case Const.MapSections.CARSHARE_VEHICLES:
+                    zoom = Const.UiConfig.CARSHARE_VEHICLES_MIN_ZOOM;
+                    break;
+            }
+            vMap.setZoomLevel(zoom, true);
         }
     }
 

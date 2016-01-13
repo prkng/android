@@ -15,6 +15,7 @@ public class Const {
         double DEFAULT_ZOOM = 15.0d;
         double SPOTS_MIN_ZOOM = 15.0d;
         double LOTS_MIN_ZOOM = 14.0d;
+        double CARSHARE_SPOTS_MIN_ZOOM = SPOTS_MIN_ZOOM;
         double CARSHARE_VEHICLES_MIN_ZOOM = 13.0d;
         double SMALL_BUTTONS_ZOOM = 17.0d;
         double BIG_BUTTONS_ZOOM = 18.0d;
