@@ -2,13 +2,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
+    <!--<item-->
+        <!--android:id="@+id/action_search"-->
+        <!--android:icon="@drawable/ic_action_search"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="@string/action_search"-->
+        <!--android:titleCondensed="@string/action_search"-->
+        <!--app:showAsAction="always" />-->
     <item
-        android:id="@+id/action_search"
-        android:icon="@drawable/ic_action_search"
+        android:id="@+id/action_user_account"
+        android:icon="@drawable/ic_action_user_activity"
         android:orderInCategory="100"
-        android:title="@string/action_search"
-        android:titleCondensed="@string/action_search"
+        android:title="@string/action_user_account"
+        android:titleCondensed="@string/action_user_account"
         app:showAsAction="always" />
+
     <item
         android:id="@+id/action_timer"
         android:icon="@drawable/ic_action_timer"
