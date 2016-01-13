@@ -28,9 +28,9 @@ import ng.prk.prkngandroid.ui.thread.base.MarkerInfoUpdateListener;
 import ng.prk.prkngandroid.util.CalendarUtils;
 import ng.prk.prkngandroid.util.CheckinHelper;
 import ng.prk.prkngandroid.util.PrkngPrefs;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class SlidingUpMarkerInfo extends SlidingUpPanelLayout implements
         View.OnClickListener,
@@ -145,7 +145,7 @@ public class SlidingUpMarkerInfo extends SlidingUpPanelLayout implements
     private final Callback checkinCallback = new Callback<CheckinData>() {
 
         @Override
-        public void onResponse(Response response, Retrofit retrofit) {
+        public void onResponse(Response<CheckinData> response) {
             Log.v(TAG, "onResponse");
 
             CheckinHelper.checkin(getContext(),

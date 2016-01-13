@@ -4,8 +4,6 @@ import android.support.annotation.WorkerThread;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -21,10 +19,12 @@ import ng.prk.prkngandroid.model.PointsGeoJSON;
 import ng.prk.prkngandroid.model.PointsGeoJSONFeature;
 import ng.prk.prkngandroid.util.ArrayUtils;
 import ng.prk.prkngandroid.util.CalendarUtils;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Callback;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class ApiClient {
     private final static String TAG = "ApiClient";
@@ -45,15 +45,16 @@ public class ApiClient {
      * @return PrkngService
      */
     private static PrkngService getService(boolean httpLogging) {
-        final OkHttpClient client = new OkHttpClient();
-        client.setConnectTimeout(60, TimeUnit.SECONDS);
-        client.setReadTimeout(60, TimeUnit.SECONDS);
-
         final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(httpLogging ? HttpLoggingInterceptor.Level.BODY :
                 HttpLoggingInterceptor.Level.NONE);
-        client.interceptors().add(new HttpErrorInterceptor());
-        client.interceptors().add(interceptor);
+
+        final OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .addInterceptor(new HttpErrorInterceptor())
+                .addInterceptor(interceptor)
+                .build();
 
         final Gson gson = new GsonBuilder()
                 .setDateFormat(CalendarUtils.DATE_FORMAT_ISO_8601)

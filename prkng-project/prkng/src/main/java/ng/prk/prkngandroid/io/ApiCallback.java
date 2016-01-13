@@ -6,9 +6,8 @@ import android.util.Log;
 import android.view.View;
 
 import ng.prk.prkngandroid.ui.activity.LoginActivity;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ApiCallback<T> implements Callback<T> {
     private final static String TAG = "ApiCallback";
@@ -26,7 +25,7 @@ public class ApiCallback<T> implements Callback<T> {
     }
 
     @Override
-    public void onResponse(Response<T> response, Retrofit retrofit) {
+    public void onResponse(Response<T> response) {
 
     }
 
