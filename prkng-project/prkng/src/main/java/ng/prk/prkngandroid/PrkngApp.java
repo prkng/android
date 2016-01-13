@@ -11,14 +11,19 @@ import ng.prk.prkngandroid.util.PrkngPrefs;
 public class PrkngApp extends Application {
     private float mapDurationFilter;
 
+    private static PrkngApp instance;
+
     public static PrkngApp getInstance(Context context) {
-        return (PrkngApp) context.getApplicationContext();
+// TODO verify memory leaks
+//        return (PrkngApp) context.getApplicationContext();
+        return instance;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
 
+        instance = this;
         if (!BuildConfig.DEBUG) {
             Fabric.with(this, new Crashlytics());
         }
