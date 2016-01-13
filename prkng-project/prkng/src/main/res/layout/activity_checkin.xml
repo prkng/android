@@ -52,8 +52,7 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        app:layout_anchorGravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_fab_done"
         app:backgroundTint="@color/fab_checkin_background" />
