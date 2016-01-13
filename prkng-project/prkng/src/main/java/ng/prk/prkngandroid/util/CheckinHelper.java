@@ -43,22 +43,6 @@ public class CheckinHelper {
         NotifyUtils.notifyCheckinStart(context, checkin);
     }
 
-    public static void showExpiryReminder(Context context) {
-        final CheckinData checkin = PrkngPrefs.getInstance(context).getCheckinData();
-        if (checkin == null) {
-            return;
-        }
-
-    }
-
-    public static void showSmartReminder(Context context) {
-        final CheckinData checkin = PrkngPrefs.getInstance(context).getCheckinData();
-        if (checkin == null) {
-            return;
-        }
-
-    }
-
 
     public static boolean checkout(Context context, long id) {
         try {
