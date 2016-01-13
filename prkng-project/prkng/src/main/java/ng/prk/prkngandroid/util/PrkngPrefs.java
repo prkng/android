@@ -167,6 +167,10 @@ public class PrkngPrefs implements
         edit().putFloat(DURATION, duration).apply();
     }
 
+    public boolean hasNotifications() {
+        return mPrefs.getBoolean(ALLOW_NOTIFY, true);
+    }
+
     public void registerPrefsChangeListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
         mPrefs.registerOnSharedPreferenceChangeListener(listener);
     }

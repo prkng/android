@@ -39,6 +39,10 @@ public class NotifyUtils implements Const.NotificationTypes {
     }
 
     private static void showCheckinNotification(Context context, CheckinData checkin, int type) {
+        if (!PrkngPrefs.getInstance(context).hasNotifications()) {
+            return;
+        }
+
         if (checkin == null) {
             return;
         }

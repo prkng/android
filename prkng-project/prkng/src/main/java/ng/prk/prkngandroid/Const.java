@@ -236,6 +236,7 @@ public class Const {
         String CHECKIN_LAT = "p_checkin_lat";
         String CHECKIN_LNG = "p_checkin_lng";
         // PreferenceScreens
+        String ALLOW_NOTIFY = "prefs_notify";
         String TOGGLE_LOGIN = "prefs_toggle_login";
         String CITY = "prefs_city";
         String ONBOARDING = "prefs_onboarding";

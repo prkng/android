@@ -4,4 +4,8 @@
         android:defaultValue="montreal"
         android:key="@string/prefs_city" />
 
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/prefs_notify" />
+
 </PreferenceScreen>
