@@ -63,7 +63,7 @@
     <string name="prefs_contact" translatable="false">prefs_contact</string>
     <string name="prefs_share" translatable="false">prefs_share</string>
     <string name="prefs_city" translatable="false">prefs_city</string>
-    <string name="prefs_notify" translatable="false">prefs_notify</string>
+    <string name="prefs_notify_expiry" translatable="false">prefs_notify_expiry</string>
 
     <!--Prefs arrays-->
     <string-array name="prefs_city_entries">
