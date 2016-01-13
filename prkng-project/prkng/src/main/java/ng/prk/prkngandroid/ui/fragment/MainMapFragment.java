@@ -68,6 +68,7 @@ public class MainMapFragment extends Fragment implements
     private MapAssets mapAssets;
     private MapGeometry mLastMapGeometry;
     private boolean mIgnoreMinDistance;
+    private boolean mIsZoomTooLow;
     private PrkngDataDownloadTask mTask;
     private Handler mHandler = new Handler();
     private Runnable mRunnable;
@@ -76,6 +77,7 @@ public class MainMapFragment extends Fragment implements
     private HashMap<String, List<Annotation>> mFeatureAnnotsList;
     private List<Annotation> mSelectedAnnotsList;
     private SelectedFeature mSelectedFeature;
+    private Snackbar mSnackbar;
 
     public static MainMapFragment newInstance() {
         return newInstance(null);
@@ -392,15 +394,15 @@ public class MainMapFragment extends Fragment implements
             // Provide an additional rationale to the user if the permission was not granted
             // and the user would benefit from additional context for the use of the permission.
             // For example if the user has previously denied the permission.
-            Snackbar.make(vMap, R.string.snackbar_location_permission_needed, Snackbar.LENGTH_INDEFINITE)
+            mSnackbar  = Snackbar.make(vMap, R.string.snackbar_location_permission_needed, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok,
                             new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     requestPermission();
                                 }
-                            })
-                    .show();
+                            });
+            mSnackbar.show();
         } else {
             requestPermission();
         }
@@ -454,9 +456,12 @@ public class MainMapFragment extends Fragment implements
     }
 
     private void updateMapData(LatLng latLng, double zoom) {
-        Log.v(TAG, "updateMapData @ " + zoom);
 
         if (MapUtils.isMinZoom(zoom, mPrkngMapType)) {
+            mIsZoomTooLow = false;
+            if (mSnackbar != null) {
+                mSnackbar.dismiss();
+            }
             if (mTask != null && mTask.getStatus() == AsyncTask.Status.RUNNING) {
                 Log.e(TAG, "skipped");
                 mTask.cancel(false);
@@ -490,15 +495,18 @@ public class MainMapFragment extends Fragment implements
             };
             mHandler.postDelayed(mRunnable, 500);
 
-        } else {
+        } else if (!mIsZoomTooLow){
+            mIsZoomTooLow = true;
             mIgnoreMinDistance = true;
-            Snackbar.make(vMap, R.string.snackbar_map_zoom_needed, Snackbar.LENGTH_LONG)
+            mSnackbar = Snackbar.make(vMap, R.string.snackbar_map_zoom_needed, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            mIsZoomTooLow = false;
                             vMap.setZoomLevel(MapUtils.getMinZoomPerType(mPrkngMapType), true);
                         }
-                    }).show();
+                    });
+            mSnackbar.show();
         }
     }
 
