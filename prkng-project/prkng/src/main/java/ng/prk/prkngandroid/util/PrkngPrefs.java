@@ -168,7 +168,16 @@ public class PrkngPrefs implements
     }
 
     public boolean hasNotifications() {
-        return mPrefs.getBoolean(ALLOW_NOTIFY, true);
+        return mPrefs.getBoolean(NOTIFY_EXPIRY, true);
+    }
+
+    public boolean hasSmartReminder() {
+        return mPrefs.getBoolean(NOTIFY_SMART_REMINDER, true);
+    }
+
+    public void setSmartReminder(boolean enabled) {
+        edit().putBoolean(NOTIFY_SMART_REMINDER, enabled)
+                .apply();
     }
 
     public void registerPrefsChangeListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {

@@ -18,23 +18,25 @@ public class CheckinHelper {
     private final static String TAG = "NotifyUtils";
 
     public static void checkin(Context context, CheckinData checkin, String address, long remainingTime) {
+        final PrkngPrefs prefs = PrkngPrefs.getInstance(context);
         final long endAt = System.currentTimeMillis() + remainingTime;
         if (CalendarUtils.isWeekLongDuration(remainingTime)) {
-            PrkngPrefs.getInstance(context)
-                    .setCheckin(checkin, address);
+            prefs.setCheckin(checkin, address);
         } else {
-            PrkngPrefs.getInstance(context)
-                    .setCheckin(checkin, address, endAt);
+            prefs.setCheckin(checkin, address, endAt);
             // Set alarm 30 min before expiry
             setAlarm(context,
                     endAt - Const.NotifationConfig.EXPIRY,
                     Const.NotificationTypes.EXPIRY);
 
             if (hasSmartReminder(endAt)) {
+                prefs.setSmartReminder(prefs.hasNotifications());
                 // Set smart alarm the night before a morning checkout
                 setAlarm(context,
                         getSmartReminderTime(endAt),
                         Const.NotificationTypes.SMART_REMINDER);
+            } else {
+                prefs.setSmartReminder(false);
             }
         }
 
@@ -88,6 +90,10 @@ public class CheckinHelper {
     }
 
     public static boolean hasSmartReminder(long endAt) {
+        if (Long.valueOf(Const.UNKNOWN_VALUE).equals(endAt)) {
+            return false;
+        }
+
         final Calendar calendarEnd = Calendar.getInstance();
         calendarEnd.setTimeInMillis(endAt);
 

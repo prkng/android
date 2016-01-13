@@ -220,6 +220,7 @@ public class Const {
 
     public interface PrefsNames {
         String IS_ONBOARDING = "p_is_onboarding";
+        String NOTIFY_SMART_REMINDER = "p_notify_smart_reminder";
         // Authentication
         String AUTH_API_KEY = "p_api_key";
         String AUTH_USER_NAME = "p_auth_name";
@@ -236,7 +237,7 @@ public class Const {
         String CHECKIN_LAT = "p_checkin_lat";
         String CHECKIN_LNG = "p_checkin_lng";
         // PreferenceScreens
-        String ALLOW_NOTIFY = "prefs_notify";
+        String NOTIFY_EXPIRY = "prefs_notify_expiry";
         String TOGGLE_LOGIN = "prefs_toggle_login";
         String CITY = "prefs_city";
         String ONBOARDING = "prefs_onboarding";

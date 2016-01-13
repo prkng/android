@@ -34,7 +34,6 @@
 
         <ng.prk.prkngandroid.ui.view.IntroBookTextView
             android:id="@+id/expiry"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -45,14 +44,24 @@
             style="@style/BigText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
             android:text="@string/checkin_title" />
+
+        <CheckBox
+            android:id="@+id/smart_reminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notify me the night before"
+            android:visibility="gone" />
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_anchorGravity="bottom|end"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_fab_done"
         app:backgroundTint="@color/fab_checkin_background" />

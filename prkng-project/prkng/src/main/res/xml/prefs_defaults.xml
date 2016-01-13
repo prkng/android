@@ -6,6 +6,6 @@
 
     <CheckBoxPreference
         android:defaultValue="true"
-        android:key="@string/prefs_notify" />
+        android:key="@string/prefs_notify_expiry" />
 
 </PreferenceScreen>
