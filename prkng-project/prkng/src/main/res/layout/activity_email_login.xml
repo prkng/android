@@ -25,7 +25,7 @@
         android:inputType="textPassword"
         android:text="@string/login_password" />
 
-    <ng.prk.prkngandroid.ui.view.IntroBookButton
+    <ng.prk.prkngandroid.ui.view.IntroRegularButton
         android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

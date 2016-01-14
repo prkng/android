@@ -5,7 +5,7 @@
     android:background="@color/agenda_item_background"
     android:padding="16dp">
 
-    <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+    <ng.prk.prkngandroid.ui.view.IntroBoldTextView
         android:id="@+id/day"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,13 +33,13 @@
         android:minWidth="96dp"
         android:orientation="vertical">
 
-        <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+        <ng.prk.prkngandroid.ui.view.IntroBoldTextView
             android:id="@+id/time_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/agenda_restr_item_text" />
 
-        <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+        <ng.prk.prkngandroid.ui.view.IntroBoldTextView
             android:id="@+id/time_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

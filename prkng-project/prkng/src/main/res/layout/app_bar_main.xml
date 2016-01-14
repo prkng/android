@@ -53,7 +53,7 @@
         android:layout_height="match_parent"
         android:background="@color/color_background">
 
-        <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+        <ng.prk.prkngandroid.ui.view.IntroBoldTextView
             android:id="@+id/drag_handle"
             android:layout_width="match_parent"
             android:layout_height="64dp"
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/drag_handle">
 
-            <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+            <ng.prk.prkngandroid.ui.view.IntroBoldTextView
                 android:id="@+id/interval_end"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
@@ -110,20 +110,20 @@
                     android:paddingRight="16dp"
                     android:weightSum="4">
 
-                    <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+                    <ng.prk.prkngandroid.ui.view.IntroBoldTextView
                         android:id="@+id/lot_remaining_time"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2" />
 
-                    <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+                    <ng.prk.prkngandroid.ui.view.IntroBoldTextView
                         android:id="@+id/lot_hourly_price"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center" />
 
-                    <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+                    <ng.prk.prkngandroid.ui.view.IntroBoldTextView
                         android:id="@+id/lot_daily_price"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
                         android:gravity="center" />
                 </LinearLayout>
 
-                <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+                <ng.prk.prkngandroid.ui.view.IntroBoldTextView
                     android:id="@+id/lot_capacity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+    <ng.prk.prkngandroid.ui.view.IntroBoldTextView
         android:id="@+id/interval_end"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

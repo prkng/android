@@ -8,7 +8,7 @@
     android:paddingTop="16dp"
     android:weightSum="4">
 
-    <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+    <ng.prk.prkngandroid.ui.view.IntroBoldTextView
         android:id="@+id/attr_indoor"
         style="@style/LotAttrsText"
         android:layout_width="0dp"
@@ -17,7 +17,7 @@
         android:drawableTop="@drawable/ic_lot_attrs_indoor"
         android:text="@string/lot_attr_indoor" />
 
-    <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+    <ng.prk.prkngandroid.ui.view.IntroBoldTextView
         android:id="@+id/attr_card"
         style="@style/LotAttrsText"
         android:layout_width="0dp"
@@ -27,7 +27,7 @@
         android:gravity="center"
         android:text="@string/lot_attr_card" />
 
-    <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+    <ng.prk.prkngandroid.ui.view.IntroBoldTextView
         android:id="@+id/attr_accessible"
         style="@style/LotAttrsText"
         android:layout_width="0dp"
@@ -36,7 +36,7 @@
         android:drawableTop="@drawable/ic_lot_attr_access"
         android:text="@string/lot_attr_accessible" />
 
-    <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+    <ng.prk.prkngandroid.ui.view.IntroBoldTextView
         android:id="@+id/attr_valet"
         style="@style/LotAttrsText"
         android:layout_width="0dp"

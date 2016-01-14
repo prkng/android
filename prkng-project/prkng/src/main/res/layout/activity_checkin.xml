@@ -17,14 +17,14 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <ng.prk.prkngandroid.ui.view.IntroBookTextView
+        <ng.prk.prkngandroid.ui.view.IntroRegularTextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:text="@string/checkin_title" />
 
-        <ng.prk.prkngandroid.ui.view.IntroBookTextView
+        <ng.prk.prkngandroid.ui.view.IntroRegularTextView
             android:id="@+id/address"
             style="@style/BigText"
             android:layout_width="wrap_content"
@@ -32,14 +32,14 @@
             android:layout_marginBottom="32dp"
             android:text="@string/checkin_title" />
 
-        <ng.prk.prkngandroid.ui.view.IntroBookTextView
+        <ng.prk.prkngandroid.ui.view.IntroRegularTextView
             android:id="@+id/expiry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:text="@string/checkin_expiry" />
 
-        <ng.prk.prkngandroid.ui.view.IntroBookTextView
+        <ng.prk.prkngandroid.ui.view.IntroRegularTextView
             android:id="@+id/remaining_time"
             style="@style/BigText"
             android:layout_width="wrap_content"

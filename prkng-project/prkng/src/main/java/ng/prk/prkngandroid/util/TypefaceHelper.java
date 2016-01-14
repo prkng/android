@@ -23,7 +23,7 @@ public class TypefaceHelper implements Const.TypeFaces {
 
         toolbar.setTitle(title);
         try {
-            final Typeface typeface = getTypeface(context, BOOK);
+            final Typeface typeface = getTypeface(context, REGULAR);
             final int childCount = toolbar.getChildCount();
             for (int i = 0; i < childCount; i++) {
                 final View v = toolbar.getChildAt(i);

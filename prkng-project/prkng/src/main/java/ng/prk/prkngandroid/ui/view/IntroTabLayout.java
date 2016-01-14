@@ -26,7 +26,7 @@ public class IntroTabLayout extends TabLayout {
     public IntroTabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 Log.v("IntroTabLayout", "constructor");
-        typeface = TypefaceHelper.getTypeface(context, Const.TypeFaces.BOOK);
+        typeface = TypefaceHelper.getTypeface(context, Const.TypeFaces.REGULAR);
     }
 
     @Override

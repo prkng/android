@@ -38,14 +38,14 @@
         android:gravity="bottom"
         android:orientation="vertical">
 
-        <ng.prk.prkngandroid.ui.view.IntroBookButton
+        <ng.prk.prkngandroid.ui.view.IntroRegularButton
             android:id="@+id/btn_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:text="@string/btn_register" />
 
-        <ng.prk.prkngandroid.ui.view.IntroBookButton
+        <ng.prk.prkngandroid.ui.view.IntroRegularButton
             android:id="@+id/btn_login_email"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"

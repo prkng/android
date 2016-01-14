@@ -212,11 +212,11 @@ public class Const {
         int OPEN = ParkingRestrType.PAID; // 3
     }
 
-    public static interface TypeFaces {
-        final int _COUNT = 3;
-        final String REGULAR = "fonts/intro_regular.ttf";
-        final String BOOK = "fonts/intro_book.ttf";
-        final String LIGHT = "fonts/intro_light.ttf";
+    public interface TypeFaces {
+        int _COUNT = 3;
+        String LIGHT = "fonts/IntroLight.ttf";
+        String REGULAR = "fonts/IntroRegular.ttf";
+        String BOLD = "fonts/IntroSemiBold.ttf";
     }
 
     public interface PrefsNames {
