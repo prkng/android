@@ -3,7 +3,8 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/agenda_item_background">
+    android:background="@drawable/bg_marker_info"
+    android:paddingTop="4dp">
 
     <ng.prk.prkngandroid.ui.view.IntroBoldTextView
         android:id="@+id/title"

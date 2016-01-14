@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:height="4dp"
+        android:drawable="@drawable/shadow_above" />
+    <item android:top="4dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/agenda_item_background" />
+        </shape>
+    </item>
+</layer-list>
