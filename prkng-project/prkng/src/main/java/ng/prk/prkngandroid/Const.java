@@ -162,6 +162,7 @@ public class Const {
         String ABOUT = "f_about";
         String SETTINGS = "f_settings";
         String DIALOG_DURATIONS = "d_durations";
+        String MAP_INFO = "f_map_info";
     }
 
     public interface RequestCodes {
@@ -190,6 +191,8 @@ public class Const {
         String CHECKIN_ID = "checkin_id";
         String IS_ = "checkin_id";
         String CURRENT_INDEX = "current_index";
+        String MARKER_ID = "marker_id";
+        String MARKER_TITLE = "marker_title";
     }
 
     /**

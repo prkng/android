@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -12,15 +14,15 @@ import android.view.Menu;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngZoom;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.io.ApiCallback;
 import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.ui.activity.base.BaseActivity;
+import ng.prk.prkngandroid.ui.fragment.LotInfoFragment;
 import ng.prk.prkngandroid.ui.fragment.MainMapFragment;
-import ng.prk.prkngandroid.ui.view.SlidingUpMarkerInfo;
+import ng.prk.prkngandroid.ui.fragment.SpotInfoFragment;
 import ng.prk.prkngandroid.util.Installation;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 
@@ -29,7 +31,6 @@ public class MainActivity extends BaseActivity implements
         TabLayout.OnTabSelectedListener {
     private static final String TAG = "MainActivity";
 
-    private SlidingUpMarkerInfo vSlidingUpMarkerInfo;
     private MainMapFragment mapFragment;
 
     public static Intent newIntent(Context context, LatLng center) {
@@ -54,7 +55,7 @@ public class MainActivity extends BaseActivity implements
 
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.app_bar_main);
+        setContentView(R.layout.activity_main);
 
         helloApi();
 
@@ -66,8 +67,6 @@ public class MainActivity extends BaseActivity implements
         tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_on_street), Const.MapSections.ON_STREET, true);
 //        tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_carshare_spots), Const.MapSections.CARSHARE_SPOTS);
 //        tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_carshare_vehicles), Const.MapSections.CARSHARE_VEHICLES);
-
-        vSlidingUpMarkerInfo = (SlidingUpMarkerInfo) findViewById(R.id.sliding_layout);
 
         final FragmentManager fm = getSupportFragmentManager();
         mapFragment = (MainMapFragment) fm.findFragmentByTag(Const.FragmentTags.MAP);
@@ -82,7 +81,7 @@ public class MainActivity extends BaseActivity implements
                 mapFragment = MainMapFragment.newInstance(new LatLngZoom(latitude, longitude, zoom));
             }
             fm.beginTransaction()
-                    .replace(R.id.content_frame, mapFragment, Const.FragmentTags.MAP)
+                    .replace(R.id.map_frame, mapFragment, Const.FragmentTags.MAP)
                     .commit();
         }
 
@@ -97,18 +96,6 @@ public class MainActivity extends BaseActivity implements
     }
 
     /**
-     * Hide the SlidingPanel, if expanded
-     */
-    @Override
-    public void onBackPressed() {
-        if (vSlidingUpMarkerInfo.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
-            vSlidingUpMarkerInfo.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    /**
      * Implements MainMapFragment.OnMapMarkerClickListener
      *
      * @param marker
@@ -118,10 +105,34 @@ public class MainActivity extends BaseActivity implements
         if (marker == null) {
             hideMarkerInfo();
         } else {
-            vSlidingUpMarkerInfo.setMarkerInfo(marker.getSnippet(), marker.getTitle(), type);
-            if (vSlidingUpMarkerInfo.getPanelState() != SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                vSlidingUpMarkerInfo.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+//setMarkerInfo(marker.getSnippet(), marker.getTitle(), type)
+            final FragmentManager fm = getSupportFragmentManager();
+            final FragmentTransaction ft = fm.beginTransaction();
+
+
+            Fragment fragment = fm.findFragmentByTag(Const.FragmentTags.MAP_INFO);
+            if (fragment == null) {
+                ft.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
             }
+
+            switch (type) {
+                case Const.MapSections.OFF_STREET:
+                    fragment = LotInfoFragment.newInstance(
+                            marker.getSnippet(), marker.getTitle());
+                    break;
+                case Const.MapSections.ON_STREET:
+                    fragment = SpotInfoFragment.newInstance(
+                            marker.getSnippet(), marker.getTitle());
+                    break;
+                default:
+                    fragment = null;
+                    break;
+            }
+
+            ft.replace(R.id.map_info_frame, fragment, Const.FragmentTags.MAP_INFO)
+                    .commit();
+
+            Log.e(TAG, "TODO showMarkerInfo");
         }
     }
 
@@ -130,7 +141,15 @@ public class MainActivity extends BaseActivity implements
      */
     @Override
     public void hideMarkerInfo() {
-        vSlidingUpMarkerInfo.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        Log.e(TAG, "TODO hideMarkerInfo");
+        final FragmentManager fm = getSupportFragmentManager();
+        final Fragment fragment = fm.findFragmentByTag(Const.FragmentTags.MAP_INFO);
+        if (fragment != null && fragment.isVisible()) {
+            fm.beginTransaction()
+                    .setCustomAnimations(R.anim.slide_up, R.anim.slide_down)
+                    .remove(fragment)
+                    .commit();
+        }
     }
 
     /**
