@@ -4,7 +4,7 @@ Park Smarter. Discover spots around you, instantly. Check out parking lots nearb
 
 ![Prkng Android](https://github.com/ArnaudA/prkng-android/raw/master/prkng-project/prkng/src/main/web_hi_res_512.png)
 
-[![Get it on Google Play](https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png)(https://play.google.com/store/apps/details?id=ng.prk.prkngandroid)
+[![Get it on Google Play](https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png)(https://play.google.com/store/apps/details?id=ng.prk.prkngandroid)]
 
 ##Compatibility
 * Supports Android devices running Jelly Bean (4.1) or later.
