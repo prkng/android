@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/agenda_item_background">
+
+    <ng.prk.prkngandroid.ui.view.IntroBoldTextView
+        android:id="@+id/title"
+        style="@style/SingLine"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/agenda_header"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textSize="24sp" />
+
+    <ng.prk.prkngandroid.ui.view.IntroBoldTextView
+        android:id="@+id/subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_below="@+id/title"
+        android:layout_toRightOf="@+id/main_price"
+        android:alpha="0"
+        android:drawablePadding="16dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textColor="@color/agenda_remaining_time_text"
+        android:textSize="16sp" />
+
+    <ng.prk.prkngandroid.ui.view.IntroBoldTextView
+        android:id="@+id/main_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/title"
+        android:gravity="center"
+        android:padding="16dp"
+        android:textColor="@color/agenda_remaining_time_text" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignLeft="@+id/main_price"
+        android:layout_alignTop="@+id/main_price"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp" />
+
+</RelativeLayout>
