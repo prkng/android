@@ -176,11 +176,6 @@ public class SlidingUpMarkerInfo extends SlidingUpPanelLayout implements
     }
 
     @Override
-    public void setCurrentStatus(int test) {
-
-    }
-
-    @Override
     public void setCurrentStatus(LotCurrentStatus status, int capacity) {
         final Resources res = context.getResources();
 

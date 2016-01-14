@@ -89,16 +89,6 @@ public class LotInfoFragment extends Fragment implements MarkerInfoUpdateListene
     /**
      * Implements MarkerInfoUpdateListener
      *
-     * @param test
-     */
-    @Override
-    public void setCurrentStatus(int test) {
-
-    }
-
-    /**
-     * Implements MarkerInfoUpdateListener
-     *
      * @param status
      * @param capacity
      */
