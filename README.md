@@ -25,6 +25,5 @@ Park Smarter. Discover spots around you, instantly. Check out parking lots nearb
 * [Google Play Services](http://developer.android.com/google/play-services/): auth, gcm. Version 8.4.0.
 * [Android Support Library](http://developer.android.com/tools/support-library/): appcompat-v7, recyclerview-v7, design, percent. Version 23.1.1.
 * [Material Loading ProgressBar](https://github.com/lsjwzh/MaterialLoadingProgressBar): Provide a styled ProgressBar which looks like SwipeRefreshLayout's loading indicator. Version 0.5.8-RELEASE.
-* [Android Sliding Up Panel](https://github.com/umano/AndroidSlidingUpPanel): Simple way to add a draggable sliding up panel. Version 3.2.1.
 * [Material EditText](https://github.com/rengwuxian/MaterialEditText): EditText in Material Design. Version 2.1.4.
 

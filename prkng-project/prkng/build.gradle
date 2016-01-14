@@ -80,7 +80,6 @@ dependencies {
     }
     // UI libs
     compile 'com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE'
-    compile 'com.sothree.slidinguppanel:library:3.2.1'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
 
 }
