@@ -63,7 +63,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-gcm:8.4.0'
     compile 'com.google.android.gms:play-services-auth:8.4.0'
     // Facebook
-    compile 'com.facebook.android:facebook-android-sdk:4.7.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.9.0'
     // mapbox
     compile ('com.mapbox.mapboxsdk:mapbox-android-sdk:3.1.0-SNAPSHOT@aar'){
         transitive=true
@@ -75,7 +75,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.0.0-RC1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.0.0-RC1'
     // crashlyitcs
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }
     // UI libs
