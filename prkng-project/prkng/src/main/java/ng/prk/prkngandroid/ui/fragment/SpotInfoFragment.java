@@ -11,14 +11,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.model.CheckinData;
+import ng.prk.prkngandroid.model.LotAttrs;
 import ng.prk.prkngandroid.model.LotCurrentStatus;
+import ng.prk.prkngandroid.model.RestrIntervalsList;
 import ng.prk.prkngandroid.ui.activity.CheckinActivity;
-import ng.prk.prkngandroid.ui.adapter.SpotAgendaListAdapter;
 import ng.prk.prkngandroid.ui.thread.SpotInfoDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.MarkerInfoUpdateListener;
 import ng.prk.prkngandroid.util.CalendarUtils;
@@ -139,6 +142,18 @@ public class SpotInfoFragment extends Fragment implements
 
     }
 
+    @Override
+    public void setDataset(ArrayList list) {
+        RestrIntervalsList data = (RestrIntervalsList) list;
+        Log.v(TAG, "setDataset: OK. size: " + data.size());
+    }
+
+
+    @Override
+    public void setAttributes(LotAttrs attrs) {
+
+    }
+
     /**
      * Implements MarkerInfoUpdateListener
      *
@@ -164,7 +179,6 @@ public class SpotInfoFragment extends Fragment implements
     private void downloadData(Context context, String id) {
         (new SpotInfoDownloadTask(
                 context,
-                new SpotAgendaListAdapter(getContext(), R.layout.list_item_spot_agenda),
                 this)
         ).execute(id);
     }

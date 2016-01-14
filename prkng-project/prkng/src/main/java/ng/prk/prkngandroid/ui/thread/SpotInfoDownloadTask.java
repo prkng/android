@@ -20,13 +20,11 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
 
     private final Context context;
     private final MarkerInfoUpdateListener listener;
-    private SpotAgendaListAdapter mAdapter;
     private PrkngApiError error;
 
-    public SpotInfoDownloadTask(Context context, SpotAgendaListAdapter adapter, MarkerInfoUpdateListener listener) {
+    public SpotInfoDownloadTask(Context context, MarkerInfoUpdateListener listener) {
         this.context = context;
         this.listener = listener;
-        this.mAdapter = adapter;
     }
 
     @Override
@@ -77,7 +75,7 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
             if (spotRules != null) {
                 Log.v(TAG, "rules = " + spotRules.toString());
                 final RestrIntervalsList parkingAgenda = spotRules.getParkingSpotAgenda();
-                mAdapter.swapDataset(parkingAgenda);
+                listener.setDataset(parkingAgenda);
 
                 listener.setRemainingTime(
                         SpotRules.getRemainingTime(parkingAgenda, CalendarUtils.todayMillis())

@@ -11,16 +11,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.io.PrkngApiError;
+import ng.prk.prkngandroid.model.BusinessIntervalList;
+import ng.prk.prkngandroid.model.LotAttrs;
 import ng.prk.prkngandroid.model.LotCurrentStatus;
-import ng.prk.prkngandroid.ui.adapter.LotAgendaListAdapter;
 import ng.prk.prkngandroid.ui.thread.LotInfoDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.MarkerInfoUpdateListener;
 import ng.prk.prkngandroid.util.CalendarUtils;
 
-public class LotInfoFragment extends Fragment implements MarkerInfoUpdateListener, View.OnClickListener {
+public class LotInfoFragment extends Fragment implements
+        MarkerInfoUpdateListener,
+        View.OnClickListener {
     private static final String TAG = "SpotInfoFragment";
 
     private TextView vTitle;
@@ -111,7 +116,7 @@ public class LotInfoFragment extends Fragment implements MarkerInfoUpdateListene
                 vMainPrice
                         .setText(String.format(res.getString(R.string.lot_daily_price), sDailyPrice));
             } else {
-                vMainPrice.findViewById(R.id.lot_daily_price).setVisibility(View.INVISIBLE);
+                vMainPrice.setVisibility(View.INVISIBLE);
             }
 
             vSubtitle.setText(CalendarUtils.getDurationFromMillis(
@@ -123,6 +128,18 @@ public class LotInfoFragment extends Fragment implements MarkerInfoUpdateListene
         ObjectAnimator.ofFloat(vSubtitle, View.ALPHA, 0, 1).start();
         ObjectAnimator.ofFloat(vMainPrice, View.ALPHA, 0, 1).start();
         vProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setDataset(ArrayList list) {
+        BusinessIntervalList data = (BusinessIntervalList) list;
+        Log.v(TAG, "setDataset: OK. size: " + data.size());
+
+    }
+
+    @Override
+    public void setAttributes(LotAttrs attrs) {
+
     }
 
     /**
@@ -148,7 +165,6 @@ public class LotInfoFragment extends Fragment implements MarkerInfoUpdateListene
     private void downloadData(Context context, String id) {
         (new LotInfoDownloadTask(
                 context,
-                new LotAgendaListAdapter(getContext(), R.layout.list_item_lot_agenda),
                 this)
         ).execute(id);
     }

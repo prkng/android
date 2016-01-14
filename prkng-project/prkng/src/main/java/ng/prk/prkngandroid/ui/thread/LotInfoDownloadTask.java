@@ -10,7 +10,6 @@ import ng.prk.prkngandroid.io.PrkngService;
 import ng.prk.prkngandroid.model.GeoJSONFeatureProperties;
 import ng.prk.prkngandroid.model.LotCurrentStatus;
 import ng.prk.prkngandroid.model.PointsGeoJSONFeature;
-import ng.prk.prkngandroid.ui.adapter.LotAgendaListAdapter;
 import ng.prk.prkngandroid.ui.thread.base.MarkerInfoUpdateListener;
 import ng.prk.prkngandroid.util.CalendarUtils;
 import ng.prk.prkngandroid.util.PrkngPrefs;
@@ -20,13 +19,11 @@ public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureP
 
     private final Context context;
     private final MarkerInfoUpdateListener listener;
-    private LotAgendaListAdapter mAdapter;
     private PrkngApiError error;
 
-    public LotInfoDownloadTask(Context context, LotAgendaListAdapter adapter, MarkerInfoUpdateListener listener) {
+    public LotInfoDownloadTask(Context context, MarkerInfoUpdateListener listener) {
         this.context = context;
         this.listener = listener;
-        this.mAdapter = adapter;
     }
 
     @Override
@@ -68,13 +65,13 @@ public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureP
                 Log.v(TAG, properties.getAttrs().toString());
                 Log.v(TAG, properties.getStreetView().toString());
 
-                mAdapter.swapDataset(properties.getAgenda().getLotAgenda());
+                listener.setDataset(properties.getAgenda().getLotAgenda());
                 LotCurrentStatus status = properties.getAgenda().getLotCurrentStatus(CalendarUtils.todayMillis());
 
                 final int capacity = properties.getCapacity();
                 listener.setCurrentStatus(status, capacity);
 
-                mAdapter.setFooterAttrs(properties.getAttrs());
+                listener.setAttributes(properties.getAttrs());
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
