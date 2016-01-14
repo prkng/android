@@ -6,6 +6,7 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import java.util.Date;
 
 import ng.prk.prkngandroid.Const;
+import ng.prk.prkngandroid.util.CalendarUtils;
 
 public class CheckinData {
     private long id;
@@ -47,6 +48,15 @@ public class CheckinData {
 
     public long getCheckoutAt() {
         return (checkoutAt == null) ? Const.UNKNOWN_VALUE : checkoutAt.getTime();
+    }
+
+    public void fixTimezones() {
+        if (checkinAt != null) {
+            checkinAt = new Date(checkinAt.getTime() + CalendarUtils.getTimezoneOffsetMillis());
+        }
+        if (checkoutAt != null) {
+            checkoutAt = new Date(checkoutAt.getTime() + CalendarUtils.getTimezoneOffsetMillis());
+        }
     }
 
     public String getCity() {

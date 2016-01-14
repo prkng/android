@@ -95,15 +95,14 @@ public class PrkngPrefs implements
     public void setCheckin(CheckinData checkin, String address, long endAt) {
         edit().putLong(CHECKIN_ID, checkin.getId())
                 .putString(CHECKIN_ADDRESS, address)
-
                 .putLong(CHECKIN_LAT, Double.doubleToRawLongBits(checkin.getLatitude()))
                 .putLong(CHECKIN_LNG, Double.doubleToRawLongBits(checkin.getLongitude()));
-        if (Long.valueOf(Const.UNKNOWN_VALUE).equals(checkin.getCheckinAt())) {
-            edit().putLong(CHECKIN_START_AT, checkin.getCheckinAt());
-        } else {
-            edit().remove(CHECKIN_START_AT);
-        }
 
+        if (Long.valueOf(Const.UNKNOWN_VALUE).equals(checkin.getCheckinAt())) {
+            edit().remove(CHECKIN_START_AT);
+        } else {
+            edit().putLong(CHECKIN_START_AT, checkin.getCheckinAt());
+        }
         if (Long.valueOf(Const.UNKNOWN_VALUE).equals(endAt)) {
             // For week-long durations (allowed at all times), ignore end time
             edit().remove(CHECKIN_END_AT);

@@ -12,6 +12,7 @@ import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.PrkngApp;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.ui.activity.AboutActivity;
+import ng.prk.prkngandroid.ui.activity.CheckinActivity;
 import ng.prk.prkngandroid.ui.activity.LoginActivity;
 import ng.prk.prkngandroid.ui.activity.SettingsActivity;
 import ng.prk.prkngandroid.ui.dialog.DurationDialog;
@@ -84,6 +85,10 @@ public abstract class BaseActivity extends AppCompatActivity {
             );
 
             dialog.show(getSupportFragmentManager(), Const.FragmentTags.DIALOG_DURATIONS);
+            return true;
+        } else if (id == R.id.action_user_account) {
+            startActivity(CheckinActivity.newIntent(this));
+
             return true;
         }
 

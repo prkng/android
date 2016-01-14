@@ -30,7 +30,6 @@ import ng.prk.prkngandroid.util.CheckinHelper;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class SlidingUpMarkerInfo extends SlidingUpPanelLayout implements
         View.OnClickListener,
@@ -148,8 +147,13 @@ public class SlidingUpMarkerInfo extends SlidingUpPanelLayout implements
         public void onResponse(Response<CheckinData> response) {
             Log.v(TAG, "onResponse");
 
+            final CheckinData checkin = response.body();
+            if (checkin != null) {
+                checkin.fixTimezones();
+            }
+
             CheckinHelper.checkin(getContext(),
-                    (CheckinData) response.body(),
+                    checkin,
                     mAddress,
                     mRemainingTime);
             context.startActivity(CheckinActivity.newIntent(context));

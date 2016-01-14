@@ -38,6 +38,7 @@ public class CalendarUtils {
 
     public static final String TIMEZONE_UTC = "UTC";
     public static final String DATE_FORMAT_ISO_8601 = "yyyy-MM-dd'T'HH:mm:ss";
+//    public static final String DATE_FORMAT_ISO_8601_MICROS = DATE_FORMAT_ISO_8601 + ".SSSSSS";
 
     /**
      * Get ISO day of week
