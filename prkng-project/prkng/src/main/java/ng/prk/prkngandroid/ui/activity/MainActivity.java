@@ -190,7 +190,7 @@ public class MainActivity extends BaseActivity implements
                     ApiClient.getService(),
                     apiKey,
                     deviceId,
-                    new ApiCallback<Void>(this, findViewById(R.id.sliding_layout)));
+                    new ApiCallback<Void>(this, findViewById(R.id.root_view)));
         }
     }
 
