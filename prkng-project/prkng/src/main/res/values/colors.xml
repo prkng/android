@@ -68,6 +68,7 @@
     <color name="progress_bar">@color/red1</color>
     <color name="fab_checkin_background">@color/berry2</color>
     <color name="fab_mylocation_background">@color/cream1</color>
+    <color name="map_info_background">@color/red2</color>
 
 
     <!--Agenda-->

@@ -163,6 +163,7 @@ public class Const {
         String SETTINGS = "f_settings";
         String DIALOG_DURATIONS = "d_durations";
         String MAP_INFO = "f_map_info";
+        String CHECKIN_INFO = "f_checkin_info";
     }
 
     public interface RequestCodes {

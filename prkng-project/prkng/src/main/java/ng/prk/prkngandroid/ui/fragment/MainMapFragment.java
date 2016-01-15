@@ -215,6 +215,9 @@ public class MainMapFragment extends Fragment implements
             vMap.addMarker(new MarkerOptions()
                     .snippet(MARKER_ID_CHECKIN)
                     .position(checkin.getLatLng()));
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.checkin_frame, CheckinInfoFragment.newInstance(checkin.getId()), Const.FragmentTags.CHECKIN_INFO)
+                    .commit();
         }
         vMap.setCenterCoordinate(getCheckinCoordinate());
     }

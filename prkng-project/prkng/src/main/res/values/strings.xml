@@ -130,7 +130,7 @@
     <!--Checkin/ User Activity-->
     <string name="checkin_title">You are checked in on</string>
     <string name="checkin_expiry">Available until</string>
-
+    <string name="checkin_prefix">Parked on %s</string>
 
     <!--Authentication-->
     <string name="auth_subtitle">SIGN UP WITH</string>
