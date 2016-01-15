@@ -27,6 +27,7 @@ import ng.prk.prkngandroid.ui.thread.base.MarkerInfoUpdateListener;
 import ng.prk.prkngandroid.util.CalendarUtils;
 import ng.prk.prkngandroid.util.CheckinHelper;
 import ng.prk.prkngandroid.util.PrkngPrefs;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -55,9 +56,8 @@ public class SpotInfoFragment extends Fragment implements
     }
 
     private final Callback checkinCallback = new Callback<CheckinData>() {
-
         @Override
-        public void onResponse(Response<CheckinData> response) {
+        public void onResponse(Call<CheckinData> call, Response<CheckinData> response) {
             final CheckinData checkin = response.body();
             if (checkin != null) {
                 checkin.fixTimezones();
@@ -72,8 +72,9 @@ public class SpotInfoFragment extends Fragment implements
         }
 
         @Override
-        public void onFailure(Throwable t) {
+        public void onFailure(Call<CheckinData> call, Throwable t) {
             Log.v(TAG, "onFailure");
+
         }
     };
 

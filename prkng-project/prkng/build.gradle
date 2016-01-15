@@ -44,9 +44,14 @@ android {
         }
 
         debugFacebook.initWith(buildTypes.debug)
+        debugLiveApi.initWith(buildTypes.debug)
 
         debugFacebook {
             applicationIdSuffix ""
+        }
+
+        debugLiveApi {
+            buildConfigField "String", "API_BASE_URL", '"https://api.prk.ng/v1/"'
         }
     }
 }
@@ -62,6 +67,7 @@ dependencies {
     // google play services
     compile 'com.google.android.gms:play-services-gcm:8.4.0'
     compile 'com.google.android.gms:play-services-auth:8.4.0'
+    compile 'com.google.android.gms:play-services-location:8.4.0'
     // Facebook
     compile 'com.facebook.android:facebook-android-sdk:4.9.0'
     // mapbox
@@ -69,11 +75,11 @@ dependencies {
         transitive=true
     }
     // retrofit
-    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta3'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
-    compile 'com.squareup.okhttp3:okhttp:3.0.0-RC1'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.0.0-RC1'
+    compile 'com.squareup.retrofit2:retrofit:2.0.0-SNAPSHOT'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-SNAPSHOT'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-SNAPSHOT'
+    compile 'com.squareup.okhttp3:okhttp:3.0.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.0.1'
     // crashlyitcs
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;

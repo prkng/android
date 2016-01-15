@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 
 import ng.prk.prkngandroid.ui.activity.LoginActivity;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -25,12 +26,12 @@ public class ApiCallback<T> implements Callback<T> {
     }
 
     @Override
-    public void onResponse(Response<T> response) {
+    public void onResponse(Call<T> call, Response<T> response) {
 
     }
 
     @Override
-    public void onFailure(Throwable t) {
+    public void onFailure(Call<T> call, Throwable t) {
         t.printStackTrace();
 
         if (t instanceof PrkngApiError) {

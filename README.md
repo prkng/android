@@ -21,7 +21,8 @@ Park Smarter. Discover spots around you, instantly. Check out parking lots nearb
 * [Mapbox SDK for Android](https://github.com/mapbox/mapbox-gl-native): Render Mapbox styles in mobile, desktop, and node applications using C++ and OpenGL. 3.1.0-SNAPSHOT.
 * [Facebook SDK for Android](https://developers.facebook.com/docs/android/): Version 4.9.0.
 * [Crashlytics SDK for Android](https://fabric.io/kits/android/crashlytics/summary): Version 2.5.5.
-* [Retrofit](http://square.github.io/retrofit/): A type-safe REST client for Android and Java. Version 2.0.0-beta3.
+* [Retrofit](http://square.github.io/retrofit/): A type-safe REST client for Android and Java. Version 2.0.0-SNAPSHOT.
+* [OkHttp](http://square.github.io/okhttp/): An HTTP & HTTP/2 client for Android and Java. Version 3.0.1.
 * [Google Play Services](http://developer.android.com/google/play-services/): auth, gcm. Version 8.4.0.
 * [Android Support Library](http://developer.android.com/tools/support-library/): appcompat-v7, recyclerview-v7, design, percent. Version 23.1.1.
 * [Material Loading ProgressBar](https://github.com/lsjwzh/MaterialLoadingProgressBar): Provide a styled ProgressBar which looks like SwipeRefreshLayout's loading indicator. Version 0.5.8-RELEASE.
