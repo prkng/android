@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/title"
+    style="@style/SingLine"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/map_info_background"
+    android:drawableLeft="@drawable/ic_active_checkin"
+    android:drawablePadding="16dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:paddingBottom="12dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="64dp"
+    android:paddingTop="12dp"
+    android:textSize="14sp" />
+

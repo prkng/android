@@ -14,7 +14,7 @@
         android:background="@color/color_background"
         app:access_token="@string/mapbox_access_token"
         app:attribution_visibility="gone"
-        app:compass_gravity="top|start"
+        app:compass_gravity="top|end"
         app:logo_visibility="invisible"
         app:style_url="@string/mapbox_style_url"
         app:tilt_enabled="false" />
@@ -31,6 +31,12 @@
         app:mlpb_progress_stoke_width="3dp"
         app:mlpb_show_arrow="false" />
 
+    <FrameLayout
+        android:id="@+id/checkin_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom" />
+
     <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -38,8 +44,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_maps_my_location"
         app:backgroundTint="@color/fab_mylocation_background"
-        app:layout_anchor="@+id/mapview"
+        app:layout_anchor="@+id/checkin_frame"
         app:layout_anchorGravity="top|end" />
-
 
 </android.support.design.widget.CoordinatorLayout>
