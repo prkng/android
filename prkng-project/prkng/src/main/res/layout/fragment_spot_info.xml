@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_alignParentTop="true"
-        android:background="@color/agenda_header"
+        android:background="@color/map_info_background"
         android:gravity="center_vertical"
         android:paddingLeft="16dp"
         android:paddingRight="96dp"
@@ -43,7 +43,6 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp" />
 
-
     <Button
         android:id="@+id/btn_checkin"
         style="?android:attr/borderlessButtonStyle"
@@ -55,16 +54,5 @@
         android:drawableTop="@drawable/ic_fab_checkin"
         android:text="@string/btn_checkin"
         android:textColor="@color/color_text" />
-
-    <!--<android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"-->
-    <!--android:id="@+id/fab"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentRight="true"-->
-    <!--android:layout_alignParentTop="true"-->
-    <!--android:layout_marginRight="@dimen/fab_margin"-->
-    <!--android:layout_marginTop="36dp"-->
-    <!--android:src="@drawable/ic_fab_checkin"-->
-    <!--app:backgroundTint="@color/red1" />-->
 
 </RelativeLayout>
