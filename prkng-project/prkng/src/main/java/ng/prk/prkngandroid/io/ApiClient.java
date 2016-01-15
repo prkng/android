@@ -99,7 +99,7 @@ public class ApiClient {
                 return response.body();
             }
         } catch (IOException e) {
-            throw (PrkngApiError) e;
+            throw PrkngApiError.getInstance(e);
         }
 
         return null;
@@ -124,7 +124,7 @@ public class ApiClient {
                 return response.body();
             }
         } catch (IOException e) {
-            throw (PrkngApiError) e;
+            throw PrkngApiError.getInstance(e);
         }
 
         return null;
@@ -161,7 +161,7 @@ public class ApiClient {
                 return response.body();
             }
         } catch (IOException e) {
-            throw (PrkngApiError) e;
+            throw PrkngApiError.getInstance(e);
         }
 
         return null;
@@ -197,7 +197,7 @@ public class ApiClient {
                 return response.body();
             }
         } catch (IOException e) {
-            throw (PrkngApiError) e;
+            throw PrkngApiError.getInstance(e);
         }
 
         return null;
@@ -226,7 +226,7 @@ public class ApiClient {
                 return response.body();
             }
         } catch (IOException e) {
-            throw (PrkngApiError) e;
+            throw PrkngApiError.getInstance(e);
         }
 
         return null;
@@ -262,7 +262,7 @@ public class ApiClient {
                 return response.body();
             }
         } catch (IOException e) {
-            throw (PrkngApiError) e;
+            throw PrkngApiError.getInstance(e);
         }
 
         return null;
@@ -298,7 +298,7 @@ public class ApiClient {
                 return response.body();
             }
         } catch (IOException e) {
-            throw (PrkngApiError) e;
+            throw PrkngApiError.getInstance(e);
         }
 
         return null;
@@ -314,7 +314,7 @@ public class ApiClient {
                 return response.body();
             }
         } catch (IOException e) {
-            throw (PrkngApiError) e;
+            throw PrkngApiError.getInstance(e);
         }
 
         return null;
@@ -330,7 +330,7 @@ public class ApiClient {
                 return response.body();
             }
         } catch (IOException e) {
-            throw (PrkngApiError) e;
+            throw PrkngApiError.getInstance(e);
         }
 
         return null;
@@ -354,7 +354,7 @@ public class ApiClient {
                     .resetUserPassword(email)
                     .execute();
         } catch (IOException e) {
-            throw (PrkngApiError) e;
+            throw PrkngApiError.getInstance(e);
         }
     }
 
