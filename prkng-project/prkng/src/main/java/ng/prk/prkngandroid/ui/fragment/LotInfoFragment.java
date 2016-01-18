@@ -19,6 +19,7 @@ import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.model.BusinessIntervalList;
 import ng.prk.prkngandroid.model.LotAttrs;
 import ng.prk.prkngandroid.model.LotCurrentStatus;
+import ng.prk.prkngandroid.ui.activity.OnMarkerInfoClickListener;
 import ng.prk.prkngandroid.ui.thread.LotInfoDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.MarkerInfoUpdateListener;
 import ng.prk.prkngandroid.util.CalendarUtils;
@@ -28,6 +29,7 @@ public class LotInfoFragment extends Fragment implements
         View.OnClickListener {
     private static final String TAG = "SpotInfoFragment";
 
+    private OnMarkerInfoClickListener listener;
     private TextView vTitle;
     private TextView vSubtitle;
     private TextView vMainPrice;
@@ -47,6 +49,16 @@ public class LotInfoFragment extends Fragment implements
         return fragment;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            listener = (OnMarkerInfoClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnMarkerInfoClickListener");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -171,6 +183,8 @@ public class LotInfoFragment extends Fragment implements
 
     private void showDetails() {
         Log.v(TAG, "showDetails");
+        listener.onClick(this);
+
     }
 
 }

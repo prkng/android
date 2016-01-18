@@ -27,6 +27,7 @@ import ng.prk.prkngandroid.util.Installation;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public class MainActivity extends BaseActivity implements
+        OnMarkerInfoClickListener,
         MainMapFragment.OnMapMarkerClickListener,
         TabLayout.OnTabSelectedListener {
     private static final String TAG = "MainActivity";
@@ -109,7 +110,6 @@ public class MainActivity extends BaseActivity implements
             final FragmentManager fm = getSupportFragmentManager();
             final FragmentTransaction ft = fm.beginTransaction();
 
-
             Fragment fragment = fm.findFragmentByTag(Const.FragmentTags.MAP_INFO);
             if (fragment == null) {
                 ft.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
@@ -191,6 +191,19 @@ public class MainActivity extends BaseActivity implements
                     apiKey,
                     deviceId,
                     new ApiCallback<Void>(this, findViewById(R.id.root_view)));
+        }
+    }
+
+    @Override
+    public void onClick(Fragment fragment) {
+        Log.v(TAG, "onClick fragment");
+        final FragmentManager fm = getSupportFragmentManager();
+        if (fragment instanceof SpotInfoFragment) {
+            final Fragment clone = SpotInfoFragment.clone((SpotInfoFragment) fragment);
+            fm.beginTransaction()
+                    .replace(R.id.rootroot, clone)
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 

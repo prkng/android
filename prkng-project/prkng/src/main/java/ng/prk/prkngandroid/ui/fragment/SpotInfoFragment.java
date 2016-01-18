@@ -22,6 +22,7 @@ import ng.prk.prkngandroid.model.LotAttrs;
 import ng.prk.prkngandroid.model.LotCurrentStatus;
 import ng.prk.prkngandroid.model.RestrIntervalsList;
 import ng.prk.prkngandroid.ui.activity.CheckinActivity;
+import ng.prk.prkngandroid.ui.activity.OnMarkerInfoClickListener;
 import ng.prk.prkngandroid.ui.thread.SpotInfoDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.MarkerInfoUpdateListener;
 import ng.prk.prkngandroid.util.CalendarUtils;
@@ -36,13 +37,14 @@ public class SpotInfoFragment extends Fragment implements
         MarkerInfoUpdateListener {
     private static final String TAG = "SpotInfoFragment";
 
+    private OnMarkerInfoClickListener listener;
     private TextView vTitle;
     private TextView vSubtitle;
     private Button vCheckinBtn;
     private View vProgressBar;
     private String mId;
     private String mTitle;
-    private long mSubtitle;
+    private long mRemainingTime;
 
     public static SpotInfoFragment newInstance(String id, String title) {
         final SpotInfoFragment fragment = new SpotInfoFragment();
@@ -67,7 +69,7 @@ public class SpotInfoFragment extends Fragment implements
             CheckinHelper.checkin(context,
                     checkin,
                     mTitle,
-                    mSubtitle);
+                    mRemainingTime);
             context.startActivity(CheckinActivity.newIntent(context));
         }
 
@@ -79,15 +81,24 @@ public class SpotInfoFragment extends Fragment implements
     };
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            listener = (OnMarkerInfoClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnMarkerInfoClickListener");
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         final View view = inflater.inflate(R.layout.fragment_spot_info, container, false);
 
         final Bundle args = getArguments();
-        if (args != null) {
-            mId = args.getString(Const.BundleKeys.MARKER_ID);
-            mTitle = args.getString(Const.BundleKeys.MARKER_TITLE);
-        }
+        mId = args.getString(Const.BundleKeys.MARKER_ID);
+        mTitle = args.getString(Const.BundleKeys.MARKER_TITLE);
 
         downloadData(getActivity(), mId);
 
@@ -120,7 +131,7 @@ public class SpotInfoFragment extends Fragment implements
      */
     @Override
     public void setRemainingTime(long time) {
-        mSubtitle = time;
+        mRemainingTime = time;
 
         vSubtitle.setText(CalendarUtils.getDurationFromMillis(
                 vSubtitle.getContext(),
@@ -186,6 +197,7 @@ public class SpotInfoFragment extends Fragment implements
 
     private void showDetails() {
         Log.v(TAG, "showDetails");
+        listener.onClick(this);
     }
 
     private void doCheckin() {
