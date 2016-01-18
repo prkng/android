@@ -190,10 +190,10 @@ public class Const {
         String LONGITUDE = "longitude";
         String ZOOM = "zoom";
         String CHECKIN_ID = "checkin_id";
-        String IS_ = "checkin_id";
         String CURRENT_INDEX = "current_index";
         String MARKER_ID = "marker_id";
         String MARKER_TITLE = "marker_title";
+        String IS_EXPANDED = "is_expanded";
     }
 
     /**
@@ -218,9 +218,9 @@ public class Const {
 
     public interface TypeFaces {
         int _COUNT = 3;
-        String LIGHT = "fonts/IntroLight.ttf";
-        String REGULAR = "fonts/IntroRegular.ttf";
-        String BOLD = "fonts/IntroSemiBold.ttf";
+        String LIGHT = "fonts/IntroLight.ttf"; // Light
+        String REGULAR = "fonts/IntroRegular.ttf"; // Book on Zeplin
+        String BOLD = "fonts/IntroSemiBold.ttf"; // Intro-Regular on Zeplin
     }
 
     public interface PrefsNames {
