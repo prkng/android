@@ -22,6 +22,7 @@ import ng.prk.prkngandroid.util.CalendarUtils;
 
 public class LotsDownloadTask extends PrkngDataDownloadTask {
     private final static String TAG = "LotsTask";
+    private boolean mForceBoundingBox = false;
 
     public LotsDownloadTask(MapView mapView, MapAssets mapAssets, MapTaskListener listener) {
         super(mapView, mapAssets, listener);
@@ -47,19 +48,29 @@ public class LotsDownloadTask extends PrkngDataDownloadTask {
 
             if (apiKey != null && mapGeometry != null) {
                 // Get API data
-                final PointsGeoJSON lots = ApiClient.getParkingLots(service,
+                PointsGeoJSON lots = ApiClient.getParkingLots(service,
                         apiKey,
                         mapGeometry.getLatitude(),
                         mapGeometry.getLongitude(),
                         mapGeometry.getRadius()
                 );
 
-//                ImageView mImageOne =
                 final long now = CalendarUtils.todayMillis();
 
-
                 // Prepare map annotations: Markers only
-                final List<PointsGeoJSONFeature> lotsFeatures = lots.getFeatures();
+                List<PointsGeoJSONFeature> lotsFeatures = lots.getFeatures();
+
+                if (lotsFeatures.isEmpty()) {
+                    // TODO: refactor to zoomOut?
+                    mForceBoundingBox = true;
+                    lots = ApiClient.getNearestParkingLots(service,
+                            apiKey,
+                            mapGeometry.getLatitude(),
+                            mapGeometry.getLongitude(),
+                            mapGeometry.getRadius()
+                    );
+                    lotsFeatures = lots.getFeatures();
+                }
 
                 final int bestPrice = getBestPrice(lotsFeatures, now);
 
@@ -100,6 +111,12 @@ public class LotsDownloadTask extends PrkngDataDownloadTask {
         }
 
         return best;
+    }
+
+
+    @Override
+    protected boolean forceBoundingBox() {
+        return mForceBoundingBox;
     }
 
 }

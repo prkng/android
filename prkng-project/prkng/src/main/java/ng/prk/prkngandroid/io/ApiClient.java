@@ -220,7 +220,27 @@ public class ApiClient {
                     .getParkingLots(apiKey,
                             latitude,
                             longitude,
-                            radius)
+                            radius,
+                            0)
+                    .execute();
+            if (response != null) {
+                return response.body();
+            }
+        } catch (IOException e) {
+            throw PrkngApiError.getInstance(e);
+        }
+
+        return null;
+    }
+
+    public static PointsGeoJSON getNearestParkingLots(PrkngService service, String apiKey, double latitude, double longitude, int radius) throws PrkngApiError {
+        try {
+            final Response<PointsGeoJSON> response = service
+                    .getParkingLots(apiKey,
+                            latitude,
+                            longitude,
+                            radius,
+                            1)
                     .execute();
             if (response != null) {
                 return response.body();

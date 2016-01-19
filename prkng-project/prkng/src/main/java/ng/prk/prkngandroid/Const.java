@@ -73,6 +73,7 @@ public class Const {
         String EVENT = "event";
         String QUERY = "query";
         String RADIUS = "radius";
+        String NEAREST = "nearest";
         String PERMITS = "permit";
         String CARSHARE_COMPANIES = "company";
         String LIMIT = "limit";

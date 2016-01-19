@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import ng.prk.prkngandroid.Const;
-import ng.prk.prkngandroid.PrkngApp;
 import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.SpotsAnnotations;
@@ -44,6 +43,10 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
         void setAnnotationsList(HashMap<String, List<Annotation>> annotations);
 
         void onFailure(PrkngApiError e);
+
+        void setBounds(LatLng visible);
+
+        float getDurationFilter();
     }
 
     public PrkngDataDownloadTask(MapView mapView, MapAssets mapAssets, MapTaskListener listener) {
@@ -105,9 +108,12 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
                     final List<Marker> markersList = vMap.addMarkers(new ArrayList<>(spots.getMarkers().keySet()));
                     int i = 0;
                     for (Map.Entry<MarkerOptions, String> entry : spots.getMarkers().entrySet()) {
-                        // Note: Mapbox si very slowe when adding markers individually
+                        // Note: Mapbox si very slow when adding markers individually
 //                        Marker m = vMap.addMarker(entry.getKey());
                         addToAnnotationsList(entry.getValue(), markersList.get(i++));
+                    }
+                    if (forceBoundingBox()) {
+                        listener.setBounds(markersList.get(0).getPosition());
                     }
                 }
                 spots.clearMarkers();
@@ -175,8 +181,11 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
             return Const.UiConfig.DURATIONS[Const.UiConfig.DEFAULT_DURATION_INDEX];
         }
 
-        return PrkngApp.getInstance(vMap.getContext())
-                .getMapDurationFilter();
+        return listener.getDurationFilter();
+    }
+
+    protected boolean forceBoundingBox() {
+        return false;
     }
 
     protected void setBackgroundError(PrkngApiError e) {

@@ -164,7 +164,8 @@ public interface PrkngService {
             @Header(Const.ApiArgs.API_KEY) String apiKey,
             @Query(Const.ApiArgs.LATITUDE) double latitude,
             @Query(Const.ApiArgs.LONGITUDE) double longitude,
-            @Query(Const.ApiArgs.RADIUS) int radius
+            @Query(Const.ApiArgs.RADIUS) int radius,
+            @Query(Const.ApiArgs.NEAREST) int nearest
     );
 
     // Returns the parking lot corresponding to the id

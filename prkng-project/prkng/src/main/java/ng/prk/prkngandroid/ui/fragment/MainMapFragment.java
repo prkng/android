@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ng.prk.prkngandroid.Const;
+import ng.prk.prkngandroid.PrkngApp;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.model.CheckinData;
@@ -60,6 +62,8 @@ public class MainMapFragment extends Fragment implements
     private final static String TAG = "MainMapFragment";
     private final static String MARKER_ID_CHECKIN = "checkin_marker";
     private final static double RADIUS_FIX = 1.4d;
+    private static final long ANIMATION_DURATION = 400L; // Mapbox's anim is 300
+
     @Deprecated
     private final static boolean MY_LOCATION_ENABLED = true;
 
@@ -77,6 +81,7 @@ public class MainMapFragment extends Fragment implements
     private HashMap<String, List<Annotation>> mFeatureAnnotsList;
     private List<Annotation> mSelectedAnnotsList;
     private SelectedFeature mSelectedFeature;
+    private LatLng mVisiblePoint;
     private Snackbar mSnackbar;
 
     public static MainMapFragment newInstance() {
@@ -362,10 +367,40 @@ public class MainMapFragment extends Fragment implements
         try {
             vProgressBar.setVisibility(View.GONE);
 
+            if (mVisiblePoint != null) {
+                forceVisibleBounds(mVisiblePoint);
+            }
+
             addCheckinMarker();
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+    }
+
+    private void forceVisibleBounds(LatLng visiblePoint) {
+        vMap.removeOnMapChangedListener(this);
+        final ArrayList<LatLng> coordinates = new ArrayList<>();
+        coordinates.add(visiblePoint);
+        coordinates.add(vMap.getLatLng());
+
+        final Location myLocation = vMap.getMyLocation();
+        if (myLocation != null) {
+            coordinates.add(new LatLng(myLocation));
+        }
+
+        final int padding = getResources().getDimensionPixelSize(R.dimen.map_bounds_padding);
+        vMap.setVisibleCoordinateBounds(
+                coordinates.toArray(new LatLng[coordinates.size()]),
+                new RectF(padding, padding, padding, padding),
+                true
+        );
+
+        vMap.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                vMap.addOnMapChangedListener(MainMapFragment.this);
+            }
+        }, ANIMATION_DURATION);
     }
 
     @Override
@@ -387,6 +422,17 @@ public class MainMapFragment extends Fragment implements
         } else {
             e.showSnackbar(vMap);
         }
+    }
+
+    @Override
+    public void setBounds(LatLng visible) {
+        mVisiblePoint = visible;
+    }
+
+    @Override
+    public float getDurationFilter() {
+// TODO refactor?
+        return PrkngApp.getInstance(getActivity()).getMapDurationFilter();
     }
 
     public void requestPermissionIfNeeded() {
