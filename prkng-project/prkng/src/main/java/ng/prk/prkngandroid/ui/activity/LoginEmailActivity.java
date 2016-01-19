@@ -200,7 +200,7 @@ public class LoginEmailActivity extends AppCompatActivity implements
                 if (loginUser != null) {
                     return ApiClient
                             .loginEmail(
-                                    ApiClient.getServiceLog(),
+                                    ApiClient.getService(),
                                     loginUser.getEmail(),
                                     loginUser.getPasswd());
                 }

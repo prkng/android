@@ -260,7 +260,7 @@ public class LoginActivity extends BaseActivity implements
                     if (token != null && !token.isEmpty()) {
                         return ApiClient
                                 .loginSocial(
-                                        ApiClient.getServiceLog(),
+                                        ApiClient.getService(),
                                         token,
                                         type);
                     }

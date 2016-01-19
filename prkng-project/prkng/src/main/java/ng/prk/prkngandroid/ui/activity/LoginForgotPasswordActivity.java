@@ -120,7 +120,7 @@ public class LoginForgotPasswordActivity extends AppCompatActivity implements
                 final String email = params[0];
                 if (email != null) {
                     ApiClient.resetUserPassword(
-                            ApiClient.getServiceLog(),
+                            ApiClient.getService(),
                             email);
                 }
             } catch (PrkngApiError e) {

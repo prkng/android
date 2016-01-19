@@ -146,7 +146,7 @@ public class LoginSignUpActivity extends LoginEmailActivity implements
                 if (signUpUser != null) {
                     return ApiClient
                             .registerUser(
-                                    ApiClient.getServiceLog(),
+                                    ApiClient.getService(),
                                     signUpUser.getName(),
                                     signUpUser.getEmail(),
                                     signUpUser.getPasswd());
