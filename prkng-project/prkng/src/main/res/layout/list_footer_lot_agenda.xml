@@ -33,7 +33,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:drawableTop="@drawable/ic_lot_attr_access"
+        android:drawableTop="@drawable/ic_lot_attrs_access"
         android:text="@string/lot_attr_accessible" />
 
     <ng.prk.prkngandroid.ui.view.IntroBoldTextView

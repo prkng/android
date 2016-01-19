@@ -46,7 +46,7 @@ public class DurationDialog extends DialogFragment {
                         Log.v(TAG, "onClick "
                                 + String.format("which = %s", which));
                         Log.v(TAG, "duration = " + Const.UiConfig.DURATIONS[which]);
-                        PrkngApp.getInstance(getContext())
+                        PrkngApp.getInstance(getActivity())
                                 .setMapDurationFilter(Const.UiConfig.DURATIONS[which]);
 
                         dialog.dismiss();
