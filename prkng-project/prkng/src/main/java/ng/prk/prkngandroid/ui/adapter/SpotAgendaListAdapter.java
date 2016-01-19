@@ -52,6 +52,7 @@ public class SpotAgendaListAdapter extends RecyclerView.Adapter<SpotAgendaListAd
         final String timeEnd = CalendarUtils.getTimeFromMillis(context, parkingRestrPeriod.getEndMillis());
         final int timeMax = parkingRestrPeriod.getTimeMaxMinutes();
         final int typeIcon = getRestrTypeIcon(parkingRestrPeriod.getType());
+        final int typeColor = getRestTypeColor(parkingRestrPeriod.getType());
 
         if (timeMax != Const.UNKNOWN_VALUE) {
             // TODO: replace with ninepatch
@@ -60,6 +61,7 @@ public class SpotAgendaListAdapter extends RecyclerView.Adapter<SpotAgendaListAd
             holder.vDay.setText(day);
         }
 
+        holder.vRestrColor.setBackgroundColor(context.getColor(typeColor));
         holder.vRestrType.setImageResource(typeIcon);
         if (isAllDay) {
             holder.vTimeStart.setText(R.string.all_day);
@@ -87,6 +89,22 @@ public class SpotAgendaListAdapter extends RecyclerView.Adapter<SpotAgendaListAd
                 return R.drawable.ic_restr_type_none;
         }
 
+        return 0;
+    }
+
+    private int getRestTypeColor(int type) {
+        switch (type) {
+            case Const.ParkingRestrType.ALL_TIMES:
+                return R.color.agenda_restr_type_all_time;
+            case Const.ParkingRestrType.PAID:
+                return R.color.agenda_restr_type_paid;
+            case Const.ParkingRestrType.TIME_MAX:
+                return R.color.agenda_restr_type_time_max;
+            case Const.ParkingRestrType.TIME_MAX_PAID:
+                return R.color.agenda_restr_type_time_max_paid;
+            case Const.ParkingRestrType.NONE:
+                return R.color.agenda_restr_type_none;
+        }
         return 0;
     }
 
@@ -118,6 +136,7 @@ public class SpotAgendaListAdapter extends RecyclerView.Adapter<SpotAgendaListAd
     public static class AgendaViewHolder extends RecyclerView.ViewHolder {
 
         private TextView vDay;
+        private View vRestrColor;
         private ImageView vRestrType;
         private TextView vTimeStart;
         private TextView vTimeEnd;
@@ -126,6 +145,7 @@ public class SpotAgendaListAdapter extends RecyclerView.Adapter<SpotAgendaListAd
             super(itemView);
 
             this.vDay = (TextView) itemView.findViewById(R.id.day);
+            this.vRestrColor = itemView.findViewById(R.id.restr_color);
             this.vRestrType = (ImageView) itemView.findViewById(R.id.restr_type);
             this.vTimeStart = (TextView) itemView.findViewById(R.id.time_start);
             this.vTimeEnd = (TextView) itemView.findViewById(R.id.time_end);

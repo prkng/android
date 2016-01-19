@@ -70,7 +70,6 @@
     <color name="fab_mylocation_background">@color/cream1</color>
     <color name="map_info_background">@color/red2</color>
 
-
     <!--Agenda-->
     <color name="agenda_header">@color/red2</color>
     <color name="agenda_background">@color/midnight1</color>
@@ -79,9 +78,19 @@
     <color name="agenda_restr_item_text">@color/midnight1</color>
     <color name="agenda_remaining_time_text">@color/petrol2</color>
 
+    <!--Spot Details-->
+    <color name="agenda_restr_type_all_time">@color/red2</color>
+    <color name="agenda_restr_type_paid">@color/curry</color>
+    <color name="agenda_restr_type_time_max">@color/petrol2</color>
+    <color name="agenda_restr_type_time_max_paid">@color/curry</color>
+    <color name="agenda_restr_type_none">@color/cream1</color>
+
     <!--Lot Attrs-->
     <color name="lot_header_background">@color/lipstick</color>
     <color name="lot_attrs_text">@color/petrol2</color>
+
+    <!--Checkin / UserActivity-->
+    <color name="btn_checkout">@color/red2</color>
 
     <!--Notifications-->
     <color name="notify_color">@color/color_accent</color>
