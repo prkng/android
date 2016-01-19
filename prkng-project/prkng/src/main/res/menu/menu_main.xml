@@ -10,8 +10,8 @@
         <!--android:titleCondensed="@string/action_search"-->
         <!--app:showAsAction="always" />-->
     <item
-        android:id="@+id/action_user_account"
-        android:icon="@drawable/ic_action_user_activity"
+        android:id="@+id/action_user_activity"
+        android:icon="@drawable/ic_action_user_activity_none"
         android:orderInCategory="100"
         android:title="@string/action_user_account"
         android:titleCondensed="@string/action_user_account"

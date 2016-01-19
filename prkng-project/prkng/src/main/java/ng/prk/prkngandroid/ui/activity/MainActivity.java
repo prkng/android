@@ -2,6 +2,7 @@ package ng.prk.prkngandroid.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.io.ApiCallback;
 import ng.prk.prkngandroid.io.ApiClient;
+import ng.prk.prkngandroid.model.CheckinData;
 import ng.prk.prkngandroid.ui.activity.base.BaseActivity;
 import ng.prk.prkngandroid.ui.fragment.LotInfoFragment;
 import ng.prk.prkngandroid.ui.fragment.MainMapFragment;
@@ -29,7 +31,8 @@ import ng.prk.prkngandroid.util.PrkngPrefs;
 public class MainActivity extends BaseActivity implements
         OnMarkerInfoClickListener,
         MainMapFragment.OnMapMarkerClickListener,
-        TabLayout.OnTabSelectedListener {
+        TabLayout.OnTabSelectedListener,
+        SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = "MainActivity";
 
     private MainMapFragment mapFragment;
@@ -90,10 +93,53 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        PrkngPrefs.getInstance(this).registerPrefsChangeListener(this);
+        supportInvalidateOptionsMenu();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        PrkngPrefs.getInstance(this).unregisterPrefsChangeListener(this);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
+        menu.findItem(R.id.action_user_activity)
+                .setIcon(getUserActivityIcon());
+
         return true;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (Const.PrefsNames.CHECKIN_ID.equals(key)) {
+            supportInvalidateOptionsMenu();
+        }
+    }
+
+    @Override
+    public void onClick(Fragment fragment) {
+// TODO add fragment tags
+        final FragmentManager fm = getSupportFragmentManager();
+        if (fragment instanceof SpotInfoFragment) {
+            final Fragment clone = SpotInfoFragment.clone((SpotInfoFragment) fragment);
+            fm.beginTransaction()
+                    .replace(android.R.id.content, clone)
+                    .addToBackStack(null)
+                    .commit();
+        } else if (fragment instanceof LotInfoFragment) {
+            final Fragment clone = LotInfoFragment.clone((LotInfoFragment) fragment);
+            fm.beginTransaction()
+                    .replace(android.R.id.content, clone)
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
     /**
@@ -194,23 +240,11 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    public void onClick(Fragment fragment) {
-// TODO add fragment tags
-        final FragmentManager fm = getSupportFragmentManager();
-        if (fragment instanceof SpotInfoFragment) {
-            final Fragment clone = SpotInfoFragment.clone((SpotInfoFragment) fragment);
-            fm.beginTransaction()
-                    .replace(android.R.id.content, clone)
-                    .addToBackStack(null)
-                    .commit();
-        } else if (fragment instanceof LotInfoFragment) {
-            final Fragment clone = LotInfoFragment.clone((LotInfoFragment) fragment);
-            fm.beginTransaction()
-                    .replace(android.R.id.content, clone)
-                    .addToBackStack(null)
-                    .commit();
-        }
-    }
+    private int getUserActivityIcon() {
+        final CheckinData checkin = PrkngPrefs.getInstance(this)
+                .getCheckinData();
 
+        return checkin == null ? R.drawable.ic_action_user_activity_none
+                : R.drawable.ic_action_user_activity;
+    }
 }

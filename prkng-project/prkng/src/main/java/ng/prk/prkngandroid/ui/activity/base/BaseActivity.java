@@ -98,7 +98,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
             dialog.show(getSupportFragmentManager(), Const.FragmentTags.DIALOG_DURATIONS);
             return true;
-        } else if (id == R.id.action_user_account) {
+        } else if (id == R.id.action_user_activity) {
             startActivity(CheckinActivity.newIntent(this));
 
             return true;

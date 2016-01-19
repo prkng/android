@@ -30,20 +30,23 @@ public class CheckinActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_checkin);
-
-        vSmartReminder = (CheckBox) findViewById(R.id.smart_reminder);
-
         final PrkngPrefs prefs = PrkngPrefs.getInstance(this);
         final CheckinData checkin = prefs.getCheckinData();
         final boolean hasSmartReminder = prefs.hasSmartReminder();
 
+        setContentView(checkin == null ?
+                R.layout.activity_checkin_none : R.layout.activity_checkin);
+
         findViewById(R.id.btn_nav_back).setOnClickListener(this);
 
-        fillCheckinData(checkin, hasSmartReminder);
+        if (checkin != null) {
+            vSmartReminder = (CheckBox) findViewById(R.id.smart_reminder);
 
-        findViewById(R.id.btn_checkout).setOnClickListener(this);
-        vSmartReminder.setOnClickListener(this);
+            fillCheckinData(checkin, hasSmartReminder);
+
+            findViewById(R.id.btn_checkout).setOnClickListener(this);
+            vSmartReminder.setOnClickListener(this);
+        }
     }
 
     @Override
