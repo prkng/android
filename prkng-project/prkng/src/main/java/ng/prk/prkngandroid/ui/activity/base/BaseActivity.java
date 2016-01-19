@@ -53,6 +53,18 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+//    @Override
+//    public void setTitle(CharSequence title) {
+//        super.setTitle(title);
+//        TypefaceHelper.setTitle(this, (Toolbar) findViewById(R.id.toolbar), title);
+//    }
+//
+//    @Override
+//    public void setTitle(int titleId) {
+//        super.setTitle(titleId);
+//        TypefaceHelper.setTitle(this, toolbar, titleId);
+//    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         final int id = item.getItemId();
