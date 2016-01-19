@@ -15,7 +15,8 @@ import ng.prk.prkngandroid.util.CalendarUtils;
 import ng.prk.prkngandroid.util.CheckinHelper;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 
-public class CheckinActivity extends AppCompatActivity implements View.OnClickListener {
+public class CheckinActivity extends AppCompatActivity implements
+        View.OnClickListener {
     private static final String TAG = "CheckinActivity";
 
     private long checkinId;
@@ -37,21 +38,25 @@ public class CheckinActivity extends AppCompatActivity implements View.OnClickLi
         final CheckinData checkin = prefs.getCheckinData();
         final boolean hasSmartReminder = prefs.hasSmartReminder();
 
+        findViewById(R.id.btn_nav_back).setOnClickListener(this);
+
         fillCheckinData(checkin, hasSmartReminder);
 
-        findViewById(R.id.fab).setOnClickListener(this);
+        findViewById(R.id.btn_checkout).setOnClickListener(this);
         vSmartReminder.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         final int id = v.getId();
-        if (id == R.id.fab) {
+        if (id == R.id.btn_checkout) {
             CheckinHelper.checkout(this, checkinId);
             finish();
         } else if (id == R.id.smart_reminder) {
             PrkngPrefs.getInstance(this)
                     .setSmartReminder(((CheckBox) v).isChecked());
+        } else if (id == R.id.btn_nav_back) {
+            finish();
         }
     }
 
