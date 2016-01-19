@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import ng.prk.prkngandroid.model.BusinessIntervalList;
 import ng.prk.prkngandroid.model.LotAttrs;
 import ng.prk.prkngandroid.model.LotCurrentStatus;
 import ng.prk.prkngandroid.ui.activity.OnMarkerInfoClickListener;
+import ng.prk.prkngandroid.ui.adapter.LotAgendaListAdapter;
 import ng.prk.prkngandroid.ui.thread.LotInfoDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.MarkerInfoUpdateListener;
 import ng.prk.prkngandroid.util.CalendarUtils;
@@ -34,9 +37,15 @@ public class LotInfoFragment extends Fragment implements
     private TextView vSubtitle;
     private TextView vMainPrice;
     private View vProgressBar;
+    private RecyclerView vRecyclerView;
+    private LotAgendaListAdapter mAdapter;
     private String mId;
     private String mTitle;
     private long mSubtitle;
+    private BusinessIntervalList mDataset;
+    private LotCurrentStatus mStatus;
+    private int mCapacity;
+    private LotAttrs mAttrs;
 
     public static LotInfoFragment newInstance(String id, String title) {
         final LotInfoFragment fragment = new LotInfoFragment();
@@ -47,6 +56,22 @@ public class LotInfoFragment extends Fragment implements
         fragment.setArguments(bundle);
 
         return fragment;
+    }
+
+    public static LotInfoFragment clone(LotInfoFragment fragment) {
+        LotInfoFragment clone = new LotInfoFragment();
+
+        clone.mSubtitle = fragment.mSubtitle;
+        clone.mDataset = fragment.mDataset;
+        clone.mStatus = fragment.mStatus;
+        clone.mCapacity = fragment.mCapacity;
+        clone.mAttrs = fragment.mAttrs;
+
+        final Bundle bundle = fragment.getArguments();
+        bundle.putBoolean(Const.BundleKeys.IS_EXPANDED, true);
+        clone.setArguments(bundle);
+
+        return clone;
     }
 
     @Override
@@ -63,24 +88,26 @@ public class LotInfoFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        final View view = inflater.inflate(R.layout.fragment_lot_info, container, false);
 
         final Bundle args = getArguments();
-        if (args != null) {
-            mId = args.getString(Const.BundleKeys.MARKER_ID);
-            mTitle = args.getString(Const.BundleKeys.MARKER_TITLE);
-        }
+        mId = args.getString(Const.BundleKeys.MARKER_ID);
+        mTitle = args.getString(Const.BundleKeys.MARKER_TITLE);
+        final boolean isExpanded = args.getBoolean(Const.BundleKeys.IS_EXPANDED, false);
 
-        downloadData(getActivity(), mId);
+        final View view = inflater.inflate(
+                isExpanded ? R.layout.fragment_lot_details : R.layout.fragment_lot_info,
+                container,
+                false);
 
         vTitle = (TextView) view.findViewById(R.id.title);
         vSubtitle = (TextView) view.findViewById(R.id.subtitle);
         vMainPrice = (TextView) view.findViewById(R.id.main_price);
         vProgressBar = view.findViewById(R.id.progress);
+        vRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
 
-        setupLayout(mTitle);
+        setupLayout(view);
 
-        view.setOnClickListener(this);
+        downloadData(getActivity(), mId);
 
         return view;
     }
@@ -103,6 +130,7 @@ public class LotInfoFragment extends Fragment implements
 
     }
 
+
     /**
      * Implements MarkerInfoUpdateListener
      *
@@ -111,6 +139,9 @@ public class LotInfoFragment extends Fragment implements
      */
     @Override
     public void setCurrentStatus(LotCurrentStatus status, int capacity) {
+        this.mStatus = status;
+        this.mCapacity = capacity;
+
         final Resources res = getResources();
 
         if (status != null) {
@@ -142,16 +173,24 @@ public class LotInfoFragment extends Fragment implements
         vProgressBar.setVisibility(View.GONE);
     }
 
+
     @Override
     public void setDataset(ArrayList list) {
-        BusinessIntervalList data = (BusinessIntervalList) list;
-        Log.v(TAG, "setDataset: OK. size: " + data.size());
-
+        mDataset = (BusinessIntervalList) list;
+        Log.v(TAG, "setDataset: OK. size: " + mDataset.size());
+        if (vRecyclerView != null) {
+            mAdapter.swapDataset(mDataset);
+            Log.v(TAG, "setDataset: OK. size: " + mDataset.size());
+        }
     }
+
 
     @Override
     public void setAttributes(LotAttrs attrs) {
-
+        this.mAttrs = attrs;
+        if (mAdapter != null) {
+            mAdapter.setFooterAttrs(attrs);
+        }
     }
 
     /**
@@ -164,27 +203,45 @@ public class LotInfoFragment extends Fragment implements
 
     }
 
-    private void setupLayout(String title) {
-        vSubtitle.setAlpha(0f);
-        vMainPrice.setAlpha(0f);
+    private void setupLayout(View view) {
+        view.setOnClickListener(this);
+
         vProgressBar.setVisibility(View.VISIBLE);
 
-        if (title != null) {
-            vTitle.setText(title);
+        vSubtitle.setAlpha(0f);
+        vMainPrice.setAlpha(0f);
+
+        if (mTitle != null) {
+            vTitle.setText(mTitle);
+        }
+
+        if (vRecyclerView != null) {
+            // Setup the recycler view
+            final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            vRecyclerView.setLayoutManager(layoutManager);
+
+            mAdapter = new LotAgendaListAdapter(getContext(), R.layout.list_item_lot_agenda);
+            vRecyclerView.setAdapter(mAdapter);
         }
     }
 
     private void downloadData(Context context, String id) {
-        (new LotInfoDownloadTask(
-                context,
-                this)
-        ).execute(id);
+        if (mDataset == null) {
+            (new LotInfoDownloadTask(
+                    context,
+                    this)
+            ).execute(id);
+        } else {
+            setDataset(mDataset);
+            setCurrentStatus(mStatus, mCapacity);
+            setAttributes(mAttrs);
+        }
     }
 
     private void showDetails() {
         Log.v(TAG, "showDetails");
         listener.onClick(this);
-
     }
 
 }

@@ -4,6 +4,9 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +26,13 @@ import ng.prk.prkngandroid.model.LotCurrentStatus;
 import ng.prk.prkngandroid.model.RestrIntervalsList;
 import ng.prk.prkngandroid.ui.activity.CheckinActivity;
 import ng.prk.prkngandroid.ui.activity.OnMarkerInfoClickListener;
+import ng.prk.prkngandroid.ui.adapter.SpotAgendaListAdapter;
 import ng.prk.prkngandroid.ui.thread.SpotInfoDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.MarkerInfoUpdateListener;
 import ng.prk.prkngandroid.util.CalendarUtils;
 import ng.prk.prkngandroid.util.CheckinHelper;
 import ng.prk.prkngandroid.util.PrkngPrefs;
+import ng.prk.prkngandroid.util.TypefaceHelper;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,9 +47,11 @@ public class SpotInfoFragment extends Fragment implements
     private TextView vSubtitle;
     private Button vCheckinBtn;
     private View vProgressBar;
+    private RecyclerView vRecyclerView;
     private String mId;
     private String mTitle;
     private long mRemainingTime;
+    private RestrIntervalsList mDataset;
 
     public static SpotInfoFragment newInstance(String id, String title) {
         final SpotInfoFragment fragment = new SpotInfoFragment();
@@ -55,6 +62,19 @@ public class SpotInfoFragment extends Fragment implements
         fragment.setArguments(bundle);
 
         return fragment;
+    }
+
+    public static SpotInfoFragment clone(SpotInfoFragment fragment) {
+        final SpotInfoFragment clone = new SpotInfoFragment();
+
+        clone.mRemainingTime = fragment.mRemainingTime;
+        clone.mDataset = fragment.mDataset;
+
+        final Bundle bundle = fragment.getArguments();
+        bundle.putBoolean(Const.BundleKeys.IS_EXPANDED, true);
+        clone.setArguments(bundle);
+
+        return clone;
     }
 
     private final Callback checkinCallback = new Callback<CheckinData>() {
@@ -94,22 +114,26 @@ public class SpotInfoFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        final View view = inflater.inflate(R.layout.fragment_spot_info, container, false);
 
         final Bundle args = getArguments();
         mId = args.getString(Const.BundleKeys.MARKER_ID);
         mTitle = args.getString(Const.BundleKeys.MARKER_TITLE);
+        final boolean isExpanded = args.getBoolean(Const.BundleKeys.IS_EXPANDED, false);
 
-        downloadData(getActivity(), mId);
+        final View view = inflater.inflate(
+                isExpanded ? R.layout.fragment_spot_details : R.layout.fragment_spot_info,
+                container,
+                false);
 
         vTitle = (TextView) view.findViewById(R.id.title);
         vSubtitle = (TextView) view.findViewById(R.id.subtitle);
         vCheckinBtn = (Button) view.findViewById(R.id.btn_checkin);
         vProgressBar = view.findViewById(R.id.progress);
+        vRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
 
-        setupLayout(mId, mTitle);
+        setupLayout(view);
 
-        view.setOnClickListener(this);
+        downloadData(getActivity(), mId);
 
         return view;
     }
@@ -133,13 +157,12 @@ public class SpotInfoFragment extends Fragment implements
     public void setRemainingTime(long time) {
         mRemainingTime = time;
 
-        vSubtitle.setText(CalendarUtils.getDurationFromMillis(
-                vSubtitle.getContext(),
-                time));
-//        AnimatorSet anim = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.fade_in);
-//        anim.setTarget(vSubtitle);
-//        anim.start();
-        ObjectAnimator.ofFloat(vSubtitle, View.ALPHA, 0, 1).start();
+        if (vSubtitle != null) {
+            vSubtitle.setText(CalendarUtils.getDurationFromMillis(
+                    vSubtitle.getContext(),
+                    time));
+            ObjectAnimator.ofFloat(vSubtitle, View.ALPHA, 0, 1).start();
+        }
         vProgressBar.setVisibility(View.GONE);
     }
 
@@ -156,8 +179,17 @@ public class SpotInfoFragment extends Fragment implements
 
     @Override
     public void setDataset(ArrayList list) {
-        RestrIntervalsList data = (RestrIntervalsList) list;
-        Log.v(TAG, "setDataset: OK. size: " + data.size());
+        Log.v(TAG, "setDataset "
+                + String.format("list = %s", list));
+
+        mDataset = (RestrIntervalsList) list;
+        if (vRecyclerView != null) {
+            final SpotAgendaListAdapter adapter = new SpotAgendaListAdapter(getContext(), R.layout.list_item_spot_agenda);
+            vRecyclerView.setAdapter(adapter);
+
+            adapter.swapDataset((RestrIntervalsList) list);
+            Log.v(TAG, "setDataset: OK. size: " + mDataset.size());
+        }
     }
 
 
@@ -176,27 +208,63 @@ public class SpotInfoFragment extends Fragment implements
 
     }
 
-    private void setupLayout(String id, String title) {
-        vSubtitle.setAlpha(0f);
+    private void setupLayout(View view) {
+        view.setOnClickListener(this);
+
         vProgressBar.setVisibility(View.VISIBLE);
 
-        if (title != null) {
-            vTitle.setText(title);
+        if (vSubtitle != null) {
+            vSubtitle.setAlpha(0f);
         }
 
-        vCheckinBtn.setTag(R.id.spot_id_tag, id);
-        vCheckinBtn.setOnClickListener(this);
+        if (mTitle != null) {
+            if (vTitle != null) {
+                vTitle.setText(mTitle);
+            }
+            final Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+            if (toolbar != null) {
+//                toolbar.setTitle(mTitle);
+                toolbar.setNavigationIcon(R.drawable.ic_navigation_arrow_back);
+                TypefaceHelper.setTitle(getActivity(), toolbar, mTitle);
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getActivity().onBackPressed();
+                    }
+                });
+            }
+        }
+
+        if (vCheckinBtn != null) {
+            vCheckinBtn.setTag(R.id.spot_id_tag, mId);
+            vCheckinBtn.setOnClickListener(this);
+        }
+
+        if (vRecyclerView != null) {
+            // Setup the recycler view
+            final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            vRecyclerView.setLayoutManager(layoutManager);
+        }
     }
 
     private void downloadData(Context context, String id) {
-        (new SpotInfoDownloadTask(
-                context,
-                this)
-        ).execute(id);
+        if (mDataset == null) {
+            Log.v(TAG, "downloadData");
+            (new SpotInfoDownloadTask(
+                    context,
+                    this)
+            ).execute(id);
+        } else {
+            setRemainingTime(mRemainingTime);
+            setDataset(mDataset);
+        }
+
     }
 
     private void showDetails() {
         Log.v(TAG, "showDetails");
+//        listener.onClick(mId, mTitle);
         listener.onClick(this);
     }
 

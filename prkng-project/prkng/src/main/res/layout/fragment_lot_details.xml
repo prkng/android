@@ -3,8 +3,7 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_marker_info"
-    android:paddingTop="4dp">
+    android:background="@color/agenda_item_background">
 
     <ng.prk.prkngandroid.ui.view.IntroBoldTextView
         android:id="@+id/title"
@@ -15,44 +14,47 @@
         android:background="@color/map_info_background"
         android:gravity="center_vertical"
         android:paddingLeft="16dp"
-        android:paddingRight="96dp"
-        android:textSize="20sp" />
+        android:paddingRight="16dp"
+        android:textSize="24sp" />
 
     <ng.prk.prkngandroid.ui.view.IntroBoldTextView
         android:id="@+id/subtitle"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_below="@+id/title"
+        android:layout_toRightOf="@+id/main_price"
         android:alpha="0"
-        android:background="@color/agenda_item_background"
-        android:drawableLeft="@drawable/ic_agenda"
         android:drawablePadding="16dp"
         android:gravity="center_vertical"
         android:paddingLeft="16dp"
-        android:paddingRight="64dp"
+        android:paddingRight="16dp"
         android:textColor="@color/agenda_remaining_time_text"
         android:textSize="16sp" />
+
+    <ng.prk.prkngandroid.ui.view.IntroBoldTextView
+        android:id="@+id/main_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/title"
+        android:gravity="center"
+        android:padding="16dp"
+        android:textColor="@color/agenda_remaining_time_text" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_price" />
 
     <ProgressBar
         android:id="@+id/progress"
         style="@style/Widget.AppCompat.ProgressBar"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_alignLeft="@+id/subtitle"
-        android:layout_alignTop="@+id/subtitle"
+        android:layout_alignLeft="@+id/main_price"
+        android:layout_alignTop="@+id/main_price"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp" />
-
-    <Button
-        android:id="@+id/btn_checkin"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="4dp"
-        android:drawableTop="@drawable/ic_fab_checkin"
-        android:text="@string/btn_checkin"
-        android:textColor="@color/color_text" />
 
 </RelativeLayout>
