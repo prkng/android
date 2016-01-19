@@ -51,7 +51,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="4dp"
-        android:drawableTop="@drawable/ic_fab_checkin"
+        android:drawableTop="@drawable/ic_checkin_btn"
         android:text="@string/btn_checkin"
         android:textColor="@color/color_text" />
 

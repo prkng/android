@@ -120,6 +120,7 @@
     <!--Lot Info-->
     <string name="all_day_closed">Closed</string>
     <string name="lot_attr_indoor">INDOOR</string>
+    <string name="lot_attr_outdoor">OUTDOOR</string>
     <string name="lot_attr_card">CREDIT CARD</string>
     <string name="lot_attr_accessible">ACCESSIBLE</string>
     <string name="lot_attr_valet">VALET</string>
