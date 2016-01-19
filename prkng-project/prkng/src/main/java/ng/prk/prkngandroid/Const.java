@@ -23,7 +23,7 @@ public class Const {
         double MIN_UPDATE_DISTACE = 50.0d; // Metres
         double MONTREAL_NATURAL_NORTH_ROTATION = -34.0d;
         LatLng MONTREAL_LAT_LNG = new LatLng(45.5016889d, -73.567256d);
-        float LOT_INFO_ATTRS_OPACITY = 0.4f;
+        float LOT_INFO_ATTRS_OPACITY = 0.55f;
         float[] DURATIONS = new float[] {0.5f, 1f, 2f, 4f, 8f, 12f, 24f}; // ref: R.array.durations_filter
         int DEFAULT_DURATION_INDEX = 0;
     }

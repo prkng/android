@@ -116,7 +116,13 @@ public class LotAgendaListAdapter extends RecyclerView.Adapter<RecyclerView.View
         } else {
             holder.itemView.setVisibility(View.VISIBLE);
             // Set attributes opacity
-            holder.vIndoor.setAlpha(getAlphaFromAttr(attrs.isIndoor()));
+            if (attrs.isIndoor()) {
+                holder.vIndoor.setVisibility(View.VISIBLE);
+                holder.vOutdoor.setVisibility(View.GONE);
+            } else {
+                holder.vOutdoor.setVisibility(View.VISIBLE);
+                holder.vIndoor.setVisibility(View.GONE);
+            }
             holder.vCard.setAlpha(getAlphaFromAttr(attrs.isCard()));
             holder.vAccessible.setAlpha(getAlphaFromAttr(attrs.isAccessible()));
             holder.vValet.setAlpha(getAlphaFromAttr(attrs.isValet()));
@@ -186,6 +192,7 @@ public class LotAgendaListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public static class AgendaFooterViewHolder extends RecyclerView.ViewHolder {
         private TextView vIndoor;
+        private TextView vOutdoor;
         private TextView vCard;
         private TextView vAccessible;
         private TextView vValet;
@@ -194,6 +201,7 @@ public class LotAgendaListAdapter extends RecyclerView.Adapter<RecyclerView.View
             super(itemView);
 
             this.vIndoor = (TextView) itemView.findViewById(R.id.attr_indoor);
+            this.vOutdoor = (TextView) itemView.findViewById(R.id.attr_outdoor);
             this.vCard = (TextView) itemView.findViewById(R.id.attr_card);
             this.vAccessible = (TextView) itemView.findViewById(R.id.attr_accessible);
             this.vValet = (TextView) itemView.findViewById(R.id.attr_valet);

@@ -18,6 +18,15 @@
         android:text="@string/lot_attr_indoor" />
 
     <ng.prk.prkngandroid.ui.view.IntroBoldTextView
+        android:id="@+id/attr_outdoor"
+        style="@style/LotAttrsText"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:drawableTop="@drawable/ic_lot_attrs_outdoor"
+        android:text="@string/lot_attr_outdoor" />
+
+    <ng.prk.prkngandroid.ui.view.IntroBoldTextView
         android:id="@+id/attr_card"
         style="@style/LotAttrsText"
         android:layout_width="0dp"
