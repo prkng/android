@@ -196,12 +196,18 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onClick(Fragment fragment) {
-        Log.v(TAG, "onClick fragment");
+// TODO add fragment tags
         final FragmentManager fm = getSupportFragmentManager();
         if (fragment instanceof SpotInfoFragment) {
             final Fragment clone = SpotInfoFragment.clone((SpotInfoFragment) fragment);
             fm.beginTransaction()
-                    .replace(R.id.rootroot, clone)
+                    .replace(android.R.id.content, clone)
+                    .addToBackStack(null)
+                    .commit();
+        } else if (fragment instanceof LotInfoFragment) {
+            final Fragment clone = LotInfoFragment.clone((LotInfoFragment) fragment);
+            fm.beginTransaction()
+                    .replace(android.R.id.content, clone)
                     .addToBackStack(null)
                     .commit();
         }
