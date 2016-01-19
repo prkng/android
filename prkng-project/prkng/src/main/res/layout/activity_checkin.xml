@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/bg_checkin" />
+        android:src="@drawable/city_blur" />
 
     <ImageButton
         android:id="@+id/btn_nav_back"
