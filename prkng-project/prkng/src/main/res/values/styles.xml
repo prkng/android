@@ -30,6 +30,12 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.Dark.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/color_background</item>
+    </style>
+
     <style name="AppTheme.NoStatusBar" parent="AppTheme.Translucent">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
