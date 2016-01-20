@@ -30,11 +30,11 @@
                 android:layout_marginBottom="32dp"
                 android:src="@drawable/checkin_restr_default" />
 
-            <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+            <ng.prk.prkngandroid.ui.view.IntroLightTextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/checkin_title" />
 
             <ng.prk.prkngandroid.ui.view.IntroRegularTextView
@@ -45,27 +45,31 @@
                 android:layout_marginBottom="32dp"
                 android:text="@string/checkin_title" />
 
-            <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+            <ng.prk.prkngandroid.ui.view.IntroLightTextView
                 android:id="@+id/expiry"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/checkin_expiry" />
 
-            <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+            <ng.prk.prkngandroid.ui.view.IntroBoldTextView
                 android:id="@+id/remaining_time"
                 style="@style/BigText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/checkin_title" />
+                android:text="@string/checkin_title"
+                android:textColor="@color/red2" />
 
-            <CheckBox
+            <ng.prk.prkngandroid.ui.view.IntroLightButton
                 android:id="@+id/smart_reminder"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="@string/checkin_smart_reminder"
-                android:visibility="gone" />
+                android:drawableLeft="@drawable/ic_action_user_activity_none"
+                android:drawablePadding="16dp"
+                android:text="@string/checkin_smart_reminder" />
+
 
         </LinearLayout>
     </ScrollView>
