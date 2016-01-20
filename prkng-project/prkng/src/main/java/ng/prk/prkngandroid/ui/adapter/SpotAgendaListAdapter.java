@@ -61,7 +61,7 @@ public class SpotAgendaListAdapter extends RecyclerView.Adapter<SpotAgendaListAd
             holder.vDay.setText(day);
         }
 
-        holder.vRestrColor.setBackgroundColor(context.getColor(typeColor));
+        holder.vRestrColor.setBackgroundColor(ContextCompat.getColor(context, typeColor));
         holder.vRestrType.setImageResource(typeIcon);
         if (isAllDay) {
             holder.vTimeStart.setText(R.string.all_day);
@@ -116,7 +116,7 @@ public class SpotAgendaListAdapter extends RecyclerView.Adapter<SpotAgendaListAd
             if (interval.isBefore(CalendarUtils.todayMillis())) {
                 color = R.color.agenda_item_background;
             } else {
-                color = R.color.agenda_today_item_background ;
+                color = R.color.agenda_today_item_background;
             }
         }
 
