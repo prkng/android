@@ -77,7 +77,7 @@
             android:layout_alignWithParentIfMissing="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="64dp"
             android:layout_toRightOf="@+id/price"
             android:alpha="0"
             android:orientation="vertical">
