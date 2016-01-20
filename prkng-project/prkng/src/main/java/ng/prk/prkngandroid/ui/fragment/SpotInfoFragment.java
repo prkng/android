@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -39,7 +40,7 @@ import retrofit2.Response;
 
 public class SpotInfoFragment extends Fragment implements
         View.OnClickListener,
-        MarkerInfoUpdateListener {
+        MarkerInfoUpdateListener, Toolbar.OnMenuItemClickListener {
     private static final String TAG = "SpotInfoFragment";
 
     private OnMarkerInfoClickListener listener;
@@ -232,6 +233,8 @@ public class SpotInfoFragment extends Fragment implements
                         getActivity().onBackPressed();
                     }
                 });
+                toolbar.inflateMenu(R.menu.menu_spot_info);
+                toolbar.setOnMenuItemClickListener(this);
             }
         }
 
@@ -269,15 +272,20 @@ public class SpotInfoFragment extends Fragment implements
     }
 
     private void doCheckin() {
-        final Object spotIdTag = vCheckinBtn.getTag(R.id.spot_id_tag);
-        if (spotIdTag != null && spotIdTag instanceof String) {
-            final String apiKey = PrkngPrefs.getInstance(getActivity()).getApiKey();
+        final String apiKey = PrkngPrefs.getInstance(getActivity()).getApiKey();
 
-            ApiClient.checkin(
-                    ApiClient.getServiceLog(),
-                    apiKey,
-                    (String) spotIdTag,
-                    checkinCallback);
+        ApiClient.checkin(
+                ApiClient.getServiceLog(),
+                apiKey,
+                mId,
+                checkinCallback);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        if (item.getItemId() == R.id.action_checkin) {
+            doCheckin();
         }
+        return false;
     }
 }
