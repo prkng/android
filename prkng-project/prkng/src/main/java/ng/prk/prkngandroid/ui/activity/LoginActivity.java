@@ -136,9 +136,9 @@ public class LoginActivity extends BaseActivity implements
         final String serverClientId = getResources().getString(R.string.oauth_web_client_id);
         final GoogleSignInOptions gso = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestEmail()
-//                .requestProfile()
-//                .requestId()
+                .requestEmail()
+                .requestProfile()
+                .requestId()
                 .requestIdToken(serverClientId)
                 .build();
 
