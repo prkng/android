@@ -24,6 +24,7 @@ import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.model.CheckinData;
 import ng.prk.prkngandroid.model.LotAttrs;
 import ng.prk.prkngandroid.model.LotCurrentStatus;
+import ng.prk.prkngandroid.model.RestrInterval;
 import ng.prk.prkngandroid.model.RestrIntervalsList;
 import ng.prk.prkngandroid.ui.activity.CheckinActivity;
 import ng.prk.prkngandroid.ui.activity.OnMarkerInfoClickListener;
@@ -45,7 +46,8 @@ public class SpotInfoFragment extends Fragment implements
 
     private OnMarkerInfoClickListener listener;
     private TextView vTitle;
-    private TextView vSubtitle;
+    private View vPrice;
+    private TextView vRemainingTime;
     private Button vCheckinBtn;
     private View vProgressBar;
     private RecyclerView vRecyclerView;
@@ -53,6 +55,7 @@ public class SpotInfoFragment extends Fragment implements
     private String mTitle;
     private long mRemainingTime;
     private RestrIntervalsList mDataset;
+    private boolean isExpanded;
 
     public static SpotInfoFragment newInstance(String id, String title) {
         final SpotInfoFragment fragment = new SpotInfoFragment();
@@ -97,7 +100,6 @@ public class SpotInfoFragment extends Fragment implements
         @Override
         public void onFailure(Call<CheckinData> call, Throwable t) {
             Log.v(TAG, "onFailure");
-
         }
     };
 
@@ -119,7 +121,7 @@ public class SpotInfoFragment extends Fragment implements
         final Bundle args = getArguments();
         mId = args.getString(Const.BundleKeys.MARKER_ID);
         mTitle = args.getString(Const.BundleKeys.MARKER_TITLE);
-        final boolean isExpanded = args.getBoolean(Const.BundleKeys.IS_EXPANDED, false);
+        isExpanded = args.getBoolean(Const.BundleKeys.IS_EXPANDED, false);
 
         final View view = inflater.inflate(
                 isExpanded ? R.layout.fragment_spot_details : R.layout.fragment_spot_info,
@@ -127,7 +129,8 @@ public class SpotInfoFragment extends Fragment implements
                 false);
 
         vTitle = (TextView) view.findViewById(R.id.title);
-        vSubtitle = (TextView) view.findViewById(R.id.subtitle);
+        vPrice = view.findViewById(R.id.price);
+        vRemainingTime = (TextView) view.findViewById(R.id.remaining_time);
         vCheckinBtn = (Button) view.findViewById(R.id.btn_checkin);
         vProgressBar = view.findViewById(R.id.progress);
         vRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
@@ -158,13 +161,11 @@ public class SpotInfoFragment extends Fragment implements
     public void setRemainingTime(long time) {
         mRemainingTime = time;
 
-        if (vSubtitle != null) {
-            vSubtitle.setText(CalendarUtils.getDurationFromMillis(
-                    vSubtitle.getContext(),
+        if (!isExpanded) {
+            vRemainingTime.setText(CalendarUtils.getDurationFromMillis(
+                    vRemainingTime.getContext(),
                     time));
-            ObjectAnimator.ofFloat(vSubtitle, View.ALPHA, 0, 1).start();
         }
-        vProgressBar.setVisibility(View.GONE);
     }
 
     /**
@@ -180,19 +181,49 @@ public class SpotInfoFragment extends Fragment implements
 
     @Override
     public void setDataset(ArrayList list) {
-        Log.v(TAG, "setDataset "
-                + String.format("list = %s", list));
-
         mDataset = (RestrIntervalsList) list;
-        if (vRecyclerView != null) {
+
+        if (isExpanded) {
             final SpotAgendaListAdapter adapter = new SpotAgendaListAdapter(getContext(), R.layout.list_item_spot_agenda);
             vRecyclerView.setAdapter(adapter);
 
             adapter.swapDataset((RestrIntervalsList) list);
-            Log.v(TAG, "setDataset: OK. size: " + mDataset.size());
+        } else {
+            setHourlyRate();
         }
+
+        hideProgressBar();
+
     }
 
+    private void hideProgressBar() {
+        if (!isExpanded) {
+            ObjectAnimator.ofFloat(getView().findViewById(R.id.price), View.ALPHA, 0, 1).start();
+            ObjectAnimator.ofFloat(getView().findViewById(R.id.subtitle), View.ALPHA, 0, 1).start();
+            ObjectAnimator.ofFloat(getView().findViewById(R.id.ic_agenda), View.ALPHA, 0, 1).start();
+            ObjectAnimator.ofFloat(getView().findViewById(R.id.progress), View.ALPHA, 0, 1).start();
+        }
+
+        vProgressBar.setVisibility(View.GONE);
+    }
+
+    private void setHourlyRate() {
+        if (!isExpanded) {
+            final int index = mDataset.findContainingIntervalToday(
+                    CalendarUtils.todayMillis(),
+                    CalendarUtils.getIsoDayOfWeek());
+            if (index != Const.UNKNOWN_VALUE) {
+                final RestrInterval interval = mDataset.get(index);
+                if (interval != null && interval.hasHourlyRate()) {
+                    vPrice.setVisibility(View.VISIBLE);
+                    ((TextView) getView().findViewById(R.id.main_price))
+                            .setText(String.format(
+                                    getResources().getString(R.string.currency_decimals),
+                                    interval.getHourlyRate()));
+                }
+            }
+        }
+    }
 
     @Override
     public void setAttributes(LotAttrs attrs) {
@@ -212,19 +243,9 @@ public class SpotInfoFragment extends Fragment implements
     private void setupLayout(View view) {
         view.setOnClickListener(this);
 
-        vProgressBar.setVisibility(View.VISIBLE);
-
-        if (vSubtitle != null) {
-            vSubtitle.setAlpha(0f);
-        }
-
-        if (mTitle != null) {
-            if (vTitle != null) {
-                vTitle.setText(mTitle);
-            }
+        if (isExpanded) {
             final Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
             if (toolbar != null) {
-//                toolbar.setTitle(mTitle);
                 toolbar.setNavigationIcon(R.drawable.ic_navigation_arrow_back);
                 TypefaceHelper.setTitle(getActivity(), toolbar, mTitle);
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -236,24 +257,21 @@ public class SpotInfoFragment extends Fragment implements
                 toolbar.inflateMenu(R.menu.menu_spot_info);
                 toolbar.setOnMenuItemClickListener(this);
             }
-        }
 
-        if (vCheckinBtn != null) {
-            vCheckinBtn.setTag(R.id.spot_id_tag, mId);
-            vCheckinBtn.setOnClickListener(this);
-        }
-
-        if (vRecyclerView != null) {
             // Setup the recycler view
             final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             vRecyclerView.setLayoutManager(layoutManager);
+        } else {
+            vTitle.setText(mTitle);
+
+            vCheckinBtn.setTag(R.id.spot_id_tag, mId);
+            vCheckinBtn.setOnClickListener(this);
         }
     }
 
     private void downloadData(Context context, String id) {
         if (mDataset == null) {
-            Log.v(TAG, "downloadData");
             (new SpotInfoDownloadTask(
                     context,
                     this)
@@ -266,8 +284,6 @@ public class SpotInfoFragment extends Fragment implements
     }
 
     private void showDetails() {
-        Log.v(TAG, "showDetails");
-//        listener.onClick(mId, mTitle);
         listener.onClick(this);
     }
 
