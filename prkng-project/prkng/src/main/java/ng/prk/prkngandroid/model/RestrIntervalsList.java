@@ -87,6 +87,7 @@ public class RestrIntervalsList extends ArrayList<RestrInterval> {
                             .interval(i1.overlap(i2))
                             .type(Const.ParkingRestrType.TIME_MAX_PAID)
                             .timeMax(RestrInterval.getMinTimemax(i1.getTimeMaxMinutes(), i2.getTimeMaxMinutes()))
+                            .hourlyRate(i1.getHourlyRate())
                             .build()
             );
         }

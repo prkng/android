@@ -73,6 +73,7 @@ public class SpotRules {
                             .startHour(restriction.get(INDEX_START))
                             .endHour(restriction.get(INDEX_END))
                             .type(type)
+                            .hourlyRate(rule.getPaidHourlyRate())
                             .timeMax(timeMax)
                             .build());
                 }

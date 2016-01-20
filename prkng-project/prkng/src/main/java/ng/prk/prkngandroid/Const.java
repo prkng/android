@@ -24,7 +24,7 @@ public class Const {
         double MONTREAL_NATURAL_NORTH_ROTATION = -34.0d;
         LatLng MONTREAL_LAT_LNG = new LatLng(45.5016889d, -73.567256d);
         float LOT_INFO_ATTRS_OPACITY = 0.55f;
-        float[] DURATIONS = new float[] {0.5f, 1f, 2f, 4f, 8f, 12f, 24f}; // ref: R.array.durations_filter
+        float[] DURATIONS = new float[]{0.5f, 1f, 2f, 4f, 8f, 12f, 24f}; // ref: R.array.durations_filter
         int DEFAULT_DURATION_INDEX = 0;
     }
 
@@ -37,8 +37,8 @@ public class Const {
 
     public interface MapSections {
         int _COUNT = 4;
-        int OFF_STREET = 0;
-        int ON_STREET = 1;
+        int ON_STREET = 0;
+        int OFF_STREET = 1;
         int CARSHARE_SPOTS = 2;
         int CARSHARE_VEHICLES = 3;
     }
@@ -79,6 +79,13 @@ public class Const {
         String LIMIT = "limit";
         String CITY = "city";
         String PARTNER_NAME = "partner_name";
+        String PAID_HOURLY_RATE = "paid_hourly_rate";
+        String PERMIT_NO = "permit_no";
+        String RESTRICT_TYPES = "restrict_types";
+        String TIME_MAX_PARKING = "time_max_parking";
+        String SEASON_START = "season_start";
+        String SEASON_END = "season_end";
+        String SPECIAL_DAY = "special_days";
         String ACCESSIBLE = "handicap";
         String STREET_VIEW = "street_view";
         String USER_ID = "user_id";

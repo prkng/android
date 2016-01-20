@@ -1,5 +1,7 @@
 package ng.prk.prkngandroid.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,13 +12,21 @@ public class SpotRule {
     private SpotRuleAgenda agenda;
     private String code;
     private String description;
-    private String permit_no;
-    private List<String> restrict_types;
-    private String season_end;
-    private String season_start;
-    private String special_days;
+    @SerializedName(Const.ApiArgs.PAID_HOURLY_RATE)
+    private float paidHourlyRate;
+    @SerializedName(Const.ApiArgs.PERMIT_NO)
+    private String permitNo;
+    @SerializedName(Const.ApiArgs.RESTRICT_TYPES)
+    private List<String> restrictTypes;
+    @SerializedName(Const.ApiArgs.SEASON_END)
+    private String seasonEnd;
+    @SerializedName(Const.ApiArgs.SEASON_START)
+    private String seasonStart;
+    @SerializedName(Const.ApiArgs.SPECIAL_DAY)
+    private String specialDays;
     // NOTE: needs to be wrapper type (Integer) to handle NULL value
-    private Integer time_max_parking;
+    @SerializedName(Const.ApiArgs.TIME_MAX_PARKING)
+    private Integer timeMaxParking;
 
     public String getAddress() {
         return address;
@@ -34,44 +44,48 @@ public class SpotRule {
         return description;
     }
 
+    public float getPaidHourlyRate() {
+        return paidHourlyRate;
+    }
+
     public String getPermitNo() {
-        return permit_no;
+        return permitNo;
     }
 
     public List<String> getRestrictTypes() {
-        return restrict_types;
+        return restrictTypes;
     }
 
     public String getSeasonEnd() {
-        return season_end;
+        return seasonEnd;
     }
 
     public String getSeasonStart() {
-        return season_start;
+        return seasonStart;
     }
 
     public String getSpecialDays() {
-        return special_days;
+        return specialDays;
     }
 
     public int getTimeMaxParking() {
-        return time_max_parking == null ? Const.UNKNOWN_VALUE : time_max_parking;
+        return timeMaxParking == null ? Const.UNKNOWN_VALUE : timeMaxParking;
     }
 
     public boolean isTypePaid() {
-        return (restrict_types != null) &&
-                restrict_types.contains(Const.ApiValues.SPOT_TYPE_PAID)
+        return (restrictTypes != null) &&
+                restrictTypes.contains(Const.ApiValues.SPOT_TYPE_PAID)
                 && !isSpecialRestrType();
     }
 
     public boolean isTypePermit() {
-        return (restrict_types != null) &&
-                restrict_types.contains(Const.ApiValues.SPOT_TYPE_PERMIT)
+        return (restrictTypes != null) &&
+                restrictTypes.contains(Const.ApiValues.SPOT_TYPE_PERMIT)
                 && !isSpecialRestrType();
     }
 
     public boolean isTypeTimeMax() {
-        return (time_max_parking != null) && !isSpecialRestrType();
+        return (timeMaxParking != null) && !isSpecialRestrType();
     }
 
     public boolean isTypeTimeMaxPaid() {
@@ -79,7 +93,7 @@ public class SpotRule {
     }
 
     private boolean isSpecialRestrType() {
-        if (restrict_types == null || restrict_types.isEmpty()) {
+        if (restrictTypes == null || restrictTypes.isEmpty()) {
             return false;
         }
 
@@ -87,7 +101,7 @@ public class SpotRule {
         regularTypes.add(Const.ApiValues.SPOT_TYPE_PAID);
         regularTypes.add(Const.ApiValues.SPOT_TYPE_PERMIT);
 
-        for (String type : restrict_types) {
+        for (String type : restrictTypes) {
             if (!regularTypes.contains(type)) {
                 return true;
             }

@@ -19,6 +19,7 @@ public class RestrInterval extends Interval implements
     private int dayOfWeek;
     private int type;
     private int timeMax;
+    private float hourlyRate;
 
     /**
      * Private constructor to be used with Builder
@@ -31,6 +32,7 @@ public class RestrInterval extends Interval implements
         this.dayOfWeek = builder.dayOfWeek;
         this.type = builder.type;
         this.timeMax = builder.timeMax;
+        this.hourlyRate = builder.hourlyRate;
     }
 
     /**
@@ -73,6 +75,7 @@ public class RestrInterval extends Interval implements
                                 .endMillis(another.getStartMillis())
                                 .type(current.getType())
                                 .timeMax(current.getTimeMaxMinutes())
+                                .hourlyRate(current.getHourlyRate())
                                 .build()
                 );
             }
@@ -86,6 +89,7 @@ public class RestrInterval extends Interval implements
                                 .endMillis(current.getEndMillis())
                                 .type(current.getType())
                                 .timeMax(current.getTimeMaxMinutes())
+                                .hourlyRate(current.getHourlyRate())
                                 .build()
                 );
             }
@@ -144,6 +148,15 @@ public class RestrInterval extends Interval implements
      */
     public long getTimeMaxMillis() {
         return timeMax * DateUtils.MINUTE_IN_MILLIS;
+    }
+
+    public float getHourlyRate() {
+        return hourlyRate;
+    }
+
+    public boolean hasHourlyRate() {
+        return ((this.type == PAID) || (type == TIME_MAX_PAID)) &&
+                (Float.compare(this.hourlyRate, 0f) > 0);
     }
 
     /**
@@ -232,7 +245,8 @@ public class RestrInterval extends Interval implements
     public String toString() {
         return "RestrInterval{" +
                 "type=" + type +
-                " hourStart=" + TimeUnit.MILLISECONDS.toHours(startMillis) +
+                ((type == PAID || type == TIME_MAX_PAID) ? (", rate=" + hourlyRate) : "") +
+                ", hourStart=" + TimeUnit.MILLISECONDS.toHours(startMillis) +
                 ", hourEnd=" + TimeUnit.MILLISECONDS.toHours(endMillis) +
                 '}';
     }
@@ -246,6 +260,7 @@ public class RestrInterval extends Interval implements
         private int timeMax;
         private long startMillis;
         private long endMillis;
+        private float hourlyRate;
 
         public Builder(int dayOfWeek) {
             this.dayOfWeek = dayOfWeek;
@@ -253,6 +268,7 @@ public class RestrInterval extends Interval implements
             this.timeMax = Const.UNKNOWN_VALUE;
             this.startMillis = Const.UNKNOWN_VALUE;
             this.endMillis = Const.UNKNOWN_VALUE;
+            this.hourlyRate = Const.UNKNOWN_VALUE;
         }
 
         public Builder type(int type) {
@@ -282,6 +298,11 @@ public class RestrInterval extends Interval implements
 
         public Builder endHour(float hour) {
             this.endMillis = (long) (hour * DateUtils.HOUR_IN_MILLIS);
+            return this;
+        }
+
+        public Builder hourlyRate(float rate) {
+            this.hourlyRate = rate;
             return this;
         }
 
