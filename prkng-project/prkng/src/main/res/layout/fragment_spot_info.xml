@@ -6,7 +6,7 @@
     android:background="@drawable/bg_marker_info"
     android:paddingTop="4dp">
 
-    <ng.prk.prkngandroid.ui.view.IntroBoldTextView
+    <ng.prk.prkngandroid.ui.view.IntroLightTextView
         android:id="@+id/title"
         style="@style/SingLine"
         android:layout_width="match_parent"
@@ -16,6 +16,7 @@
         android:gravity="center_vertical"
         android:paddingLeft="16dp"
         android:paddingRight="96dp"
+        android:textColor="@color/color_text"
         android:textSize="20sp" />
 
     <ng.prk.prkngandroid.ui.view.IntroBoldTextView
@@ -25,11 +26,11 @@
         android:layout_below="@+id/title"
         android:alpha="0"
         android:background="@color/agenda_item_background"
-        android:drawableLeft="@drawable/ic_agenda"
         android:drawablePadding="16dp"
+        android:drawableRight="@drawable/ic_agenda"
         android:gravity="center_vertical"
         android:paddingLeft="16dp"
-        android:paddingRight="64dp"
+        android:paddingRight="36dp"
         android:textColor="@color/agenda_remaining_time_text"
         android:textSize="16sp" />
 
@@ -38,12 +39,11 @@
         style="@style/Widget.AppCompat.ProgressBar"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_alignLeft="@+id/subtitle"
         android:layout_alignTop="@+id/subtitle"
-        android:layout_marginLeft="16dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp" />
 
-    <Button
+    <ng.prk.prkngandroid.ui.view.IntroLightButton
         android:id="@+id/btn_checkin"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
@@ -53,6 +53,8 @@
         android:layout_marginRight="4dp"
         android:drawableTop="@drawable/ic_checkin_btn"
         android:text="@string/btn_checkin"
-        android:textColor="@color/color_text" />
+        android:textAllCaps="false"
+        android:textColor="@color/color_text"
+        android:textSize="12sp" />
 
 </RelativeLayout>

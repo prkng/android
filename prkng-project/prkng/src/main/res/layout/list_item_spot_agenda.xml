@@ -11,7 +11,7 @@
         android:layout_alignTop="@+id/day"
         android:background="@color/agenda_today_item_background" />
 
-    <ng.prk.prkngandroid.ui.view.IntroBoldTextView
+    <ng.prk.prkngandroid.ui.view.IntroLightTextView
         android:id="@+id/day"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:layout_toRightOf="@+id/restr_color"
         android:padding="16dp"
         android:textColor="@color/agenda_restr_item_text"
-        android:textSize="16sp" />
+        android:textSize="20sp" />
 
     <ImageView
         android:id="@+id/restr_type"
@@ -42,17 +42,19 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <ng.prk.prkngandroid.ui.view.IntroBoldTextView
+        <ng.prk.prkngandroid.ui.view.IntroRegularTextView
             android:id="@+id/time_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/agenda_restr_item_text" />
+            android:textColor="@color/agenda_restr_item_text"
+            android:textSize="14sp" />
 
-        <ng.prk.prkngandroid.ui.view.IntroBoldTextView
+        <ng.prk.prkngandroid.ui.view.IntroRegularTextView
             android:id="@+id/time_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/agenda_restr_item_text" />
+            android:textColor="@color/agenda_restr_item_text"
+            android:textSize="14sp" />
     </LinearLayout>
 
 </RelativeLayout>
