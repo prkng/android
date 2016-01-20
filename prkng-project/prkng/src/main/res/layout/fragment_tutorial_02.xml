@@ -14,7 +14,7 @@
         style="@style/TutorialImage"
         android:src="@drawable/tutorial_02" />
 
-    <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+    <ng.prk.prkngandroid.ui.view.IntroLightTextView
         android:id="@+id/tutorial_text"
         style="@style/TutorialText"
         android:layout_height="wrap_content"
