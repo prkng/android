@@ -1,55 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_marker_info"
+    android:orientation="vertical"
     android:paddingTop="4dp">
 
-    <ng.prk.prkngandroid.ui.view.IntroBoldTextView
-        android:id="@+id/title"
-        style="@style/SingLine"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:layout_alignParentTop="true"
-        android:background="@color/map_info_background"
+        android:background="@color/agenda_header"
         android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:textSize="24sp" />
+        android:orientation="horizontal">
 
-    <ng.prk.prkngandroid.ui.view.IntroBoldTextView
-        android:id="@+id/subtitle"
+        <ng.prk.prkngandroid.ui.view.IntroLightTextView
+            android:id="@+id/title"
+            style="@style/SingLine"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:textColor="@color/color_text"
+            android:textSize="20sp" />
+
+        <ng.prk.prkngandroid.ui.view.IntroLightButton
+            android:id="@+id/btn_info"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:drawableTop="@drawable/ic_action_help"
+            android:text="@string/btn_info"
+            android:textAllCaps="false"
+            android:textColor="@color/color_text"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_below="@+id/title"
-        android:layout_toRightOf="@+id/main_price"
-        android:alpha="0"
-        android:drawablePadding="16dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:textColor="@color/agenda_remaining_time_text"
-        android:textSize="16sp" />
+        android:layout_height="64dp">
 
-    <ng.prk.prkngandroid.ui.view.IntroBoldTextView
-        android:id="@+id/main_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/title"
-        android:gravity="center"
-        android:padding="16dp"
-        android:textColor="@color/agenda_remaining_time_text" />
+        <LinearLayout
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:alpha="0"
+            android:background="@color/agenda_highlight_background"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
-    <ProgressBar
-        android:id="@+id/progress"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignLeft="@+id/main_price"
-        android:layout_alignTop="@+id/main_price"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp" />
+            <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DAILY"
+                android:textColor="@color/agenda_remaining_time_text"
+                android:textSize="12sp" />
 
-</RelativeLayout>
+            <ng.prk.prkngandroid.ui.view.IntroBoldTextView
+                android:id="@+id/main_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/agenda_highlight_text"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_toRightOf="@+id/price"
+            android:alpha="0"
+            android:orientation="vertical">
+
+            <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+                android:id="@+id/remaining_time_prefix"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OPEN UNTIL"
+                android:textColor="@color/agenda_remaining_time_text"
+                android:textSize="12sp" />
+
+            <ng.prk.prkngandroid.ui.view.IntroBoldTextView
+                android:id="@+id/remaining_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/agenda_remaining_time_text"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+</LinearLayout>

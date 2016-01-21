@@ -15,10 +15,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_facebook"
-        android:textSize="16sp"
         android:layout_margin="16dp"
         android:gravity="center_horizontal"
-        android:text="@string/auth_subtitle" />
+        android:text="@string/auth_subtitle"
+        android:textColor="@color/color_text"
+        android:textSize="16sp" />
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/btn_facebook"

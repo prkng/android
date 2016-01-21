@@ -5,7 +5,7 @@
         android:drawable="@drawable/shadow_above" />
     <item android:top="4dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/agenda_item_background" />
+            <solid android:color="@color/agenda_background" />
         </shape>
     </item>
 </layer-list>
