@@ -71,7 +71,7 @@ dependencies {
     // Facebook
     compile 'com.facebook.android:facebook-android-sdk:4.9.0'
     // mapbox
-    compile ('com.mapbox.mapboxsdk:mapbox-android-sdk:3.1.0-SNAPSHOT@aar'){
+    compile ('com.mapbox.mapboxsdk:mapbox-android-sdk:4.0.0-SNAPSHOT@aar'){
         transitive=true
     }
     // retrofit
@@ -87,5 +87,6 @@ dependencies {
     // UI libs
     compile 'com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    compile 'org.adw.library:discrete-seekbar:1.0.0'
 
 }
