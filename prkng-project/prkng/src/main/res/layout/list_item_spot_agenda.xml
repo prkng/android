@@ -9,7 +9,7 @@
         android:layout_width="8dp"
         android:layout_height="match_parent"
         android:layout_alignTop="@+id/day"
-        android:background="@color/agenda_today_item_background" />
+        android:background="@color/agenda_highlight_background" />
 
     <ng.prk.prkngandroid.ui.view.IntroLightTextView
         android:id="@+id/day"
@@ -20,7 +20,7 @@
         android:layout_toRightOf="@+id/restr_color"
         android:padding="16dp"
         android:textColor="@color/agenda_restr_item_text"
-        android:textSize="20sp" />
+        android:textSize="@dimen/agenday_day_text" />
 
     <ImageView
         android:id="@+id/restr_type"
@@ -47,14 +47,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/agenda_restr_item_text"
-            android:textSize="14sp" />
+            android:textSize="@dimen/agenday_time_text" />
 
         <ng.prk.prkngandroid.ui.view.IntroRegularTextView
             android:id="@+id/time_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/agenda_restr_item_text"
-            android:textSize="14sp" />
+            android:textSize="@dimen/agenday_time_text" />
     </LinearLayout>
 
 </RelativeLayout>
