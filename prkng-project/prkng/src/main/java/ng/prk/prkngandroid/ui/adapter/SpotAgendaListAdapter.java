@@ -116,7 +116,7 @@ public class SpotAgendaListAdapter extends RecyclerView.Adapter<SpotAgendaListAd
             if (interval.isBefore(CalendarUtils.todayMillis())) {
                 color = R.color.agenda_item_background;
             } else {
-                color = R.color.agenda_today_item_background;
+                color = R.color.agenda_highlight_background;
             }
         }
 

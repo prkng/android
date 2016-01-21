@@ -6,23 +6,42 @@
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
+        <item name="android:textColorPrimary">@color/color_text</item>
         <item name="android:windowBackground">@color/color_background</item>
     </style>
 
     <style name="AppTheme.Dark" parent="Theme.AppCompat">
         <!-- prkng custom theme here -->
-        <item name="colorPrimary">@color/midnight2</item>
-        <item name="colorPrimaryDark">@color/midnight3</item>
-        <item name="colorAccent">@color/color_primary_dark</item>
+        <item name="colorPrimary">@color/color_primary_inv</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark_inv</item>
+        <item name="colorAccent">@color/color_accent_inv</item>
         <item name="android:windowBackground">@color/color_background_inv</item>
     </style>
 
-    <style name="AppTheme.Light" parent="Theme.AppCompat.Light.DarkActionBar">
+    <!--<style name="AppTheme.Light" parent="Theme.AppCompat.Light.DarkActionBar">-->
+    <!--&lt;!&ndash; prkng custom theme here &ndash;&gt;-->
+    <!--<item name="colorPrimary">@color/color_primary</item>-->
+    <!--<item name="colorPrimaryDark">@color/color_primary_dark</item>-->
+    <!--<item name="colorAccent">@color/color_accent</item>-->
+    <!--<item name="android:windowBackground">@color/color_background_inv</item>-->
+    <!--</style>-->
+
+    <style name="AppTheme.White" parent="Theme.AppCompat.Light">
         <!-- prkng custom theme here -->
-        <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorPrimaryDark">@color/color_primary_dark</item>
-        <item name="colorAccent">@color/color_accent</item>
-        <item name="android:windowBackground">@color/color_background_inv</item>
+        <item name="colorPrimary">@color/cream1</item>
+        <item name="colorPrimaryDark">#9E9E9E</item>
+        <item name="colorAccent">@color/red2</item>
+        <!--<item name="android:textColorPrimary">@color/petrol2</item>-->
+        <!--<item name="android:textColorSecondary">@color/petrol1</item>-->
+        <!--<item name="android:editTextColor">@color/petrol2</item>-->
+        <!--<item name="android:button">@color/petrol2</item>-->
+        <item name="android:windowBackground">@color/cream1</item>
+        <item name="actionBarStyle">@style/AppTheme.White.ActionBar</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="AppTheme.White.ActionBar" parent="style/Widget.AppCompat.Light.ActionBar.Solid.Inverse" >
+        <item name="elevation">0dp</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -60,9 +79,9 @@
         <item name="colorAccent">@color/color_accent</item>
     </style>
 
-    <!--Lot Info-->
+    <!--Lot/Spot Info-->
     <style name="LotAttrsText">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">10sp</item>
         <item name="android:gravity">center_horizontal|top</item>
         <item name="android:drawablePadding">2dp</item>
         <item name="android:paddingLeft">8dp</item>
@@ -75,8 +94,8 @@
         <!--<item name="android:textColor">@color/color_text</item>-->
         <item name="android:layout_marginBottom">16dp</item>
         <item name="met_floatingLabel">highlight</item>
-        <item name="met_baseColor">@color/color_text</item>
-        <item name="met_primaryColor">@color/edit_text_line</item>
+        <item name="met_baseColor">@color/petrol2</item>
+        <item name="met_primaryColor">@color/red1</item>
     </style>
 
     <!--Tutorial-->

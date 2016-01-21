@@ -53,9 +53,12 @@
 
     <!--Theme-->
     <color name="color_primary">@color/red2</color>
-    <color name="color_primary_dark">@color/berry2</color>
+    <color name="color_primary_dark">#c14a43</color>
     <color name="color_accent">@color/red2</color>
     <color name="color_background">@color/midnight2</color>
+    <color name="color_primary_inv">@color/midnight2</color>
+    <color name="color_primary_dark_inv">#2C3238</color>
+    <color name="color_accent_inv">@color/red2</color>
     <color name="color_background_inv">@color/cream1</color>
     <color name="color_text">@color/cream1</color>
 
@@ -72,9 +75,10 @@
 
     <!--Agenda-->
     <color name="agenda_header">@color/red2</color>
-    <color name="agenda_background">@color/midnight1</color>
+    <color name="agenda_background">@color/stone</color>
+    <color name="agenda_highlight_background">@color/cream1</color>
+    <color name="agenda_highlight_text">@color/red2</color>
     <color name="agenda_item_background">@color/stone</color>
-    <color name="agenda_today_item_background">@color/cream1</color>
     <color name="agenda_restr_item_text">@color/midnight1</color>
     <color name="agenda_remaining_time_text">@color/petrol2</color>
 

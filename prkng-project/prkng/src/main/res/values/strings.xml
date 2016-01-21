@@ -50,6 +50,7 @@
     <string name="action_user_account">User activity</string>
     <string name="action_settings">Settings</string>
     <string name="action_about">About</string>
+    <string name="action_checkin">About</string>
     <string name="action_share">Share</string>
     <string name="action_rate">Rate</string>
     <string name="action_help_password">Forgot password?</string>
@@ -59,9 +60,10 @@
     <string name="btn_register">Create account</string>
     <string name="btn_login_email">I already have an account</string>
     <string name="btn_skip">Skip</string>
-    <string name="btn_done">Done</string>
-    <string name="btn_checkin">Park here</string>
+    <string name="btn_done">Got it</string>
+    <string name="btn_checkin">Parked</string>
     <string name="btn_checkout">Checkout</string>
+    <string name="btn_info">Info</string>
     <string name="btn_try_again">Retry</string>
     <string name="btn_reset_password">Reset password</string>
 
@@ -84,8 +86,8 @@
     <string name="toast_checkout_error">prkng checkout error</string>
 
     <!--Map-->
-    <string name="map_tab_off_street">Off-Street</string>
     <string name="map_tab_on_street">On-Street</string>
+    <string name="map_tab_off_street">Parking lots</string>
     <!--<string name="map_tab_carshare">Carsharing</string>-->
     <string name="map_tab_carshare_spots">CarShare Spots</string>
     <string name="map_tab_carshare_vehicles">Carshare Vehicles</string>
@@ -125,14 +127,14 @@
     <string name="lot_attr_accessible">ACCESSIBLE</string>
     <string name="lot_attr_valet">VALET</string>
     <string name="lot_daily_price">%s\r\nDay</string>
-    <string name="lot_hourly_price">%s\r\nHour</string>
+    <string name="lot_hourly_price">%s/Hour</string>
     <string name="lot_capactiy">Capacity: %d&#160;spaces</string>
 
     <!--Checkin/ User Activity-->
-    <string name="checkin_title">You are checked in on</string>
-    <string name="checkin_expiry">Available until</string>
+    <string name="checkin_title">YOU ARE PARKED ON</string>
+    <string name="checkin_expiry">AVAILABLE UNTIL</string>
     <string name="checkin_prefix">Parked on %s</string>
-    <string name="checkin_smart_reminder">Notify me the night before</string>
+    <string name="checkin_smart_reminder">GET NOTIFIED THE NIGHT BEFORE</string>
     <string name="checkin_empty">Select a segment on the map and tap Check-in to save it here and get reminders</string>
 
     <!--Authentication-->
