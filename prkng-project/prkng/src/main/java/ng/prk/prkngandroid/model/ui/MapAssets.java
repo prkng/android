@@ -22,7 +22,7 @@ public class MapAssets {
     private final static float X_CENTER = 0.5f;
     // TODO Replace ic_maps_lot_* assets to stop relying on this magical number
     @Deprecated
-    private final static float Y_CENTER = 0.5626f;
+    private final static float Y_CENTER = 0.2813f;
 
     private int lineWidth;
     private int lineColorFree;
@@ -38,6 +38,7 @@ public class MapAssets {
     private Icon markerIconCarshareAutomobile;
     private Icon markerIconCarshareCar2go;
     private Icon markerIconCarshareZipcar;
+    private Icon markerIconCheckin;
 
     private Bitmap markerBitmapClosed;
     private Bitmap markerBitmapOpen;
@@ -69,6 +70,7 @@ public class MapAssets {
         markerIconCarshareAutomobile = iconFactory.fromResource(R.drawable.ic_maps_carshare_automobile);
         markerIconCarshareCar2go = iconFactory.fromResource(R.drawable.ic_maps_carshare_car2go);
         markerIconCarshareZipcar = iconFactory.fromResource(R.drawable.ic_maps_carshare_zipcar);
+        markerIconCheckin = iconFactory.fromResource(R.drawable.ic_maps_checkin);
 
         lineColorFree = ContextCompat.getColor(context, R.color.map_line_free_spot);
         lineColorPaid = ContextCompat.getColor(context, R.color.map_line_paid_spot);
@@ -142,6 +144,10 @@ public class MapAssets {
                 return markerIconCarshareZipcar;
         }
         return null;
+    }
+
+    public Icon getCheckinMarkerIcon() {
+        return markerIconCheckin;
     }
 
     public Icon getLotMarkerIconSelected(int price) {
