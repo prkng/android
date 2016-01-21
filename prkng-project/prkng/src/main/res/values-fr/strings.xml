@@ -103,7 +103,7 @@
     <string name="lot_attr_accessible">ACCESSIBLE</string>
     <string name="lot_attr_valet">VALET</string>
     <string name="lot_daily_price">%s\r\njour</string>
-    <string name="lot_hourly_price">%s\r\nheure</string>
+    <string name="lot_hourly_price">%s/heure</string>
     <string name="lot_capactiy">Capacité: %d&#160;places</string>
 
     <!--Currency-->
