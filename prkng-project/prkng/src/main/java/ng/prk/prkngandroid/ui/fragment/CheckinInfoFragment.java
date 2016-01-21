@@ -41,6 +41,10 @@ public class CheckinInfoFragment extends Fragment implements View.OnClickListene
 
         final PrkngPrefs prefs = PrkngPrefs.getInstance(getActivity());
         final CheckinData checkin = prefs.getCheckinData();
+        if (checkin == null) {
+            return null;
+        }
+
 
         fillCheckinData(checkin);
 
