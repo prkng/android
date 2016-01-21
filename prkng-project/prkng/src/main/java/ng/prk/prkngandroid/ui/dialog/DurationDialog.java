@@ -1,26 +1,30 @@
 package ng.prk.prkngandroid.ui.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
+
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import ng.prk.prkngandroid.Const;
-import ng.prk.prkngandroid.PrkngApp;
 import ng.prk.prkngandroid.R;
 
 public class DurationDialog extends DialogFragment {
-
     private static final String TAG = "DurationDialog ";
+
+    private OnDurationChangedListener listener;
 
     public static DurationDialog newInstance(float duration) {
         final DurationDialog dialog = new DurationDialog();
 
         final Bundle bundle = new Bundle();
-        bundle.putInt(Const.BundleKeys.CURRENT_INDEX, getDurationIndex(duration));
+        bundle.putInt(Const.BundleKeys.CURRENT_INDEX, (int) Math.floor(duration));
         dialog.setArguments(bundle);
 
         return dialog;
@@ -33,28 +37,63 @@ public class DurationDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            listener = (OnDurationChangedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnDurationChangedListener");
+        }
+
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        final LayoutInflater inflater = LayoutInflater.from(getActivity());
+        final View view = inflater.inflate(R.layout.dialog_duration_discreet_seekbar, null);
+        final TextView vTitle = (TextView) view.findViewById(R.id.dialog_title);
+        final TextView vLegend = (TextView) view.findViewById(R.id.dialog_legend);
+        final DiscreteSeekBar seekbar = (DiscreteSeekBar) view.findViewById(R.id.seekbar_duration);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.PrkngDialogStyle);
-        builder.setTitle(R.string.dialog_durations_title)
-                .setIcon(R.drawable.ic_action_timer)
-                .setSingleChoiceItems(R.array.durations_filter, getSelectedItem(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.v(TAG, "onClick "
-                                + String.format("which = %s", which));
-                        Log.v(TAG, "duration = " + Const.UiConfig.DURATIONS[which]);
-                        PrkngApp.getInstance(getActivity())
-                                .setMapDurationFilter(Const.UiConfig.DURATIONS[which]);
+        int currentDuration = getArguments().getInt(Const.BundleKeys.CURRENT_INDEX, 0);
 
-                        dialog.dismiss();
-                    }
-                });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.getListView().setSelection(3);
-        return alertDialog;
+        seekbar.setProgress(currentDuration);
+        vTitle.setText(getDurationTitle(currentDuration));
+        vLegend.setText(getDurationLegend(currentDuration));
+
+        seekbar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
+            @Override
+            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
+                vTitle.setText(getDurationTitle(value));
+                vLegend.setText(getDurationLegend(value));
+            }
+
+            @Override
+            public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
+
+            }
+        });
+
+        return new android.app.AlertDialog.Builder(getActivity(), R.style.PrkngDialogStyle)
+                .setView(view)
+                .setPositiveButton(R.string.btn_ok,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                listener.onDurationChanged(getTimeFilter(seekbar));
+                            }
+                        }
+                )
+                .setNegativeButton(R.string.btn_cancel, null)
+                .create();
     }
 
     @Override
@@ -66,18 +105,26 @@ public class DurationDialog extends DialogFragment {
         super.onDestroyView();
     }
 
-    private int getSelectedItem() {
-        return getArguments().getInt(Const.BundleKeys.CURRENT_INDEX, 0);
+    private String getDurationTitle(int progress) {
+        if (progress == 0) {
+            return getResources().getString(R.string.quantity_half);
+        } else {
+            return String.valueOf(progress);
+        }
     }
 
-    private static int getDurationIndex(float duration) {
-        final int nbDurations = Const.UiConfig.DURATIONS.length;
-        for (int i = 0; i < nbDurations; i++) {
-            if (Float.valueOf(duration).equals(Const.UiConfig.DURATIONS[i])) {
-                return i;
-            }
-        }
+    private String getDurationLegend(int progress) {
+        return getResources().getQuantityString(
+                R.plurals.duration_legend,
+                progress == 0 ? 1 : progress);
+    }
 
-        return Const.UiConfig.DEFAULT_DURATION_INDEX;
+    private float getTimeFilter(DiscreteSeekBar seekBar) {
+        final int progress = seekBar.getProgress();
+        return progress == 0 ? 0.5f : progress;
+    }
+
+    public interface OnDurationChangedListener {
+        void onDurationChanged(float duration);
     }
 }

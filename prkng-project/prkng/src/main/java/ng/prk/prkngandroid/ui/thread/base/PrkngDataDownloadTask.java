@@ -178,7 +178,7 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
 
     protected float getDuration() {
         if (vMap == null) {
-            return Const.UiConfig.DURATIONS[Const.UiConfig.DEFAULT_DURATION_INDEX];
+            return Const.UiConfig.DEFAULT_DURATION;
         }
 
         return listener.getDurationFilter();

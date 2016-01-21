@@ -56,6 +56,8 @@
     <string name="action_help_password">Forgot password?</string>
 
     <!--Buttons-->
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">Cancel</string>
     <string name="btn_login">Login</string>
     <string name="btn_register">Create account</string>
     <string name="btn_login_email">I already have an account</string>
@@ -109,15 +111,12 @@
 
 
     <!--Duration-->
-    <array name="durations_filter">
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>2 hours</item>
-        <item>4 hours</item>
-        <item>8 hours</item>
-        <item>12 hours</item>
-        <item>24 hours</item>
-    </array>
+    <string name="quantity_half">½</string>
+
+    <plurals name="duration_legend">
+        <item quantity="one">hour</item>
+        <item quantity="other">hours</item>
+    </plurals>
 
     <!--Lot Info-->
     <string name="all_day_closed">Closed</string>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activities-->
     <string name="activity_main">Carte</string>
     <string name="activity_about">À propos</string>
@@ -86,15 +86,12 @@
     </array>
 
     <!--Duration-->
-    <array name="durations_filter">
-        <item>30 minutes</item>
-        <item>1 heure</item>
-        <item>2 heures</item>
-        <item>4 heures</item>
-        <item>8 heures</item>
-        <item>12 heures</item>
-        <item>24 heures</item>
-    </array>
+    <string name="quantity_half">½</string>
+
+    <plurals name="duration_legend">
+        <item quantity="one" tools:ignore="ImpliedQuantity">heure</item>
+        <item quantity="other">heures</item>
+    </plurals>
 
     <!--Lot Info-->
     <string name="all_day_closed">Fermé</string>

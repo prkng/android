@@ -17,11 +17,13 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngZoom;
 
 import ng.prk.prkngandroid.Const;
+import ng.prk.prkngandroid.PrkngApp;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.io.ApiCallback;
 import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.model.CheckinData;
 import ng.prk.prkngandroid.ui.activity.base.BaseActivity;
+import ng.prk.prkngandroid.ui.dialog.DurationDialog;
 import ng.prk.prkngandroid.ui.fragment.LotInfoFragment;
 import ng.prk.prkngandroid.ui.fragment.MainMapFragment;
 import ng.prk.prkngandroid.ui.fragment.SpotInfoFragment;
@@ -29,6 +31,7 @@ import ng.prk.prkngandroid.util.Installation;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public class MainActivity extends BaseActivity implements
+        DurationDialog.OnDurationChangedListener,
         OnMarkerInfoClickListener,
         MainMapFragment.OnMapMarkerClickListener,
         TabLayout.OnTabSelectedListener,
@@ -235,6 +238,11 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
 
+    }
+
+    @Override
+    public void onDurationChanged(float duration) {
+        PrkngApp.getInstance(this).setMapDurationFilter(duration);
     }
 
     private void helloApi() {

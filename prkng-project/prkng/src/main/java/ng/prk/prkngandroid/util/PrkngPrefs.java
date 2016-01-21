@@ -159,7 +159,7 @@ public class PrkngPrefs implements
     }
 
     public float getDuration() {
-        return mPrefs.getFloat(DURATION, Const.UiConfig.DURATIONS[Const.UiConfig.DEFAULT_DURATION_INDEX]);
+        return mPrefs.getFloat(DURATION, Const.UiConfig.DEFAULT_DURATION);
     }
 
     public void setDuration(float duration) {

@@ -2,7 +2,6 @@ package ng.prk.prkngandroid;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -31,7 +30,7 @@ public class PrkngApp extends Application {
 
         PrkngPrefs.setDefaults(this);
 
-        mapDurationFilter = Const.UiConfig.DURATIONS[Const.UiConfig.DEFAULT_DURATION_INDEX];
+        mapDurationFilter = Const.UiConfig.DEFAULT_DURATION;
     }
 
     public float getMapDurationFilter() {
