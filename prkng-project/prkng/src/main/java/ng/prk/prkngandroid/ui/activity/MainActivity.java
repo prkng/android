@@ -123,20 +123,31 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onClick(Fragment fragment) {
-// TODO add fragment tags
-        final FragmentManager fm = getSupportFragmentManager();
+        Fragment clone;
         if (fragment instanceof SpotInfoFragment) {
-            final Fragment clone = SpotInfoFragment.clone((SpotInfoFragment) fragment);
-            fm.beginTransaction()
-                    .replace(android.R.id.content, clone)
-                    .addToBackStack(null)
-                    .commit();
+            clone = SpotInfoFragment.clone((SpotInfoFragment) fragment);
         } else if (fragment instanceof LotInfoFragment) {
-            final Fragment clone = LotInfoFragment.clone((LotInfoFragment) fragment);
-            fm.beginTransaction()
-                    .replace(android.R.id.content, clone)
-                    .addToBackStack(null)
-                    .commit();
+            clone = LotInfoFragment.clone((LotInfoFragment) fragment);
+        } else {
+            return;
+        }
+
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.expand_up, R.anim.collapse_down,
+                        R.anim.expand_up, R.anim.collapse_down)
+                .replace(android.R.id.content, clone, Const.FragmentTags.MAP_INFO_EXPANDED)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        final FragmentManager fm = getSupportFragmentManager();
+        final Fragment fragment = fm.findFragmentByTag(Const.FragmentTags.MAP_INFO_EXPANDED);
+        if (fragment != null) {
+            fm.popBackStack();
+        } else {
+            super.onBackPressed();
         }
     }
 
