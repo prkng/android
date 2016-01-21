@@ -197,11 +197,10 @@ public class SpotInfoFragment extends Fragment implements
     }
 
     private void hideProgressBar() {
-        if (!isExpanded) {
+        if (!isExpanded && getView() != null) {
             ObjectAnimator.ofFloat(getView().findViewById(R.id.price), View.ALPHA, 0, 1).start();
             ObjectAnimator.ofFloat(getView().findViewById(R.id.subtitle), View.ALPHA, 0, 1).start();
             ObjectAnimator.ofFloat(getView().findViewById(R.id.ic_agenda), View.ALPHA, 0, 1).start();
-            ObjectAnimator.ofFloat(getView().findViewById(R.id.progress), View.ALPHA, 0, 1).start();
         }
 
         vProgressBar.setVisibility(View.GONE);
@@ -241,8 +240,6 @@ public class SpotInfoFragment extends Fragment implements
     }
 
     private void setupLayout(View view) {
-        view.setOnClickListener(this);
-
         if (isExpanded) {
             final Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
             if (toolbar != null) {
@@ -263,9 +260,10 @@ public class SpotInfoFragment extends Fragment implements
             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             vRecyclerView.setLayoutManager(layoutManager);
         } else {
+            view.setOnClickListener(this);
+
             vTitle.setText(mTitle);
 
-            vCheckinBtn.setTag(R.id.spot_id_tag, mId);
             vCheckinBtn.setOnClickListener(this);
         }
     }

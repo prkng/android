@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -34,8 +35,12 @@ public class LotInfoFragment extends Fragment implements
 
     private OnMarkerInfoClickListener listener;
     private TextView vTitle;
-    private TextView vSubtitle;
+    private View vPrice;
+    private TextView vCapacity;
+    private Button vInfoBtn;
     private TextView vMainPrice;
+    private TextView vHourlyPrice;
+    private TextView vRemainingTime;
     private View vProgressBar;
     private RecyclerView vRecyclerView;
     private LotAgendaListAdapter mAdapter;
@@ -46,6 +51,7 @@ public class LotInfoFragment extends Fragment implements
     private LotCurrentStatus mStatus;
     private int mCapacity;
     private LotAttrs mAttrs;
+    private boolean isExpanded;
 
     public static LotInfoFragment newInstance(String id, String title) {
         final LotInfoFragment fragment = new LotInfoFragment();
@@ -92,7 +98,7 @@ public class LotInfoFragment extends Fragment implements
         final Bundle args = getArguments();
         mId = args.getString(Const.BundleKeys.MARKER_ID);
         mTitle = args.getString(Const.BundleKeys.MARKER_TITLE);
-        final boolean isExpanded = args.getBoolean(Const.BundleKeys.IS_EXPANDED, false);
+        isExpanded = args.getBoolean(Const.BundleKeys.IS_EXPANDED, false);
 
         final View view = inflater.inflate(
                 isExpanded ? R.layout.fragment_lot_details : R.layout.fragment_lot_info,
@@ -100,10 +106,14 @@ public class LotInfoFragment extends Fragment implements
                 false);
 
         vTitle = (TextView) view.findViewById(R.id.title);
-        vSubtitle = (TextView) view.findViewById(R.id.subtitle);
-        vMainPrice = (TextView) view.findViewById(R.id.main_price);
+        vRemainingTime = (TextView) view.findViewById(R.id.remaining_time);
+        vPrice = view.findViewById(R.id.price);
+        vCapacity = (TextView) view.findViewById(R.id.capacity);
+        vInfoBtn = (Button) view.findViewById(R.id.btn_info);
         vProgressBar = view.findViewById(R.id.progress);
         vRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
+        vMainPrice = (TextView) view.findViewById(R.id.main_price);
+        vHourlyPrice = (TextView) view.findViewById(R.id.hourly_price);
 
         setupLayout(view);
 
@@ -115,8 +125,10 @@ public class LotInfoFragment extends Fragment implements
     @Override
     public void onClick(View v) {
         final int id = v.getId();
-        if (R.id.root_view == id) {
+        if (R.id.root_view == id || R.id.btn_info == id) {
             showDetails();
+        } else if (id == R.id.btn_nav_back) {
+            getActivity().onBackPressed();
         }
     }
 
@@ -139,6 +151,10 @@ public class LotInfoFragment extends Fragment implements
      */
     @Override
     public void setCurrentStatus(LotCurrentStatus status, int capacity) {
+        if (!isAdded()) {
+            return;
+        }
+
         this.mStatus = status;
         this.mCapacity = capacity;
 
@@ -154,25 +170,38 @@ public class LotInfoFragment extends Fragment implements
             Log.v(TAG, "dailyPrice = " + dailyPrice);
 
             if (dailyPrice != Const.UNKNOWN_VALUE) {
-                final String sDailyPrice = String.format(res.getString(R.string.currency_round),
-                        dailyPrice);
-                vMainPrice
-                        .setText(String.format(res.getString(R.string.lot_daily_price), sDailyPrice));
+                vMainPrice.setText(String.format(
+                        res.getString(R.string.currency_round),
+                        dailyPrice));
             } else {
-                vMainPrice.setVisibility(View.INVISIBLE);
+                vMainPrice
+                        .setVisibility(View.INVISIBLE);
             }
 
-            vSubtitle.setText(CalendarUtils.getDurationFromMillis(
+            if (isExpanded) {
+                if (hourlyPrice != Const.UNKNOWN_VALUE) {
+                    final String sHourlPrice = String.format(res.getString(R.string.currency_round),
+                            hourlyPrice);
+                    vHourlyPrice
+                            .setText(String.format(res.getString(R.string.lot_hourly_price), sHourlPrice));
+                } else {
+                    vHourlyPrice.setVisibility(View.INVISIBLE);
+                }
+            }
+            vRemainingTime.setText(CalendarUtils.getDurationFromMillis(
                     getContext(),
-                    status.getRemainingMillis()
-            ));
+                    status.getRemainingMillis()));
         }
 
-        ObjectAnimator.ofFloat(vSubtitle, View.ALPHA, 0, 1).start();
-        ObjectAnimator.ofFloat(vMainPrice, View.ALPHA, 0, 1).start();
-        vProgressBar.setVisibility(View.GONE);
+        if (isExpanded) {
+            if (capacity != Const.UNKNOWN_VALUE) {
+                vCapacity.setText(
+                        String.format(res.getString(R.string.lot_capactiy), capacity));
+            } else {
+                vCapacity.setVisibility(View.INVISIBLE);
+            }
+        }
     }
-
 
     @Override
     public void setDataset(ArrayList list) {
@@ -182,8 +211,18 @@ public class LotInfoFragment extends Fragment implements
             mAdapter.swapDataset(mDataset);
             Log.v(TAG, "setDataset: OK. size: " + mDataset.size());
         }
+
+        hideProgressBar();
     }
 
+    private void hideProgressBar() {
+        if (!isExpanded && getView() != null) {
+            ObjectAnimator.ofFloat(getView().findViewById(R.id.price), View.ALPHA, 0, 1).start();
+            ObjectAnimator.ofFloat(getView().findViewById(R.id.subtitle), View.ALPHA, 0, 1).start();
+        }
+
+        vProgressBar.setVisibility(View.GONE);
+    }
 
     @Override
     public void setAttributes(LotAttrs attrs) {
@@ -204,18 +243,9 @@ public class LotInfoFragment extends Fragment implements
     }
 
     private void setupLayout(View view) {
-        view.setOnClickListener(this);
-
-        vProgressBar.setVisibility(View.VISIBLE);
-
-        vSubtitle.setAlpha(0f);
-        vMainPrice.setAlpha(0f);
-
-        if (mTitle != null) {
+        if (isExpanded) {
             vTitle.setText(mTitle);
-        }
 
-        if (vRecyclerView != null) {
             // Setup the recycler view
             final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -223,6 +253,14 @@ public class LotInfoFragment extends Fragment implements
 
             mAdapter = new LotAgendaListAdapter(getContext(), R.layout.list_item_lot_agenda);
             vRecyclerView.setAdapter(mAdapter);
+
+            view.findViewById(R.id.btn_nav_back).setOnClickListener(this);
+        } else {
+            view.setOnClickListener(this);
+
+            vTitle.setText(mTitle);
+
+            vInfoBtn.setOnClickListener(this);
         }
     }
 
