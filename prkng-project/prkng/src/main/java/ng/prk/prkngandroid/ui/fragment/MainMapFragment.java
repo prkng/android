@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
-import android.graphics.RectF;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -216,15 +215,21 @@ public class MainMapFragment extends Fragment implements
 
     private void addCheckinMarker() {
         CheckinData checkin = PrkngPrefs.getInstance(getActivity()).getCheckinData();
-        if (checkin != null) {
-            vMap.addMarker(new MarkerOptions()
-                    .snippet(MARKER_ID_CHECKIN)
-                    .position(checkin.getLatLng()));
+        if (checkin != null && vMap.isShown() && isVisible() && isResumed()) {
+// TODO skip adding marker when map is hidden
+            try {
+                vMap.addMarker(new MarkerOptions()
+                        .icon(mapAssets.getCheckinMarkerIcon())
+                        .snippet(MARKER_ID_CHECKIN)
+                        .position(checkin.getLatLng()));
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
             getFragmentManager().beginTransaction()
                     .replace(R.id.checkin_frame, CheckinInfoFragment.newInstance(checkin.getId()), Const.FragmentTags.CHECKIN_INFO)
                     .commit();
+            vMap.setCenterCoordinate(getCheckinCoordinate());
         }
-        vMap.setCenterCoordinate(getCheckinCoordinate());
     }
 
     private void onMapResume() {
@@ -378,29 +383,30 @@ public class MainMapFragment extends Fragment implements
     }
 
     private void forceVisibleBounds(LatLng visiblePoint) {
-        vMap.removeOnMapChangedListener(this);
-        final ArrayList<LatLng> coordinates = new ArrayList<>();
-        coordinates.add(visiblePoint);
-        coordinates.add(vMap.getLatLng());
-
-        final Location myLocation = vMap.getMyLocation();
-        if (myLocation != null) {
-            coordinates.add(new LatLng(myLocation));
-        }
-
-        final int padding = getResources().getDimensionPixelSize(R.dimen.map_bounds_padding);
-        vMap.setVisibleCoordinateBounds(
-                coordinates.toArray(new LatLng[coordinates.size()]),
-                new RectF(padding, padding, padding, padding),
-                true
-        );
-
-        vMap.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                vMap.addOnMapChangedListener(MainMapFragment.this);
-            }
-        }, ANIMATION_DURATION);
+//        TODO renable this, on tab change only
+//        vMap.removeOnMapChangedListener(this);
+//        final ArrayList<LatLng> coordinates = new ArrayList<>();
+//        coordinates.add(visiblePoint);
+//        coordinates.add(vMap.getLatLng());
+//
+//        final Location myLocation = vMap.getMyLocation();
+//        if (myLocation != null) {
+//            coordinates.add(new LatLng(myLocation));
+//        }
+//
+//        final int padding = getResources().getDimensionPixelSize(R.dimen.map_bounds_padding);
+//        vMap.setVisibleCoordinateBounds(
+//                coordinates.toArray(new LatLng[coordinates.size()]),
+//                new RectF(padding, padding, padding, padding),
+//                true
+//        );
+//
+//        vMap.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                vMap.addOnMapChangedListener(MainMapFragment.this);
+//            }
+//        }, ANIMATION_DURATION);
     }
 
     @Override
