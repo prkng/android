@@ -56,15 +56,15 @@ public class DurationDialog extends DialogFragment {
         final View view = inflater.inflate(R.layout.dialog_duration_discreet_seekbar, null);
         final TextView vTitle = (TextView) view.findViewById(R.id.dialog_title);
         final TextView vLegend = (TextView) view.findViewById(R.id.dialog_legend);
-        final DiscreteSeekBar seekbar = (DiscreteSeekBar) view.findViewById(R.id.seekbar_duration);
+        final DiscreteSeekBar seekBar = (DiscreteSeekBar) view.findViewById(R.id.seekbar_duration);
 
         int currentDuration = getArguments().getInt(Const.BundleKeys.CURRENT_INDEX, 0);
 
-        seekbar.setProgress(currentDuration);
+        seekBar.setProgress(currentDuration);
         vTitle.setText(getDurationTitle(currentDuration));
         vLegend.setText(getDurationLegend(currentDuration));
 
-        seekbar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
+        seekBar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
             @Override
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
                 vTitle.setText(getDurationTitle(value));
@@ -88,7 +88,7 @@ public class DurationDialog extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                listener.onDurationChanged(getTimeFilter(seekbar));
+                                listener.onDurationChanged(getTimeFilter(seekBar));
                             }
                         }
                 )
@@ -115,7 +115,7 @@ public class DurationDialog extends DialogFragment {
 
     private String getDurationLegend(int progress) {
         return getResources().getQuantityString(
-                R.plurals.duration_legend,
+                R.plurals.duration_legend_hours,
                 progress == 0 ? 1 : progress);
     }
 
