@@ -199,8 +199,8 @@ public class MainMapFragment extends Fragment implements
         vMap = (MapView) view.findViewById(R.id.mapview);
         vMap.onCreate(savedInstanceState);
 
-        vMap.setCenterCoordinate(Const.UiConfig.MONTREAL_LAT_LNG);
-        vMap.setZoomLevel(Const.UiConfig.DEFAULT_ZOOM);
+        vMap.setLatLng(Const.UiConfig.MONTREAL_LAT_LNG);
+        vMap.setZoom(Const.UiConfig.DEFAULT_ZOOM);
         vMap.setTiltEnabled(false);
 
         // Load map assets and colors
@@ -228,7 +228,7 @@ public class MainMapFragment extends Fragment implements
             getFragmentManager().beginTransaction()
                     .replace(R.id.checkin_frame, CheckinInfoFragment.newInstance(checkin.getId()), Const.FragmentTags.CHECKIN_INFO)
                     .commit();
-            vMap.setCenterCoordinate(getCheckinCoordinate());
+            vMap.setLatLng(getCheckinCoordinate());
         }
     }
 
@@ -558,7 +558,7 @@ public class MainMapFragment extends Fragment implements
                         @Override
                         public void onClick(View v) {
                             mIsZoomTooLow = false;
-                            vMap.setZoomLevel(MapUtils.getMinZoomPerType(mPrkngMapType), true);
+                            vMap.setZoom(MapUtils.getMinZoomPerType(mPrkngMapType), true);
                         }
                     });
             mSnackbar.show();
@@ -575,7 +575,7 @@ public class MainMapFragment extends Fragment implements
         }
         final Location myLocation = vMap.getMyLocation();
         if (myLocation != null) {
-            vMap.setCenterCoordinate(new LatLngZoom(
+            vMap.setLatLng(new LatLngZoom(
                     myLocation.getLatitude(),
                     myLocation.getLongitude(),
                     Math.max(Const.UiConfig.MY_LOCATION_ZOOM, vMap.getZoomLevel())
@@ -605,7 +605,7 @@ public class MainMapFragment extends Fragment implements
                     zoom = Const.UiConfig.CARSHARE_VEHICLES_MIN_ZOOM;
                     break;
             }
-            vMap.setZoomLevel(zoom, true);
+            vMap.setZoom(zoom, true);
         }
     }
 
