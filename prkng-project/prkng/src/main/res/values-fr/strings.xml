@@ -88,7 +88,7 @@
     <!--Duration-->
     <string name="quantity_half">½</string>
 
-    <plurals name="duration_legend">
+    <plurals name="duration_legend_hours">
         <item quantity="one" tools:ignore="ImpliedQuantity">heure</item>
         <item quantity="other">heures</item>
     </plurals>

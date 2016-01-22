@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
-import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

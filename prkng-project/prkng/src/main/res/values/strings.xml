@@ -107,16 +107,25 @@
         <item>Saturday</item>
         <item>Sunday</item>
     </array>
-    <string name="allowed_all_week">Available all week long</string>
-
 
     <!--Duration-->
     <string name="quantity_half">½</string>
-
-    <plurals name="duration_legend">
+    <plurals name="duration_legend_hours">
         <item quantity="one">hour</item>
         <item quantity="other">hours</item>
     </plurals>
+    <plurals name="expiry_hours">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <plurals name="expiry_minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <string name="allowed_all_week">Available all week long</string>
+    <string name="expiry_day_tomorrow">Tomorrow</string>
+    <string name="expiry_hours_minutes">%1$dh %2$dm</string>
+    <string name="expiry_day_time_of_day">%1$s @ %2$s</string>
 
     <!--Lot Info-->
     <string name="all_day_closed">Closed</string>
