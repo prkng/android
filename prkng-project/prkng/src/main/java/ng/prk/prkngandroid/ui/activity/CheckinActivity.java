@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.CheckBox;
+import android.widget.Button;
 import android.widget.TextView;
 
 import ng.prk.prkngandroid.Const;
@@ -20,7 +20,7 @@ public class CheckinActivity extends AppCompatActivity implements
     private static final String TAG = "CheckinActivity";
 
     private long checkinId;
-    private CheckBox vSmartReminder;
+    private Button vSmartReminder;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, CheckinActivity.class);
@@ -40,7 +40,7 @@ public class CheckinActivity extends AppCompatActivity implements
         findViewById(R.id.btn_nav_back).setOnClickListener(this);
 
         if (checkin != null) {
-            vSmartReminder = (CheckBox) findViewById(R.id.smart_reminder);
+            vSmartReminder = (Button) findViewById(R.id.smart_reminder);
 
             fillCheckinData(checkin, hasSmartReminder);
 
@@ -56,8 +56,9 @@ public class CheckinActivity extends AppCompatActivity implements
             CheckinHelper.checkout(this, checkinId);
             finish();
         } else if (id == R.id.smart_reminder) {
-            PrkngPrefs.getInstance(this)
-                    .setSmartReminder(((CheckBox) v).isChecked());
+// TODO
+//            PrkngPrefs.getInstance(this)
+//                    .setSmartReminder(((CheckBox) v).isChecked());
         } else if (id == R.id.btn_nav_back) {
             finish();
         }
@@ -82,7 +83,8 @@ public class CheckinActivity extends AppCompatActivity implements
             vSmartReminder.setVisibility(View.GONE);
         } else {
             vSmartReminder.setVisibility(View.VISIBLE);
-            vSmartReminder.setChecked(hasSmartReminder);
+// TODO
+//            vSmartReminder.setChecked(hasSmartReminder);
         }
     }
 }
