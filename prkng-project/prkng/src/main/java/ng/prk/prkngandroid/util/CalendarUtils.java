@@ -16,6 +16,7 @@ import java.util.TimeZone;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
+import ng.prk.prkngandroid.model.ui.HumanDuration;
 
 public class CalendarUtils {
     private final static String TAG = "CalendarUtils";
@@ -105,9 +106,10 @@ public class CalendarUtils {
     @Deprecated
     public static String getDurationFromMillis(Context context, long millis) {
         // TODO get string without prefix
-        if ((int) millis == Const.UNKNOWN_VALUE) {
+        if (Long.valueOf(Const.UNKNOWN_VALUE).equals(millis)) {
             return null;
         }
+        new HumanDuration(context, millis, 0);
 
         if (Long.valueOf(millis).compareTo(0L) == 0) {
             return "Parking not allowed";
