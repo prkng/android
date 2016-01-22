@@ -20,12 +20,13 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        <ng.prk.prkngandroid.ui.view.IntroTabLayout
+        <ng.prk.prkngandroid.ui.view.MapTabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabIndicatorColor="@color/color_text"
-            app:tabIndicatorHeight="2dp"
+            app:tabIndicatorHeight="3dp"
+            app:tabTextAppearance="@style/TabWidget"
             app:tabMode="fixed" />
 
     </android.support.design.widget.AppBarLayout>
