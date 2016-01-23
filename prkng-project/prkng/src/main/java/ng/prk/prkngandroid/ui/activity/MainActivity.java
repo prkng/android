@@ -125,7 +125,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void onClick(Fragment fragment) {
+    public void expandMarkerInfo(Fragment fragment) {
         Fragment clone;
         if (fragment instanceof SpotInfoFragment) {
             clone = SpotInfoFragment.clone((SpotInfoFragment) fragment);
@@ -141,6 +141,16 @@ public class MainActivity extends BaseActivity implements
                 .replace(android.R.id.content, clone, Const.FragmentTags.MAP_INFO_EXPANDED)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public void hideMarkerInfo(Fragment fragment) {
+        if (fragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                    .remove(fragment)
+                    .commit();
+        }
     }
 
     @Override

@@ -317,8 +317,7 @@ public class LotInfoFragment extends Fragment implements
     }
 
     private void showDetails() {
-        Log.v(TAG, "showDetails");
-        listener.onClick(this);
+        listener.expandMarkerInfo(this);
     }
 
 }

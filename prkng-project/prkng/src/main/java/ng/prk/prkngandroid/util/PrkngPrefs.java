@@ -113,12 +113,6 @@ public class PrkngPrefs implements
         edit().apply();
     }
 
-    public void setCheckinSmartReminder(long end, long smartReminder) {
-        edit().putLong(CHECKIN_END_AT, end)
-                .putLong(CHECKIN_SMART_REMINDER, smartReminder)
-                .apply();
-    }
-
     public CheckinData getCheckinData() {
         final long id = mPrefs.getLong(CHECKIN_ID, Const.UNKNOWN_VALUE);
         if (Long.valueOf(Const.UNKNOWN_VALUE).equals(id)) {
@@ -176,7 +170,7 @@ public class PrkngPrefs implements
 
     public void setSmartReminder(boolean enabled) {
         edit().putBoolean(NOTIFY_SMART_REMINDER, enabled)
-                .apply();
+                .commit();
     }
 
     public void registerPrefsChangeListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {

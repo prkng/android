@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,9 +18,7 @@ import java.util.ArrayList;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
-import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.io.PrkngApiError;
-import ng.prk.prkngandroid.model.CheckinData;
 import ng.prk.prkngandroid.model.LotAttrs;
 import ng.prk.prkngandroid.model.LotCurrentStatus;
 import ng.prk.prkngandroid.model.RestrInterval;
@@ -32,12 +29,7 @@ import ng.prk.prkngandroid.ui.adapter.SpotAgendaListAdapter;
 import ng.prk.prkngandroid.ui.thread.SpotInfoDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.MarkerInfoUpdateListener;
 import ng.prk.prkngandroid.util.CalendarUtils;
-import ng.prk.prkngandroid.util.CheckinHelper;
-import ng.prk.prkngandroid.util.PrkngPrefs;
 import ng.prk.prkngandroid.util.TypefaceHelper;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class SpotInfoFragment extends Fragment implements
         View.OnClickListener,
@@ -80,28 +72,6 @@ public class SpotInfoFragment extends Fragment implements
 
         return clone;
     }
-
-    private final Callback checkinCallback = new Callback<CheckinData>() {
-        @Override
-        public void onResponse(Call<CheckinData> call, Response<CheckinData> response) {
-            final CheckinData checkin = response.body();
-            if (checkin != null) {
-                checkin.fixTimezones();
-            }
-
-            final Context context = getContext();
-            CheckinHelper.checkin(context,
-                    checkin,
-                    mTitle,
-                    mRemainingTime);
-            context.startActivity(CheckinActivity.newIntent(context));
-        }
-
-        @Override
-        public void onFailure(Call<CheckinData> call, Throwable t) {
-            Log.v(TAG, "onFailure");
-        }
-    };
 
     @Override
     public void onAttach(Context context) {
@@ -282,17 +252,17 @@ public class SpotInfoFragment extends Fragment implements
     }
 
     private void showDetails() {
-        listener.onClick(this);
+        listener.expandMarkerInfo(this);
     }
 
     private void doCheckin() {
-        final String apiKey = PrkngPrefs.getInstance(getActivity()).getApiKey();
-
-        ApiClient.checkin(
-                ApiClient.getServiceLog(),
-                apiKey,
-                mId,
-                checkinCallback);
+        getActivity().startActivity(
+                CheckinActivity.newIntent(getActivity(),
+                        mId,
+                        mTitle,
+                        mRemainingTime)
+        );
+        listener.hideMarkerInfo(this);
     }
 
     @Override
