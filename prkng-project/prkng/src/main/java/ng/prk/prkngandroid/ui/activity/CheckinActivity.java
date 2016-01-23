@@ -33,8 +33,6 @@ public class CheckinActivity extends AppCompatActivity implements
     private final Callback checkinCallback = new Callback<CheckinData>() {
         @Override
         public void onResponse(Call<CheckinData> call, Response<CheckinData> response) {
-            Log.v(TAG, "onResponse");
-
             try {
                 final CheckinData checkin = response.body();
                 if (checkin != null) {
