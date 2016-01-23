@@ -209,6 +209,7 @@ public class Const {
         String MARKER_ID = "marker_id";
         String MARKER_TITLE = "marker_title";
         String IS_EXPANDED = "is_expanded";
+        String DURATION = "duration";
     }
 
     /**
