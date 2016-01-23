@@ -176,7 +176,7 @@ public class MainActivity extends BaseActivity implements
             switch (type) {
                 case Const.MapSections.OFF_STREET:
                     fragment = LotInfoFragment.newInstance(
-                            marker.getSnippet(), marker.getTitle());
+                            marker.getSnippet(), marker.getTitle(), marker.getPosition());
                     break;
                 case Const.MapSections.ON_STREET:
                     fragment = SpotInfoFragment.newInstance(

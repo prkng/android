@@ -2,7 +2,9 @@ package ng.prk.prkngandroid.ui.fragment;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.mapbox.mapboxsdk.geometry.LatLng;
 
 import java.util.ArrayList;
 
@@ -27,6 +31,7 @@ import ng.prk.prkngandroid.ui.adapter.LotAgendaListAdapter;
 import ng.prk.prkngandroid.ui.thread.LotInfoDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.MarkerInfoUpdateListener;
 import ng.prk.prkngandroid.util.CalendarUtils;
+import ng.prk.prkngandroid.util.IntentUtils;
 
 public class LotInfoFragment extends Fragment implements
         MarkerInfoUpdateListener,
@@ -47,18 +52,21 @@ public class LotInfoFragment extends Fragment implements
     private String mId;
     private String mTitle;
     private long mSubtitle;
+    private LatLng mLatLng;
     private BusinessIntervalList mDataset;
     private LotCurrentStatus mStatus;
     private int mCapacity;
     private LotAttrs mAttrs;
     private boolean isExpanded;
 
-    public static LotInfoFragment newInstance(String id, String title) {
+    public static LotInfoFragment newInstance(String id, String title, LatLng latLng) {
         final LotInfoFragment fragment = new LotInfoFragment();
 
         final Bundle bundle = new Bundle();
         bundle.putString(Const.BundleKeys.MARKER_ID, id);
         bundle.putString(Const.BundleKeys.MARKER_TITLE, title);
+        bundle.putDouble(Const.BundleKeys.LATITUDE, latLng.getLatitude());
+        bundle.putDouble(Const.BundleKeys.LONGITUDE, latLng.getLongitude());
         fragment.setArguments(bundle);
 
         return fragment;
@@ -72,6 +80,7 @@ public class LotInfoFragment extends Fragment implements
         clone.mStatus = fragment.mStatus;
         clone.mCapacity = fragment.mCapacity;
         clone.mAttrs = fragment.mAttrs;
+        clone.mLatLng = fragment.mLatLng;
 
         final Bundle bundle = fragment.getArguments();
         bundle.putBoolean(Const.BundleKeys.IS_EXPANDED, true);
@@ -99,6 +108,8 @@ public class LotInfoFragment extends Fragment implements
         mId = args.getString(Const.BundleKeys.MARKER_ID);
         mTitle = args.getString(Const.BundleKeys.MARKER_TITLE);
         isExpanded = args.getBoolean(Const.BundleKeys.IS_EXPANDED, false);
+        mLatLng = new LatLng(args.getDouble(Const.BundleKeys.LATITUDE),
+                args.getDouble(Const.BundleKeys.LONGITUDE));
 
         final View view = inflater.inflate(
                 isExpanded ? R.layout.fragment_lot_details : R.layout.fragment_lot_info,
@@ -129,6 +140,33 @@ public class LotInfoFragment extends Fragment implements
             showDetails();
         } else if (id == R.id.btn_nav_back) {
             getActivity().onBackPressed();
+        } else if (id == R.id.action_directions) {
+            final MainMapFragment map = (MainMapFragment) getActivity()
+                    .getSupportFragmentManager().findFragmentByTag(Const.FragmentTags.MAP);
+            final Location userLocation = (map != null) ?
+                    map.getUserLocation() : null;
+
+            LatLng latLng = null;
+            if (userLocation != null) {
+                final float speed = userLocation.getSpeed();
+                if (Float.compare(speed, Const.UiConfig.DRIVING_MIN_SPEED) > 0) {
+                    // User is driving, try to launch driving directions
+                    try {
+                        final Intent intent = IntentUtils.getNavigationIntent(mLatLng);
+                        startActivity(intent);
+
+                        // Exit here, no need to launch GoogleMaps fallback intent
+                        return;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                latLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
+            }
+            // Couldn't start GoogleNavigation, fallback to GoogleMaps
+            final Intent intent = IntentUtils.getDirectionsIntent(latLng, mLatLng);
+            startActivity(intent);
         }
     }
 
@@ -255,6 +293,7 @@ public class LotInfoFragment extends Fragment implements
             vRecyclerView.setAdapter(mAdapter);
 
             view.findViewById(R.id.btn_nav_back).setOnClickListener(this);
+            view.findViewById(R.id.action_directions).setOnClickListener(this);
         } else {
             view.setOnClickListener(this);
 

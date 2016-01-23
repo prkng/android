@@ -25,6 +25,13 @@ public class Const {
         LatLng MONTREAL_LAT_LNG = new LatLng(45.5016889d, -73.567256d);
         float LOT_INFO_ATTRS_OPACITY = 0.55f;
         float DEFAULT_DURATION = 0.5f;
+        float DRIVING_MIN_SPEED = 25000f; // 25 km/h
+    }
+
+    public interface AppsIntents {
+        String GOOGLE_MAPS = "http://maps.google.com/maps?saddr=%1$s&daddr=%2$s&f=d";
+        String GOOGLE_NAVIGATION = "google.navigation:q=%1$s,%2$s&mode=d";
+//        String GOOGLE_MAPS = "geo:%1$s?q=%2$s(%3$s)";
     }
 
     public interface NotifationConfig {
