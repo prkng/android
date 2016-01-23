@@ -10,6 +10,7 @@ import java.net.UnknownHostException;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
+import ng.prk.prkngandroid.ui.view.RedSnackbar;
 
 public class PrkngApiError extends IOException {
     private final static String TAG = "PrkngApiError";
@@ -50,7 +51,7 @@ public class PrkngApiError extends IOException {
                             code);
                 }
             }
-            Snackbar.make(v,
+            RedSnackbar.make(v,
                     msg,
                     Snackbar.LENGTH_SHORT)
                     .show();

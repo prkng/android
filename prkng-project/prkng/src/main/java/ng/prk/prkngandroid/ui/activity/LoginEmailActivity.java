@@ -23,6 +23,7 @@ import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.model.LoginObject;
+import ng.prk.prkngandroid.ui.view.RedSnackbar;
 import ng.prk.prkngandroid.util.AuthValidation;
 import ng.prk.prkngandroid.util.EditTextUtils;
 import ng.prk.prkngandroid.util.PrkngPrefs;
@@ -175,7 +176,7 @@ public class LoginEmailActivity extends AppCompatActivity implements
     }
 
     private void showLoginErrorMessage() {
-        Snackbar.make(findViewById(R.id.root_view),
+        RedSnackbar.make(findViewById(R.id.root_view),
                 R.string.snackbar_login_fail,
                 Snackbar.LENGTH_LONG)
                 .setAction(R.string.btn_try_again, new View.OnClickListener() {

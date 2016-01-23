@@ -31,6 +31,7 @@ import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.model.LoginObject;
 import ng.prk.prkngandroid.ui.activity.base.BaseActivity;
+import ng.prk.prkngandroid.ui.view.RedSnackbar;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public class LoginActivity extends BaseActivity implements
@@ -201,7 +202,7 @@ public class LoginActivity extends BaseActivity implements
                             getResources().getString(R.string.snackbar_auth_error_facebook),
                             error.getMessage()
                     );
-                    Snackbar.make(findViewById(R.id.root_view),
+                    RedSnackbar.make(findViewById(R.id.root_view),
                             message,
                             Snackbar.LENGTH_LONG)
                             .show();
@@ -229,7 +230,7 @@ public class LoginActivity extends BaseActivity implements
                     getResources().getString(R.string.snackbar_auth_error_google),
                     result.getStatus().getStatusMessage()
             );
-            Snackbar.make(findViewById(R.id.root_view),
+            RedSnackbar.make(findViewById(R.id.root_view),
                     message,
                     Snackbar.LENGTH_LONG)
                     .show();
