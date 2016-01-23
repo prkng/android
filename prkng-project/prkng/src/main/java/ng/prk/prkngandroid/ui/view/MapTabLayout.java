@@ -2,6 +2,7 @@ package ng.prk.prkngandroid.ui.view;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.util.AttributeSet;
 import android.view.View;
@@ -28,11 +29,11 @@ public class MapTabLayout extends TabLayout {
     }
 
     @Override
-    public void addTab(Tab tab) {
-        super.addTab(tab);
+    public void addTab(@NonNull Tab tab, int position, boolean setSelected) {
+        super.addTab(tab, position, setSelected);
 
-        ViewGroup mainView = (ViewGroup) getChildAt(0);
-        ViewGroup tabView = (ViewGroup) mainView.getChildAt(tab.getPosition());
+        final ViewGroup mainView = (ViewGroup) getChildAt(0);
+        final ViewGroup tabView = (ViewGroup) mainView.getChildAt(position);
 
         int tabChildCount = tabView.getChildCount();
         for (int i = 0; i < tabChildCount; i++) {
