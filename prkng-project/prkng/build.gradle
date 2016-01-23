@@ -24,15 +24,15 @@ android {
         applicationId "ng.prk.prkngandroid"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 1
-        versionName "0.5"
+        versionCode 3
+        versionName "0.7"
 
 //        resConfigs "en", "fr"
 //        resConfigs "nodpi", "mdpi", "hdpi", "xhdpi", "xxhdpi"
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "API_BASE_URL", '"https://api.prk.ng/v1/"'
         }
@@ -53,6 +53,10 @@ android {
         debugLiveApi {
             buildConfigField "String", "API_BASE_URL", '"https://api.prk.ng/v1/"'
         }
+    }
+
+    lintOptions {
+        disable 'TypographyFractions','TypographyQuotes','MissingTranslation'
     }
 }
 
