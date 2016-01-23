@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android"
-    android:duration="@android:integer/config_mediumAnimTime"
+    android:duration="300"
     android:fillAfter="true">
     <translate
-        android:duration="@android:integer/config_shortAnimTime"
+        android:duration="200"
         android:fromYDelta="0"
         android:toYDelta="75%p" />
     <alpha
-        android:duration="@android:integer/config_shortAnimTime"
+        android:duration="100"
         android:fromAlpha="1.0"
-        android:startOffset="@android:integer/config_shortAnimTime"
+        android:startOffset="200"
         android:toAlpha="0.0" />
 </set>

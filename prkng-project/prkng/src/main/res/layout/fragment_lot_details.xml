@@ -14,7 +14,7 @@
         android:background="@color/map_info_background"
         android:gravity="center_vertical"
         android:paddingLeft="64dp"
-        android:paddingRight="16dp" />
+        android:paddingRight="64dp" />
 
     <ImageButton
         android:id="@+id/btn_nav_back"
@@ -25,6 +25,16 @@
         android:layout_margin="16dp"
         android:background="?android:attr/selectableItemBackground"
         android:src="@drawable/ic_navigation_arrow_back" />
+
+    <ImageButton
+        android:id="@+id/action_directions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="16dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:src="@drawable/ic_action_directions" />
 
     <LinearLayout
         android:id="@+id/subtitle"
@@ -123,8 +133,8 @@
     <ProgressBar
         android:id="@+id/progress"
         style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_centerInParent="true" />
 
 </RelativeLayout>

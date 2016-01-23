@@ -14,7 +14,8 @@
         android:id="@+id/wrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btn_checkout">
+        android:layout_above="@+id/btn_checkout"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:drawableLeft="@drawable/ic_action_user_activity_none"
+                android:drawableLeft="@drawable/ic_smart_reminder"
                 android:drawablePadding="16dp"
                 android:text="@string/checkin_smart_reminder" />
 
@@ -93,6 +94,14 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:background="@color/btn_checkout"
-        android:text="@string/btn_checkout" />
+        android:text="@string/btn_checkout"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>
