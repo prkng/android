@@ -1,7 +1,9 @@
 package ng.prk.prkngandroid.ui.fragment;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
 import android.location.Location;
@@ -9,10 +11,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +28,7 @@ import com.mapbox.mapboxsdk.annotations.Annotation;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.annotations.Polygon;
 import com.mapbox.mapboxsdk.annotations.Polyline;
 import com.mapbox.mapboxsdk.annotations.PolylineOptions;
 import com.mapbox.mapboxsdk.constants.MyLocationTracking;
@@ -48,8 +53,10 @@ import ng.prk.prkngandroid.ui.activity.LoginActivity;
 import ng.prk.prkngandroid.ui.thread.CarshareSpotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.CarshareVehiclesDownloadTask;
 import ng.prk.prkngandroid.ui.thread.LotsDownloadTask;
+import ng.prk.prkngandroid.ui.thread.NearestLotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.SpotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.PrkngDataDownloadTask;
+import ng.prk.prkngandroid.ui.view.RedSnackbar;
 import ng.prk.prkngandroid.util.MapUtils;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 
@@ -75,7 +82,7 @@ public class MainMapFragment extends Fragment implements
     private PrkngDataDownloadTask mTask;
     private Handler mHandler = new Handler();
     private Runnable mRunnable;
-    private OnMapMarkerClickListener listener;
+    private MapCallbacks listener;
     private int mPrkngMapType;
     private HashMap<String, List<Annotation>> mFeatureAnnotsList;
     private List<Annotation> mSelectedAnnotsList;
@@ -101,10 +108,14 @@ public class MainMapFragment extends Fragment implements
         return fragment;
     }
 
-    public interface OnMapMarkerClickListener {
+    public interface MapCallbacks {
         void showMarkerInfo(Marker marker, int type);
 
         void hideMarkerInfo();
+
+        void showDurationDialog();
+
+        void showCitiesDialog(LatLng latLng);
     }
 
     @Override
@@ -112,10 +123,10 @@ public class MainMapFragment extends Fragment implements
         super.onAttach(context);
 
         try {
-            listener = (OnMapMarkerClickListener) context;
+            listener = (MapCallbacks) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement OnMarkerClickListener");
+                    + " must implement MapCallbacks");
         }
     }
 
@@ -172,6 +183,19 @@ public class MainMapFragment extends Fragment implements
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (Const.RequestCodes.CITY_SELECTOR == requestCode &&
+                resultCode == Activity.RESULT_OK) {
+            final LatLngZoom latLngZoom = new LatLngZoom(
+                    data.getDoubleExtra(Const.BundleKeys.LATITUDE, Const.UNKNOWN_VALUE),
+                    data.getDoubleExtra(Const.BundleKeys.LONGITUDE, Const.UNKNOWN_VALUE),
+                    Const.UiConfig.DEFAULT_ZOOM
+            );
+            vMap.setLatLng(latLngZoom);
+        }
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         vMap.onPause();
@@ -209,12 +233,9 @@ public class MainMapFragment extends Fragment implements
         }
         mLastMapGeometry = new MapGeometry(vMap.getCenterCoordinate(), vMap.getZoomLevel());
         mPrkngMapType = Const.MapSections.ON_STREET;
-
-        addCheckinMarker();
     }
 
-    private void addCheckinMarker() {
-        CheckinData checkin = PrkngPrefs.getInstance(getActivity()).getCheckinData();
+    private void addCheckinMarker(CheckinData checkin) {
         if (checkin != null && vMap.isShown() && isVisible() && isResumed()) {
 // TODO skip adding marker when map is hidden
             try {
@@ -225,10 +246,26 @@ public class MainMapFragment extends Fragment implements
             } catch (IllegalStateException e) {
                 e.printStackTrace();
             }
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.checkin_frame, CheckinInfoFragment.newInstance(checkin.getId()), Const.FragmentTags.CHECKIN_INFO)
+
+            vMap.setLatLng(getCheckinCoordinate(getArguments()));
+        }
+    }
+
+    private void showCheckinInfo(CheckinData checkin) {
+        final FragmentManager fm = getFragmentManager();
+        if (checkin == null) {
+            final Fragment fragment = fm.findFragmentByTag(Const.FragmentTags.CHECKIN_INFO);
+            if (fragment != null) {
+                fm.beginTransaction()
+                        .remove(fragment)
+                        .commit();
+            }
+        } else {
+            fm.beginTransaction()
+                    .replace(R.id.checkin_frame,
+                            CheckinInfoFragment.newInstance(checkin.getId()),
+                            Const.FragmentTags.CHECKIN_INFO)
                     .commit();
-            vMap.setLatLng(getCheckinCoordinate());
         }
     }
 
@@ -242,6 +279,10 @@ public class MainMapFragment extends Fragment implements
         vMap.addOnMapChangedListener(this);
         vMap.setOnMapClickListener(this);
         vMap.setOnMarkerClickListener(this);
+
+        final CheckinData checkin = PrkngPrefs.getInstance(getActivity()).getCheckinData();
+        addCheckinMarker(checkin);
+        showCheckinInfo(checkin);
     }
 
     private void onMapStop() {
@@ -252,7 +293,8 @@ public class MainMapFragment extends Fragment implements
         if (vMap != null) {
             vMap.onStop();
 
-            vMap.removeAllAnnotations();
+//            vMap.removeAllAnnotations();
+//            MapUtils.removeAllAnnotations(vMap);
             vMap.removeOnMapChangedListener(this);
             vMap.setOnMapClickListener(null);
             vMap.setOnMarkerClickListener(null);
@@ -296,10 +338,10 @@ public class MainMapFragment extends Fragment implements
                 break;
             case MapView.DID_FINISH_RENDERING_MAP:
             case MapView.DID_FINISH_RENDERING_MAP_FULLY_RENDERED:
-                Log.d(TAG, "onMapChanged @ " + change);
+                Log.v(TAG, "onMapChanged @ " + change);
                 break;
             case MapView.DID_FAIL_LOADING_MAP:
-                Log.e(TAG, "onMapChanged failed");
+                Log.v(TAG, "DID_FAIL_LOADING_MAP");
                 break;
         }
     }
@@ -376,7 +418,8 @@ public class MainMapFragment extends Fragment implements
                 forceVisibleBounds(mVisiblePoint);
             }
 
-            addCheckinMarker();
+            addCheckinMarker(
+                    PrkngPrefs.getInstance(getActivity()).getCheckinData());
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -418,6 +461,10 @@ public class MainMapFragment extends Fragment implements
         if (listener != null) {
             listener.hideMarkerInfo();
         }
+
+        if (annotations == null || annotations.isEmpty()) {
+            onEmptyAnnotations();
+        }
     }
 
     @Override
@@ -425,8 +472,96 @@ public class MainMapFragment extends Fragment implements
         if (e.isUnauthorized()) {
             startActivity(LoginActivity.newIntent(getActivity()));
             getActivity().finish();
+        } else if (e.isNotFound()) {
+            onUnsupportedArea();
         } else {
             e.showSnackbar(vMap);
+        }
+    }
+
+    private void onUnsupportedArea() {
+        Log.v(TAG, "onUnsupportedArea");
+        mSnackbar = RedSnackbar.make(vMap, "You're probably viewing an unsupported area", Snackbar.LENGTH_INDEFINITE)
+                .setAction("Available cities",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Log.v(TAG, "onClick AAA");
+                            }
+                        });
+        mSnackbar.show();
+        for (Annotation annot : vMap.getAllAnnotations()) {
+            if (annot instanceof Polygon) {
+                Log.v(TAG, "skip adding layer");
+                return;
+            }
+        }
+        MapUtils.showSupportedArea(vMap);
+    }
+
+    private void onEmptyAnnotations() {
+        Log.v(TAG, "onEmptyAnnotations");
+        if (Const.MapSections.ON_STREET == mPrkngMapType) {
+            Log.v(TAG, "ON_STREET");
+
+            if (Double.compare(Const.UiConfig.SPOTS_MIN_ZOOM, vMap.getZoom()) < 0) {
+                // First, check zoom level
+                mSnackbar = RedSnackbar.make(vMap,
+                        "No allowed parking found here. You can check a wider area.",
+                        Snackbar.LENGTH_LONG)
+                        .setAction("Zoom out",
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        vMap.setZoom(Const.UiConfig.SPOTS_MIN_ZOOM, true);
+                                    }
+                                });
+                mSnackbar.show();
+            } else if (Float.compare(getDurationFilter(), Const.UiConfig.DEFAULT_DURATION) > 0) {
+                // Second, check duration filter
+                mSnackbar = RedSnackbar.make(vMap,
+                        String.format(
+                                "No allowed parking found for %d hours.",
+                                (int) getDurationFilter()),
+                        Snackbar.LENGTH_LONG)
+                        .setAction("Select duration",
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        listener.showDurationDialog();
+                                    }
+                                });
+                mSnackbar.show();
+            }
+        } else if (Const.MapSections.OFF_STREET == mPrkngMapType) {
+            Log.v(TAG, "OFF_STREET");
+            if (Double.compare(Const.UiConfig.LOTS_MIN_ZOOM, vMap.getZoom()) < 0) {
+                // First, check zoom level
+                mSnackbar = RedSnackbar.make(vMap,
+                        "No parking lots around here. You can check a wider area.",
+                        Snackbar.LENGTH_LONG)
+                        .setAction("Zoom out",
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        vMap.setZoom(Const.UiConfig.LOTS_MIN_ZOOM, true);
+                                    }
+                                });
+                mSnackbar.show();
+            } else {
+                // Second, search for nearest lot
+                mSnackbar = RedSnackbar.make(vMap,
+                        "No parking lots found in this area.",
+                        Snackbar.LENGTH_LONG)
+                        .setAction("View nearest",
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        updateMapData(vMap.getLatLng(), vMap.getZoom(), true);
+                                    }
+                                });
+                mSnackbar.show();
+            }
         }
     }
 
@@ -441,6 +576,10 @@ public class MainMapFragment extends Fragment implements
         return PrkngApp.getInstance(getActivity()).getMapDurationFilter();
     }
 
+    public Location getUserLocation() {
+        return vMap != null ? vMap.getMyLocation() : null;
+    }
+
     public void requestPermissionIfNeeded() {
         Log.v(TAG, "requestPermissionIfNeeded");
 
@@ -449,7 +588,7 @@ public class MainMapFragment extends Fragment implements
             // Provide an additional rationale to the user if the permission was not granted
             // and the user would benefit from additional context for the use of the permission.
             // For example if the user has previously denied the permission.
-            mSnackbar = Snackbar.make(vMap, R.string.snackbar_location_permission_needed, Snackbar.LENGTH_INDEFINITE)
+            mSnackbar = RedSnackbar.make(vMap, R.string.snackbar_location_permission_needed, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok,
                             new View.OnClickListener() {
                                 @Override
@@ -463,12 +602,41 @@ public class MainMapFragment extends Fragment implements
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.v(TAG, "onRequestPermissionsResult "
+                + String.format("requestCode = %s, permissions = %s, grantResults = %s", requestCode, permissions, grantResults));
+        if (Const.RequestCodes.PERMISSION_ACCESS_LOCATION == requestCode) {
+            if (PackageManager.PERMISSION_GRANTED ==
+                    ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+                vMap.setMyLocationEnabled(MY_LOCATION_ENABLED);
+                vMap.setMyLocationTrackingMode(MyLocationTracking.TRACKING_NONE);
+
+                vMap.setOnMyLocationChangeListener(new MapView.OnMyLocationChangeListener() {
+                    @Override
+                    public void onMyLocationChange(@Nullable Location location) {
+                        Log.v(TAG, "onMyLocationChange");
+
+                        if (location != null) {
+                            Log.e(TAG, "setLatLng");
+
+                            vMap.setOnMyLocationChangeListener(null);
+                            vMap.setLatLng(new LatLng(location.getLatitude(), location.getLongitude()), true);
+                        } else {
+                            Log.e(TAG, "Location null");
+                        }
+                    }
+                });
+            }
+        }
+    }
+
     public void requestPermission() {
         Log.v(TAG, "requestPermission");
 
         // Permission has not been granted yet. Request it directly.
-        ActivityCompat.requestPermissions(getActivity(),
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                 Const.RequestCodes.PERMISSION_ACCESS_LOCATION);
     }
 
@@ -497,20 +665,36 @@ public class MainMapFragment extends Fragment implements
         return mIgnoreMinDistance;
     }
 
-    private LatLngZoom getCheckinCoordinate() {
-        final double latitude = getArguments().getDouble(Const.BundleKeys.LATITUDE, Const.UNKNOWN_VALUE);
-        final double longitude = getArguments().getDouble(Const.BundleKeys.LONGITUDE, Const.UNKNOWN_VALUE);
-        final double zoom = getArguments().getDouble(Const.BundleKeys.ZOOM, Const.UNKNOWN_VALUE);
+    private static LatLngZoom getCheckinCoordinate(Bundle extras) {
+        if (extras != null) {
+            final double latitude = extras.getDouble(Const.BundleKeys.LATITUDE, Const.UNKNOWN_VALUE);
+            final double longitude = extras.getDouble(Const.BundleKeys.LONGITUDE, Const.UNKNOWN_VALUE);
+            final double zoom = extras.getDouble(Const.BundleKeys.ZOOM, Const.UNKNOWN_VALUE);
 
-
-        if (Double.valueOf(Const.UNKNOWN_VALUE).equals(latitude) || Double.valueOf(Const.UNKNOWN_VALUE).equals(longitude)) {
-            return null;
-        } else {
-            return new LatLngZoom(latitude, longitude, zoom);
+            if (!Double.valueOf(Const.UNKNOWN_VALUE).equals(latitude) && !Double.valueOf(Const.UNKNOWN_VALUE).equals(longitude)) {
+                return new LatLngZoom(latitude, longitude, zoom);
+            }
         }
+
+        return null;
     }
 
     private void updateMapData(LatLng latLng, double zoom) {
+        updateMapData(latLng, zoom, false);
+    }
+
+    private void updateMapData(LatLng latLng, double zoom, boolean forced) {
+        Log.v(TAG, "updateMapData "
+                + String.format("latLng = %s, zoom = %s, forced = %s", latLng, zoom, forced));
+
+
+        if (Double.compare(zoom, Const.UiConfig.AVAILABLE_CITIES_MIN_ZOOM) < 0) {
+            listener.showCitiesDialog(latLng);
+//            vMap.setZoom(Const.UiConfig.AVAILABLE_CITIES_MIN_ZOOM, false);
+            return;
+        } else if (Double.compare(zoom, Const.UiConfig.CLEAR_MAP_MIN_ZOOM) < 0) {
+            MapUtils.removeAllAnnotations(vMap);
+        }
 
         if (MapUtils.isMinZoom(zoom, mPrkngMapType)) {
             mIsZoomTooLow = false;
@@ -528,7 +712,8 @@ public class MainMapFragment extends Fragment implements
 
             switch (mPrkngMapType) {
                 case Const.MapSections.OFF_STREET:
-                    mTask = new LotsDownloadTask(vMap, mapAssets, this);
+                    mTask = forced ? new NearestLotsDownloadTask(vMap, mapAssets, this) :
+                            new LotsDownloadTask(vMap, mapAssets, this);
                     break;
                 case Const.MapSections.ON_STREET:
                     mTask = new SpotsDownloadTask(vMap, mapAssets, this);
@@ -553,7 +738,7 @@ public class MainMapFragment extends Fragment implements
         } else if (!mIsZoomTooLow || (mSnackbar != null && !mSnackbar.isShown())) {
             mIsZoomTooLow = true;
             mIgnoreMinDistance = true;
-            mSnackbar = Snackbar.make(vMap, R.string.snackbar_map_zoom_needed, Snackbar.LENGTH_INDEFINITE)
+            mSnackbar = RedSnackbar.make(vMap, R.string.snackbar_map_zoom_needed, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -586,7 +771,7 @@ public class MainMapFragment extends Fragment implements
     public void setMapType(int type) {
         Log.v(TAG, "setMapType @ " + type);
         if (type != mPrkngMapType) {
-            vMap.removeAllAnnotations();
+            MapUtils.removeAllAnnotations(vMap);
             mPrkngMapType = type;
             updateMapData(vMap.getCenterCoordinate(), vMap.getZoomLevel());
 
