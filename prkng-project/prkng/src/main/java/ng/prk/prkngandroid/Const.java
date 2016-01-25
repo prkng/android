@@ -17,6 +17,8 @@ public class Const {
         double LOTS_MIN_ZOOM = 14.0d;
         double CARSHARE_SPOTS_MIN_ZOOM = SPOTS_MIN_ZOOM;
         double CARSHARE_VEHICLES_MIN_ZOOM = 13.0d;
+        double CLEAR_MAP_MIN_ZOOM = 11.0d;
+        double AVAILABLE_CITIES_MIN_ZOOM = 6.0d;
         double SMALL_BUTTONS_ZOOM = 17.0d;
         double BIG_BUTTONS_ZOOM = 18.0d;
         double MY_LOCATION_ZOOM = 17.0d;
@@ -94,6 +96,9 @@ public class Const {
         String SPECIAL_DAY = "special_days";
         String ACCESSIBLE = "handicap";
         String STREET_VIEW = "street_view";
+        String AREA_NAME = "name_disp";
+        String DISPLAY_NAME = "display_name";
+        String URBAN_AREA_RADIUS = "urban_area_radius";
         String USER_ID = "user_id";
         String LOT_ID = "lot_id";
         String SPOT_ID = "slot_id";
@@ -176,6 +181,7 @@ public class Const {
         String ABOUT = "f_about";
         String SETTINGS = "f_settings";
         String DIALOG_DURATIONS = "d_durations";
+        String DIALOG_CITIES = "d_cities";
         String MAP_INFO = "f_map_info";
         String MAP_INFO_EXPANDED = "f_map_info_expanded";
         String CHECKIN_INFO = "f_checkin_info";
@@ -194,6 +200,7 @@ public class Const {
         int NOTIFY_CHECKIN = 100;
         int CHECKIN_REMINDER = 110;
         int CHECKIN_SMART_REMINDER = 111;
+        int CITY_SELECTOR = 120;
     }
 
     public interface BundleKeys {
