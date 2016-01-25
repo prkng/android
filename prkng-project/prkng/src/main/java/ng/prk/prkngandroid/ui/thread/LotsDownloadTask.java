@@ -22,10 +22,13 @@ import ng.prk.prkngandroid.util.CalendarUtils;
 
 public class LotsDownloadTask extends PrkngDataDownloadTask {
     private final static String TAG = "LotsTask";
-    private boolean mForceBoundingBox = false;
 
     public LotsDownloadTask(MapView mapView, MapAssets mapAssets, MapTaskListener listener) {
         super(mapView, mapAssets, listener);
+    }
+
+    protected int getNearest() {
+        return 0;
     }
 
     /**
@@ -39,7 +42,7 @@ public class LotsDownloadTask extends PrkngDataDownloadTask {
         startTime = System.currentTimeMillis();
         final MapGeometry mapGeometry = params[0];
 
-        final PrkngService service = ApiClient.getService();
+        final PrkngService service = ApiClient.getServiceLog();
 
         final SpotsAnnotations spotsAnnotations = new SpotsAnnotations();
         spotsAnnotations.setCenterCoordinate(mapGeometry);
@@ -48,29 +51,30 @@ public class LotsDownloadTask extends PrkngDataDownloadTask {
 
             if (apiKey != null && mapGeometry != null) {
                 // Get API data
-                PointsGeoJSON lots = ApiClient.getParkingLots(service,
+                PointsGeoJSON lots = ApiClient.getNearestParkingLots(service,
                         apiKey,
                         mapGeometry.getLatitude(),
                         mapGeometry.getLongitude(),
-                        mapGeometry.getRadius()
-                );
+                        mapGeometry.getRadius(),
+                        getNearest()
+                        );
 
                 final long now = CalendarUtils.todayMillis();
 
                 // Prepare map annotations: Markers only
                 List<PointsGeoJSONFeature> lotsFeatures = lots.getFeatures();
 
-                if (lotsFeatures.isEmpty()) {
-                    // TODO: refactor to zoomOut?
-                    mForceBoundingBox = true;
-                    lots = ApiClient.getNearestParkingLots(service,
-                            apiKey,
-                            mapGeometry.getLatitude(),
-                            mapGeometry.getLongitude(),
-                            mapGeometry.getRadius()
-                    );
-                    lotsFeatures = lots.getFeatures();
-                }
+//                if (lotsFeatures.isEmpty()) {
+//                    // TODO: refactor to zoomOut?
+//                    mForceBoundingBox = true;
+//                    lots = ApiClient.getNearestParkingLots(service,
+//                            apiKey,
+//                            mapGeometry.getLatitude(),
+//                            mapGeometry.getLongitude(),
+//                            mapGeometry.getRadius()
+//                    );
+//                    lotsFeatures = lots.getFeatures();
+//                }
 
                 final int bestPrice = getBestPrice(lotsFeatures, now);
 
@@ -100,7 +104,7 @@ public class LotsDownloadTask extends PrkngDataDownloadTask {
         return spotsAnnotations;
     }
 
-    private static int getBestPrice(List<PointsGeoJSONFeature> lotsFeatures, long now) {
+    protected static int getBestPrice(List<PointsGeoJSONFeature> lotsFeatures, long now) {
         int best = Integer.MAX_VALUE;
 
         for (PointsGeoJSONFeature feature : lotsFeatures) {
@@ -111,12 +115,6 @@ public class LotsDownloadTask extends PrkngDataDownloadTask {
         }
 
         return best;
-    }
-
-
-    @Override
-    protected boolean forceBoundingBox() {
-        return mForceBoundingBox;
     }
 
 }
