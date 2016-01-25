@@ -22,23 +22,26 @@
 
 
 ###### Retrofit ######
--dontwarn retrofit.**
--keep class retrofit.** { *; }
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
 -keepattributes Signature
 -keepattributes Exceptions
 
+
+###### Okhttp3 ######
+-dontwarn okhttp3.**
+-keep class okhttp3.** { *; }
+-dontwarn okio.*
 
 ###### Okio #######
 -keep class sun.misc.Unsafe { *; }
 -dontwarn java.nio.file.*
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 -dontwarn okio.*
+-keep class okio.* { *; }
 
 
 ###### Mapbox ######
-# Square okio, ignoring warnings,
-# see https://github.com/square/okio/issues/60
--dontwarn okio.**
 -keep class com.mapbox.mapboxsdk.annotations.** { *; }
 -keep class com.mapbox.mapboxsdk.geometry.** { *; }
 -keep class com.mapbox.mapboxsdk.http.** { *; }
@@ -49,3 +52,10 @@
 -keep class com.crashlytics.** { *; }
 -keep class com.crashlytics.android.**
 -keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
+
+-dontwarn com.google.common.**
+-dontwarn java.lang.invoke.*
+-dontwarn android.support.v7.**
+-keep class android.support.v7.** { *; }
+-keep interface android.support.v7.** { *; }
