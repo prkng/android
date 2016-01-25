@@ -23,6 +23,7 @@ import ng.prk.prkngandroid.io.ApiCallback;
 import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.model.CheckinData;
 import ng.prk.prkngandroid.ui.activity.base.BaseActivity;
+import ng.prk.prkngandroid.ui.dialog.CitiesDialog;
 import ng.prk.prkngandroid.ui.dialog.DurationDialog;
 import ng.prk.prkngandroid.ui.fragment.LotInfoFragment;
 import ng.prk.prkngandroid.ui.fragment.MainMapFragment;
@@ -33,7 +34,7 @@ import ng.prk.prkngandroid.util.PrkngPrefs;
 public class MainActivity extends BaseActivity implements
         DurationDialog.OnDurationChangedListener,
         OnMarkerInfoClickListener,
-        MainMapFragment.OnMapMarkerClickListener,
+        MainMapFragment.MapCallbacks,
         TabLayout.OnTabSelectedListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = "MainActivity";
@@ -217,6 +218,23 @@ public class MainActivity extends BaseActivity implements
                     .setCustomAnimations(R.anim.slide_up, R.anim.slide_down)
                     .remove(fragment)
                     .commit();
+        }
+    }
+
+    @Override
+    public void showDurationDialog() {
+        super.showDurationDialog();
+    }
+
+    @Override
+    public void showCitiesDialog(LatLng latLng) {
+        final FragmentManager fm = getSupportFragmentManager();
+        if (fm.findFragmentByTag(Const.FragmentTags.DIALOG_CITIES) == null) {
+            final CitiesDialog dialog = CitiesDialog.newInstance(latLng);
+
+            final Fragment map = getSupportFragmentManager().findFragmentByTag(Const.FragmentTags.MAP);
+            dialog.setTargetFragment(map, Const.RequestCodes.CITY_SELECTOR);
+            dialog.show(fm, Const.FragmentTags.DIALOG_CITIES);
         }
     }
 
