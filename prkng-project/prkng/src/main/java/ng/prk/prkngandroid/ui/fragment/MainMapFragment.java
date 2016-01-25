@@ -87,7 +87,6 @@ public class MainMapFragment extends Fragment implements
     private HashMap<String, List<Annotation>> mFeatureAnnotsList;
     private List<Annotation> mSelectedAnnotsList;
     private SelectedFeature mSelectedFeature;
-    private LatLng mVisiblePoint;
     private Snackbar mSnackbar;
 
     public static MainMapFragment newInstance() {
@@ -231,7 +230,7 @@ public class MainMapFragment extends Fragment implements
         if (mapAssets == null) {
             mapAssets = new MapAssets(vMap);
         }
-        mLastMapGeometry = new MapGeometry(vMap.getCenterCoordinate(), vMap.getZoomLevel());
+        mLastMapGeometry = new MapGeometry(vMap.getLatLng(), vMap.getZoom());
         mPrkngMapType = Const.MapSections.ON_STREET;
     }
 
@@ -314,7 +313,7 @@ public class MainMapFragment extends Fragment implements
             case MapView.REGION_DID_CHANGE:
                 if (isSignificantChange() || isIgnoreMinDistance()) {
                     mIgnoreMinDistance = false;
-                    updateMapData(vMap.getCenterCoordinate(), vMap.getZoomLevel());
+                    updateMapData(vMap.getLatLng(), vMap.getZoom());
                 }
                 break;
             case MapView.DID_FINISH_LOADING_MAP:
@@ -322,7 +321,7 @@ public class MainMapFragment extends Fragment implements
             case MapView.REGION_DID_CHANGE_ANIMATED:
                 if (isSignificantChange() || isIgnoreMinDistance()) {
                     mIgnoreMinDistance = false;
-                    updateMapData(vMap.getCenterCoordinate(), vMap.getZoomLevel());
+                    updateMapData(vMap.getLatLng(), vMap.getZoom());
                 }
                 break;
             case MapView.REGION_WILL_CHANGE:
@@ -414,42 +413,11 @@ public class MainMapFragment extends Fragment implements
         try {
             vProgressBar.setVisibility(View.GONE);
 
-            if (mVisiblePoint != null) {
-                forceVisibleBounds(mVisiblePoint);
-            }
-
             addCheckinMarker(
                     PrkngPrefs.getInstance(getActivity()).getCheckinData());
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-    }
-
-    private void forceVisibleBounds(LatLng visiblePoint) {
-//        TODO renable this, on tab change only
-//        vMap.removeOnMapChangedListener(this);
-//        final ArrayList<LatLng> coordinates = new ArrayList<>();
-//        coordinates.add(visiblePoint);
-//        coordinates.add(vMap.getLatLng());
-//
-//        final Location myLocation = vMap.getMyLocation();
-//        if (myLocation != null) {
-//            coordinates.add(new LatLng(myLocation));
-//        }
-//
-//        final int padding = getResources().getDimensionPixelSize(R.dimen.map_bounds_padding);
-//        vMap.setVisibleCoordinateBounds(
-//                coordinates.toArray(new LatLng[coordinates.size()]),
-//                new RectF(padding, padding, padding, padding),
-//                true
-//        );
-//
-//        vMap.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                vMap.addOnMapChangedListener(MainMapFragment.this);
-//            }
-//        }, ANIMATION_DURATION);
     }
 
     @Override
@@ -566,8 +534,18 @@ public class MainMapFragment extends Fragment implements
     }
 
     @Override
-    public void setBounds(LatLng visible) {
-        mVisiblePoint = visible;
+    public void setCenterCoordinate(LatLng center) {
+        Log.v(TAG, "setCenterCoordinate" + center.toString());
+        vMap.removeOnMapChangedListener(this);
+
+        vMap.setLatLng(center, true);
+
+        vMap.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                vMap.addOnMapChangedListener(MainMapFragment.this);
+            }
+        }, ANIMATION_DURATION);
     }
 
     @Override
@@ -647,14 +625,14 @@ public class MainMapFragment extends Fragment implements
      * @return true if changes are noteworthy
      */
     private boolean isSignificantChange() {
-        double centerDistance = Math.round(mLastMapGeometry.distanceTo(vMap.getCenterCoordinate()));
-        double zoomChange = mLastMapGeometry.getZoom() - vMap.getZoomLevel();
+        double centerDistance = Math.round(mLastMapGeometry.distanceTo(vMap.getLatLng()));
+        double zoomChange = mLastMapGeometry.getZoom() - vMap.getZoom();
 
         // Toggle if the two zooms are on the same "side" of SMALL_BUTTONS_ZOOM (17)
         // Ex1, TRUE:  compare(17, 15) * compare(17, 19) = 1 * -1 = -1
         // Ex2, FALSE: compare(17, 18) * compare(17, 19) = 1 *  1 =  1
         boolean toggleButtonsVisibility = (Double.compare(Const.UiConfig.SMALL_BUTTONS_ZOOM, mLastMapGeometry.getZoom())
-                * Double.compare(Const.UiConfig.SMALL_BUTTONS_ZOOM, vMap.getZoomLevel())) < 0;
+                * Double.compare(Const.UiConfig.SMALL_BUTTONS_ZOOM, vMap.getZoom())) < 0;
 
         return Double.compare(zoomChange, 0.4d) >= 0 ||
                 Double.compare(centerDistance, Const.UiConfig.MIN_UPDATE_DISTACE) >= 0 ||
@@ -763,7 +741,7 @@ public class MainMapFragment extends Fragment implements
             vMap.setLatLng(new LatLngZoom(
                     myLocation.getLatitude(),
                     myLocation.getLongitude(),
-                    Math.max(Const.UiConfig.MY_LOCATION_ZOOM, vMap.getZoomLevel())
+                    Math.max(Const.UiConfig.MY_LOCATION_ZOOM, vMap.getZoom())
             ), animated);
         }
     }
@@ -773,23 +751,9 @@ public class MainMapFragment extends Fragment implements
         if (type != mPrkngMapType) {
             MapUtils.removeAllAnnotations(vMap);
             mPrkngMapType = type;
-            updateMapData(vMap.getCenterCoordinate(), vMap.getZoomLevel());
+            final double zoom = MapUtils.getMinZoomPerType(type);
 
-            double zoom = Const.UiConfig.DEFAULT_ZOOM;
-            switch (type) {
-                case Const.MapSections.OFF_STREET:
-                    zoom = Const.UiConfig.LOTS_MIN_ZOOM;
-                    break;
-                case Const.MapSections.ON_STREET:
-                    zoom = Const.UiConfig.SPOTS_MIN_ZOOM;
-                    break;
-                case Const.MapSections.CARSHARE_SPOTS:
-                    zoom = Const.UiConfig.CARSHARE_SPOTS_MIN_ZOOM;
-                    break;
-                case Const.MapSections.CARSHARE_VEHICLES:
-                    zoom = Const.UiConfig.CARSHARE_VEHICLES_MIN_ZOOM;
-                    break;
-            }
+            updateMapData(vMap.getLatLng(), zoom, true);
             vMap.setZoom(zoom, true);
         }
     }

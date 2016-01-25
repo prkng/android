@@ -45,7 +45,7 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
 
         void onFailure(PrkngApiError e);
 
-        void setBounds(LatLng visible);
+        void setCenterCoordinate(LatLng visible);
 
         float getDurationFilter();
     }
@@ -86,6 +86,7 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
             return;
         }
 
+        LatLng visiblePoint = null;
         try {
             if (error != null) {
                 listener.onFailure(error);
@@ -114,7 +115,7 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
                         addToAnnotationsList(entry.getValue(), markersList.get(i++));
                     }
                     if (forceBoundingBox()) {
-                        listener.setBounds(markersList.get(0).getPosition());
+                        visiblePoint = markersList.get(0).getPosition();
                     }
                 }
                 spots.clearMarkers();
@@ -130,6 +131,9 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
             if (listener != null) {
                 listener.setAnnotationsList(featureAnnotsList);
                 listener.onPostExecute();
+                if (visiblePoint != null) {
+                    listener.setCenterCoordinate(visiblePoint);
+                }
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
