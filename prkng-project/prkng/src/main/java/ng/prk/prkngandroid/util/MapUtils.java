@@ -1,9 +1,11 @@
 package ng.prk.prkngandroid.util;
 
+import com.mapbox.mapboxsdk.annotations.Annotation;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.annotations.Polyline;
 import com.mapbox.mapboxsdk.annotations.PolylineOptions;
+import com.mapbox.mapboxsdk.views.MapView;
 
 import ng.prk.prkngandroid.Const;
 
@@ -52,5 +54,17 @@ public class MapUtils {
         return options;
     }
 
+    public static void removeAllAnnotations(MapView mapView) {
+        for (Annotation annot : mapView.getAllAnnotations()) {
+            if (annot instanceof Polyline || annot instanceof Marker) {
+                mapView.removeAnnotation(annot);
+            }
+        }
+    }
 
+    public static void showSupportedArea(MapView mapView) {
+        mapView.addPolygons(
+                CityBoundsHelper.getAreaPolygonOptions(mapView.getContext(), mapView.getLatLng()));
+
+    }
 }
