@@ -12,6 +12,8 @@
         android:layout_height="64dp"
         android:layout_alignParentTop="true"
         android:background="@color/map_info_background"
+        android:clickable="true"
+        android:focusable="true"
         android:gravity="center_vertical"
         android:paddingLeft="64dp"
         android:paddingRight="64dp" />
@@ -22,8 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="16dp"
         android:background="?android:attr/selectableItemBackground"
+        android:padding="16dp"
         android:src="@drawable/ic_navigation_arrow_back" />
 
     <ImageButton
