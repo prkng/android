@@ -40,6 +40,12 @@ public class GeoJSONFeatureProperties {
      */
     private String company;
 
+    /**
+     * Supported Areas
+     */
+    @SerializedName(Const.ApiArgs.AREA_NAME)
+    private String areaName;
+
     public List<LatLng> getButtonLocations() {
         if (button_locations != null) {
             List<LatLng> buttons = new ArrayList<>();
@@ -114,5 +120,9 @@ public class GeoJSONFeatureProperties {
 
     public String getName() {
         return name;
+    }
+
+    public String getAreaName() {
+        return areaName;
     }
 }
