@@ -95,7 +95,7 @@ public class BusinessInterval extends Interval implements
         if (Float.valueOf(mainPrice).compareTo((float) Const.UNKNOWN_VALUE) != 0) {
             return mainPrice;
         } else if ((Float.valueOf(hourlyPrice).compareTo(0f) > 0)) {
-            Log.i("BusinessInterval", "main price based on hourly");
+            Log.v("BusinessInterval", "main price based on hourly");
             final double remainingHours = Math.ceil(
                     (endMillis - CalendarUtils.todayMillis()) / DateUtils.HOUR_IN_MILLIS);
 

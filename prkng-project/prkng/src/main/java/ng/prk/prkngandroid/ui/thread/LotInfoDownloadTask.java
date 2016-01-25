@@ -36,7 +36,7 @@ public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureP
 //        lotId = "185";
 //        lotId = String.valueOf(new Random().nextInt(99) + 1);
 
-//        Log.i(TAG, "lotId = " + lotId);
+//        Log.v(TAG, "lotId = " + lotId);
 
         final PrkngService service = ApiClient.getService();
         try {

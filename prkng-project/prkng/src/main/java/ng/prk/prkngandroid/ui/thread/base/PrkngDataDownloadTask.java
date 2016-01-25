@@ -23,6 +23,7 @@ import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.SpotsAnnotations;
 import ng.prk.prkngandroid.model.ui.MapAssets;
+import ng.prk.prkngandroid.util.MapUtils;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void, SpotsAnnotations> {
@@ -90,7 +91,7 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
                 listener.onFailure(error);
             }
             if (spots != null) {
-                vMap.removeAllAnnotations();
+                MapUtils.removeAllAnnotations(vMap);
 
                 if (!spots.getPolylines().isEmpty()) {
                     // Note: Mapbox's Iterator can throw a local reference table overflow exception
@@ -122,7 +123,7 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
 //                    drawRadius(spots.getCenterCoordinate());
                 Log.v(TAG, "Sync duration: " + (System.currentTimeMillis() - startTime) + " ms");
             } else {
-                Log.e(TAG, "No spots found..");
+                Log.v(TAG, "No spots found..");
             }
 
             // Done processing: hide the progressbar

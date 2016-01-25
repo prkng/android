@@ -204,8 +204,6 @@ public class ApiClient {
     }
 
     /**
-     * Returns slots around the point defined by (x, y)
-     *
      * @param service
      * @param apiKey
      * @param latitude
@@ -233,14 +231,26 @@ public class ApiClient {
         return null;
     }
 
-    public static PointsGeoJSON getNearestParkingLots(PrkngService service, String apiKey, double latitude, double longitude, int radius) throws PrkngApiError {
+    /**
+     * Returns slots around the point defined by (x, y)
+     *
+     * @param service
+     * @param apiKey
+     * @param latitude
+     * @param longitude
+     * @param radius
+     * @param nearest
+     * @return
+     * @throws PrkngApiError
+     */
+    public static PointsGeoJSON getNearestParkingLots(PrkngService service, String apiKey, double latitude, double longitude, int radius, int nearest) throws PrkngApiError {
         try {
             final Response<PointsGeoJSON> response = service
                     .getParkingLots(apiKey,
                             latitude,
                             longitude,
                             radius,
-                            1)
+                            nearest)
                     .execute();
             if (response != null) {
                 return response.body();

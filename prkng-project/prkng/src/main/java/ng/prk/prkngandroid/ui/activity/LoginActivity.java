@@ -214,7 +214,6 @@ public class LoginActivity extends BaseActivity implements
     }
 
     private void handleGoogleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleGoogleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully
             final GoogleSignInAccount account = result.getSignInAccount();

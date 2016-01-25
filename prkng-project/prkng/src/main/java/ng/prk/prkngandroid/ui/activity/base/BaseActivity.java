@@ -92,11 +92,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
             return true;
         } else if (id == R.id.action_timer) {
-            final DurationDialog dialog = DurationDialog.newInstance(
-                    PrkngApp.getInstance(this).getMapDurationFilter()
-            );
-
-            dialog.show(getSupportFragmentManager(), Const.FragmentTags.DIALOG_DURATIONS);
+            showDurationDialog();
             return true;
         } else if (id == R.id.action_user_activity) {
             startActivity(CheckinActivity.newIntent(this));
@@ -136,5 +132,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected boolean isLoginRequired() {
         return true;
+    }
+
+    protected void showDurationDialog() {
+        final DurationDialog dialog = DurationDialog.newInstance(
+                PrkngApp.getInstance(this).getMapDurationFilter()
+        );
+
+        dialog.show(getSupportFragmentManager(), Const.FragmentTags.DIALOG_DURATIONS);
     }
 }

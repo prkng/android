@@ -10,10 +10,12 @@ import ng.prk.prkngandroid.Const;
 
 public class LatLong extends LatLng {
     public static final Parcelable.Creator<LatLng> CREATOR = new Parcelable.Creator<LatLng>() {
+        @Override
         public LatLng createFromParcel(Parcel in) {
             return new LatLong(in);
         }
 
+        @Override
         public LatLng[] newArray(int size) {
             return new LatLng[size];
         }
