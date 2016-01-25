@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activities-->
     <string name="activity_main">Carte</string>
+    <string name="activity_checkin">Checkin</string>
     <string name="activity_about">À propos</string>
     <string name="activity_settings">Réglages</string>
     <string name="activity_terms">Conditions d’utilisation</string>
@@ -23,10 +24,10 @@
     <string name="share_app_body">@string/url_playstore</string>
 
     <!--Cities-->
-    <string name="city_montreal">Montréal (QC)</string>
-    <string name="city_new_york">New York (NY)</string>
-    <string name="city_quebec">Québec (QC)</string>
-    <string name="city_seattle">Seattle (WA)</string>
+    <string name="city_montreal">Montréal, QC</string>
+    <string name="city_new_york">New York, NY</string>
+    <string name="city_quebec">Québec, QC</string>
+    <string name="city_seattle">Seattle, WA</string>
 
     <!--Prefs/Settings-->
     <string name="prefs_login_title">Connexion</string>
@@ -38,6 +39,7 @@
 
     <!--Prefs/About-->
     <string name="prefs_onboarding_title">Faire le tour</string>
+    <string name="prefs_support_title">Support</string>
     <string name="prefs_faq_title">Foire aux questions</string>
     <string name="prefs_terms_title">Conditions d’utilisation</string>
     <string name="prefs_version_title">Version</string>
@@ -45,17 +47,31 @@
     <!--Menu actions-->
     <string name="action_search">Recherche</string>
     <string name="action_timer">Durée</string>
+    <string name="action_user_account">User activity</string>
     <string name="action_settings">Réglages</string>
     <string name="action_about">À propos</string>
+    <string name="action_checkin">Checkin</string>
     <string name="action_share">Partager</string>
+    <string name="action_rate">Rate</string>
+    <string name="action_help_password">Forgot password?</string>
 
     <!--Buttons-->
-    <string name="btn_login">Connexion</string>
-    <string name="btn_skip">Ignorer</string>
-    <string name="btn_done">Terminer</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_register">Create account</string>
+    <string name="btn_login_email">I already have an account</string>
+    <string name="btn_skip">Skip</string>
+    <string name="btn_done">Got it</string>
+    <string name="btn_checkin">Parked</string>
+    <string name="btn_checkout">Checkout</string>
+    <string name="btn_info">Info</string>
+    <string name="btn_try_again">Retry</string>
+    <string name="btn_reset_password">Reset password</string>
 
     <!--Dialogs-->
     <string name="dialog_durations_title">Choisir la durée</string>
+    <string name="dialog_cities_title">Choisir la ville city</string>
 
     <!--Snackbar-->
     <string name="snackbar_map_zoom_needed">Please zoom in to update map</string>
@@ -64,6 +80,13 @@
     <string name="snackbar_auth_error_google">Erreur Google: %s</string>
     <string name="snackbar_api_error_code">Erreur serveur: code %d</string>
     <string name="snackbar_api_error_message">Erreur serveur: %1$s [%2$d]</string>
+    <string name="snackbar_host_unknown_error_message">Server connection error [%1$d]</string>
+    <string name="snackbar_login_fail">Wrong email or password. Please check the values provided</string>
+    <string name="snackbar_sign_up_fail">User already exists. Login or forgot password?</string>
+
+    <!--Toast-->
+    <string name="toast_checkout_ok">prkng checked out successfully</string>
+    <string name="toast_checkout_error">prkng checkout error</string>
 
     <!--Map-->
     <string name="map_tab_off_street">Hors rue</string>
@@ -75,6 +98,7 @@
     <!--Calendar-->
     <string name="hour_minutes_format">kk&#160;:&#160;mm</string>
     <string name="all_day">24&#160;h</string>
+    <string name="time_start_end">%1$s – %2$s</string>
     <array name="days_of_week">
         <item>Lundi</item>
         <item>Mardi</item>
@@ -87,15 +111,27 @@
 
     <!--Duration-->
     <string name="quantity_half">½</string>
-
     <plurals name="duration_legend_hours">
         <item quantity="one" tools:ignore="ImpliedQuantity">heure</item>
         <item quantity="other">heures</item>
     </plurals>
+    <plurals name="expiry_hours">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <plurals name="expiry_minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <string name="allowed_all_week">Available all week long</string>
+    <string name="expiry_day_tomorrow">Tomorrow</string>
+    <string name="expiry_hours_minutes">%1$dh %2$dm</string>
+    <string name="expiry_day_time_of_day">%1$s @ %2$s</string>
 
     <!--Lot Info-->
     <string name="all_day_closed">Fermé</string>
     <string name="lot_attr_indoor">INTÉRIEUR</string>
+    <string name="lot_attr_outdoor">OUTDOOR</string>
     <string name="lot_attr_card">CARTE DE CRÉDIT</string>
     <string name="lot_attr_accessible">ACCESSIBLE</string>
     <string name="lot_attr_valet">VALET</string>
@@ -103,10 +139,37 @@
     <string name="lot_hourly_price">%s/heure</string>
     <string name="lot_capactiy">Capacité: %d&#160;places</string>
 
-    <!--Currency-->
-    <string name="currency_decimals">%.2f&#160;$</string>
-    <string name="currency_round">%d&#160;$</string>
+    <!--Checkin/ User Activity-->
+    <string name="checkin_title">YOU ARE PARKED ON</string>
+    <string name="checkin_expiry">AVAILABLE UNTIL</string>
+    <string name="checkin_prefix">Parked on %s</string>
+    <string name="checkin_smart_reminder">GET NOTIFIED THE NIGHT BEFORE</string>
+    <string name="checkin_empty">Select a segment on the map and tap Check-in to save it here and get reminders</string>
 
+    <!--Authentication-->
+    <string name="auth_subtitle">LOGIN WITH</string>
+    <string name="auth_btn_facebook">FACEBOOK</string>
+    <string name="auth_btn_google">GMAIL</string>
+    <string name="auth_btn_email">OR USE YOUR EMAIL</string>
+    <string name="auth_hint_login_name">Name</string>
+    <string name="auth_hint_login_email">Email</string>
+    <string name="auth_hint_login_password">Password</string>
+    <string name="auth_confirm_password_reset">Please check your email!\r\nYou&#160;will receive instructions on how to enter your new password…</string>
+
+    <!--Notifications-->
+    <string name="notify_checkin_text">Parked on %s</string>
+    <string name="notify_expiry_smart_reminder_text">Parking expires tomorrow</string>
+    <string name="notify_expiry_reminder_text">Hey smart driver, time to move your car!</string>
+
+
+    <!--Auth validation errors-->
+    <string name="auth_error_invalid_email">Use a valid email address</string>
+    <string name="auth_error_invalid_password_short">Use at least 6 characters</string>
+    <string name="auth_error_invalid_name_short">Use at least 2 characters</string>
+
+    <!--Currency-->
+    <string name="currency_decimals">$%.2f</string>
+    <string name="currency_round">$%d</string>
 
     <!--Tutorial-->
     <string name="tutorial_desc_01">Sarah va bruncher avec sa mère et devra se stationner près du restaurant. Voyez comment elle utilise prkng!</string>
@@ -115,8 +178,8 @@
     <string name="tutorial_desc_04">Fini les maux de tête et les contraventions: faites comme Sarah et utilisez prkng pour trouver votre prochain stationnement gratuit!</string>
 
     <!--Accessibility-->
-    <string name="navigation_drawer_open">Ouvrir le panneau de navigation</string>
-    <string name="navigation_drawer_close">Fermer le panneau de navigation</string>
-    <string name="desc_restr_type">Type de restriction</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="desc_restr_type">Restriction type</string>
 
 </resources>
