@@ -71,6 +71,7 @@
 
     <!--Dialogs-->
     <string name="dialog_durations_title">Select duration</string>
+    <string name="dialog_cities_title">Select city</string>
 
     <!--Snackbar-->
     <string name="snackbar_map_zoom_needed">Please zoom in to update map</string>

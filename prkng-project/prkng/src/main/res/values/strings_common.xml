@@ -5,6 +5,9 @@
 
     <!--URLs-->
     <string name="url_playstore" translatable="false">https://play.google.com/store/apps/details?id=ng.prk.prkngandroid</string>
+    <string name="asset_cities">areas/cities.json</string>
+    <string name="asset_areas">areas/areas.geojson</string>
+
     <!--Emails-->
     <string name="email_support" translatable="false">hello@prk.ng</string>
 
@@ -44,6 +47,13 @@
         <item>auto-mobile</item>
         <item>car2go</item>
         <item>zipcar</item>
+    </array>
+
+    <array name="available_cities">
+        <item>@string/city_montreal</item>
+        <item>@string/city_new_york</item>
+        <item>@string/city_quebec</item>
+        <item>@string/city_seattle</item>
     </array>
 
     <!--Google Cloud Messaging (GCM)-->
