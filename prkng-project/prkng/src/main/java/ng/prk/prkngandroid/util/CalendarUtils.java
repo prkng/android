@@ -39,6 +39,8 @@ public class CalendarUtils {
 
     public static final String TIMEZONE_UTC = "UTC";
     public static final String DATE_FORMAT_ISO_8601 = "yyyy-MM-dd'T'HH:mm:ss";
+    public final static String DATE_FORMAT_DAY_OF_WEEK = "EEEE";
+
 //    public static final String DATE_FORMAT_ISO_8601_MICROS = DATE_FORMAT_ISO_8601 + ".SSSSSS";
 
     /**
@@ -109,7 +111,6 @@ public class CalendarUtils {
         if (Long.valueOf(Const.UNKNOWN_VALUE).equals(millis)) {
             return null;
         }
-        new HumanDuration(context, millis, 0);
 
         if (Long.valueOf(millis).compareTo(0L) == 0) {
             return "Parking not allowed";
@@ -117,10 +118,8 @@ public class CalendarUtils {
             return "Allowed at all times";
         }
 
-        return String.format("Remaining Time = %1sh %2sm",
-                (int) Math.floor(millis / DateUtils.HOUR_IN_MILLIS),
-                (int) Math.floor((millis % DateUtils.HOUR_IN_MILLIS) / DateUtils.MINUTE_IN_MILLIS)
-        );
+        final HumanDuration hd = new HumanDuration(context, millis, 0);
+	return hd.getExpiry();
     }
 
     /**
