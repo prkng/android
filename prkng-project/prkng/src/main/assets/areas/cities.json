@@ -1,0 +1,34 @@
+[
+  {
+    "lat": 46.82053904,
+    "display_name": "Québec",
+    "name": "quebec",
+    "urban_area_radius": 20,
+    "id": "1",
+    "long": -71.22943997
+  },
+  {
+    "lat": 45.5016889,
+    "display_name": "Montréal",
+    "name": "montreal",
+    "urban_area_radius": 30,
+    "id": "2",
+    "long": -73.567256
+  },
+  {
+    "lat": 47.615025,
+    "display_name": "Seattle",
+    "name": "seattle",
+    "urban_area_radius": 30,
+    "id": "3",
+    "long": -122.335956
+  },
+  {
+    "lat": 40.712784,
+    "display_name": "New York",
+    "name": "newyork",
+    "urban_area_radius": 30,
+    "id": "4",
+    "long": -74.005941
+  }
+]
