@@ -57,24 +57,12 @@ public class LotsDownloadTask extends PrkngDataDownloadTask {
                         mapGeometry.getLongitude(),
                         mapGeometry.getRadius(),
                         getNearest()
-                        );
+                );
 
                 final long now = CalendarUtils.todayMillis();
 
                 // Prepare map annotations: Markers only
-                List<PointsGeoJSONFeature> lotsFeatures = lots.getFeatures();
-
-//                if (lotsFeatures.isEmpty()) {
-//                    // TODO: refactor to zoomOut?
-//                    mForceBoundingBox = true;
-//                    lots = ApiClient.getNearestParkingLots(service,
-//                            apiKey,
-//                            mapGeometry.getLatitude(),
-//                            mapGeometry.getLongitude(),
-//                            mapGeometry.getRadius()
-//                    );
-//                    lotsFeatures = lots.getFeatures();
-//                }
+                final List<PointsGeoJSONFeature> lotsFeatures = lots.getFeatures();
 
                 final int bestPrice = getBestPrice(lotsFeatures, now);
 
@@ -84,6 +72,11 @@ public class LotsDownloadTask extends PrkngDataDownloadTask {
                     final LotCurrentStatus status = feature.getProperties().getAgenda().getLotCurrentStatus(now);
                     final int price = (status == null) ? Const.UNKNOWN_VALUE : status.getMainPriceRounded();
                     final int type = (status == null) ? Const.BusinnessHourType.CLOSED : Const.BusinnessHourType.OPEN;
+
+                    if (type == Const.BusinnessHourType.CLOSED) {
+                        // TODO handle closed lots correctly
+                        continue;
+                    }
 
                     final List<Double> latLng = feature.getGeometry().getCoordinates();
                     final MarkerOptions markerOptions = new MarkerOptions()
