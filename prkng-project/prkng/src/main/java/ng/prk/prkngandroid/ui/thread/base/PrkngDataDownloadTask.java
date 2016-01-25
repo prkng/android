@@ -92,7 +92,7 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
                 listener.onFailure(error);
             }
             if (spots != null) {
-                MapUtils.removeAllAnnotations(vMap);
+                vMap.removeAllAnnotations();
 
                 if (!spots.getPolylines().isEmpty()) {
                     // Note: Mapbox's Iterator can throw a local reference table overflow exception

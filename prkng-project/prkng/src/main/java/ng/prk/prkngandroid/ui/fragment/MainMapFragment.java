@@ -28,7 +28,6 @@ import com.mapbox.mapboxsdk.annotations.Annotation;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
-import com.mapbox.mapboxsdk.annotations.Polygon;
 import com.mapbox.mapboxsdk.annotations.Polyline;
 import com.mapbox.mapboxsdk.annotations.PolylineOptions;
 import com.mapbox.mapboxsdk.constants.MyLocationTracking;
@@ -190,7 +189,7 @@ public class MainMapFragment extends Fragment implements
                     data.getDoubleExtra(Const.BundleKeys.LONGITUDE, Const.UNKNOWN_VALUE),
                     Const.UiConfig.DEFAULT_ZOOM
             );
-            vMap.setLatLng(latLngZoom);
+            setCenterCoordinate(latLngZoom);
         }
     }
 
@@ -293,7 +292,7 @@ public class MainMapFragment extends Fragment implements
             vMap.onStop();
 
 //            vMap.removeAllAnnotations();
-//            MapUtils.removeAllAnnotations(vMap);
+//            vMap.removeAllAnnotations();
             vMap.removeOnMapChangedListener(this);
             vMap.setOnMapClickListener(null);
             vMap.setOnMarkerClickListener(null);
@@ -454,17 +453,10 @@ public class MainMapFragment extends Fragment implements
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Log.v(TAG, "onClick AAA");
+                                listener.showCitiesDialog(vMap.getLatLng());
                             }
                         });
         mSnackbar.show();
-        for (Annotation annot : vMap.getAllAnnotations()) {
-            if (annot instanceof Polygon) {
-                Log.v(TAG, "skip adding layer");
-                return;
-            }
-        }
-        MapUtils.showSupportedArea(vMap);
     }
 
     private void onEmptyAnnotations() {
@@ -535,6 +527,14 @@ public class MainMapFragment extends Fragment implements
 
     @Override
     public void setCenterCoordinate(LatLng center) {
+        setCenterCoordinate(new LatLngZoom(
+                center.getLatitude(),
+                center.getLongitude(),
+                vMap.getZoom()
+        ));
+    }
+
+    public void setCenterCoordinate(LatLngZoom center) {
         Log.v(TAG, "setCenterCoordinate" + center.toString());
         vMap.removeOnMapChangedListener(this);
 
@@ -671,7 +671,7 @@ public class MainMapFragment extends Fragment implements
 //            vMap.setZoom(Const.UiConfig.AVAILABLE_CITIES_MIN_ZOOM, false);
             return;
         } else if (Double.compare(zoom, Const.UiConfig.CLEAR_MAP_MIN_ZOOM) < 0) {
-            MapUtils.removeAllAnnotations(vMap);
+            vMap.removeAllAnnotations();
         }
 
         if (MapUtils.isMinZoom(zoom, mPrkngMapType)) {
@@ -749,7 +749,7 @@ public class MainMapFragment extends Fragment implements
     public void setMapType(int type) {
         Log.v(TAG, "setMapType @ " + type);
         if (type != mPrkngMapType) {
-            MapUtils.removeAllAnnotations(vMap);
+            vMap.removeAllAnnotations();
             mPrkngMapType = type;
             final double zoom = MapUtils.getMinZoomPerType(type);
 

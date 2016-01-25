@@ -6,7 +6,6 @@
     <!--URLs-->
     <string name="url_playstore" translatable="false">https://play.google.com/store/apps/details?id=ng.prk.prkngandroid</string>
     <string name="asset_cities">areas/cities.json</string>
-    <string name="asset_areas">areas/areas.geojson</string>
 
     <!--Emails-->
     <string name="email_support" translatable="false">hello@prk.ng</string>
