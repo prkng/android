@@ -54,13 +54,7 @@ public class SpotAgendaListAdapter extends RecyclerView.Adapter<SpotAgendaListAd
         final int typeIcon = getRestrTypeIcon(parkingRestrPeriod.getType(), timeMax);
         final int typeColor = ContextCompat.getColor(context, getRestTypeColor(parkingRestrPeriod.getType()));
 
-        if (timeMax != Const.UNKNOWN_VALUE) {
-            // TODO: replace with ninepatch
-            holder.vDay.setText(day + " (" + timeMax + ")");
-        } else {
-            holder.vDay.setText(day);
-        }
-
+        holder.vDay.setText(day);
         holder.vRestrColor.setBackgroundColor(typeColor);
         holder.vRestrType.setImageResource(typeIcon);
         if (isAllDay) {
