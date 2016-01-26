@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -22,7 +23,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import ng.prk.prkngandroid.Const;
@@ -33,13 +33,14 @@ import ng.prk.prkngandroid.model.LoginObject;
 import ng.prk.prkngandroid.ui.activity.base.BaseActivity;
 import ng.prk.prkngandroid.ui.view.RedSnackbar;
 import ng.prk.prkngandroid.util.PrkngPrefs;
+import ng.prk.prkngandroid.util.TypefaceHelper;
 
 public class LoginActivity extends BaseActivity implements
         View.OnClickListener {
     private static final String TAG = "LoginActivity";
 
     private LoginButton vFacebookButton;
-    private SignInButton vGoogleButton;
+    private Button vGoogleButton;
     private CallbackManager facebookCallbackManager;
     private SocialLoginTask mSocialLoginTask;
     private GoogleApiClient mGoogleApiClient;
@@ -64,7 +65,7 @@ public class LoginActivity extends BaseActivity implements
         setContentView(R.layout.activity_login);
 
         vFacebookButton = (LoginButton) findViewById(R.id.btn_facebook);
-        vGoogleButton = (SignInButton) findViewById(R.id.btn_google);
+        vGoogleButton = (Button) findViewById(R.id.btn_google);
 
         setupListeners();
 
@@ -132,7 +133,7 @@ public class LoginActivity extends BaseActivity implements
     }
 
     private void setupGoogleLogin() {
-        vGoogleButton.setColorScheme(SignInButton.COLOR_LIGHT);
+//        vGoogleButton.setColorScheme(SignInButton.COLOR_LIGHT);
 
         final String serverClientId = getResources().getString(R.string.oauth_web_client_id);
         final GoogleSignInOptions gso = new GoogleSignInOptions
@@ -176,7 +177,7 @@ public class LoginActivity extends BaseActivity implements
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        vGoogleButton.setScopes(gso.getScopeArray());
+//        vGoogleButton.setScopes(gso.getScopeArray());
     }
 
     private void setupFacebookLogin() {
@@ -211,6 +212,8 @@ public class LoginActivity extends BaseActivity implements
                 }
             }
         });
+
+        vFacebookButton.setTypeface(TypefaceHelper.getTypeface(this, Const.TypeFaces.REGULAR));
     }
 
     private void handleGoogleSignInResult(GoogleSignInResult result) {

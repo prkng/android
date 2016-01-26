@@ -37,23 +37,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_google"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="18dp"
-        android:layout_marginRight="18dp"
-        android:layout_marginTop="16dp"
+        android:layout_margin="16dp"
         android:background="@color/facebook_blue"
-        android:paddingBottom="12dp"
-        android:paddingLeft="14dp"
-        android:paddingTop="12dp"
+        android:drawableLeft="@null"
+        android:paddingBottom="14dp"
+        android:paddingTop="14dp"
         app:com_facebook_login_text="@string/auth_btn_facebook" />
 
-    <com.google.android.gms.common.SignInButton
+    <ng.prk.prkngandroid.ui.view.IntroRegularButton
         android:id="@+id/btn_google"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_email"
         android:layout_margin="16dp"
-        android:text="@string/common_signin_button_text_long" />
+        android:background="@color/google_red"
+        android:text="@string/auth_btn_google" />
 
     <ng.prk.prkngandroid.ui.view.IntroRegularButton
         android:id="@+id/btn_email"

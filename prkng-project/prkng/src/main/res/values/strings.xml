@@ -150,7 +150,7 @@
     <!--Authentication-->
     <string name="auth_subtitle">LOGIN WITH</string>
     <string name="auth_btn_facebook">FACEBOOK</string>
-    <string name="auth_btn_google">GMAIL</string>
+    <string name="auth_btn_google">GOOGLE</string>
     <string name="auth_btn_email">OR USE YOUR EMAIL</string>
     <string name="auth_hint_login_name">Name</string>
     <string name="auth_hint_login_email">Email</string>
