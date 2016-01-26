@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">prkng</string>
-    <string name="app_version" translatable="false">0.7</string>
+    <string name="app_version" translatable="false">0.8-eta</string>
 
     <!--URLs-->
     <string name="url_playstore" translatable="false">https://play.google.com/store/apps/details?id=ng.prk.prkngandroid</string>
     <string name="asset_cities">areas/cities.json</string>
 
     <!--Emails-->
-    <string name="email_support" translatable="false">hello@prk.ng</string>
+    <string name="email_support" translatable="false">support@prk.ng</string>
 
     <!--Facebook-->
     <string name="facebook_app_id" translatable="false">1043720578978201</string>
@@ -69,6 +69,7 @@
     <string name="prefs_onboarding" translatable="false">prefs_onboarding</string>
     <string name="prefs_terms" translatable="false">prefs_terms</string>
     <string name="prefs_faq" translatable="false">prefs_faq</string>
+    <string name="prefs_privacy" translatable="false">prefs_privacy</string>
     <string name="prefs_contact" translatable="false">prefs_contact</string>
     <string name="prefs_share" translatable="false">prefs_share</string>
     <string name="prefs_city" translatable="false">prefs_city</string>
