@@ -58,13 +58,12 @@
         <item name="android:ellipsize">end</item>
         <item name="android:singleLine">true</item>
         <item name="android:maxLines">1</item>
-
     </style>
 
     <style name="TabWidget">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/cream1</item>
-
+        <item name="android:capitalize">none</item>
+        <item name="android:textColor">@color/petrol1</item>
     </style>
 
 </resources>

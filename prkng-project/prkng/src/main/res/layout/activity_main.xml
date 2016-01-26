@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/root_view"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -24,10 +24,13 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabIndicatorColor="@color/color_text"
-            app:tabIndicatorHeight="3dp"
+            app:tabBackground="@color/cream1"
+            app:tabIndicatorColor="@color/red1"
+            app:tabIndicatorHeight="2dp"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/red1"
             app:tabTextAppearance="@style/TabWidget"
-            app:tabMode="fixed" />
+            app:tabTextColor="@color/petrol1" />
 
     </android.support.design.widget.AppBarLayout>
 
