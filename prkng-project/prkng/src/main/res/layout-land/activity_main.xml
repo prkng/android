@@ -28,7 +28,7 @@
             app:tabBackground="@color/cream1"
             app:tabIndicatorColor="@color/red1"
             app:tabIndicatorHeight="2dp"
-            app:tabMode="fixed"
+            app:tabMode="scrollable"
             app:tabSelectedTextColor="@color/red1"
             app:tabTextAppearance="@style/TabWidget"
             app:tabTextColor="@color/petrol1" />
