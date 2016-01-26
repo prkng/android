@@ -54,7 +54,7 @@ public class CheckinHelper {
             prefs.setCheckout(id);
             NotifyUtils.removeNotifications(context);
 
-            ApiClient.checkout(ApiClient.getServiceLog(), apiKey, id, null);
+            ApiClient.checkout(ApiClient.getService(), apiKey, id, null);
 
             context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
 

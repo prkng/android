@@ -42,7 +42,7 @@ public class LotsDownloadTask extends PrkngDataDownloadTask {
         startTime = System.currentTimeMillis();
         final MapGeometry mapGeometry = params[0];
 
-        final PrkngService service = ApiClient.getServiceLog();
+        final PrkngService service = ApiClient.getService();
 
         final SpotsAnnotations spotsAnnotations = new SpotsAnnotations();
         spotsAnnotations.setCenterCoordinate(mapGeometry);

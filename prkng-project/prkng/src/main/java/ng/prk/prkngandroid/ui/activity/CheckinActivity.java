@@ -161,7 +161,7 @@ public class CheckinActivity extends AppCompatActivity implements
         final String apiKey = PrkngPrefs.getInstance(this).getApiKey();
 
         ApiClient.checkin(
-                ApiClient.getServiceLog(),
+                ApiClient.getService(),
                 apiKey,
                 slotId,
                 checkinCallback);
