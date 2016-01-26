@@ -19,7 +19,7 @@
 
     <item
         android:id="@+id/action_timer"
-        android:icon="@drawable/ic_action_timer_none"
+        android:icon="@drawable/ic_action_timer_default"
         android:orderInCategory="105"
         android:title="@string/action_timer"
         android:titleCondensed="@string/action_timer"

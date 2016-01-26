@@ -115,6 +115,9 @@ public class MainActivity extends BaseActivity implements
         menu.findItem(R.id.action_user_activity)
                 .setIcon(getUserActivityIcon());
 
+        menu.findItem(R.id.action_timer)
+                .setIcon(getTimerIcon());
+
         return true;
     }
 
@@ -271,6 +274,9 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onDurationChanged(float duration) {
         PrkngApp.getInstance(this).setMapDurationFilter(duration);
+        supportInvalidateOptionsMenu();
+
+        mapFragment.forceUpdate(null);
     }
 
     private void helloApi() {
@@ -291,5 +297,13 @@ public class MainActivity extends BaseActivity implements
 
         return checkin == null ? R.drawable.ic_action_user_activity_none
                 : R.drawable.ic_action_user_activity;
+    }
+
+    private int getTimerIcon() {
+        final boolean isDefault = (0 == Float.compare(Const.UiConfig.DEFAULT_DURATION,
+                PrkngApp.getInstance(this).getMapDurationFilter()));
+
+        return isDefault ? R.drawable.ic_action_timer_default
+                : R.drawable.ic_action_timer_active;
     }
 }

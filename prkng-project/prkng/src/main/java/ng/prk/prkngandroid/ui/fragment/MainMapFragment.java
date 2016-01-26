@@ -690,6 +690,18 @@ public class MainMapFragment extends Fragment implements
         return null;
     }
 
+    public void forceUpdate(LatLngZoom point) {
+        if (vMap == null) {
+            return;
+        }
+
+        if (point != null) {
+            updateMapData(point, point.getZoom(), true);
+        } else {
+            updateMapData(vMap.getLatLng(), vMap.getZoom(), true);
+        }
+    }
+
     private void updateMapData(LatLng latLng, double zoom) {
         updateMapData(latLng, zoom, false);
     }
