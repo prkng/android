@@ -53,7 +53,7 @@ public class CitiesDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.PrkngDialogStyle);
         builder.setTitle(R.string.dialog_cities_title)
-                .setIcon(R.drawable.checkin_restr_default)
+                .setIcon(R.drawable.ic_city)
                 .setItems(getCityNames(mCities), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

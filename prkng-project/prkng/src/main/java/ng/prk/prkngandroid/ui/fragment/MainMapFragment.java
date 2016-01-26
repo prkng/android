@@ -87,6 +87,7 @@ public class MainMapFragment extends Fragment implements
     private List<Annotation> mSelectedAnnotsList;
     private SelectedFeature mSelectedFeature;
     private Snackbar mSnackbar;
+    private boolean isDialogShown = false;
 
     public static MainMapFragment newInstance() {
         return newInstance(null);
@@ -182,14 +183,17 @@ public class MainMapFragment extends Fragment implements
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (Const.RequestCodes.CITY_SELECTOR == requestCode &&
-                resultCode == Activity.RESULT_OK) {
-            final LatLngZoom latLngZoom = new LatLngZoom(
-                    data.getDoubleExtra(Const.BundleKeys.LATITUDE, Const.UNKNOWN_VALUE),
-                    data.getDoubleExtra(Const.BundleKeys.LONGITUDE, Const.UNKNOWN_VALUE),
-                    Const.UiConfig.DEFAULT_ZOOM
-            );
-            setCenterCoordinate(latLngZoom);
+        if (Const.RequestCodes.CITY_SELECTOR == requestCode) {
+            isDialogShown = false;
+
+            if (resultCode == Activity.RESULT_OK) {
+                final LatLngZoom latLngZoom = new LatLngZoom(
+                        data.getDoubleExtra(Const.BundleKeys.LATITUDE, Const.UNKNOWN_VALUE),
+                        data.getDoubleExtra(Const.BundleKeys.LONGITUDE, Const.UNKNOWN_VALUE),
+                        Const.UiConfig.DEFAULT_ZOOM
+                );
+                setCenterCoordinate(latLngZoom);
+            }
         }
     }
 
@@ -453,7 +457,10 @@ public class MainMapFragment extends Fragment implements
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                listener.showCitiesDialog(vMap.getLatLng());
+                                if (!isDialogShown) {
+                                    isDialogShown = true;
+                                    listener.showCitiesDialog(vMap.getLatLng());
+                                }
                             }
                         });
         mSnackbar.show();
@@ -667,7 +674,10 @@ public class MainMapFragment extends Fragment implements
 
 
         if (Double.compare(zoom, Const.UiConfig.AVAILABLE_CITIES_MIN_ZOOM) < 0) {
-            listener.showCitiesDialog(latLng);
+            if (!isDialogShown) {
+                isDialogShown = true;
+                listener.showCitiesDialog(latLng);
+            }
 //            vMap.setZoom(Const.UiConfig.AVAILABLE_CITIES_MIN_ZOOM, false);
             return;
         } else if (Double.compare(zoom, Const.UiConfig.CLEAR_MAP_MIN_ZOOM) < 0) {
@@ -747,7 +757,6 @@ public class MainMapFragment extends Fragment implements
     }
 
     public void setMapType(int type) {
-        Log.v(TAG, "setMapType @ " + type);
         if (type != mPrkngMapType) {
             vMap.removeAllAnnotations();
             mPrkngMapType = type;
