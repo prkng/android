@@ -10,7 +10,6 @@ import ng.prk.prkngandroid.io.PrkngService;
 import ng.prk.prkngandroid.model.LinesGeoJSONFeature;
 import ng.prk.prkngandroid.model.RestrIntervalsList;
 import ng.prk.prkngandroid.model.SpotRules;
-import ng.prk.prkngandroid.ui.adapter.SpotAgendaListAdapter;
 import ng.prk.prkngandroid.ui.thread.base.MarkerInfoUpdateListener;
 import ng.prk.prkngandroid.util.CalendarUtils;
 import ng.prk.prkngandroid.util.PrkngPrefs;
