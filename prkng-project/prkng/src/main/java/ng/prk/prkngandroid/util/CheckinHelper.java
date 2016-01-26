@@ -57,6 +57,10 @@ public class CheckinHelper {
             ApiClient.checkout(ApiClient.getServiceLog(), apiKey, id, null);
 
             context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+
+            removeAlarm(context, Const.NotificationTypes.SMART_REMINDER);
+            removeAlarm(context, Const.NotificationTypes.EXPIRY);
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,6 +91,17 @@ public class CheckinHelper {
                     endAt,
                     pendingIntent);
         }
+    }
+
+    private static void removeAlarm(Context context, int type) {
+        final PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(context,
+                        Const.RequestCodes.CHECKIN_REMINDER,
+                        CheckinMementoReceiver.newIntent(context, type),
+                        PendingIntent.FLAG_CANCEL_CURRENT);
+        final AlarmManager am =
+                (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        am.cancel(pendingIntent);
     }
 
     public static boolean hasSmartReminder(long endAt) {
