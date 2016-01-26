@@ -51,8 +51,8 @@ public class SpotAgendaListAdapter extends RecyclerView.Adapter<SpotAgendaListAd
         final String timeStart = CalendarUtils.getTimeFromMillis(context, parkingRestrPeriod.getStartMillis());
         final String timeEnd = CalendarUtils.getTimeFromMillis(context, parkingRestrPeriod.getEndMillis());
         final int timeMax = parkingRestrPeriod.getTimeMaxMinutes();
-        final int typeIcon = getRestrTypeIcon(parkingRestrPeriod.getType());
-        final int typeColor = getRestTypeColor(parkingRestrPeriod.getType());
+        final int typeIcon = getRestrTypeIcon(parkingRestrPeriod.getType(), timeMax);
+        final int typeColor = ContextCompat.getColor(context, getRestTypeColor(parkingRestrPeriod.getType()));
 
         if (timeMax != Const.UNKNOWN_VALUE) {
             // TODO: replace with ninepatch
@@ -61,7 +61,7 @@ public class SpotAgendaListAdapter extends RecyclerView.Adapter<SpotAgendaListAd
             holder.vDay.setText(day);
         }
 
-        holder.vRestrColor.setBackgroundColor(ContextCompat.getColor(context, typeColor));
+        holder.vRestrColor.setBackgroundColor(typeColor);
         holder.vRestrType.setImageResource(typeIcon);
         if (isAllDay) {
             holder.vTimeStart.setText(R.string.all_day);
@@ -72,10 +72,40 @@ public class SpotAgendaListAdapter extends RecyclerView.Adapter<SpotAgendaListAd
             holder.vTimeEnd.setVisibility(View.VISIBLE);
         }
 
+        if (timeMax == Const.UNKNOWN_VALUE) {
+            holder.vRestrType.clearColorFilter();
+        } else {
+            holder.vRestrType.setColorFilter(typeColor);
+        }
+
+
         holder.itemView.setBackgroundColor(getRowBackground(parkingRestrPeriod));
     }
 
-    private int getRestrTypeIcon(int type) {
+    private int getRestrTypeIcon(int type, int timeMax) {
+        if (timeMax != Const.UNKNOWN_VALUE) {
+            switch (timeMax) {
+                case 15:
+                    return R.drawable.ic_restr_type_time_max_15;
+                case 30:
+                    return R.drawable.ic_restr_type_time_max_30;
+                case 60:
+                    return R.drawable.ic_restr_type_time_max_60;
+                case 90:
+                    return R.drawable.ic_restr_type_time_max_90;
+                case 120:
+                    return R.drawable.ic_restr_type_time_max_2h;
+                case 180:
+                    return R.drawable.ic_restr_type_time_max_3h;
+                case 240:
+                    return R.drawable.ic_restr_type_time_max_4h;
+                case 300:
+                    return R.drawable.ic_restr_type_time_max_5h;
+                case 360:
+                    return R.drawable.ic_restr_type_time_max_6h;
+            }
+        }
+
         switch (type) {
             case Const.ParkingRestrType.ALL_TIMES:
                 return R.drawable.ic_restr_type_all_times;
