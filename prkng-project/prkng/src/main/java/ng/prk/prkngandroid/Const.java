@@ -28,6 +28,7 @@ public class Const {
         float LOT_INFO_ATTRS_OPACITY = 0.55f;
         float DEFAULT_DURATION = 0.5f;
         float DRIVING_MIN_SPEED = 25000f; // 25 km/h
+        double MIN_CLICK_DISTANCE = 13d; // 13 metres
     }
 
     public interface AppsIntents {

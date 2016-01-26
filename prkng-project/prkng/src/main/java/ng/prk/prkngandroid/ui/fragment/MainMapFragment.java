@@ -38,6 +38,7 @@ import com.mapbox.mapboxsdk.views.MapView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.PrkngApp;
@@ -360,6 +361,31 @@ public class MainMapFragment extends Fragment implements
             listener.hideMarkerInfo();
         }
         unselectFeatureIfNecessary();
+        onNearestMarkerClick(point);
+    }
+
+    private void onNearestMarkerClick(@NonNull LatLng point) {
+        final Annotation annotation = MapUtils.getNearestAnnotation(point, vMap.getAllAnnotations());
+
+        if (annotation != null) {
+            final double distance = MapUtils.distanceTo(point, annotation);
+
+            // threshold ranges between 13-25 metres
+            final double threshold = Const.UiConfig.MIN_CLICK_DISTANCE +
+                    3 * (MapView.MAXIMUM_ZOOM - vMap.getZoom());
+
+            if (Double.compare(distance, threshold) < 0) {
+                if (annotation instanceof Marker) {
+                    onMarkerClick((Marker) annotation);
+                } else if (annotation instanceof Polyline) {
+                    for (Map.Entry<String, List<Annotation>> entry : mFeatureAnnotsList.entrySet()) {
+                        if (entry.getValue().contains(annotation)) {
+                            selectFeature(entry.getKey());
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
