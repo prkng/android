@@ -17,6 +17,7 @@
     <string name="url_terms">http://prk.ng/fr/conditions/?embed=true</string>
     <string name="asset_faq">file:///android_asset/fr-faq.html</string>
     <string name="asset_terms">file:///android_asset/fr-terms.html</string>
+    <string name="url_privacy">http://prk.ng/fr/politique/?embed=true</string>
 
     <!--Emails and Sharing-->
     <string name="mail_to_contact">mailto:hello@prk.ng?subject=À propos de Prkng Android</string>
@@ -62,7 +63,7 @@
     <string name="btn_register">Inscription</string>
     <string name="btn_login_email">Déjà inscrit?</string>
     <string name="btn_skip">Passer</string>
-    <string name="btn_done">D'accord</string>
+    <string name="btn_done">D’accord</string>
     <string name="btn_checkin">Parqué</string>
     <string name="btn_checkout">Quitter la place</string>
     <string name="btn_info">Info</string>
@@ -82,7 +83,7 @@
     <string name="snackbar_api_error_message">Erreur serveur: %1$s [%2$d]</string>
     <string name="snackbar_host_unknown_error_message">Server connection error [%1$d]</string>
     <string name="snackbar_login_fail">Vérifier votre adresse e-mail et mot de passe, puis essayer à nouveau.</string>
-    <string name="snackbar_sign_up_fail">Ce nom d'utilisateur est déjà pris. Essayez avec un autre nom.</string>
+    <string name="snackbar_sign_up_fail">Ce nom d’utilisateur est déjà pris. Essayez avec un autre nom.</string>
 
     <!--Toast-->
     <string name="toast_checkout_ok">Vous avez quitté la place!</string>

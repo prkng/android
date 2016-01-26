@@ -31,6 +31,7 @@ public class AboutFragment extends PreferenceFragment implements
         findPreference(ONBOARDING).setOnPreferenceClickListener(this);
         findPreference(TERMS).setOnPreferenceClickListener(this);
         findPreference(FAQ).setOnPreferenceClickListener(this);
+        findPreference(PRIVACY).setOnPreferenceClickListener(this);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class AboutFragment extends PreferenceFragment implements
 
         if (ONBOARDING.equals(key)) {
             startActivity(TutorialActivity.newIntent(getActivity(), false));
-        } else if (TERMS.equals(key) || FAQ.equals(key)) {
+        } else if (TERMS.equals(key) || FAQ.equals(key) || PRIVACY.equals(key)) {
             startActivity(WebViewActivity.newIntent(getActivity(), key));
         }
 

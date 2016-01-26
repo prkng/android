@@ -270,6 +270,7 @@ public class Const {
         String CITY = "prefs_city";
         String ONBOARDING = "prefs_onboarding";
         String TERMS = "prefs_terms";
+        String PRIVACY = "prefs_privacy";
         String FAQ = "prefs_faq";
     }
 

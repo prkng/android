@@ -5,13 +5,17 @@
         android:key="@string/prefs_onboarding"
         android:title="@string/prefs_onboarding_title" />
 
+    <Preference
+        android:key="@string/prefs_faq"
+        android:title="@string/prefs_faq_title" />
+
     <PreferenceScreen
         android:key="@string/prefs_terms"
         android:title="@string/prefs_terms_title" />
 
-    <Preference
-        android:key="@string/prefs_faq"
-        android:title="@string/prefs_faq_title" />
+    <PreferenceScreen
+        android:key="@string/prefs_privacy"
+        android:title="Privacy policy" />
 
     <Preference
         android:summary="@string/email_support"

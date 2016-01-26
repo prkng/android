@@ -70,6 +70,8 @@ public class WebViewActivity extends AppCompatActivity {
         } else if (Const.PrefsNames.TERMS.equals(page)) {
 //            setTitle(R.string.activity_terms);
             mWebView.loadUrl(getString(R.string.url_terms));
+        } else if (Const.PrefsNames.PRIVACY.equals(page)) {
+            mWebView.loadUrl(getString(R.string.url_privacy));
         }
     }
 
