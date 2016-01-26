@@ -102,6 +102,15 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (mapFragment != null) {
+            mapFragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
 

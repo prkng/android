@@ -91,7 +91,7 @@ public class SettingsFragment extends PreferenceFragment implements
         if (TOGGLE_LOGIN.equals(key)) {
             final String apiKey = mPrefs.getString(AUTH_API_KEY, null);
             if (apiKey == null || apiKey.isEmpty()) {
-                startActivity(LoginActivity.newIntent(getActivity()));
+                startActivityForResult(LoginActivity.newIntent(getActivity()), Const.RequestCodes.AUTH_LOGIN);
             } else {
                 PrkngPrefs.getInstance(getActivity()).setAuthUser(null);
             }

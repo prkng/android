@@ -195,6 +195,8 @@ public class MainMapFragment extends Fragment implements
                 );
                 setCenterCoordinate(latLngZoom);
             }
+        } else if ((Const.RequestCodes.AUTH_LOGIN == requestCode) && (resultCode == Activity.RESULT_OK)) {
+            forceUpdate(null);
         }
     }
 
@@ -467,8 +469,7 @@ public class MainMapFragment extends Fragment implements
     @Override
     public void onFailure(PrkngApiError e) {
         if (e.isUnauthorized()) {
-            startActivity(LoginActivity.newIntent(getActivity()));
-            getActivity().finish();
+            startActivityForResult(LoginActivity.newIntent(getActivity()), Const.RequestCodes.AUTH_LOGIN);
         } else if (e.isNotFound()) {
             onUnsupportedArea();
         } else {

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 
+import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.ui.activity.LoginActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,10 +39,11 @@ public class ApiCallback<T> implements Callback<T> {
             final PrkngApiError error = (PrkngApiError) t;
             Log.v(TAG, "PrkngApiError");
             if (error.isUnauthorized() && context != null) {
-                context.startActivity(LoginActivity.newIntent(context));
-
                 if (context instanceof Activity) {
-                    ((Activity) context).finish();
+                    ((Activity) context).startActivityForResult(
+                            LoginActivity.newIntent(context), Const.RequestCodes.AUTH_LOGIN);
+                } else {
+                    context.startActivity(LoginActivity.newIntent(context));
                 }
             } else {
                 if (view != null) {
