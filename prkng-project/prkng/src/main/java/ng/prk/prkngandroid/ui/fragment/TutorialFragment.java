@@ -35,6 +35,8 @@ public class TutorialFragment extends Fragment {
 
     private int getResLayout(int page) {
         switch (page) {
+            case Const.TutorialSections.SPLASH:
+                return R.layout.fragment_tutorial_splash;
             case Const.TutorialSections.ONE:
                 return R.layout.fragment_tutorial_01;
             case Const.TutorialSections.TWO:
@@ -43,7 +45,7 @@ public class TutorialFragment extends Fragment {
                 return R.layout.fragment_tutorial_03;
             case Const.TutorialSections.FOUR:
                 return R.layout.fragment_tutorial_04;
-            case Const.TutorialSections.LAST:
+            case Const.TutorialSections.TRANSPARENT:
                 return R.layout.fragment_tutorial_transparent;
         }
 

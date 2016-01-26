@@ -53,12 +53,13 @@ public class Const {
     }
 
     public interface TutorialSections {
-        int _COUNT = 5;
-        int ONE = 0;
-        int TWO = 1;
-        int THREE = 2;
-        int FOUR = 3;
-        int LAST = 4;
+        int _COUNT = 6;
+        int SPLASH = 0;
+        int ONE = 1;
+        int TWO = 2;
+        int THREE = 3;
+        int FOUR = 4;
+        int TRANSPARENT = 5;
     }
 
     public interface NotificationTypes {

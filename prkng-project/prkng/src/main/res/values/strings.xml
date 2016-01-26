@@ -173,6 +173,7 @@
     <string name="currency_round">$%d</string>
 
     <!--Tutorial-->
+    <string name="tutorial_desc_splash">No more parking fines, no more headaches.</string>
     <string name="tutorial_desc_01">Sarah is having lunch with her mom. She’ll need to park when she gets there. See how she uses prkng!</string>
     <string name="tutorial_desc_02">Once arrived at her destination, the “map” feature shows her the spots where she’s allowed to park.</string>
     <string name="tutorial_desc_03">Sarah’s a bright woman: She taps “parked” so she’ll be notified to move her car before towing does.</string>
