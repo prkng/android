@@ -80,13 +80,13 @@ public class SpotAgendaListAdapter extends RecyclerView.Adapter<SpotAgendaListAd
         if (timeMax != Const.UNKNOWN_VALUE) {
             switch (timeMax) {
                 case 15:
-                    return R.drawable.ic_restr_type_time_max_15;
+                    return R.drawable.ic_restr_type_time_max_15m;
                 case 30:
-                    return R.drawable.ic_restr_type_time_max_30;
+                    return R.drawable.ic_restr_type_time_max_30m;
                 case 60:
-                    return R.drawable.ic_restr_type_time_max_60;
+                    return R.drawable.ic_restr_type_time_max_60m;
                 case 90:
-                    return R.drawable.ic_restr_type_time_max_90;
+                    return R.drawable.ic_restr_type_time_max_90m;
                 case 120:
                     return R.drawable.ic_restr_type_time_max_2h;
                 case 180:
