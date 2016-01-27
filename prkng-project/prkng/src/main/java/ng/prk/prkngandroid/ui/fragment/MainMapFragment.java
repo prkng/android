@@ -18,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +58,7 @@ import ng.prk.prkngandroid.ui.thread.NearestLotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.SpotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.PrkngDataDownloadTask;
 import ng.prk.prkngandroid.ui.view.RedSnackbar;
+import ng.prk.prkngandroid.util.ConnectionUtils;
 import ng.prk.prkngandroid.util.MapUtils;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 
@@ -180,6 +182,35 @@ public class MainMapFragment extends Fragment implements
         if (vMap.getMyLocation() != null) {
             moveToMyLocation(false);
         }
+
+        if (!ConnectionUtils.hasConnection(getActivity())) {
+            showConnectionError();
+        }
+    }
+
+
+    private void showConnectionError() {
+        vMap.removeAllAnnotations();
+        vMap.removeOnMapChangedListener(this);
+
+        mSnackbar = RedSnackbar.make(vMap, R.string.snackbar_connection_error, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.btn_try_again, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (ConnectionUtils.hasConnection(getActivity())) {
+                            vMap.addOnMapChangedListener(MainMapFragment.this);
+                            forceUpdate(null);
+                        } else {
+                            vMap.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showConnectionError();
+                                }
+                            }, DateUtils.SECOND_IN_MILLIS);
+                        }
+                    }
+                });
+        mSnackbar.show();
     }
 
     @Override
@@ -717,6 +748,10 @@ public class MainMapFragment extends Fragment implements
         Log.v(TAG, "updateMapData "
                 + String.format("latLng = %s, zoom = %s, forced = %s", latLng, zoom, forced));
 
+        if (!ConnectionUtils.hasConnection(getActivity())) {
+            showConnectionError();
+            return;
+        }
 
         if (Double.compare(zoom, Const.UiConfig.AVAILABLE_CITIES_MIN_ZOOM) < 0) {
             if (!isDialogShown) {

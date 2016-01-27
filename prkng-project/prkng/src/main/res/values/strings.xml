@@ -93,6 +93,7 @@
     <string name="snackbar_off_street_zoom_out">No parking lots around here. You can check a wider area.</string>
     <string name="snackbar_on_street_duration_empty_result">No allowed parking found for %d hours.</string>
     <string name="snackbar_off_street_empty_result">No parking lots found in this area.</string>
+    <string name="snackbar_connection_error">Internet connection is unavailable.</string>
 
     <!--Toast-->
     <string name="toast_checkout_ok">prkng checked out successfully</string>
