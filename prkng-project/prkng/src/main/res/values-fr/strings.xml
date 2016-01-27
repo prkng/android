@@ -69,6 +69,10 @@
     <string name="btn_info">Info</string>
     <string name="btn_try_again">Réessayer</string>
     <string name="btn_reset_password">Mot de passe oublié?</string>
+    <string name="btn_available_cities">***Available cities</string>
+    <string name="btn_select_duration">***Select duration</string>
+    <string name="btn_zoom_out">***Zoom out</string>
+    <string name="btn_view_nearest">***View nearest</string>
 
     <!--Dialogs-->
     <string name="dialog_durations_title">Choisir la durée</string>
@@ -76,7 +80,7 @@
 
     <!--Snackbar-->
     <string name="snackbar_map_zoom_needed">Zoomez au niveau de la rue.</string>
-    <string name="snackbar_location_permission_needed">L’emplacement est nécessaire pour l’affichage de la carte</string>
+    <string name="snackbar_location_permission_needed">L’emplacement est nécessaire pour l’affichage de la carte.</string>
     <string name="snackbar_auth_error_facebook">Connexion Facebook échouée: %s</string>
     <string name="snackbar_auth_error_google">Connexion Google échouée: %s</string>
     <string name="snackbar_api_error_code">Erreur serveur: code %d</string>
@@ -84,6 +88,11 @@
     <string name="snackbar_host_unknown_error_message">Server connection error [%1$d]</string>
     <string name="snackbar_login_fail">Vérifier votre adresse e-mail et mot de passe, puis essayer à nouveau.</string>
     <string name="snackbar_sign_up_fail">Ce nom d’utilisateur est déjà pris. Essayez avec un autre nom.</string>
+    <string name="snackbar_unsupported_area">***You’re probably viewing an unsupported area.</string>
+    <string name="snackbar_on_street_zoom_out">***No allowed parking found here. You can check a wider area.</string>
+    <string name="snackbar_off_street_zoom_out">***No parking lots around here. You can check a wider area.</string>
+    <string name="snackbar_on_street_duration_empty_result">***No allowed parking found for %d hours.</string>
+    <string name="snackbar_off_street_empty_result">***No parking lots found in this area.</string>
 
     <!--Toast-->
     <string name="toast_checkout_ok">Vous avez quitté la place!</string>
@@ -146,7 +155,7 @@
     <string name="checkin_prefix">Stationné sur %s</string>
     <string name="checkin_smart_reminder">NOTIFICATION LA VEILLE</string>
     <string name="checkin_empty">Envie d’un rappel?\r\nAllez sur la carte et sélectionnez “Parqué!”</string>
-    <string name="checkin_expired">Temps écoulé!</string>
+    <string name="checkin_expired">***Temps écoulé!</string>
 
     <!--Authentication-->
     <string name="auth_subtitle">CONNEXION AVEC</string>

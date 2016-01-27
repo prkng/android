@@ -486,8 +486,8 @@ public class MainMapFragment extends Fragment implements
 
     private void onUnsupportedArea() {
         Log.v(TAG, "onUnsupportedArea");
-        mSnackbar = RedSnackbar.make(vMap, "You're probably viewing an unsupported area", Snackbar.LENGTH_INDEFINITE)
-                .setAction("Available cities",
+        mSnackbar = RedSnackbar.make(vMap, R.string.snackbar_unsupported_area, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.btn_available_cities,
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -508,9 +508,9 @@ public class MainMapFragment extends Fragment implements
             if (Double.compare(Const.UiConfig.SPOTS_MIN_ZOOM, vMap.getZoom()) < 0) {
                 // First, check zoom level
                 mSnackbar = RedSnackbar.make(vMap,
-                        "No allowed parking found here. You can check a wider area.",
+                        R.string.snackbar_on_street_zoom_out,
                         Snackbar.LENGTH_LONG)
-                        .setAction("Zoom out",
+                        .setAction(R.string.btn_zoom_out,
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -522,10 +522,10 @@ public class MainMapFragment extends Fragment implements
                 // Second, check duration filter
                 mSnackbar = RedSnackbar.make(vMap,
                         String.format(
-                                "No allowed parking found for %d hours.",
+                                getString(R.string.snackbar_on_street_duration_empty_result),
                                 (int) getDurationFilter()),
                         Snackbar.LENGTH_LONG)
-                        .setAction("Select duration",
+                        .setAction(R.string.btn_select_duration,
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -539,9 +539,9 @@ public class MainMapFragment extends Fragment implements
             if (Double.compare(Const.UiConfig.LOTS_MIN_ZOOM, vMap.getZoom()) < 0) {
                 // First, check zoom level
                 mSnackbar = RedSnackbar.make(vMap,
-                        "No parking lots around here. You can check a wider area.",
+                        R.string.snackbar_off_street_zoom_out,
                         Snackbar.LENGTH_LONG)
-                        .setAction("Zoom out",
+                        .setAction(R.string.btn_zoom_out,
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -552,9 +552,9 @@ public class MainMapFragment extends Fragment implements
             } else {
                 // Second, search for nearest lot
                 mSnackbar = RedSnackbar.make(vMap,
-                        "No parking lots found in this area.",
+                        R.string.snackbar_off_street_empty_result,
                         Snackbar.LENGTH_LONG)
-                        .setAction("View nearest",
+                        .setAction(R.string.btn_view_nearest,
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -576,7 +576,6 @@ public class MainMapFragment extends Fragment implements
     }
 
     public void setCenterCoordinate(LatLngZoom center) {
-        Log.v(TAG, "setCenterCoordinate" + center.toString());
         vMap.removeOnMapChangedListener(this);
 
         vMap.setLatLng(center, true);

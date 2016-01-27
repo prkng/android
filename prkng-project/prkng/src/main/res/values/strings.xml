@@ -69,21 +69,30 @@
     <string name="btn_info">Info</string>
     <string name="btn_try_again">Retry</string>
     <string name="btn_reset_password">Reset password</string>
+    <string name="btn_available_cities">Available cities</string>
+    <string name="btn_select_duration">Select duration</string>
+    <string name="btn_zoom_out">Zoom out</string>
+    <string name="btn_view_nearest">View nearest</string>
 
     <!--Dialogs-->
     <string name="dialog_durations_title">Select duration</string>
     <string name="dialog_cities_title">Select city</string>
 
     <!--Snackbar-->
-    <string name="snackbar_map_zoom_needed">Please zoom in to update map</string>
-    <string name="snackbar_location_permission_needed">Location permission is needed for map accuracy</string>
+    <string name="snackbar_map_zoom_needed">Please zoom in to update map.</string>
+    <string name="snackbar_location_permission_needed">Location permission is needed for map accuracy.</string>
     <string name="snackbar_auth_error_facebook">Facebook error: %s</string>
     <string name="snackbar_auth_error_google">Google error: %s</string>
     <string name="snackbar_api_error_code">Server error: code %d</string>
     <string name="snackbar_api_error_message">Server error: %1$s [%2$d]</string>
     <string name="snackbar_host_unknown_error_message">Server connection error [%1$d]</string>
-    <string name="snackbar_login_fail">Wrong email or password. Please check the values provided</string>
+    <string name="snackbar_login_fail">Wrong email or password. Please check the values provided.</string>
     <string name="snackbar_sign_up_fail">User already exists. Login or forgot password?</string>
+    <string name="snackbar_unsupported_area">You’re probably viewing an unsupported area.</string>
+    <string name="snackbar_on_street_zoom_out">No allowed parking found here. You can check a wider area.</string>
+    <string name="snackbar_off_street_zoom_out">No parking lots around here. You can check a wider area.</string>
+    <string name="snackbar_on_street_duration_empty_result">No allowed parking found for %d hours.</string>
+    <string name="snackbar_off_street_empty_result">No parking lots found in this area.</string>
 
     <!--Toast-->
     <string name="toast_checkout_ok">prkng checked out successfully</string>
