@@ -146,6 +146,7 @@
     <string name="checkin_prefix">Stationné sur %s</string>
     <string name="checkin_smart_reminder">NOTIFICATION LA VEILLE</string>
     <string name="checkin_empty">Envie d’un rappel?\r\nAllez sur la carte et sélectionnez “Parqué!”</string>
+    <string name="checkin_expired">Temps écoulé!</string>
 
     <!--Authentication-->
     <string name="auth_subtitle">CONNEXION AVEC</string>

@@ -146,6 +146,7 @@
     <string name="checkin_prefix">Parked on %s</string>
     <string name="checkin_smart_reminder">GET NOTIFIED THE NIGHT BEFORE</string>
     <string name="checkin_empty">Select a segment on the map and tap Check-in to save it here and get reminders</string>
+    <string name="checkin_expired">Time is up!</string>
 
     <!--Authentication-->
     <string name="auth_subtitle">LOGIN WITH</string>

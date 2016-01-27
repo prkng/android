@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -138,7 +139,13 @@ public class CheckinActivity extends AppCompatActivity implements
             vRemainingTime.setText(R.string.allowed_all_week);
         } else {
             final long remaining = checkoutAt - System.currentTimeMillis();
-            vRemainingTime.setText(CalendarUtils.getDurationFromMillis(this, remaining));
+            if (Long.valueOf(remaining).compareTo(DateUtils.MINUTE_IN_MILLIS) <= 0) {
+                // Time is up!
+                findViewById(R.id.expiry).setVisibility(View.GONE);
+                vRemainingTime.setText(R.string.checkin_expired);
+            } else {
+                vRemainingTime.setText(CalendarUtils.getDurationFromMillis(this, remaining));
+            }
         }
 
         if (!CheckinHelper.hasSmartReminder(checkoutAt)) {
