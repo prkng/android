@@ -127,7 +127,7 @@
     <string name="allowed_all_week">Disponible toute la semaine</string>
     <string name="expiry_day_tomorrow">Demain</string>
     <string name="expiry_hours_minutes">%1$dh %2$dm</string>
-    <string name="expiry_day_time_of_day">%1$s @ %2$s</string>
+    <string name="expiry_day_time_of_day">%1$s %2$s</string>
 
     <!--Lot Info-->
     <string name="all_day_closed">Fermé</string>
