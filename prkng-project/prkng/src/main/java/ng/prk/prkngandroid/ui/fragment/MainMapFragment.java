@@ -378,11 +378,18 @@ public class MainMapFragment extends Fragment implements
 
             if (Double.compare(distance, threshold) < 0) {
                 if (annotation instanceof Marker) {
+                    // Nearest is a Marker, trigger onMarkerClick()
                     onMarkerClick((Marker) annotation);
                 } else if (annotation instanceof Polyline) {
+                    // Nearest is a Polyline, find its associated Marker
                     for (Map.Entry<String, List<Annotation>> entry : mFeatureAnnotsList.entrySet()) {
                         if (entry.getValue().contains(annotation)) {
-                            selectFeature(entry.getKey());
+                            for (Annotation a : entry.getValue()) {
+                                if (a instanceof Marker) {
+                                    onMarkerClick((Marker) a);
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
