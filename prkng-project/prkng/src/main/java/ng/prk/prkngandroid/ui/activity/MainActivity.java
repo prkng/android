@@ -213,7 +213,8 @@ public class MainActivity extends BaseActivity implements
             ft.replace(R.id.map_info_frame, fragment, Const.FragmentTags.MAP_INFO)
                     .commit();
 
-            Log.e(TAG, "TODO showMarkerInfo");
+            // TODO showMarkerInfo
+            Log.d(TAG, "TODO showMarkerInfo");
         }
     }
 
