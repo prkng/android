@@ -2,6 +2,7 @@ package ng.prk.prkngandroid.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +69,13 @@ public class CheckinInfoFragment extends Fragment implements View.OnClickListene
                             checkin.getAddress()));
         } else {
             final long remaining = checkoutAt - System.currentTimeMillis();
-            vTitle.setText(CalendarUtils.getTimeFromMillis(getActivity(), remaining));
+
+            if (Long.valueOf(remaining).compareTo(DateUtils.MINUTE_IN_MILLIS) <= 0) {
+                // Time is up!
+                vTitle.setText(R.string.checkin_expired);
+            } else {
+                vTitle.setText(CalendarUtils.getTimeFromMillis(getActivity(), remaining));
+            }
         }
     }
 }
