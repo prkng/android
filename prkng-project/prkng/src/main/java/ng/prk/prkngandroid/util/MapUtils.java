@@ -1,8 +1,9 @@
 package ng.prk.prkngandroid.util;
 
-import android.content.Context;
-import android.content.Intent;
+import android.location.Location;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.format.DateUtils;
 
 import com.mapbox.mapboxsdk.annotations.Annotation;
 import com.mapbox.mapboxsdk.annotations.Marker;
@@ -11,12 +12,16 @@ import com.mapbox.mapboxsdk.annotations.Polyline;
 import com.mapbox.mapboxsdk.annotations.PolylineOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngZoom;
+import com.mapbox.mapboxsdk.views.MapView;
 
 import java.util.List;
 
 import ng.prk.prkngandroid.Const;
+import ng.prk.prkngandroid.model.CheckinData;
 
 public class MapUtils {
+    private final static String TAG = "MapUtils";
+    public static final int KILOMETER_IN_METERS = 1000;
 
     public static double getMinZoomPerType(int type) {
         switch (type) {
@@ -110,13 +115,75 @@ public class MapUtils {
         return Double.MAX_VALUE;
     }
 
-    public static LatLngZoom getInitialCenterCoordinates(Context context, Intent intent) {
-        // prefs
-        // intent
-        // checkin
-        // location
-        // city
+    public static LatLngZoom getInitialCenterCoordinates(MapView mapView, Bundle extras) {
+        // First, start by checking bundle coordinates (from Intent or savedInstance)
+        if (extras != null) {
+            final LatLngZoom latLngZoom = getBundleGeoPoint(extras);
+            if (latLngZoom != null) {
+                return latLngZoom;
+            }
+        }
+
+        // Second, does user have an active checkin
+        final CheckinData checkin = PrkngPrefs.getInstance(mapView.getContext())
+                .getCheckinData();
+        if (checkin != null) {
+            return new LatLngZoom(checkin.getLatLng(),
+                    Const.UiConfig.CHECKIN_ZOOM);
+        }
+
+        // Third, user's current location
+        if (mapView.isMyLocationEnabled()) {
+            final Location myLocation = mapView.getMyLocation();
+            if (CityBoundsHelper.isValidLocation(mapView.getContext(), myLocation)) {
+                return new LatLngZoom(myLocation.getLatitude(),
+                        myLocation.getLongitude(),
+                        Const.UiConfig.MY_LOCATION_ZOOM);
+            }
+        }
+
+        // TODO handle selected city
 
         return null;
+    }
+
+    public static LatLngZoom getBundleGeoPoint(@NonNull Bundle extras) {
+        final double lat = extras.getDouble(Const.BundleKeys.LATITUDE, Const.UNKNOWN_VALUE);
+        final double lng = extras.getDouble(Const.BundleKeys.LONGITUDE, Const.UNKNOWN_VALUE);
+        if ((Double.compare(lat, Const.UNKNOWN_VALUE) != 0)
+                && (Double.compare(lng, Const.UNKNOWN_VALUE) != 0)) {
+            // Mapbox's empty value for zoom is 0.0
+            double zoom = extras.getDouble(Const.BundleKeys.ZOOM, 0.0);
+            return new LatLngZoom(lat, lng, zoom);
+        }
+
+        return null;
+    }
+
+    public static void setInitialCenterCoordinates(final MapView mapView, Bundle extras) {
+        final long startMillis = System.currentTimeMillis();
+
+        final LatLngZoom initialCoords = MapUtils
+                .getInitialCenterCoordinates(mapView, extras);
+
+        if (initialCoords != null) {
+            mapView.setLatLng((LatLng) initialCoords);
+            mapView.setZoom(initialCoords.getZoom(), true);
+        } else if (mapView.isMyLocationEnabled()) {
+            mapView.setOnMyLocationChangeListener(new MapView.OnMyLocationChangeListener() {
+                @Override
+                public void onMyLocationChange(Location location) {
+                    if (System.currentTimeMillis() - startMillis > DateUtils.SECOND_IN_MILLIS) {
+                        mapView.setOnMyLocationChangeListener(null);
+                    } else if (CityBoundsHelper.isValidLocation(mapView.getContext(), location)) {
+                        mapView.setOnMyLocationChangeListener(null);
+
+                        mapView.setLatLng(new LatLng(
+                                location.getLatitude(), location.getLongitude()));
+                        mapView.setZoom(Const.UiConfig.MY_LOCATION_ZOOM, true);
+                    }
+                }
+            });
+        }
     }
 }
