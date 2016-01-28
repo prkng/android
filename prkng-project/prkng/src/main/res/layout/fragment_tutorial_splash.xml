@@ -12,6 +12,7 @@
     <ImageView
         android:id="@+id/tutorial_image"
         style="@style/TutorialImage"
+        android:scaleType="centerInside"
         android:src="@drawable/logo_login_beta" />
 
     <ng.prk.prkngandroid.ui.view.IntroLightTextView
