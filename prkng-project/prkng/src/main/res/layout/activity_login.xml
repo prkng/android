@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_facebook"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="24dp"
         android:scaleType="centerInside"
         android:src="@drawable/logo_login_beta" />
 
@@ -25,7 +25,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_facebook"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="24dp"
         android:gravity="center_horizontal"
         android:text="@string/auth_subtitle"
         android:textColor="@color/color_text"
@@ -37,7 +39,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_google"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
         android:background="@color/facebook_blue"
         android:drawableLeft="@null"
         android:paddingBottom="14dp"
@@ -49,7 +53,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_email"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
         android:background="@color/google_red"
         android:text="@string/auth_btn_google" />
 
