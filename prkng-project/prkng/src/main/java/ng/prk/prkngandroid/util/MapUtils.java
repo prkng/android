@@ -1,5 +1,7 @@
 package ng.prk.prkngandroid.util;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.mapbox.mapboxsdk.annotations.Annotation;
@@ -8,6 +10,7 @@ import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.annotations.Polyline;
 import com.mapbox.mapboxsdk.annotations.PolylineOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.geometry.LatLngZoom;
 
 import java.util.List;
 
@@ -105,5 +108,15 @@ public class MapUtils {
         }
 
         return Double.MAX_VALUE;
+    }
+
+    public static LatLngZoom getInitialCenterCoordinates(Context context, Intent intent) {
+        // prefs
+        // intent
+        // checkin
+        // location
+        // city
+
+        return null;
     }
 }

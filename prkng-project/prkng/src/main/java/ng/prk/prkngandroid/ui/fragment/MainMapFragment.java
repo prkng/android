@@ -68,7 +68,7 @@ public class MainMapFragment extends Fragment implements
         MapView.OnMapClickListener,
         MapView.OnMarkerClickListener {
     private final static String TAG = "MainMapFragment";
-    private final static String MARKER_ID_CHECKIN = "checkin_marker";
+    public final static String MARKER_ID_CHECKIN = "checkin_marker";
     private final static double RADIUS_FIX = 1.4d;
     private static final long ANIMATION_DURATION = 400L; // Mapbox's anim is 300
 
@@ -134,7 +134,6 @@ public class MainMapFragment extends Fragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
         final View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         vProgressBar = (CircleProgressBar) view.findViewById(R.id.progressBar);
@@ -178,10 +177,6 @@ public class MainMapFragment extends Fragment implements
 
         super.onResume();
         onMapResume();
-
-        if (vMap.getMyLocation() != null) {
-            moveToMyLocation(false);
-        }
 
         if (!ConnectionUtils.hasConnection(getActivity())) {
             showConnectionError();
@@ -251,17 +246,27 @@ public class MainMapFragment extends Fragment implements
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        Log.v(TAG, "onSaveInstanceState");
         super.onSaveInstanceState(outState);
+
+//        try {
+//            outState.putDouble(Const.BundleKeys.LATITUDE, vMap.getLatLng().getLatitude());
+//            outState.putDouble(Const.BundleKeys.LONGITUDE, vMap.getLatLng().getLatitude());
+//            outState.putDouble(Const.BundleKeys.ZOOM, vMap.getZoom());
+//        } catch (NullPointerException e) {
+//            e.printStackTrace();
+//        } catch (IllegalStateException e) {
+//            e.printStackTrace();
+//        }
+
         vMap.onSaveInstanceState(outState);
     }
 
     private void createMapIfNecessary(View view, Bundle savedInstanceState) {
+        Log.v(TAG, "createMapIfNecessary");
+
         vMap = (MapView) view.findViewById(R.id.mapview);
         vMap.onCreate(savedInstanceState);
-
-        vMap.setLatLng(Const.UiConfig.MONTREAL_LAT_LNG);
-        vMap.setZoom(Const.UiConfig.DEFAULT_ZOOM);
-        vMap.setTiltEnabled(false);
 
         // Load map assets and colors
         if (mapAssets == null) {
@@ -269,22 +274,6 @@ public class MainMapFragment extends Fragment implements
         }
         mLastMapGeometry = new MapGeometry(vMap.getLatLng(), vMap.getZoom());
         mPrkngMapType = Const.MapSections.ON_STREET;
-    }
-
-    private void addCheckinMarker(CheckinData checkin) {
-        if (checkin != null && vMap.isShown() && isVisible() && isResumed()) {
-// TODO skip adding marker when map is hidden
-            try {
-                vMap.addMarker(new MarkerOptions()
-                        .icon(mapAssets.getCheckinMarkerIcon())
-                        .snippet(MARKER_ID_CHECKIN)
-                        .position(checkin.getLatLng()));
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-            }
-
-            vMap.setLatLng(getCheckinCoordinate(getArguments()));
-        }
     }
 
     private void showCheckinInfo(CheckinData checkin) {
@@ -317,7 +306,6 @@ public class MainMapFragment extends Fragment implements
         vMap.setOnMarkerClickListener(this);
 
         final CheckinData checkin = PrkngPrefs.getInstance(getActivity()).getCheckinData();
-        addCheckinMarker(checkin);
         showCheckinInfo(checkin);
     }
 
@@ -345,41 +333,65 @@ public class MainMapFragment extends Fragment implements
      */
     @Override
     public void onMapChanged(int change) {
-
         switch (change) {
             case MapView.REGION_DID_CHANGE:
-                if (isSignificantChange() || isIgnoreMinDistance()) {
-                    mIgnoreMinDistance = false;
-                    updateMapData(vMap.getLatLng(), vMap.getZoom());
-                }
+                onMapRegionChangedByUser();
                 break;
             case MapView.DID_FINISH_LOADING_MAP:
-                mIgnoreMinDistance = true;
+                onMapFinishedLoading();
+                break;
             case MapView.REGION_DID_CHANGE_ANIMATED:
-                if (isSignificantChange() || isIgnoreMinDistance()) {
-                    mIgnoreMinDistance = false;
-                    updateMapData(vMap.getLatLng(), vMap.getZoom());
-                }
-                break;
-            case MapView.REGION_WILL_CHANGE:
-            case MapView.REGION_WILL_CHANGE_ANIMATED:
-            case MapView.REGION_IS_CHANGING:
-            case MapView.WILL_START_LOADING_MAP:
-            case MapView.WILL_START_RENDERING_MAP:
-            case MapView.WILL_START_RENDERING_FRAME:
-//                Log.v(TAG, "onMapChanged @ " + change);
-                break;
-            case MapView.DID_FINISH_RENDERING_FRAME:
-            case MapView.DID_FINISH_RENDERING_FRAME_FULLY_RENDERED:
-                break;
-            case MapView.DID_FINISH_RENDERING_MAP:
-            case MapView.DID_FINISH_RENDERING_MAP_FULLY_RENDERED:
-                Log.v(TAG, "onMapChanged @ " + change);
+                onMapRegionChangedAnimated();
                 break;
             case MapView.DID_FAIL_LOADING_MAP:
-                Log.v(TAG, "DID_FAIL_LOADING_MAP");
+                onMapFailedLoading();
                 break;
+//            case MapView.REGION_WILL_CHANGE:
+//            case MapView.REGION_WILL_CHANGE_ANIMATED:
+//            case MapView.REGION_IS_CHANGING:
+//            case MapView.WILL_START_LOADING_MAP:
+//            case MapView.WILL_START_RENDERING_MAP:
+//            case MapView.WILL_START_RENDERING_FRAME:
+//                Log.v(TAG, "onMapChanged @ " + change);
+//                break;
+//            case MapView.DID_FINISH_RENDERING_FRAME:
+//            case MapView.DID_FINISH_RENDERING_FRAME_FULLY_RENDERED:
+//                Log.v(TAG, "onMapChanged @ " + change);
+//                break;
+//            case MapView.DID_FINISH_RENDERING_MAP:
+//            case MapView.DID_FINISH_RENDERING_MAP_FULLY_RENDERED:
+//                Log.v(TAG, "onMapChanged @ " + change);
+//                break;
         }
+    }
+
+    private void onMapRegionChangedByUser() {
+        if (isSignificantChange() || isIgnoreMinDistance()) {
+            mIgnoreMinDistance = false;
+            updateMapData(vMap.getLatLng(), vMap.getZoom());
+        }
+    }
+
+    private void onMapRegionChangedAnimated() {
+        if (isSignificantChange() || isIgnoreMinDistance()) {
+            mIgnoreMinDistance = false;
+            updateMapData(vMap.getLatLng(), vMap.getZoom());
+        }
+    }
+
+    private void onMapFinishedLoading() {
+        Log.v(TAG, "onMapFinishedLoading");
+
+        mIgnoreMinDistance = false;
+
+//        if (vMap.getMyLocation() != null) {
+//            moveToMyLocation(false);
+//        }
+        updateMapData(vMap.getLatLng(), vMap.getZoom());
+    }
+
+    private void onMapFailedLoading() {
+        Log.v(TAG, "onMapFailedLoading");
     }
 
     /**
@@ -481,9 +493,6 @@ public class MainMapFragment extends Fragment implements
     public void onPostExecute() {
         try {
             vProgressBar.setVisibility(View.GONE);
-
-            addCheckinMarker(
-                    PrkngPrefs.getInstance(getActivity()).getCheckinData());
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -745,9 +754,6 @@ public class MainMapFragment extends Fragment implements
     }
 
     private void updateMapData(LatLng latLng, double zoom, boolean forced) {
-        Log.v(TAG, "updateMapData "
-                + String.format("latLng = %s, zoom = %s, forced = %s", latLng, zoom, forced));
-
         if (!ConnectionUtils.hasConnection(getActivity())) {
             showConnectionError();
             return;
@@ -761,6 +767,7 @@ public class MainMapFragment extends Fragment implements
 //            vMap.setZoom(Const.UiConfig.AVAILABLE_CITIES_MIN_ZOOM, false);
             return;
         } else if (Double.compare(zoom, Const.UiConfig.CLEAR_MAP_MIN_ZOOM) < 0) {
+            Log.e(TAG, "removeAllAnnotations 1");
             vMap.removeAllAnnotations();
         }
 
@@ -837,7 +844,11 @@ public class MainMapFragment extends Fragment implements
     }
 
     public void setMapType(int type) {
+        Log.v(TAG, "setMapType "
+                + String.format("type = %s", type));
+
         if (type != mPrkngMapType) {
+            Log.e(TAG, "removeAllAnnotations 2");
             vMap.removeAllAnnotations();
             mPrkngMapType = type;
             final double zoom = MapUtils.getMinZoomPerType(type);
