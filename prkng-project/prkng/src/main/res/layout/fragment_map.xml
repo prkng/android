@@ -16,8 +16,11 @@
         app:attribution_visibility="gone"
         app:compass_gravity="top|end"
         app:logo_visibility="invisible"
+        app:zoom="@dimen/map_attr_zoom"
+        app:center_latitude="@dimen/map_attr_latitude"
+        app:center_longitude="@dimen/map_attr_longitude"
         app:style_url="@string/mapbox_style_url"
-        app:tilt_enabled="false" />
+        app:tilt_enabled="true" />
 
     <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
         android:id="@+id/progressBar"

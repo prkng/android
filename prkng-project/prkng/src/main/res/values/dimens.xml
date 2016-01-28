@@ -18,6 +18,10 @@
     <dimen name="map_line_width">1dp</dimen>
     <dimen name="lot_marker_text">10sp</dimen>
     <dimen name="map_bounds_padding">80dp</dimen>
+    <!--Map defaults-->
+    <item name="map_attr_zoom" format="float" type="dimen">15.0</item>
+    <item name="map_attr_latitude" format="float" type="dimen">45.5016889</item>
+    <item name="map_attr_longitude" format="float" type="dimen">-73.567256</item>
 
     <!--Marker (Lot/Spot) info-->
     <dimen name="agenday_day_text">@dimen/text_size_1</dimen>
