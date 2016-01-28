@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
 import android.location.Location;
@@ -66,9 +67,9 @@ public class MainMapFragment extends Fragment implements
         SpotsDownloadTask.MapTaskListener,
         MapView.OnMapChangedListener,
         MapView.OnMapClickListener,
-        MapView.OnMarkerClickListener {
+        MapView.OnMarkerClickListener,
+        SharedPreferences.OnSharedPreferenceChangeListener {
     private final static String TAG = "MainMapFragment";
-    public final static String MARKER_ID_CHECKIN = "checkin_marker";
     private final static double RADIUS_FIX = 1.4d;
     private static final long ANIMATION_DURATION = 400L; // Mapbox's anim is 300
 
@@ -139,8 +140,10 @@ public class MainMapFragment extends Fragment implements
 
         initialArguments = (savedInstanceState != null) ? savedInstanceState
                 : getArguments();
+
+        PrkngPrefs.getInstance(getContext()).registerPrefsChangeListener(this);
     }
-    
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_map, container, false);
@@ -251,6 +254,12 @@ public class MainMapFragment extends Fragment implements
     public void onDestroy() {
         super.onDestroy();
         vMap.onDestroy();
+
+        try {
+            PrkngPrefs.getInstance(getActivity()).unregisterPrefsChangeListener(this);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -269,6 +278,24 @@ public class MainMapFragment extends Fragment implements
         }
 
         vMap.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Log.v(TAG, "onSharedPreferenceChanged");
+        if (Const.PrefsNames.CHECKIN_ID.equals(key)) {
+            try {
+                final long id = sharedPreferences.getLong(key, Const.UNKNOWN_VALUE);
+                if (Long.valueOf(Const.UNKNOWN_VALUE).compareTo(id) == 0) {
+                    MapUtils.removeCheckinMarker(vMap);
+                } else {
+                    MapUtils.addCheckinMarkerIfAvailable(vMap,
+                            mapAssets.getCheckinMarkerIcon());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void createMapIfNecessary(View view, Bundle savedInstanceState) {
@@ -464,7 +491,7 @@ public class MainMapFragment extends Fragment implements
             return true;
         }
 
-        if (featureId == MARKER_ID_CHECKIN) {
+        if (featureId == MapUtils.MARKER_ID_CHECKIN) {
             startActivity(CheckinActivity.newIntent(getActivity()));
             return true;
         }

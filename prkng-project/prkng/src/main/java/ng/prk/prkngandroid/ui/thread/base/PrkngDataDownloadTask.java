@@ -20,11 +20,10 @@ import java.util.Map;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.io.PrkngApiError;
-import ng.prk.prkngandroid.model.CheckinData;
 import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.SpotsAnnotations;
 import ng.prk.prkngandroid.model.ui.MapAssets;
-import ng.prk.prkngandroid.ui.fragment.MainMapFragment;
+import ng.prk.prkngandroid.util.MapUtils;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void, SpotsAnnotations> {
@@ -123,7 +122,7 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
 
 
 //                    drawRadius(spots.getCenterCoordinate());
-                addCheckinMarkerIfAvailable();
+                MapUtils.addCheckinMarkerIfAvailable(vMap, mapAssets.getCheckinMarkerIcon());
 
                 Log.v(TAG, "Sync duration: " + (System.currentTimeMillis() - startTime) + " ms");
             } else {
@@ -200,13 +199,4 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
         this.error = e;
     }
 
-    private void addCheckinMarkerIfAvailable() {
-        final CheckinData checkin = PrkngPrefs.getInstance(vMap.getContext()).getCheckinData();
-        if (checkin != null) {
-            vMap.addMarker(new MarkerOptions()
-                    .icon(mapAssets.getCheckinMarkerIcon())
-                    .snippet(MainMapFragment.MARKER_ID_CHECKIN)
-                    .position(checkin.getLatLng()));
-        }
-    }
 }

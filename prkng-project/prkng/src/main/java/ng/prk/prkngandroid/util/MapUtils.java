@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
 
 import com.mapbox.mapboxsdk.annotations.Annotation;
+import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.annotations.Polyline;
@@ -22,6 +23,7 @@ import ng.prk.prkngandroid.model.CheckinData;
 public class MapUtils {
     private final static String TAG = "MapUtils";
     public static final int KILOMETER_IN_METERS = 1000;
+    public final static String MARKER_ID_CHECKIN = "checkin_marker";
 
     public static double getMinZoomPerType(int type) {
         switch (type) {
@@ -185,5 +187,29 @@ public class MapUtils {
                 }
             });
         }
+    }
+
+    public static void addCheckinMarkerIfAvailable(MapView mapView, Icon checkinIcon) {
+        final CheckinData checkin = PrkngPrefs.getInstance(mapView.getContext()).getCheckinData();
+        if (checkin != null) {
+            mapView.addMarker(new MarkerOptions()
+                    .icon(checkinIcon)
+                    .snippet(MARKER_ID_CHECKIN)
+                    .position(checkin.getLatLng()));
+        }
+    }
+
+    public static boolean removeCheckinMarker(MapView mapView) {
+        for (Annotation annotation : mapView.getAllAnnotations()) {
+            if (annotation instanceof Marker) {
+                final Marker marker = (Marker) annotation;
+                if (MARKER_ID_CHECKIN.equals(marker.getSnippet())) {
+                    mapView.removeMarker(marker);
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
