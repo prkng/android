@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
 import ng.prk.prkngandroid.Const;
+import ng.prk.prkngandroid.util.MapUtils;
 
 public class City implements Comparable<City> {
     private int id;
@@ -20,7 +21,7 @@ public class City implements Comparable<City> {
     @SerializedName(Const.ApiArgs.GEO_LNG)
     private double longitude;
     @SerializedName(Const.ApiArgs.URBAN_AREA_RADIUS)
-    private int areaRadius;
+    private int areaRadius; // km
     private double distanceTo;
 
     public int getId() {
@@ -39,8 +40,8 @@ public class City implements Comparable<City> {
         return new LatLng(latitude, longitude);
     }
 
-    public int getAreaRadius() {
-        return areaRadius;
+    public double getAreaRadius() {
+        return areaRadius * MapUtils.KILOMETER_IN_METERS;
     }
 
     public double getDistanceTo() {
@@ -49,6 +50,10 @@ public class City implements Comparable<City> {
 
     public void setDistanceTo(double distanceTo) {
         this.distanceTo = distanceTo;
+    }
+
+    public boolean containsInRadius(LatLng point) {
+        return Double.compare(point.distanceTo(getLatLng()), getAreaRadius()) <= 0;
     }
 
     @Override
