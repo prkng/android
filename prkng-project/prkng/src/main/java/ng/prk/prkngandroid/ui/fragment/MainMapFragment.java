@@ -288,6 +288,7 @@ public class MainMapFragment extends Fragment implements
                 final long id = sharedPreferences.getLong(key, Const.UNKNOWN_VALUE);
                 if (Long.valueOf(Const.UNKNOWN_VALUE).compareTo(id) == 0) {
                     MapUtils.removeCheckinMarker(vMap);
+                    showCheckinInfo(null);
                 } else {
                     MapUtils.addCheckinMarkerIfAvailable(vMap,
                             mapAssets.getCheckinMarkerIcon());
