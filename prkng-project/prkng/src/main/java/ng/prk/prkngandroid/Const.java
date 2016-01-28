@@ -22,6 +22,7 @@ public class Const {
         double SMALL_BUTTONS_ZOOM = 17.0d;
         double BIG_BUTTONS_ZOOM = 18.0d;
         double MY_LOCATION_ZOOM = 17.0d;
+        double CHECKIN_ZOOM = 16.0d;
         double MIN_UPDATE_DISTACE = 50.0d; // Metres
         double MONTREAL_NATURAL_NORTH_ROTATION = -34.0d;
         LatLng MONTREAL_LAT_LNG = new LatLng(45.5016889d, -73.567256d);

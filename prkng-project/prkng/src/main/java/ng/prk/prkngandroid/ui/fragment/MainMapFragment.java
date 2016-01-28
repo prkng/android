@@ -91,6 +91,7 @@ public class MainMapFragment extends Fragment implements
     private SelectedFeature mSelectedFeature;
     private Snackbar mSnackbar;
     private boolean isDialogShown = false;
+    private Bundle initialArguments;
 
     public static MainMapFragment newInstance() {
         return newInstance(null);
@@ -132,6 +133,14 @@ public class MainMapFragment extends Fragment implements
         }
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        initialArguments = (savedInstanceState != null) ? savedInstanceState
+                : getArguments();
+    }
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_map, container, false);
@@ -249,15 +258,15 @@ public class MainMapFragment extends Fragment implements
         Log.v(TAG, "onSaveInstanceState");
         super.onSaveInstanceState(outState);
 
-//        try {
-//            outState.putDouble(Const.BundleKeys.LATITUDE, vMap.getLatLng().getLatitude());
-//            outState.putDouble(Const.BundleKeys.LONGITUDE, vMap.getLatLng().getLatitude());
-//            outState.putDouble(Const.BundleKeys.ZOOM, vMap.getZoom());
-//        } catch (NullPointerException e) {
-//            e.printStackTrace();
-//        } catch (IllegalStateException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            outState.putDouble(Const.BundleKeys.LATITUDE, vMap.getLatLng().getLatitude());
+            outState.putDouble(Const.BundleKeys.LONGITUDE, vMap.getLatLng().getLongitude());
+            outState.putDouble(Const.BundleKeys.ZOOM, vMap.getZoom());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
 
         vMap.onSaveInstanceState(outState);
     }
@@ -384,10 +393,9 @@ public class MainMapFragment extends Fragment implements
 
         mIgnoreMinDistance = false;
 
-//        if (vMap.getMyLocation() != null) {
-//            moveToMyLocation(false);
-//        }
-        updateMapData(vMap.getLatLng(), vMap.getZoom());
+        MapUtils.setInitialCenterCoordinates(vMap, initialArguments);
+
+//        updateMapData(vMap.getLatLng(), vMap.getZoom());
     }
 
     private void onMapFailedLoading() {
