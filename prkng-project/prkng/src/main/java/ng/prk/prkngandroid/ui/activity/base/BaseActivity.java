@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -122,12 +123,11 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param intent
      * @return
      */
-    protected boolean isFirstClickFreeIntent(Intent intent) {
+    protected boolean isFirstClickFreeIntent(@NonNull  Intent intent) {
         Log.v(TAG, "isFirstClickFreeIntent "
                 + String.format("intent = %s", intent.getAction()));
 
-        return ((intent != null) &&
-                Intent.ACTION_VIEW.equals(intent.getAction()));
+        return Intent.ACTION_VIEW.equals(intent.getAction());
     }
 
     protected boolean isLoginRequired() {
