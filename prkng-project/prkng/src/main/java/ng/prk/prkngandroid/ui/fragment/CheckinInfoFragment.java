@@ -74,7 +74,7 @@ public class CheckinInfoFragment extends Fragment implements View.OnClickListene
                 // Time is up!
                 vTitle.setText(R.string.checkin_expired);
             } else {
-                vTitle.setText(CalendarUtils.getTimeFromMillis(getActivity(), remaining));
+                vTitle.setText(CalendarUtils.getDurationFromMillis(getActivity(), remaining));
             }
         }
     }
