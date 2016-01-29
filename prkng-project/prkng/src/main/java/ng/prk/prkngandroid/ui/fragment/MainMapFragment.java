@@ -457,14 +457,15 @@ public class MainMapFragment extends Fragment implements
      */
     @Override
     public void onMapClick(@NonNull LatLng point) {
-        if (listener != null) {
+        unselectFeatureIfNecessary();
+        final boolean markerClicked = onNearestMarkerClick(point);
+
+        if (!markerClicked && listener != null) {
             listener.hideMarkerInfo();
         }
-        unselectFeatureIfNecessary();
-        onNearestMarkerClick(point);
     }
 
-    private void onNearestMarkerClick(@NonNull LatLng point) {
+    private boolean onNearestMarkerClick(@NonNull LatLng point) {
         final Annotation annotation = MapUtils.getNearestAnnotation(point, vMap.getAllAnnotations());
 
         if (annotation != null) {
@@ -478,6 +479,7 @@ public class MainMapFragment extends Fragment implements
                 if (annotation instanceof Marker) {
                     // Nearest is a Marker, trigger onMarkerClick()
                     onMarkerClick((Marker) annotation);
+                    return true;
                 } else if (annotation instanceof Polyline) {
                     // Nearest is a Polyline, find its associated Marker
                     for (Map.Entry<String, List<Annotation>> entry : mFeatureAnnotsList.entrySet()) {
@@ -485,7 +487,7 @@ public class MainMapFragment extends Fragment implements
                             for (Annotation a : entry.getValue()) {
                                 if (a instanceof Marker) {
                                     onMarkerClick((Marker) a);
-                                    break;
+                                    return true;
                                 }
                             }
                         }
@@ -493,6 +495,8 @@ public class MainMapFragment extends Fragment implements
                 }
             }
         }
+
+        return false;
     }
 
     /**
