@@ -88,17 +88,17 @@
     <string name="snackbar_host_unknown_error_message">Server connection error [%1$d]</string>
     <string name="snackbar_login_fail">Wrong email or password. Please check the values provided.</string>
     <string name="snackbar_sign_up_fail">User already exists. Login or forgot password?</string>
-    <string name="snackbar_unsupported_area">You’re probably viewing an unsupported area.</string>
-    <string name="snackbar_unsupported_my_location">You are located in an unsupported area.</string>
-    <string name="snackbar_on_street_zoom_out">No allowed parking found here. You can check a wider area.</string>
-    <string name="snackbar_off_street_zoom_out">No parking lots around here. You can check a wider area.</string>
-    <string name="snackbar_on_street_duration_empty_result">No allowed parking found for %d hours.</string>
-    <string name="snackbar_off_street_empty_result">No parking lots found in this area.</string>
-    <string name="snackbar_connection_error">Internet connection is unavailable.</string>
+    <string name="snackbar_unsupported_area">Sorry, we don’t currently know about parking regulations here.</string>
+    <string name="snackbar_unsupported_my_location">Sorry, you are located in an unsupported area.</string>
+    <string name="snackbar_on_street_zoom_out">Uh oh! You can’t park here at this time.</string>
+    <string name="snackbar_off_street_zoom_out">Uh oh! No parking lots available here.</string>
+    <string name="snackbar_on_street_duration_empty_result">Uh oh! You can’t park here for %d hours.</string>
+    <string name="snackbar_off_street_empty_result">Uh oh! No parking lots available here.</string>
+    <string name="snackbar_connection_error">Oops, make sure your internet connection is active and try again.</string>
 
     <!--Toast-->
-    <string name="toast_checkout_ok">prkng checked out successfully</string>
-    <string name="toast_checkout_error">prkng checkout error</string>
+    <string name="toast_checkout_ok">prkng: Checked out successfully</string>
+    <string name="toast_checkout_error">prkng: Checkout error</string>
 
     <!--Map-->
     <string name="map_tab_on_street">On-Street</string>
@@ -136,6 +136,7 @@
         <item quantity="other">%d minutes</item>
     </plurals>
     <string name="allowed_all_week">Available all week long</string>
+    <string name="not_allowed">Parking not allowed</string>
     <string name="expiry_day_tomorrow">Tomorrow</string>
     <string name="expiry_hours_minutes">%1$dh %2$dm</string>
     <string name="expiry_day_time_of_day">%1$s %2$s</string>

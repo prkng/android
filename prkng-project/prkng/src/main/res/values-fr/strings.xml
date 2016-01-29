@@ -69,10 +69,10 @@
     <string name="btn_info">Info</string>
     <string name="btn_try_again">Réessayer</string>
     <string name="btn_reset_password">Mot de passe oublié?</string>
-    <string name="btn_available_cities">***Available cities</string>
-    <string name="btn_select_duration">***Select duration</string>
-    <string name="btn_zoom_out">***Zoom out</string>
-    <string name="btn_view_nearest">***View nearest</string>
+    <string name="btn_available_cities">Villes disponibles</string>
+    <string name="btn_select_duration">Selectionner une durée</string>
+    <string name="btn_zoom_out">Dézoomez</string>
+    <string name="btn_view_nearest">à proximité</string>
 
     <!--Dialogs-->
     <string name="dialog_durations_title">Choisir la durée</string>
@@ -88,13 +88,13 @@
     <string name="snackbar_host_unknown_error_message">Server connection error [%1$d]</string>
     <string name="snackbar_login_fail">Vérifier votre adresse e-mail et mot de passe, puis essayer à nouveau.</string>
     <string name="snackbar_sign_up_fail">Ce nom d’utilisateur est déjà pris. Essayez avec un autre nom.</string>
-    <string name="snackbar_unsupported_area">***You’re probably viewing an unsupported area.</string>
-    <string name="snackbar_unsupported_my_location">You are located in an unsupported area.</string>
-    <string name="snackbar_on_street_zoom_out">***No allowed parking found here. You can check a wider area.</string>
-    <string name="snackbar_off_street_zoom_out">***No parking lots around here. You can check a wider area.</string>
-    <string name="snackbar_on_street_duration_empty_result">***No allowed parking found for %d hours.</string>
-    <string name="snackbar_off_street_empty_result">***No parking lots found in this area.</string>
-    <string name="snackbar_connection_error">***Internet connection is unavailable.</string>
+    <string name="snackbar_unsupported_area">Désolé, aucune information n’est disponible pour cette région.</string>
+    <string name="snackbar_unsupported_my_location">Désolé, votre région n’est pas disponible.</string>
+    <string name="snackbar_on_street_zoom_out">Uh oh! Vous ne pouvez vous stationner ici présentement.</string>
+    <string name="snackbar_off_street_zoom_out">Uh oh! Il n’y a pas de lots disponibles ici.</string>
+    <string name="snackbar_on_street_duration_empty_result">Vous ne pouvez vous stationner ici pour %d heures.</string>
+    <string name="snackbar_off_street_empty_result">Uh oh! Il n’y a pas de lots disponibles ici.</string>
+    <string name="snackbar_connection_error">Oops, assurez-vous d’avoir une connexion réseau.</string>
 
     <!--Toast-->
     <string name="toast_checkout_ok">Vous avez quitté la place!</string>
@@ -136,6 +136,7 @@
         <item quantity="other">%d minutes</item>
     </plurals>
     <string name="allowed_all_week">Disponible toute la semaine</string>
+    <string name="not_allowed">Stationnement non-autorisé</string>
     <string name="expiry_day_tomorrow">Demain</string>
     <string name="expiry_hours_minutes">%1$dh %2$dm</string>
     <string name="expiry_day_time_of_day">%1$s %2$s</string>
@@ -157,7 +158,7 @@
     <string name="checkin_prefix">Stationné sur %s</string>
     <string name="checkin_smart_reminder">NOTIFICATION LA VEILLE</string>
     <string name="checkin_empty">Envie d’un rappel?\r\nAllez sur la carte et sélectionnez “Parqué!”</string>
-    <string name="checkin_expired">***Temps écoulé!</string>
+    <string name="checkin_expired">Temps écoulé!</string>
 
     <!--Authentication-->
     <string name="auth_subtitle">CONNEXION AVEC</string>
