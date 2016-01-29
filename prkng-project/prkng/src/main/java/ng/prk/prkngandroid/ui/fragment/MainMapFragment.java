@@ -79,6 +79,7 @@ public class MainMapFragment extends Fragment implements
     @Deprecated
     private final static boolean MY_LOCATION_ENABLED = true;
 
+    private FloatingActionButton vFab;
     private CircleProgressBar vProgressBar;
     private MapView vMap;
     private MapAssets mapAssets;
@@ -153,8 +154,8 @@ public class MainMapFragment extends Fragment implements
         final View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         vProgressBar = (CircleProgressBar) view.findViewById(R.id.progressBar);
-        final FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        vFab = (FloatingActionButton) view.findViewById(R.id.fab);
+        vFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (PackageManager.PERMISSION_GRANTED !=
@@ -437,11 +438,13 @@ public class MainMapFragment extends Fragment implements
 
         try {
             MapUtils.setInitialCenterCoordinates(vMap, initialArguments);
-        } catch (UnsupportedAreaException e) {
-            onUnsupportedArea();
-        }
 
-//        updateMapData(vMap.getLatLng(), vMap.getZoom());
+            updateMapData(vMap.getLatLng(), vMap.getZoom());
+        } catch (UnsupportedAreaException e) {
+            if (!isDialogShown) {
+                isDialogShown = listener.showCitiesDialog(vMap.getLatLng());
+            }
+        }
     }
 
     private void onMapFailedLoading() {
@@ -572,15 +575,15 @@ public class MainMapFragment extends Fragment implements
         if (e.isUnauthorized()) {
             startActivityForResult(LoginActivity.newIntent(getActivity()), Const.RequestCodes.AUTH_LOGIN);
         } else if (e.isNotFound()) {
-            onUnsupportedArea();
+            onUnsupportedArea(R.string.snackbar_unsupported_area);
         } else {
             e.showSnackbar(vMap);
         }
     }
 
-    private void onUnsupportedArea() {
+    private void onUnsupportedArea(int message) {
         Log.v(TAG, "onUnsupportedArea");
-        mSnackbar = RedSnackbar.make(vMap, R.string.snackbar_unsupported_area, Snackbar.LENGTH_INDEFINITE)
+        mSnackbar = RedSnackbar.make(vMap, message, Snackbar.LENGTH_LONG)
                 .setAction(R.string.btn_available_cities,
                         new View.OnClickListener() {
                             @Override
@@ -879,14 +882,23 @@ public class MainMapFragment extends Fragment implements
         }
         final Location myLocation = vMap.getMyLocation();
         if (myLocation != null) {
-            mCurrentCity = CityBoundsHelper.getNearestCity(getContext(),
+            final LatLng latLng = new LatLng(myLocation.getLatitude(),
+                    myLocation.getLongitude());
+            final City nearestCity = CityBoundsHelper.getNearestCity(getContext(),
                     new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
-
-            vMap.setLatLng(new LatLngZoom(
-                    myLocation.getLatitude(),
-                    myLocation.getLongitude(),
-                    Math.max(Const.UiConfig.MY_LOCATION_ZOOM, vMap.getZoom())
-            ), animated);
+            if (nearestCity.containsInRadius(latLng)) {
+                mCurrentCity = nearestCity;
+                vMap.setLatLng(new LatLngZoom(
+                                latLng,
+                                Math.max(Const.UiConfig.MY_LOCATION_ZOOM, vMap.getZoom())
+                        ),
+                        animated);
+                vFab.clearColorFilter();
+            } else {
+                vFab.setColorFilter(
+                        ContextCompat.getColor(getContext(), R.color.anthracite2));
+                onUnsupportedArea(R.string.snackbar_unsupported_my_location);
+            }
         }
     }
 
