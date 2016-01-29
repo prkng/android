@@ -33,7 +33,7 @@ public class RedSnackbar {
             tv.setTypeface(TypefaceHelper.getTypeface(view.getContext(), Const.TypeFaces.BOLD));
 
             final Button btn = (Button) (snackbar.getView()).findViewById(android.support.design.R.id.snackbar_action);
-            btn.setTypeface(TypefaceHelper.getTypeface(view.getContext(), Const.TypeFaces.LIGHT));
+            btn.setTypeface(TypefaceHelper.getTypeface(view.getContext(), Const.TypeFaces.BOLD));
 
         } catch (Exception e) {
             e.printStackTrace();
