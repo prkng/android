@@ -24,8 +24,8 @@ android {
         applicationId "ng.prk.prkngandroid"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 12
-        versionName "0.8.2"
+        versionCode 13
+        versionName "0.8.3"
 
 //        resConfigs "en", "fr"
 //        resConfigs "nodpi", "mdpi", "hdpi", "xhdpi", "xxhdpi"
@@ -35,12 +35,14 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "API_BASE_URL", '"https://api.prk.ng/v1/"'
+            buildConfigField "boolean", "USE_CRASHLYTICS", "true"
         }
 
         debug {
             applicationIdSuffix ".d"
             minifyEnabled false
             buildConfigField "String", "API_BASE_URL", '"https://test.prk.ng/v1/"'
+            buildConfigField "boolean", "USE_CRASHLYTICS", "false"
         }
 
         debugFacebook.initWith(buildTypes.debug)

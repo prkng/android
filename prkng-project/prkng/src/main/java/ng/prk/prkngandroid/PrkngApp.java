@@ -24,7 +24,7 @@ public class PrkngApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        if (!BuildConfig.DEBUG) {
+        if (BuildConfig.USE_CRASHLYTICS) {
             Fabric.with(this, new Crashlytics());
         }
 
