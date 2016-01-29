@@ -184,6 +184,7 @@ public class MainActivity extends BaseActivity implements
      */
     @Override
     public void showMarkerInfo(Marker marker, int type) {
+        Log.v(TAG, "showMarkerInfo");
         if (marker == null) {
             hideMarkerInfo();
         } else {
@@ -193,6 +194,7 @@ public class MainActivity extends BaseActivity implements
 
             Fragment fragment = fm.findFragmentByTag(Const.FragmentTags.MAP_INFO);
             if (fragment == null) {
+                Log.v(TAG, "setCustomAnimations");
                 ft.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
             }
 
@@ -212,9 +214,6 @@ public class MainActivity extends BaseActivity implements
 
             ft.replace(R.id.map_info_frame, fragment, Const.FragmentTags.MAP_INFO)
                     .commit();
-
-            // TODO showMarkerInfo
-            Log.d(TAG, "TODO showMarkerInfo");
         }
     }
 
@@ -223,7 +222,7 @@ public class MainActivity extends BaseActivity implements
      */
     @Override
     public void hideMarkerInfo() {
-        Log.e(TAG, "TODO hideMarkerInfo");
+        Log.e(TAG, "hideMarkerInfo");
         final FragmentManager fm = getSupportFragmentManager();
         final Fragment fragment = fm.findFragmentByTag(Const.FragmentTags.MAP_INFO);
         if (fragment != null && fragment.isVisible()) {
