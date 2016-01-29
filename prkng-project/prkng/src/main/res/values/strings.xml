@@ -89,6 +89,7 @@
     <string name="snackbar_login_fail">Wrong email or password. Please check the values provided.</string>
     <string name="snackbar_sign_up_fail">User already exists. Login or forgot password?</string>
     <string name="snackbar_unsupported_area">You’re probably viewing an unsupported area.</string>
+    <string name="snackbar_unsupported_my_location">You are located in an unsupported area.</string>
     <string name="snackbar_on_street_zoom_out">No allowed parking found here. You can check a wider area.</string>
     <string name="snackbar_off_street_zoom_out">No parking lots around here. You can check a wider area.</string>
     <string name="snackbar_on_street_duration_empty_result">No allowed parking found for %d hours.</string>
