@@ -2,6 +2,7 @@ package ng.prk.prkngandroid.util;
 
 import android.content.Context;
 import android.location.Location;
+import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -35,11 +36,23 @@ public class CityBoundsHelper {
         return null;
     }
 
-    private static City getNearestCity(Context context, LatLng latLng) {
+    public static City getNearestCity(Context context, LatLng latLng) {
         final List<City> cities = getSupportedCities(context, latLng);
 
         Collections.sort(cities);
         return cities.get(0);
+    }
+
+    public static City getCityByName(Context context, @NonNull String city) {
+        final List<City> cities = getSupportedCities(context);
+
+        for (City c : cities) {
+            if (city.equals(c.getName())) {
+                return c;
+            }
+        }
+
+        return null;
     }
 
     public static boolean isValidLocation(Context context, Location location) {

@@ -240,7 +240,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void showCitiesDialog(LatLng latLng) {
+    public boolean showCitiesDialog(LatLng latLng) {
         final FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentByTag(Const.FragmentTags.DIALOG_CITIES) == null) {
             final CitiesDialog dialog = CitiesDialog.newInstance(latLng);
@@ -248,7 +248,11 @@ public class MainActivity extends BaseActivity implements
             final Fragment map = getSupportFragmentManager().findFragmentByTag(Const.FragmentTags.MAP);
             dialog.setTargetFragment(map, Const.RequestCodes.CITY_SELECTOR);
             dialog.show(fm, Const.FragmentTags.DIALOG_CITIES);
+
+            return true;
         }
+
+        return false;
     }
 
     /**

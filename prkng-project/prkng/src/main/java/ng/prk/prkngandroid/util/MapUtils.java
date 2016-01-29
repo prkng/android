@@ -18,6 +18,7 @@ import com.mapbox.mapboxsdk.views.MapView;
 import java.util.List;
 
 import ng.prk.prkngandroid.Const;
+import ng.prk.prkngandroid.io.UnsupportedAreaException;
 import ng.prk.prkngandroid.model.CheckinData;
 
 public class MapUtils {
@@ -117,7 +118,7 @@ public class MapUtils {
         return Double.MAX_VALUE;
     }
 
-    public static LatLngZoom getInitialCenterCoordinates(MapView mapView, Bundle extras) {
+    public static LatLngZoom getInitialCenterCoordinates(MapView mapView, Bundle extras) throws UnsupportedAreaException {
         // First, start by checking bundle coordinates (from Intent or savedInstance)
         if (extras != null) {
             final LatLngZoom latLngZoom = getBundleGeoPoint(extras);
@@ -141,6 +142,8 @@ public class MapUtils {
                 return new LatLngZoom(myLocation.getLatitude(),
                         myLocation.getLongitude(),
                         Const.UiConfig.MY_LOCATION_ZOOM);
+            } else {
+                throw new UnsupportedAreaException();
             }
         }
 
@@ -162,7 +165,7 @@ public class MapUtils {
         return null;
     }
 
-    public static void setInitialCenterCoordinates(final MapView mapView, Bundle extras) {
+    public static void setInitialCenterCoordinates(final MapView mapView, Bundle extras) throws UnsupportedAreaException {
         final long startMillis = System.currentTimeMillis();
 
         final LatLngZoom initialCoords = MapUtils

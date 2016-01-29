@@ -63,6 +63,7 @@ public class CitiesDialog extends DialogFragment {
                             final Intent intent = new Intent();
 
                             final Bundle bundle = new Bundle();
+                            bundle.putString(Const.BundleKeys.CITY, city.getName());
                             bundle.putDouble(Const.BundleKeys.LATITUDE, city.getLatLng().getLatitude());
                             bundle.putDouble(Const.BundleKeys.LONGITUDE, city.getLatLng().getLongitude());
                             intent.putExtras(bundle);

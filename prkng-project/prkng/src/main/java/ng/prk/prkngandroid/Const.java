@@ -220,6 +220,7 @@ public class Const {
         String MARKER_TITLE = "marker_title";
         String IS_EXPANDED = "is_expanded";
         String DURATION = "duration";
+        String CITY = "city";
     }
 
     /**

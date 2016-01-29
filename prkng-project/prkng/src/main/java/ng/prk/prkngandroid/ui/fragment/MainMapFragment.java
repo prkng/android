@@ -46,7 +46,9 @@ import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.PrkngApp;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.io.PrkngApiError;
+import ng.prk.prkngandroid.io.UnsupportedAreaException;
 import ng.prk.prkngandroid.model.CheckinData;
+import ng.prk.prkngandroid.model.City;
 import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.model.ui.SelectedFeature;
@@ -59,6 +61,7 @@ import ng.prk.prkngandroid.ui.thread.NearestLotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.SpotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.PrkngDataDownloadTask;
 import ng.prk.prkngandroid.ui.view.RedSnackbar;
+import ng.prk.prkngandroid.util.CityBoundsHelper;
 import ng.prk.prkngandroid.util.ConnectionUtils;
 import ng.prk.prkngandroid.util.MapUtils;
 import ng.prk.prkngandroid.util.PrkngPrefs;
@@ -93,6 +96,7 @@ public class MainMapFragment extends Fragment implements
     private Snackbar mSnackbar;
     private boolean isDialogShown = false;
     private Bundle initialArguments;
+    private City mCurrentCity;
 
     public static MainMapFragment newInstance() {
         return newInstance(null);
@@ -119,7 +123,7 @@ public class MainMapFragment extends Fragment implements
 
         void showDurationDialog();
 
-        void showCitiesDialog(LatLng latLng);
+        boolean showCitiesDialog(LatLng latLng);
     }
 
     @Override
@@ -226,12 +230,22 @@ public class MainMapFragment extends Fragment implements
             isDialogShown = false;
 
             if (resultCode == Activity.RESULT_OK) {
-                final LatLngZoom latLngZoom = new LatLngZoom(
+                final String cityName = data.getStringExtra(Const.BundleKeys.CITY);
+                final LatLng latLng = new LatLng(
                         data.getDoubleExtra(Const.BundleKeys.LATITUDE, Const.UNKNOWN_VALUE),
-                        data.getDoubleExtra(Const.BundleKeys.LONGITUDE, Const.UNKNOWN_VALUE),
-                        Const.UiConfig.DEFAULT_ZOOM
-                );
-                setCenterCoordinate(latLngZoom);
+                        data.getDoubleExtra(Const.BundleKeys.LONGITUDE, Const.UNKNOWN_VALUE));
+
+                // Update currently selected city
+                mCurrentCity = null;
+                if (cityName != null && !cityName.isEmpty()) {
+                    mCurrentCity = CityBoundsHelper.getCityByName(getContext(), cityName);
+                }
+                if (mCurrentCity == null) {
+                    mCurrentCity = CityBoundsHelper.getNearestCity(getContext(), latLng);
+                }
+
+                vMap.setLatLng(latLng);
+                vMap.setZoom(Const.UiConfig.DEFAULT_ZOOM, true);
             }
         } else if ((Const.RequestCodes.AUTH_LOGIN == requestCode) && (resultCode == Activity.RESULT_OK)) {
             forceUpdate(null);
@@ -421,7 +435,11 @@ public class MainMapFragment extends Fragment implements
 
         mIgnoreMinDistance = false;
 
-        MapUtils.setInitialCenterCoordinates(vMap, initialArguments);
+        try {
+            MapUtils.setInitialCenterCoordinates(vMap, initialArguments);
+        } catch (UnsupportedAreaException e) {
+            onUnsupportedArea();
+        }
 
 //        updateMapData(vMap.getLatLng(), vMap.getZoom());
     }
@@ -568,8 +586,7 @@ public class MainMapFragment extends Fragment implements
                             @Override
                             public void onClick(View view) {
                                 if (!isDialogShown) {
-                                    isDialogShown = true;
-                                    listener.showCitiesDialog(vMap.getLatLng());
+                                    isDialogShown = listener.showCitiesDialog(vMap.getLatLng());
                                 }
                             }
                         });
@@ -759,18 +776,12 @@ public class MainMapFragment extends Fragment implements
         return mIgnoreMinDistance;
     }
 
-    private static LatLngZoom getCheckinCoordinate(Bundle extras) {
-        if (extras != null) {
-            final double latitude = extras.getDouble(Const.BundleKeys.LATITUDE, Const.UNKNOWN_VALUE);
-            final double longitude = extras.getDouble(Const.BundleKeys.LONGITUDE, Const.UNKNOWN_VALUE);
-            final double zoom = extras.getDouble(Const.BundleKeys.ZOOM, Const.UNKNOWN_VALUE);
-
-            if (!Double.valueOf(Const.UNKNOWN_VALUE).equals(latitude) && !Double.valueOf(Const.UNKNOWN_VALUE).equals(longitude)) {
-                return new LatLngZoom(latitude, longitude, zoom);
-            }
+    private boolean isOutsideCityArea(LatLng latLng) {
+        if (mCurrentCity == null) {
+            mCurrentCity = CityBoundsHelper.getNearestCity(getContext(), latLng);
         }
 
-        return null;
+        return !mCurrentCity.containsInRadius(latLng);
     }
 
     public void forceUpdate(LatLngZoom point) {
@@ -795,15 +806,12 @@ public class MainMapFragment extends Fragment implements
             return;
         }
 
-        if (Double.compare(zoom, Const.UiConfig.AVAILABLE_CITIES_MIN_ZOOM) < 0) {
+        if (isOutsideCityArea(latLng) || Double.compare(zoom, Const.UiConfig.AVAILABLE_CITIES_MIN_ZOOM) < 0) {
             if (!isDialogShown) {
-                isDialogShown = true;
-                listener.showCitiesDialog(latLng);
+                isDialogShown = listener.showCitiesDialog(latLng);
             }
-//            vMap.setZoom(Const.UiConfig.AVAILABLE_CITIES_MIN_ZOOM, false);
             return;
         } else if (Double.compare(zoom, Const.UiConfig.CLEAR_MAP_MIN_ZOOM) < 0) {
-            Log.e(TAG, "removeAllAnnotations 1");
             vMap.removeAllAnnotations();
         }
 
@@ -871,6 +879,9 @@ public class MainMapFragment extends Fragment implements
         }
         final Location myLocation = vMap.getMyLocation();
         if (myLocation != null) {
+            mCurrentCity = CityBoundsHelper.getNearestCity(getContext(),
+                    new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+
             vMap.setLatLng(new LatLngZoom(
                     myLocation.getLatitude(),
                     myLocation.getLongitude(),
