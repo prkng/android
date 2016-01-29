@@ -68,4 +68,12 @@
         android:layout_margin="16dp"
         android:text="@string/auth_btn_email" />
 
+    <ProgressBar
+        android:id="@+id/progress"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
 </RelativeLayout>

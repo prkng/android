@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
@@ -41,9 +42,11 @@ public class LoginActivity extends BaseActivity implements
 
     private LoginButton vFacebookButton;
     private Button vGoogleButton;
+    private Button vEmailButton;
     private CallbackManager facebookCallbackManager;
     private SocialLoginTask mSocialLoginTask;
     private GoogleApiClient mGoogleApiClient;
+    private View vProgressBar;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, LoginActivity.class);
@@ -66,6 +69,8 @@ public class LoginActivity extends BaseActivity implements
 
         vFacebookButton = (LoginButton) findViewById(R.id.btn_facebook);
         vGoogleButton = (Button) findViewById(R.id.btn_google);
+        vEmailButton = (Button) findViewById(R.id.btn_email);
+        vProgressBar = findViewById(R.id.progress);
 
         setupListeners();
 
@@ -95,9 +100,6 @@ public class LoginActivity extends BaseActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.v(TAG, "onActivityResult "
-                + String.format("requestCode = %s, resultCode = %s", requestCode, resultCode));
-
         super.onActivityResult(requestCode, resultCode, data);
 
         if ((requestCode == Const.RequestCodes.AUTH_LOGIN_EMAIL)
@@ -110,31 +112,35 @@ public class LoginActivity extends BaseActivity implements
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleGoogleSignInResult(result);
         } else if (requestCode == Const.RequestCodes.AUTH_LOGIN_GOOGLE_RESOLVE) {
-            Log.e(TAG, "onActivityResult() google resolve");
+            Log.v(TAG, "onActivityResult() google resolve");
         }
     }
 
     private void logoutIfNecessary() {
-        Log.v(TAG, "logoutIfNecessary");
-
         PrkngPrefs.getInstance(this).setAuthUser(null);
         LoginManager.getInstance().logOut();
 
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            Log.v(TAG, "isConnected");
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                @Override
+                public void onConnected(Bundle bundle) {
+                    Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                }
 
+                @Override
+                public void onConnectionSuspended(int i) {
 
+                }
+            });
         }
     }
 
     private void setupListeners() {
-        findViewById(R.id.btn_google).setOnClickListener(this);
-        findViewById(R.id.btn_email).setOnClickListener(this);
+        vGoogleButton.setOnClickListener(this);
+        vEmailButton.setOnClickListener(this);
     }
 
     private void setupGoogleLogin() {
-//        vGoogleButton.setColorScheme(SignInButton.COLOR_LIGHT);
-
         final String serverClientId = getResources().getString(R.string.oauth_web_client_id);
         final GoogleSignInOptions gso = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -147,37 +153,15 @@ public class LoginActivity extends BaseActivity implements
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-//                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-//                    @Override
-//                    public void onConnected(Bundle bundle) {
-//                        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-//                                new ResultCallback<Status>() {
-//                                    @Override
-//                                    public void onResult(Status status) {
-//                                        Log.v(TAG, "onResult "
-//                                                + String.format("status = %s", status));
-//                                    }
-//                                }
-//                        );
-//                    }
-//
-//                    @Override
-//                    public void onConnectionSuspended(int i) {
-//
-//                    }
-//                })
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
-                    public void onConnectionFailed(ConnectionResult connectionResult) {
-                        Log.v(TAG, "onConnectionFailed");
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Log.e(TAG, "onConnectionFailed");
                     }
                 })
                 .setAccountName(null)
-
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
-//        vGoogleButton.setScopes(gso.getScopeArray());
     }
 
     private void setupFacebookLogin() {
@@ -250,8 +234,28 @@ public class LoginActivity extends BaseActivity implements
         }
     }
 
+    private void toggleProgressBar(boolean processing) {
+        if (processing) {
+            vProgressBar.setVisibility(View.VISIBLE);
+            vFacebookButton.setEnabled(false);
+            vGoogleButton.setEnabled(false);
+            vEmailButton.setEnabled(false);
+        } else {
+            vProgressBar.setVisibility(View.GONE);
+            vFacebookButton.setEnabled(true);
+            vGoogleButton.setEnabled(true);
+            vEmailButton.setEnabled(true);
+        }
+    }
+
     private class SocialLoginTask extends AsyncTask<String, Void, LoginObject> {
         private PrkngApiError error = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            toggleProgressBar(true);
+        }
 
         @Override
         protected LoginObject doInBackground(String... params) {
@@ -279,6 +283,8 @@ public class LoginActivity extends BaseActivity implements
         @Override
         protected void onPostExecute(LoginObject loginObject) {
             try {
+                toggleProgressBar(false);
+
                 if (error != null) {
                     error.showSnackbar(findViewById(R.id.root_view));
                     // TODO handle API errors
