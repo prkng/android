@@ -26,7 +26,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:gravity="center"
-        android:text="@string/btn_skip" />
+        android:text="@string/btn_skip"
+        android:visibility="invisible" />
 
     <ng.prk.prkngandroid.ui.view.IntroBoldButton
         android:id="@+id/done"

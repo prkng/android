@@ -78,7 +78,8 @@ public class TutorialActivity extends AppCompatActivity implements View.OnClickL
                 setIndicator(position);
 
                 if (position < NUM_PAGES - 1) {
-                    vSkip.setVisibility(View.VISIBLE);
+                    vSkip.setVisibility(position == 0 ? View.INVISIBLE :
+                            View.VISIBLE);
                     vNext.setVisibility(View.VISIBLE);
                     vDone.setVisibility(View.GONE);
                 } else if (position == NUM_PAGES - 1) {
