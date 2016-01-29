@@ -156,6 +156,14 @@ public class PrkngPrefs implements
         return mPrefs.getFloat(DURATION, Const.UiConfig.DEFAULT_DURATION);
     }
 
+    public String getCity() {
+        return mPrefs.getString(CITY, Const.UiConfig.DEFAULT_CITY);
+    }
+
+    public void setCity(String city) {
+        edit().putString(CITY, city).apply();
+    }
+
     public void setDuration(float duration) {
         edit().putFloat(DURATION, duration).apply();
     }

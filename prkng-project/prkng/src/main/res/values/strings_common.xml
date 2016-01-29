@@ -85,7 +85,7 @@
 
     <string-array name="prefs_city_values" translatable="false">
         <item>montreal</item>
-        <item>new_york</item>
+        <item>newyork</item>
         <item>quebec</item>
         <item>seattle</item>
     </string-array>

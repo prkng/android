@@ -176,8 +176,6 @@ public class MainMapFragment extends Fragment implements
 
     @Override
     public void onStart() {
-        Log.v(TAG, "onStart");
-
         super.onStart();
         vMap.onStart();
 
@@ -190,8 +188,6 @@ public class MainMapFragment extends Fragment implements
 
     @Override
     public void onResume() {
-        Log.v(TAG, "onResume");
-
         super.onResume();
         onMapResume();
 
@@ -279,7 +275,6 @@ public class MainMapFragment extends Fragment implements
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.v(TAG, "onSaveInstanceState");
         super.onSaveInstanceState(outState);
 
         try {
@@ -297,7 +292,6 @@ public class MainMapFragment extends Fragment implements
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Log.v(TAG, "onSharedPreferenceChanged");
         if (Const.PrefsNames.CHECKIN_ID.equals(key)) {
             try {
                 final long id = sharedPreferences.getLong(key, Const.UNKNOWN_VALUE);
@@ -311,12 +305,18 @@ public class MainMapFragment extends Fragment implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else if (Const.PrefsNames.CITY.equals(key)) {
+            final String cityName = sharedPreferences.getString(key, null);
+
+            mCurrentCity = CityBoundsHelper.getCityByName(getContext(), cityName);
+            if (mCurrentCity != null) {
+                vMap.setLatLng(mCurrentCity.getLatLng());
+                vMap.setZoom(Const.UiConfig.DEFAULT_ZOOM, true);
+            }
         }
     }
 
     private void createMapIfNecessary(View view, Bundle savedInstanceState) {
-        Log.v(TAG, "createMapIfNecessary");
-
         vMap = (MapView) view.findViewById(R.id.mapview);
         vMap.onCreate(savedInstanceState);
 
@@ -432,8 +432,6 @@ public class MainMapFragment extends Fragment implements
     }
 
     private void onMapFinishedLoading() {
-        Log.v(TAG, "onMapFinishedLoading");
-
         mIgnoreMinDistance = false;
 
         try {
@@ -448,7 +446,7 @@ public class MainMapFragment extends Fragment implements
     }
 
     private void onMapFailedLoading() {
-        Log.v(TAG, "onMapFailedLoading");
+        Log.e(TAG, "onMapFailedLoading");
     }
 
     /**
@@ -582,7 +580,6 @@ public class MainMapFragment extends Fragment implements
     }
 
     private void onUnsupportedArea(int message) {
-        Log.v(TAG, "onUnsupportedArea");
         mSnackbar = RedSnackbar.make(vMap, message, Snackbar.LENGTH_LONG)
                 .setAction(R.string.btn_available_cities,
                         new View.OnClickListener() {
@@ -597,10 +594,7 @@ public class MainMapFragment extends Fragment implements
     }
 
     private void onEmptyAnnotations() {
-        Log.v(TAG, "onEmptyAnnotations");
         if (Const.MapSections.ON_STREET == mPrkngMapType) {
-            Log.v(TAG, "ON_STREET");
-
             if (Double.compare(Const.UiConfig.SPOTS_MIN_ZOOM, vMap.getZoom()) < 0) {
                 // First, check zoom level
                 mSnackbar = RedSnackbar.make(vMap,
@@ -631,7 +625,6 @@ public class MainMapFragment extends Fragment implements
                 mSnackbar.show();
             }
         } else if (Const.MapSections.OFF_STREET == mPrkngMapType) {
-            Log.v(TAG, "OFF_STREET");
             if (Double.compare(Const.UiConfig.LOTS_MIN_ZOOM, vMap.getZoom()) < 0) {
                 // First, check zoom level
                 mSnackbar = RedSnackbar.make(vMap,
@@ -695,8 +688,6 @@ public class MainMapFragment extends Fragment implements
     }
 
     public void requestPermissionIfNeeded() {
-        Log.v(TAG, "requestPermissionIfNeeded");
-
         if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
             // Provide an additional rationale to the user if the permission was not granted
@@ -719,8 +710,6 @@ public class MainMapFragment extends Fragment implements
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.v(TAG, "onRequestPermissionsResult "
-                + String.format("requestCode = %s, permissions = %s, grantResults = %s", requestCode, permissions, grantResults));
         if (Const.RequestCodes.PERMISSION_ACCESS_LOCATION == requestCode) {
             if (PackageManager.PERMISSION_GRANTED ==
                     ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -730,15 +719,11 @@ public class MainMapFragment extends Fragment implements
                 vMap.setOnMyLocationChangeListener(new MapView.OnMyLocationChangeListener() {
                     @Override
                     public void onMyLocationChange(@Nullable Location location) {
-                        Log.v(TAG, "onMyLocationChange");
-
                         if (location != null) {
-                            Log.e(TAG, "setLatLng");
-
                             vMap.setOnMyLocationChangeListener(null);
                             vMap.setLatLng(new LatLng(location.getLatitude(), location.getLongitude()), true);
                         } else {
-                            Log.e(TAG, "Location null");
+                            Log.e(TAG, "Location is null");
                         }
                     }
                 });
@@ -747,8 +732,6 @@ public class MainMapFragment extends Fragment implements
     }
 
     public void requestPermission() {
-        Log.v(TAG, "requestPermission");
-
         // Permission has not been granted yet. Request it directly.
         requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                 Const.RequestCodes.PERMISSION_ACCESS_LOCATION);
@@ -782,6 +765,10 @@ public class MainMapFragment extends Fragment implements
     private boolean isOutsideCityArea(LatLng latLng) {
         if (mCurrentCity == null) {
             mCurrentCity = CityBoundsHelper.getNearestCity(getContext(), latLng);
+            if (mCurrentCity != null) {
+                PrkngPrefs.getInstance(getActivity())
+                        .setCity(mCurrentCity.getName());
+            }
         }
 
         return !mCurrentCity.containsInRadius(latLng);
@@ -824,10 +811,9 @@ public class MainMapFragment extends Fragment implements
                 mSnackbar.dismiss();
             }
             if (mTask != null && mTask.getStatus() == AsyncTask.Status.RUNNING) {
-                Log.e(TAG, "skipped");
                 mTask.cancel(false);
-//                return;
             }
+
             mLastMapGeometry.setLatitude(latLng.getLatitude());
             mLastMapGeometry.setLongitude(latLng.getLongitude());
             mLastMapGeometry.setZoomAndRadius(zoom, vMap.fromScreenLocation(new PointF(0, 0)));
@@ -903,11 +889,7 @@ public class MainMapFragment extends Fragment implements
     }
 
     public void setMapType(int type) {
-        Log.v(TAG, "setMapType "
-                + String.format("type = %s", type));
-
         if (type != mPrkngMapType) {
-            Log.e(TAG, "removeAllAnnotations 2");
             vMap.removeAllAnnotations();
             mPrkngMapType = type;
             final double zoom = MapUtils.getMinZoomPerType(type);

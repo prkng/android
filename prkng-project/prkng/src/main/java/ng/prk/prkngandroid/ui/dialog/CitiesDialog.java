@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
@@ -19,6 +18,7 @@ import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.model.City;
 import ng.prk.prkngandroid.util.CityBoundsHelper;
+import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public class CitiesDialog extends DialogFragment {
     private static final String TAG = "AvailableCitiesDialog ";
@@ -58,7 +58,7 @@ public class CitiesDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         final City city = mCities.get(which);
-                        Log.v(TAG, "selected city: " + city);
+
                         if (getTargetFragment() != null) {
                             final Intent intent = new Intent();
 
@@ -73,6 +73,15 @@ public class CitiesDialog extends DialogFragment {
                                     Activity.RESULT_OK,
                                     intent);
                         }
+
+                        try {
+                            // Update prefs
+                            PrkngPrefs.getInstance(getActivity().getApplicationContext())
+                                    .setCity(city.getName());
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
+
                         dialog.dismiss();
                     }
                 });
