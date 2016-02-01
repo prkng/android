@@ -56,7 +56,6 @@
             <ng.prk.prkngandroid.ui.view.IntroRegularTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="DAILY"
                 android:textColor="@color/agenda_remaining_time_text"
                 android:textSize="12sp" />
 
