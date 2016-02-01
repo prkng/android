@@ -30,7 +30,8 @@
     <color name="midnight1">#435059</color>
     <color name="midnight2">#3A4249</color>
     <color name="midnight2A">#384248</color>
-    <color name="midnight3">#23282c</color>
+    <color name="midnight3">#ff23282c</color>
+    <color name="midnight3_transparent">#0023282c</color>
 
     <color name="anthracite1">#979797</color>
     <color name="anthracite2">#929292</color>

@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/root_view"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
 
     <ImageView
         android:layout_width="match_parent"
@@ -12,68 +9,88 @@
         android:scaleType="centerCrop"
         android:src="@drawable/city_tile_dark" />
 
-    <ImageView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_facebook"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="24dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/logo_login_beta" />
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-    <ng.prk.prkngandroid.ui.view.IntroRegularTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_facebook"
-        android:layout_marginBottom="24dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:gravity="center_horizontal"
-        android:text="@string/auth_subtitle"
-        android:textColor="@color/color_text"
-        android:textSize="16sp" />
+        <RelativeLayout
+            android:id="@+id/root_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/btn_facebook"
-        style="@style/Base.Widget.AppCompat.Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_google"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@color/facebook_blue"
-        android:drawableLeft="@null"
-        android:paddingBottom="14dp"
-        android:paddingTop="14dp"
-        app:com_facebook_login_text="@string/auth_btn_facebook" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@+id/title"
+                android:background="@drawable/gradient_login" />
 
-    <ng.prk.prkngandroid.ui.view.IntroRegularButton
-        android:id="@+id/btn_google"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_email"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@color/google_red"
-        android:text="@string/auth_btn_google" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/btn_facebook"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="24dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/logo_login_beta" />
 
-    <ng.prk.prkngandroid.ui.view.IntroRegularButton
-        android:id="@+id/btn_email"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:text="@string/auth_btn_email" />
+            <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/btn_facebook"
+                android:layout_marginBottom="24dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center_horizontal"
+                android:text="@string/auth_subtitle"
+                android:textColor="@color/color_text"
+                android:textSize="16sp" />
 
-    <ProgressBar
-        android:id="@+id/progress"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
+            <com.facebook.login.widget.LoginButton xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/btn_facebook"
+                style="@style/Base.Widget.AppCompat.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/btn_google"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@color/facebook_blue"
+                android:drawableLeft="@null"
+                android:paddingBottom="14dp"
+                android:paddingTop="14dp"
+                app:com_facebook_login_text="@string/auth_btn_facebook" />
 
-</RelativeLayout>
+            <ng.prk.prkngandroid.ui.view.IntroRegularButton
+                android:id="@+id/btn_google"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/btn_email"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@color/google_red"
+                android:text="@string/auth_btn_google" />
+
+            <ng.prk.prkngandroid.ui.view.IntroRegularButton
+                android:id="@+id/btn_email"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="16dp"
+                android:text="@string/auth_btn_email" />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+</FrameLayout>

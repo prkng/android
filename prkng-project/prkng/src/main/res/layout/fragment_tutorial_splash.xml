@@ -8,7 +8,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/city_tile_dark" />
+        android:src="@drawable/bg_splash" />
+
+    <!--<View-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/bg_splash" />-->
 
     <ImageView
         android:id="@+id/tutorial_image"
@@ -16,10 +21,15 @@
         android:scaleType="centerInside"
         android:src="@drawable/logo_login_beta" />
 
+
     <ng.prk.prkngandroid.ui.view.IntroLightTextView
         android:id="@+id/tutorial_text"
         style="@style/TutorialText"
         android:layout_height="wrap_content"
+        android:shadowColor="@color/midnight3"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="6"
         android:text="@string/tutorial_desc_splash" />
 
 </android.support.percent.PercentRelativeLayout>
