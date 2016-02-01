@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
+import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.util.CalendarUtils;
 
 
@@ -105,9 +106,8 @@ public class BusinessIntervalList extends ArrayList<BusinessInterval> {
 
         return mergeResult;
     }
-    
+
     /**
-     *
      * @param list
      * @return
      */
@@ -125,5 +125,52 @@ public class BusinessIntervalList extends ArrayList<BusinessInterval> {
         }
 
         return list;
+    }
+
+    public int findLastAbuttingInterval(int index) {
+        if (index == Const.UNKNOWN_VALUE) {
+            return Const.UNKNOWN_VALUE;
+        }
+
+        final int s = size();
+        if (index >= s) {
+            throwIndexOutOfBoundsException(index, s);
+        }
+
+        if (1 + index > s) {
+            // Index provided is that of the last Interval
+            return index;
+        }
+
+        // Default to same index if none is found
+        int indexFound = index;
+
+        BusinessInterval previous = get(index);
+        for (int i = 1 + index; i < s; i++) {
+            final BusinessInterval current = get(i);
+            if (current.isSameType(previous) && current.isSamePrice(previous) && current.abutsOvernight(previous)) {
+                indexFound = i;
+                previous = current;
+            } else {
+                break;
+            }
+        }
+
+        return indexFound;
+    }
+
+    public boolean isTwentyFourSevenRestr() {
+        BusinessInterval firstInterval = get(0);
+        for (BusinessInterval interval : this) {
+            if (!interval.isAllDay() || !firstInterval.isSameType(interval) || !firstInterval.isSamePrice(interval)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    static IndexOutOfBoundsException throwIndexOutOfBoundsException(int index, int size) {
+        throw new IndexOutOfBoundsException("Invalid index " + index + ", size is " + size);
     }
 }

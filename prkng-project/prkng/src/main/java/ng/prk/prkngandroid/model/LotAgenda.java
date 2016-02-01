@@ -1,6 +1,8 @@
 package ng.prk.prkngandroid.model;
 
 import android.support.annotation.NonNull;
+import android.text.format.DateUtils;
+import android.util.Log;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -60,7 +62,6 @@ public class LotAgenda {
     }
 
     /**
-     *
      * @return
      */
     public BusinessIntervalList getLotAgenda() {
@@ -82,7 +83,6 @@ public class LotAgenda {
     }
 
     /**
-     *
      * @param now
      * @return
      */
@@ -103,10 +103,24 @@ public class LotAgenda {
                                 1 + index,
                                 now);
                     case Const.BusinnessHourType.OPEN:
+                        final long remainingMillis;
+                        if (businessIntervals.isTwentyFourSevenRestr()) {
+                            remainingMillis = DateUtils.WEEK_IN_MILLIS;
+                        } else {
+                            final BusinessInterval currentInterval = businessIntervals.get(
+                                    businessIntervals.findLastAbuttingInterval(index)
+                            );
+
+                            remainingMillis = (currentInterval.getEndMillis() - now) +
+                                    (CalendarUtils.subtractDaysOfWeekLooped(currentInterval.getDayOfWeek(), today)
+                                            * DateUtils.DAY_IN_MILLIS
+                                    );
+                        }
+
                         return new LotCurrentStatus(
                                 interval.getMainPrice(),
                                 interval.getHourlyPrice(),
-                                interval.getEndMillis() - now,
+                                remainingMillis,
                                 interval.isFree()
                         );
                 }

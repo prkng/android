@@ -107,6 +107,7 @@ public class HumanDuration implements
 
 
         if (dayDiff == 0 && minuteDiff <= 2 * CalendarUtils.HOUR_IN_MINUTES) {
+            this.offStreetPrefix = context.getString(R.string.duration_prefix_for);
             this.onStreetPrefix = context.getString(isPaidSpot() ?
                     R.string.duration_prefix_paid_for : R.string.duration_prefix_for);
             // Ends today in 2hrs or less
@@ -127,6 +128,7 @@ public class HumanDuration implements
                         minutes);
             }
         } else {
+            this.offStreetPrefix = context.getString(R.string.duration_prefix_until);
             this.onStreetPrefix = context.getString(isPaidSpot() ?
                     R.string.duration_prefix_paid_until : R.string.duration_prefix_until);
             timeOfDay = DateFormat
@@ -153,8 +155,9 @@ public class HumanDuration implements
             this.offStreetPrefix = context.getString(R.string.duration_prefix_open);
             this.expiry = context.getString(R.string.open_all_week);
         } else {
-            this.offStreetPrefix = context.getString(R.string.duration_prefix_open);
             computeDuration();
+            this.expiry = offStreetPrefix + expiry;
+            this.offStreetPrefix = context.getString(R.string.duration_prefix_open);
         }
     }
 

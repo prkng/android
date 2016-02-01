@@ -26,11 +26,11 @@ import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.model.BusinessIntervalList;
 import ng.prk.prkngandroid.model.LotAttrs;
 import ng.prk.prkngandroid.model.LotCurrentStatus;
+import ng.prk.prkngandroid.model.ui.HumanDuration;
 import ng.prk.prkngandroid.ui.activity.OnMarkerInfoClickListener;
 import ng.prk.prkngandroid.ui.adapter.LotAgendaListAdapter;
 import ng.prk.prkngandroid.ui.thread.LotInfoDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.MarkerInfoUpdateListener;
-import ng.prk.prkngandroid.util.CalendarUtils;
 import ng.prk.prkngandroid.util.IntentUtils;
 
 public class LotInfoFragment extends Fragment implements
@@ -46,6 +46,7 @@ public class LotInfoFragment extends Fragment implements
     private TextView vMainPrice;
     private TextView vHourlyPrice;
     private TextView vRemainingTime;
+    private TextView vRemainingTimePrefix;
     private View vProgressBar;
     private RecyclerView vRecyclerView;
     private LotAgendaListAdapter mAdapter;
@@ -118,6 +119,7 @@ public class LotInfoFragment extends Fragment implements
 
         vTitle = (TextView) view.findViewById(R.id.title);
         vRemainingTime = (TextView) view.findViewById(R.id.remaining_time);
+        vRemainingTimePrefix = (TextView) view.findViewById(R.id.remaining_time_prefix);
         vPrice = view.findViewById(R.id.price);
         vCapacity = (TextView) view.findViewById(R.id.capacity);
         vInfoBtn = (Button) view.findViewById(R.id.btn_info);
@@ -226,9 +228,12 @@ public class LotInfoFragment extends Fragment implements
                     vHourlyPrice.setVisibility(View.INVISIBLE);
                 }
             }
-            vRemainingTime.setText(CalendarUtils.getDurationFromMillis(
-                    getContext(),
-                    status.getRemainingMillis()));
+            final HumanDuration duration = new HumanDuration.Builder(getContext())
+                    .millis(status.getRemainingMillis())
+                    .lot()
+                    .build();
+            vRemainingTime.setText(duration.getExpiry());
+            vRemainingTimePrefix.setText(duration.getPrefix());
         }
 
         if (isExpanded) {

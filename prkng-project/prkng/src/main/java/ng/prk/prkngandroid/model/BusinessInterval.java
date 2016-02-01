@@ -127,6 +127,13 @@ public class BusinessInterval extends Interval implements
         return this.type == another.getType();
     }
 
+    @Deprecated
+    public boolean isSamePrice(BusinessInterval another) {
+        return true;
+//        return (Float.compare(this.mainPrice, another.mainPrice) == 0) &&
+//                (Float.compare(this.hourlyPrice, another.hourlyPrice) == 0);
+    }
+
     public boolean isMergeableType(BusinessInterval another) {
         return isSameType(another) || (!isClosed() && !another.isClosed());
     }

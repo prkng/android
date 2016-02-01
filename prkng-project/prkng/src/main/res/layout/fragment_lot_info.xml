@@ -85,7 +85,7 @@
                 android:id="@+id/remaining_time_prefix"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="OPEN UNTIL"
+                android:textAllCaps="true"
                 android:textColor="@color/agenda_remaining_time_text"
                 android:textSize="12sp" />
 
