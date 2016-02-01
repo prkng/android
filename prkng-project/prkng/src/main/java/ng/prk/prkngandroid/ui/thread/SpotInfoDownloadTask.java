@@ -45,6 +45,7 @@ public class SpotInfoDownloadTask extends AsyncTask<String, Void, SpotRules> {
 //        String spotId = "448231 "; // TimeMax (120) + freeparking
 //        String spotId = "445340"; // TimeMax (60) + TimeMax (60)
 //        String spotId = "454257"; // TimeMax merged with TimeMaxPaid (60)
+//        String spotId = "64122"; // Reserve bus touristique
 
         final String spotId = params[0];
         Log.v(TAG, "spotId = " + spotId);
