@@ -14,13 +14,51 @@ import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.util.CalendarUtils;
 
 public class HumanDuration implements
-        Const.MapSections {
+        Const.MapSections,
+        Const.ParkingRestrType,
+        Const.BusinnessHourType {
     private final static String TAG = "HumanDuration";
 
     private Context context;
     private long millis;
-    private String prefix;
+    private String onStreetPrefix;
+    private String offStreetPrefix;
     private String expiry;
+    private int type;
+    private int subType; // refers to Const.ParkingRestrType or BusinnessHourType
+    private boolean isSingleLine;
+
+    private HumanDuration(Builder builder) {
+        this.context = builder.context;
+        this.millis = builder.millis;
+        this.type = builder.type;
+        this.subType = builder.subType;
+        this.isSingleLine = builder.isSingleLine;
+
+        initialize();
+    }
+
+    private boolean isSpotForbidden() {
+        return false;
+    }
+
+    private boolean isLotClosed() {
+        return false;
+    }
+
+    private void initialize() {
+        if (type == OFF_STREET) {
+            initializeLotDuration();
+        } else {
+            initializeSpotDuration();
+        }
+    }
+
+    public HumanDuration() {
+        this.offStreetPrefix = "";
+        this.onStreetPrefix = "";
+        this.expiry = "";
+    }
 
     public HumanDuration(Context context, long millis, int type) {
         this.context = context;
@@ -34,14 +72,14 @@ public class HumanDuration implements
     }
 
     public String getPrefix() {
-        return prefix;
+        return (type == OFF_STREET) ? offStreetPrefix : onStreetPrefix;
     }
 
     public String getExpiry() {
         return expiry;
     }
 
-    private void initializeDuration() {
+    private void computeDuration() {
         final Resources res = context.getResources();
 
         final Calendar now = Calendar.getInstance();
@@ -69,6 +107,8 @@ public class HumanDuration implements
 
 
         if (dayDiff == 0 && minuteDiff <= 2 * CalendarUtils.HOUR_IN_MINUTES) {
+            this.onStreetPrefix = context.getString(isPaidSpot() ?
+                    R.string.duration_prefix_paid_for : R.string.duration_prefix_for);
             // Ends today in 2hrs or less
             final int hours = minuteDiff / CalendarUtils.HOUR_IN_MINUTES;
             final int minutes = minuteDiff % CalendarUtils.HOUR_IN_MINUTES;
@@ -78,7 +118,7 @@ public class HumanDuration implements
                         minutes);
             } else if (minutes == 0) {
                 timeOfDay = String.format(
-                        res.getQuantityString(R.plurals.expiry_hours, minutes),
+                        res.getQuantityString(R.plurals.expiry_hours, hours),
                         hours);
             } else {
                 timeOfDay = String.format(
@@ -87,6 +127,8 @@ public class HumanDuration implements
                         minutes);
             }
         } else {
+            this.onStreetPrefix = context.getString(isPaidSpot() ?
+                    R.string.duration_prefix_paid_until : R.string.duration_prefix_until);
             timeOfDay = DateFormat
                     .getTimeFormat(context)
                     .format(end.getTime());
@@ -103,19 +145,97 @@ public class HumanDuration implements
     }
 
     private void initializeLotDuration() {
-        initializeDuration();
+        if (Long.valueOf(millis).compareTo(0L) == 0) {
+            this.offStreetPrefix = context.getString(R.string.duration_prefix_closed);
+            // TODO
+            this.expiry = "";
+        } else if (CalendarUtils.isWeekLongDuration(millis)) {
+            this.offStreetPrefix = context.getString(R.string.duration_prefix_open);
+            this.expiry = context.getString(R.string.open_all_week);
+        } else {
+            this.offStreetPrefix = context.getString(R.string.duration_prefix_open);
+            computeDuration();
+        }
     }
 
     private void initializeSpotDuration() {
-        initializeDuration();
+        if (Long.valueOf(millis).compareTo(0L) == 0) {
+            this.onStreetPrefix = "";
+            this.expiry = context.getString(R.string.not_allowed);
+        } else if (CalendarUtils.isWeekLongDuration(millis)) {
+            this.onStreetPrefix = context.getString(subType == PAID
+                    ? R.string.duration_prefix_paid : R.string.duration_prefix_available);
+            this.expiry = context.getString(R.string.allowed_all_week_prefixed);
+        } else {
+            computeDuration();
+        }
+    }
 
+    private boolean isPaidSpot() {
+        return (this.subType == PAID) || (subType == TIME_MAX_PAID);
     }
 
     @Override
     public String toString() {
         return "HumanDuration{" +
-                "prefix='" + prefix + '\'' +
+                "onStreetPrefix='" + onStreetPrefix + '\'' +
+                ", offStreetPrefix='" + offStreetPrefix + '\'' +
                 ", expiry='" + expiry + '\'' +
+                ", type=" + type +
+                ", isSingleLine=" + isSingleLine +
                 '}';
+    }
+
+    public static class Builder {
+        private Context context;
+        private long millis;
+        private int type;
+        private int subType;
+        private boolean isSingleLine;
+
+        public Builder(Context context) {
+            this.context = context;
+        }
+
+        public Builder millis(long millis) {
+            this.millis = millis;
+            return this;
+        }
+
+        public Builder singleLine() {
+            this.isSingleLine = true;
+            return this;
+        }
+
+        public Builder spot() {
+            this.type = Const.MapSections.ON_STREET;
+            return this;
+        }
+
+        public Builder lot() {
+            this.type = Const.MapSections.OFF_STREET;
+            return this;
+        }
+
+        /**
+         * @param status
+         * @return
+         * @see ng.prk.prkngandroid.Const.ParkingRestrType
+         * @see ng.prk.prkngandroid.Const.BusinnessHourType
+         */
+        public Builder status(int status) {
+            this.subType = status;
+            return this;
+        }
+
+        public Builder checkin() {
+            this.type = Const.MapSections.ON_STREET;
+            this.isSingleLine = true;
+            return this;
+        }
+
+        public HumanDuration build() {
+            return new HumanDuration(this);
+        }
     }
 }
