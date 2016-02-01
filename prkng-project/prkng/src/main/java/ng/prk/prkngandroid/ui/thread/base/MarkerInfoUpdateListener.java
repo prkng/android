@@ -7,13 +7,23 @@ import ng.prk.prkngandroid.model.LotAttrs;
 import ng.prk.prkngandroid.model.LotCurrentStatus;
 
 public interface MarkerInfoUpdateListener {
+    //    replace by setProperties
+    @Deprecated
     void setRemainingTime(long time);
 
+    //    replace by setProperties
+    @Deprecated
     void setCurrentStatus(LotCurrentStatus status, int capacity);
 
+    //    replace by setProperties
+    @Deprecated
     void setDataset(ArrayList data);
+
+    //    replace by setProperties
+    @Deprecated
+    void setAttributes(LotAttrs attrs);
 
     void onFailure(PrkngApiError e);
 
-    void setAttributes(LotAttrs attrs);
+    //    void setProperties(GeoJSONFeatureProperties properties);
 }
