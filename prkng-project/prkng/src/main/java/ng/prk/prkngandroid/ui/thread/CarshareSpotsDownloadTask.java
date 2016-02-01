@@ -111,6 +111,7 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
                     final GeoJSONFeatureProperties properties = feature.getProperties();
 
                     final List<Double> latLng = feature.getGeometry().getCoordinates();
+                    // TODO replace string
                     final MarkerOptions markerOptions = new MarkerOptions()
                             .position(new LatLng(new LatLng(latLng.get(1), latLng.get(0))))
                             .title(properties.getCompany() + " " + properties.getName())
