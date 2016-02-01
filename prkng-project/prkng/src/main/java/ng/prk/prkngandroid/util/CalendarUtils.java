@@ -16,7 +16,6 @@ import java.util.TimeZone;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
-import ng.prk.prkngandroid.model.ui.HumanDuration;
 
 public class CalendarUtils {
     private final static String TAG = "CalendarUtils";
@@ -103,23 +102,6 @@ public class CalendarUtils {
 
     public static boolean isWeekLongDuration(long millis) {
         return Long.valueOf(millis).compareTo(DateUtils.WEEK_IN_MILLIS) >= 0;
-    }
-
-    @Deprecated
-    public static String getDurationFromMillis(Context context, long millis) {
-        // TODO get string without prefix
-        if (Long.valueOf(Const.UNKNOWN_VALUE).equals(millis)) {
-            return null;
-        }
-
-        if (Long.valueOf(millis).compareTo(0L) == 0) {
-            return context.getString(R.string.not_allowed);
-        } else if (isWeekLongDuration(millis)) {
-            return context.getString(R.string.allowed_all_week);
-        }
-
-        final HumanDuration hd = new HumanDuration(context, millis, 0);
-        return hd.getExpiry();
     }
 
     /**

@@ -137,10 +137,6 @@ public class SpotInfoFragment extends Fragment implements
         mRemainingTime = time;
 
         if (!isExpanded) {
-//            final HumanDuration duration = new HumanDuration(
-//                    vRemainingTime.getContext(),
-//                    time,
-//                    0);
             final HumanDuration duration = new HumanDuration.Builder(vRemainingTime.getContext())
                     .millis(time)
                     .spot()
