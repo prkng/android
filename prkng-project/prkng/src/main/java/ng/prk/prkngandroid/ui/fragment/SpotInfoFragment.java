@@ -23,6 +23,7 @@ import ng.prk.prkngandroid.model.LotAttrs;
 import ng.prk.prkngandroid.model.LotCurrentStatus;
 import ng.prk.prkngandroid.model.RestrInterval;
 import ng.prk.prkngandroid.model.RestrIntervalsList;
+import ng.prk.prkngandroid.model.ui.HumanDuration;
 import ng.prk.prkngandroid.ui.activity.CheckinActivity;
 import ng.prk.prkngandroid.ui.activity.OnMarkerInfoClickListener;
 import ng.prk.prkngandroid.ui.adapter.SpotAgendaListAdapter;
@@ -40,12 +41,14 @@ public class SpotInfoFragment extends Fragment implements
     private TextView vTitle;
     private View vPrice;
     private TextView vRemainingTime;
+    private TextView vRemainingTimePrefix;
     private Button vCheckinBtn;
     private View vProgressBar;
     private RecyclerView vRecyclerView;
     private String mId;
     private String mTitle;
     private long mRemainingTime;
+    private int mParkingRestrType;
     private RestrIntervalsList mDataset;
     private boolean isExpanded;
 
@@ -64,6 +67,7 @@ public class SpotInfoFragment extends Fragment implements
         final SpotInfoFragment clone = new SpotInfoFragment();
 
         clone.mRemainingTime = fragment.mRemainingTime;
+        clone.mParkingRestrType = fragment.mParkingRestrType;
         clone.mDataset = fragment.mDataset;
 
         final Bundle bundle = fragment.getArguments();
@@ -101,6 +105,7 @@ public class SpotInfoFragment extends Fragment implements
         vTitle = (TextView) view.findViewById(R.id.title);
         vPrice = view.findViewById(R.id.price);
         vRemainingTime = (TextView) view.findViewById(R.id.remaining_time);
+        vRemainingTimePrefix = (TextView) view.findViewById(R.id.remaining_time_prefix);
         vCheckinBtn = (Button) view.findViewById(R.id.btn_checkin);
         vProgressBar = view.findViewById(R.id.progress);
         vRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
@@ -132,9 +137,23 @@ public class SpotInfoFragment extends Fragment implements
         mRemainingTime = time;
 
         if (!isExpanded) {
-            vRemainingTime.setText(CalendarUtils.getDurationFromMillis(
-                    vRemainingTime.getContext(),
-                    time));
+//            final HumanDuration duration = new HumanDuration(
+//                    vRemainingTime.getContext(),
+//                    time,
+//                    0);
+            final HumanDuration duration = new HumanDuration.Builder(vRemainingTime.getContext())
+                    .millis(time)
+                    .spot()
+                    .status(mParkingRestrType)
+                    .build();
+            vRemainingTime.setText(duration.getExpiry());
+
+            final String prefix = duration.getPrefix();
+            if (prefix == null || prefix.isEmpty()) {
+                vRemainingTimePrefix.setVisibility(View.GONE);
+            } else {
+                vRemainingTimePrefix.setText(prefix);
+            }
         }
     }
 
@@ -183,12 +202,15 @@ public class SpotInfoFragment extends Fragment implements
                     CalendarUtils.getIsoDayOfWeek());
             if (index != Const.UNKNOWN_VALUE) {
                 final RestrInterval interval = mDataset.get(index);
-                if (interval != null && interval.hasHourlyRate()) {
-                    vPrice.setVisibility(View.VISIBLE);
-                    ((TextView) getView().findViewById(R.id.main_price))
-                            .setText(String.format(
-                                    getResources().getString(R.string.currency_decimals),
-                                    interval.getHourlyRate()));
+                if (interval != null) {
+                    mParkingRestrType = interval.getType();
+                    if (interval.hasHourlyRate()) {
+                        vPrice.setVisibility(View.VISIBLE);
+                        ((TextView) getView().findViewById(R.id.main_price))
+                                .setText(String.format(
+                                        getResources().getString(R.string.currency_decimals),
+                                        interval.getHourlyRate()));
+                    }
                 }
             }
         }
@@ -245,8 +267,8 @@ public class SpotInfoFragment extends Fragment implements
                     this)
             ).execute(id);
         } else {
-            setRemainingTime(mRemainingTime);
             setDataset(mDataset);
+            setRemainingTime(mRemainingTime);
         }
 
     }
