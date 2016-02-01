@@ -32,7 +32,6 @@ public class TypefaceHelper implements Const.TypeFaces {
                 }
             }
         } catch (Exception e) {
-            Log.v(TAG, "crashlytics issue #29");
             e.printStackTrace();
         }
 

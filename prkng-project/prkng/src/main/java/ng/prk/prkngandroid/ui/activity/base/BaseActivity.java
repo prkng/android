@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 
 import ng.prk.prkngandroid.Const;
@@ -124,9 +123,6 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @return
      */
     protected boolean isFirstClickFreeIntent(@NonNull  Intent intent) {
-        Log.v(TAG, "isFirstClickFreeIntent "
-                + String.format("intent = %s", intent.getAction()));
-
         return Intent.ACTION_VIEW.equals(intent.getAction());
     }
 

@@ -222,7 +222,6 @@ public class MainActivity extends BaseActivity implements
      */
     @Override
     public void hideMarkerInfo() {
-        Log.e(TAG, "hideMarkerInfo");
         final FragmentManager fm = getSupportFragmentManager();
         final Fragment fragment = fm.findFragmentByTag(Const.FragmentTags.MAP_INFO);
         if (fragment != null && fragment.isVisible()) {

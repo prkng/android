@@ -113,7 +113,7 @@ public class CalendarUtils {
         }
 
         if (Long.valueOf(millis).compareTo(0L) == 0) {
-            return "Parking not allowed";
+            return context.getString(R.string.not_allowed);
         } else if (isWeekLongDuration(millis)) {
             return context.getString(R.string.allowed_all_week);
         }
