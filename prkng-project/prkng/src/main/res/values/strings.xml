@@ -136,10 +136,20 @@
         <item quantity="other">%d minutes</item>
     </plurals>
     <string name="allowed_all_week">Available all week long</string>
+    <string name="open_all_week">24 hours</string>
     <string name="not_allowed">Parking not allowed</string>
     <string name="expiry_day_tomorrow">Tomorrow</string>
     <string name="expiry_hours_minutes">%1$dh %2$dm</string>
     <string name="expiry_day_time_of_day">%1$s %2$s</string>
+    <string name="duration_prefix_available">Allowed</string>
+    <string name="duration_prefix_paid">Paid</string>
+    <string name="duration_prefix_open">Open</string>
+    <string name="duration_prefix_closed">Closed</string>
+    <string name="duration_prefix_for">For&#160;</string>
+    <string name="duration_prefix_until">Until&#160;</string>
+    <string name="duration_prefix_paid_for">Metred for</string>
+    <string name="duration_prefix_paid_until">Metred until</string>
+    <string name="allowed_all_week_prefixed">At all times</string>
 
     <!--Lot Info-->
     <string name="all_day_closed">Closed</string>
