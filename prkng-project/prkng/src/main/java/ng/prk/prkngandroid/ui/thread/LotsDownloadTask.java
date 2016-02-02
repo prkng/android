@@ -55,7 +55,7 @@ public class LotsDownloadTask extends PrkngDataDownloadTask {
                         apiKey,
                         mapGeometry.getLatitude(),
                         mapGeometry.getLongitude(),
-                        mapGeometry.getRadius(),
+                        mapGeometry.getLargeRadius(),
                         getNearest()
                 );
 

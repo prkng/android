@@ -668,7 +668,7 @@ public class MainMapFragment extends Fragment implements
         ));
     }
 
-    public void setCenterCoordinate(LatLngZoom center) {
+    public void setCenterCoordinate(final LatLngZoom center) {
         vMap.removeOnMapChangedListener(this);
 
         vMap.setLatLng(center, true);
@@ -677,6 +677,9 @@ public class MainMapFragment extends Fragment implements
             @Override
             public void run() {
                 vMap.addOnMapChangedListener(MainMapFragment.this);
+                mLastMapGeometry.setLatitude(center.getLatitude());
+                mLastMapGeometry.setLongitude(center.getLongitude());
+                mLastMapGeometry.setZoomAndRadius(center.getZoom(), vMap.fromScreenLocation(new PointF(0, 0)));
             }
         }, ANIMATION_DURATION);
     }
