@@ -16,7 +16,7 @@
 
     <!--Map-->
     <dimen name="map_line_width">1dp</dimen>
-    <dimen name="lot_marker_text">10sp</dimen>
+    <dimen name="lot_marker_text">11sp</dimen>
     <dimen name="map_bounds_padding">80dp</dimen>
     <!--Map defaults-->
     <item name="map_attr_zoom" format="float" type="dimen">15.0</item>
