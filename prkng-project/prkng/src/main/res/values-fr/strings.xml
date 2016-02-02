@@ -160,7 +160,7 @@
     <string name="lot_attr_valet">VALET</string>
     <string name="lot_hourly_price">%s/heure</string>
     <string name="lot_daily_price_prefix">Jour</string>
-    <!--<string name="lot_hourly_price_prefix">Heure</string>-->
+    <string name="lot_hourly_price_prefix">Heure</string>
     <string name="lot_capactiy">Capacité: %d&#160;places</string>
 
     <!--Checkin/ User Activity-->

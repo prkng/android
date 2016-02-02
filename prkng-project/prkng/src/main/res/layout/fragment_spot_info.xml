@@ -57,6 +57,8 @@
             <ng.prk.prkngandroid.ui.view.IntroRegularTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/lot_hourly_price_prefix"
+                android:textAllCaps="true"
                 android:textColor="@color/agenda_remaining_time_text"
                 android:textSize="12sp" />
 
