@@ -13,6 +13,7 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.model.CheckinData;
+import ng.prk.prkngandroid.model.ui.HumanDuration;
 import ng.prk.prkngandroid.service.CheckoutService;
 import ng.prk.prkngandroid.ui.activity.MainActivity;
 
@@ -102,8 +103,11 @@ public class NotifyUtils implements Const.NotificationTypes {
                 // Week-long checkins don't have a subtitle,
                 // and don't have any smart_reminder or expiry notifications
                 final boolean isWeekLong = CalendarUtils.isWeekLongDuration(checkin.getDuration());
-                contentTitle = isWeekLong ? contentText :
-                        CalendarUtils.getDurationFromMillis(context, checkin.getDuration());
+                final HumanDuration duration = new HumanDuration.Builder(context)
+                        .millis(checkin.getDuration())
+                        .checkin()
+                        .build();
+                contentTitle = isWeekLong ? contentText : duration.getExpiry();
 
                 builder.setCategory(NotificationCompat.CATEGORY_STATUS)
                         .setVisibility(NotificationCompat.VISIBILITY_SECRET)

@@ -13,7 +13,7 @@ import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.model.CheckinData;
-import ng.prk.prkngandroid.util.CalendarUtils;
+import ng.prk.prkngandroid.model.ui.HumanDuration;
 import ng.prk.prkngandroid.util.CheckinHelper;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 import retrofit2.Call;
@@ -36,9 +36,8 @@ public class CheckinActivity extends AppCompatActivity implements
         public void onResponse(Call<CheckinData> call, Response<CheckinData> response) {
             try {
                 final CheckinData checkin = response.body();
-                if (checkin != null) {
-                    checkin.fixTimezones();
-                }
+                checkin.fixTimezones();
+                checkin.setDuration(mRemainingTime);
 
                 final Context context = CheckinActivity.this;
                 CheckinHelper.checkin(context,
@@ -134,7 +133,8 @@ public class CheckinActivity extends AppCompatActivity implements
         final TextView vRemainingTime = (TextView) findViewById(R.id.remaining_time);
 
         final long checkoutAt = checkin.getCheckoutAt();
-        if (Long.valueOf(Const.UNKNOWN_VALUE).equals(checkoutAt)) {
+        if (Long.valueOf(Const.UNKNOWN_VALUE).equals(checkoutAt) ||
+                Long.valueOf(DateUtils.WEEK_IN_MILLIS).equals(mRemainingTime)) {
             findViewById(R.id.expiry).setVisibility(View.GONE);
             vRemainingTime.setText(R.string.allowed_all_week);
         } else {
@@ -144,7 +144,11 @@ public class CheckinActivity extends AppCompatActivity implements
                 findViewById(R.id.expiry).setVisibility(View.GONE);
                 vRemainingTime.setText(R.string.checkin_expired);
             } else {
-                vRemainingTime.setText(CalendarUtils.getDurationFromMillis(this, remaining));
+                final HumanDuration duration = new HumanDuration.Builder(this)
+                        .millis(remaining)
+                        .spot()
+                        .build();
+                vRemainingTime.setText(duration.getExpiry());
             }
         }
 

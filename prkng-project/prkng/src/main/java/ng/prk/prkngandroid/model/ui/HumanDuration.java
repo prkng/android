@@ -26,14 +26,14 @@ public class HumanDuration implements
     private String expiry;
     private int type;
     private int subType; // refers to Const.ParkingRestrType or BusinnessHourType
-    private boolean isSingleLine;
+    private boolean isFullDateTime;
 
     private HumanDuration(Builder builder) {
         this.context = builder.context;
         this.millis = builder.millis;
         this.type = builder.type;
         this.subType = builder.subType;
-        this.isSingleLine = builder.isSingleLine;
+        this.isFullDateTime = builder.isFullDateTime;
 
         initialize();
     }
@@ -87,26 +87,25 @@ public class HumanDuration implements
         end.setTimeInMillis(end.getTimeInMillis() + millis);
 
         final int dayDiff = end.get(Calendar.DAY_OF_YEAR) - now.get(Calendar.DAY_OF_YEAR);
-        final int minuteDiff = (int) Math.ceil((end.getTimeInMillis() - now.getTimeInMillis()) / DateUtils.MINUTE_IN_MILLIS);
+        final int minuteDiff = (int) Math.ceil(
+                (end.getTimeInMillis() - now.getTimeInMillis()) / DateUtils.MINUTE_IN_MILLIS
+        );
 
         String day;
         String timeOfDay;
 
-        switch (dayDiff) {
-            case 0:
-                day = null;
-                break;
-            case 1:
-                day = res.getString(R.string.expiry_day_tomorrow);
-                break;
-            default:
-                SimpleDateFormat dayFormat = new SimpleDateFormat(CalendarUtils.DATE_FORMAT_DAY_OF_WEEK, Locale.getDefault());
-                day = dayFormat.format(end.getTime());
-                break;
+        if (!isFullDateTime && dayDiff == 0) {
+            day = null;
+        } else if (!isFullDateTime && dayDiff == 1) {
+            day = res.getString(R.string.expiry_day_tomorrow);
+        } else {
+            final SimpleDateFormat dayFormat = new SimpleDateFormat(
+                    CalendarUtils.DATE_FORMAT_DAY_OF_WEEK, Locale.getDefault());
+            day = dayFormat.format(end.getTime());
         }
 
 
-        if (dayDiff == 0 && minuteDiff <= 2 * CalendarUtils.HOUR_IN_MINUTES) {
+        if (!isFullDateTime && (dayDiff == 0) && (minuteDiff <= (2 * CalendarUtils.HOUR_IN_MINUTES))) {
             this.offStreetPrefix = context.getString(R.string.duration_prefix_for);
             this.onStreetPrefix = context.getString(isPaidSpot() ?
                     R.string.duration_prefix_paid_for : R.string.duration_prefix_for);
@@ -185,7 +184,6 @@ public class HumanDuration implements
                 ", offStreetPrefix='" + offStreetPrefix + '\'' +
                 ", expiry='" + expiry + '\'' +
                 ", type=" + type +
-                ", isSingleLine=" + isSingleLine +
                 '}';
     }
 
@@ -194,7 +192,7 @@ public class HumanDuration implements
         private long millis;
         private int type;
         private int subType;
-        private boolean isSingleLine;
+        private boolean isFullDateTime;
 
         public Builder(Context context) {
             this.context = context;
@@ -202,11 +200,6 @@ public class HumanDuration implements
 
         public Builder millis(long millis) {
             this.millis = millis;
-            return this;
-        }
-
-        public Builder singleLine() {
-            this.isSingleLine = true;
             return this;
         }
 
@@ -233,7 +226,7 @@ public class HumanDuration implements
 
         public Builder checkin() {
             this.type = Const.MapSections.ON_STREET;
-            this.isSingleLine = true;
+            this.isFullDateTime = true;
             return this;
         }
 

@@ -91,6 +91,10 @@ public class CheckinData {
         this.address = address;
     }
 
+    public void setDuration(long duration) {
+        this.checkoutAt = new Date(duration + checkinAt.getTime());
+    }
+
     @Deprecated
     public long getDuration() {
         // TODO should be getReaminingTime

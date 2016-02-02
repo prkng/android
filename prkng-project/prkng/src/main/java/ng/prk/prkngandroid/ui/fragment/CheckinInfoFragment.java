@@ -11,8 +11,8 @@ import android.widget.TextView;
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.model.CheckinData;
+import ng.prk.prkngandroid.model.ui.HumanDuration;
 import ng.prk.prkngandroid.ui.activity.CheckinActivity;
-import ng.prk.prkngandroid.util.CalendarUtils;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public class CheckinInfoFragment extends Fragment implements View.OnClickListener {
@@ -74,7 +74,12 @@ public class CheckinInfoFragment extends Fragment implements View.OnClickListene
                 // Time is up!
                 vTitle.setText(R.string.checkin_expired);
             } else {
-                vTitle.setText(CalendarUtils.getDurationFromMillis(getActivity(), remaining));
+// TODO add prefix on single line
+                final HumanDuration duration = new HumanDuration.Builder(getActivity())
+                        .millis(remaining)
+                        .spot()
+                        .build();
+                vTitle.setText(duration.getExpiry());
             }
         }
     }
