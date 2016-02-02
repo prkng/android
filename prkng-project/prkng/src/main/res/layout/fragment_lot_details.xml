@@ -34,8 +34,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:padding="16dp"
         android:background="?android:attr/selectableItemBackground"
+        android:padding="16dp"
         android:src="@drawable/ic_action_directions" />
 
     <LinearLayout
@@ -85,6 +85,8 @@
             <ng.prk.prkngandroid.ui.view.IntroRegularTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/lot_daily_price_prefix"
+                android:textAllCaps="true"
                 android:textColor="@color/agenda_remaining_time_text"
                 android:textSize="12sp" />
 

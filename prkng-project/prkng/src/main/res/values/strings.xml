@@ -158,8 +158,9 @@
     <string name="lot_attr_card">CREDIT CARD</string>
     <string name="lot_attr_accessible">ACCESSIBLE</string>
     <string name="lot_attr_valet">VALET</string>
-    <string name="lot_daily_price">%s\r\nDay</string>
     <string name="lot_hourly_price">%s/Hour</string>
+    <string name="lot_daily_price_prefix">Daily</string>
+    <!--<string name="lot_hourly_price_prefix">Hourly</string>-->
     <string name="lot_capactiy">Capacity: %d&#160;spaces</string>
 
     <!--Checkin/ User Activity-->

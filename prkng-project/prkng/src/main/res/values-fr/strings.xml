@@ -146,9 +146,9 @@
     <string name="duration_prefix_open">Ouvert</string>
     <string name="duration_prefix_closed">Fermé</string>
     <string name="duration_prefix_for">Pour&#160;</string>
-    <string name="duration_prefix_until">Jusqu'à&#160;</string>
+    <string name="duration_prefix_until">Jusqu’à&#160;</string>
     <string name="duration_prefix_paid_for">Tarifé pour</string>
-    <string name="duration_prefix_paid_until">Tarifé jusqu'à</string>
+    <string name="duration_prefix_paid_until">Tarifé jusqu’à</string>
     <string name="allowed_all_week_prefixed">En tout temps</string>
 
     <!--Lot Info-->
@@ -158,8 +158,9 @@
     <string name="lot_attr_card">CARTE DE CRÉDIT</string>
     <string name="lot_attr_accessible">ACCESSIBLE</string>
     <string name="lot_attr_valet">VALET</string>
-    <string name="lot_daily_price">%s\r\njour</string>
     <string name="lot_hourly_price">%s/heure</string>
+    <string name="lot_daily_price_prefix">Jour</string>
+    <!--<string name="lot_hourly_price_prefix">Heure</string>-->
     <string name="lot_capactiy">Capacité: %d&#160;places</string>
 
     <!--Checkin/ User Activity-->
