@@ -224,7 +224,7 @@ public class HumanDuration implements
             return this;
         }
 
-        public Builder checkin() {
+        public Builder notification() {
             this.type = Const.MapSections.ON_STREET;
             this.isFullDateTime = true;
             return this;

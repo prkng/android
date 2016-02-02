@@ -79,7 +79,7 @@ public class CheckinInfoFragment extends Fragment implements View.OnClickListene
                         .millis(remaining)
                         .spot()
                         .build();
-                vTitle.setText(duration.getExpiry());
+                vTitle.setText(duration.getPrefix() + duration.getExpiry());
             }
         }
     }

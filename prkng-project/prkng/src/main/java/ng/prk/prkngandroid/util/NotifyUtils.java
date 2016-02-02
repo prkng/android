@@ -105,7 +105,7 @@ public class NotifyUtils implements Const.NotificationTypes {
                 final boolean isWeekLong = CalendarUtils.isWeekLongDuration(checkin.getDuration());
                 final HumanDuration duration = new HumanDuration.Builder(context)
                         .millis(checkin.getDuration())
-                        .checkin()
+                        .notification()
                         .build();
                 contentTitle = isWeekLong ? contentText : duration.getExpiry();
 
