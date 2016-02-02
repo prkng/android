@@ -203,6 +203,13 @@
     <string name="tutorial_desc_03">Sarah est une femme brillante: elle enregistre sa localisation afin d’être avertie 30 minutes avant l’heure limite, question d’éviter les ennuis.</string>
     <string name="tutorial_desc_04">Fini les maux de tête et les contraventions: faites comme Sarah et utilisez prkng pour trouver votre prochain stationnement gratuit!</string>
 
+    <!--RateApp-->
+    <string name="rate_dialog_title">***Evaluation de l’application</string>
+    <string name="rate_dialog_message">***Vous aimez notre application, voulez-vous prendre un moment pour l’évaluer? Cela ne vous prendra pas plus d’une minute. Merci de votre soutien!</string>
+    <string name="rate_dialog_rate_now_btn">***Évaluer maintenant</string>
+    <string name="rate_dialog_later_btn">***Me rappeler plus tard</string>
+    <string name="rate_dialog_never_btn">***Non, merci</string>
+
     <!--Accessibility-->
     <string name="navigation_drawer_open">Ouvrir le navigation drawer</string>
     <string name="navigation_drawer_close">Fermer le navigation drawer</string>
