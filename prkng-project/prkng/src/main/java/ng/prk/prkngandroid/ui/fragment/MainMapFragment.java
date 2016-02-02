@@ -294,9 +294,9 @@ public class MainMapFragment extends Fragment implements
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (Const.PrefsNames.CHECKIN_ID.equals(key)) {
             try {
+                MapUtils.removeCheckinMarker(vMap);
                 final long id = sharedPreferences.getLong(key, Const.UNKNOWN_VALUE);
                 if (Long.valueOf(Const.UNKNOWN_VALUE).compareTo(id) == 0) {
-                    MapUtils.removeCheckinMarker(vMap);
                     showCheckinInfo(null);
                 } else {
                     MapUtils.addCheckinMarkerIfAvailable(vMap,
