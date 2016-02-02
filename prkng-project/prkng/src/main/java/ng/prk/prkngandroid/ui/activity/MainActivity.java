@@ -32,6 +32,7 @@ import ng.prk.prkngandroid.ui.fragment.MainMapFragment;
 import ng.prk.prkngandroid.ui.fragment.SpotInfoFragment;
 import ng.prk.prkngandroid.util.Installation;
 import ng.prk.prkngandroid.util.PrkngPrefs;
+import ng.prk.prkngandroid.util.RateAppHelper;
 
 public class MainActivity extends BaseActivity implements
         DurationDialog.OnDurationChangedListener,
@@ -94,6 +95,8 @@ public class MainActivity extends BaseActivity implements
         }
 
         tabLayout.setOnTabSelectedListener(this);
+
+        RateAppHelper.showRateDialog(this);
     }
 
     @Override

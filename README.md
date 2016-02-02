@@ -30,3 +30,4 @@ Park Smarter. Discover spots around you, instantly. Check out parking lots nearb
 * [Material Loading ProgressBar](https://github.com/lsjwzh/MaterialLoadingProgressBar): Provide a styled ProgressBar which looks like SwipeRefreshLayout's loading indicator. Version 0.5.8-RELEASE.
 * [Material EditText](https://github.com/rengwuxian/MaterialEditText): EditText in Material Design. Version 2.1.4.
 * [Discrete SeekBar](https://github.com/AnderWeb/discreteSeekBar): Implementation of the Discrete Slider component from the Google Material Design Guidelines. Version 1.0.0.
+* [Android-Rate](https://github.com/hotchemi/Android-Rate): Prompting users to rate the app after using it for a few days. Version 0.5.6.

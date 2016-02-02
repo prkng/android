@@ -24,7 +24,7 @@ android {
         applicationId "ng.prk.prkngandroid"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 17
+        versionCode 16
         versionName "0.9.1-beta"
 
 //        resConfigs "en", "fr"
@@ -94,5 +94,6 @@ dependencies {
     compile 'com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     compile 'org.adw.library:discrete-seekbar:1.0.0'
-
+//    compile 'com.github.hotchemi:android-rate:0.5.6'
+    compile project(':libraries:Android-Rate:library')
 }
