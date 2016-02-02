@@ -164,15 +164,27 @@ public abstract class PrkngDataDownloadTask extends AsyncTask<MapGeometry, Void,
      *
      * @return
      */
-    private void drawRadius(LatLng center) {
-        final LatLng radiusLatLng = vMap.fromScreenLocation(new PointF(0, 0));
-        final MarkerOptions marker = new MarkerOptions();
-        marker.position(radiusLatLng);
-        vMap.addMarker(marker);
+    protected void drawRadius(LatLng center) {
+        drawRadius(center, vMap.fromScreenLocation(new PointF(0, 0)));
+    }
+
+    protected void drawRadius(LatLng center, LatLng northWest) {
+        final LatLng realNW = vMap.fromScreenLocation(new PointF(0, 0));
+        final LatLng realCenter = vMap.getLatLng();
+
+        vMap.addMarker(new MarkerOptions().position(northWest));
+        vMap.addMarker(new MarkerOptions().position(center));
+        vMap.addMarker(new MarkerOptions().position(realNW));
+        vMap.addMarker(new MarkerOptions().position(realCenter));
 
         vMap.addPolyline(new PolylineOptions()
-                .add(new LatLng[]{center, radiusLatLng})
+                .add(new LatLng[]{center, northWest})
                 .color(Color.GREEN)
+                .width(5));
+
+        vMap.addPolyline(new PolylineOptions()
+                .add(new LatLng[]{realCenter, realNW})
+                .color(Color.YELLOW)
                 .width(5));
     }
 
