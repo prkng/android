@@ -1,1 +1,1 @@
-include ':prkng'
+include ':prkng', ':libraries:Android-Rate:library'
