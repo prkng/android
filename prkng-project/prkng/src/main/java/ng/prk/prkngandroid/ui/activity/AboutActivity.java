@@ -3,7 +3,6 @@ package ng.prk.prkngandroid.ui.activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -58,15 +57,15 @@ public class AboutActivity extends AppCompatActivity {
             startActivity(sendIntent);
 
             return true;
-        } else if (item.getItemId() == R.id.action_rate) {
-            /**
-             * Launch Playstore to rate app
-             */
-            final Intent viewIntent = new Intent(Intent.ACTION_VIEW);
-            viewIntent.setData(Uri.parse(getResources().getString(R.string.url_playstore)));
-            startActivity(viewIntent);
-
-            return true;
+//        } else if (item.getItemId() == R.id.action_rate) {
+//            /**
+//             * Launch Playstore to rate app
+//             */
+//            final Intent viewIntent = new Intent(Intent.ACTION_VIEW);
+//            viewIntent.setData(Uri.parse(getResources().getString(R.string.url_playstore)));
+//            startActivity(viewIntent);
+//
+//            return true;
         }
 
         return super.onOptionsItemSelected(item);
