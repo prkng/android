@@ -209,11 +209,11 @@
     <string name="tutorial_desc_04">No more headaches, no more surprise tickets: join Sarah in using prkng to find your next free spot!</string>
 
     <!--RateApp-->
-    <string name="rate_dialog_title">***Rate this app</string>
-    <string name="rate_dialog_message">***If you enjoy playing this app, would you mind taking a moment to rate it? It won\'t take more than a minute. Thanks for your support!</string>
-    <string name="rate_dialog_rate_now_btn">***Rate It Now</string>
-    <string name="rate_dialog_later_btn">***Remind Me Later</string>
-    <string name="rate_dialog_never_btn">***No, Thanks</string>
+    <string name="rate_dialog_title">Happy user?</string>
+    <string name="rate_dialog_message">Rate prkng! An app review helps grow our community and adds insight on regulations and parking conditions in your city. Thanks for your support!</string>
+    <string name="rate_dialog_rate_now_btn">Rate!</string>
+    <string name="rate_dialog_later_btn">Feedback</string>
+    <string name="rate_dialog_never_btn">Later</string>
 
     <!--Accessibility-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
