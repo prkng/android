@@ -17,6 +17,7 @@ import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngZoom;
 
+import ng.prk.prkngandroid.BuildConfig;
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.PrkngApp;
 import ng.prk.prkngandroid.R;
@@ -251,7 +252,9 @@ public class MainActivity extends BaseActivity implements
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
-                Crashlytics.logException(e);
+                if (BuildConfig.USE_CRASHLYTICS) {
+                    Crashlytics.logException(e);
+                }
             }
         }
 
