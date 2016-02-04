@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 
+import com.crashlytics.android.Crashlytics;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngZoom;
@@ -242,12 +243,16 @@ public class MainActivity extends BaseActivity implements
         final FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentByTag(Const.FragmentTags.DIALOG_CITIES) == null) {
             final CitiesDialog dialog = CitiesDialog.newInstance(latLng);
+            try {
+                final Fragment map = getSupportFragmentManager().findFragmentByTag(Const.FragmentTags.MAP);
+                dialog.setTargetFragment(map, Const.RequestCodes.CITY_SELECTOR);
+                dialog.show(fm, Const.FragmentTags.DIALOG_CITIES);
 
-            final Fragment map = getSupportFragmentManager().findFragmentByTag(Const.FragmentTags.MAP);
-            dialog.setTargetFragment(map, Const.RequestCodes.CITY_SELECTOR);
-            dialog.show(fm, Const.FragmentTags.DIALOG_CITIES);
-
-            return true;
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                Crashlytics.logException(e);
+            }
         }
 
         return false;

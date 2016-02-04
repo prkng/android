@@ -385,6 +385,10 @@ public class MainMapFragment extends Fragment implements
      */
     @Override
     public void onMapChanged(int change) {
+        if (!isResumed()) {
+            return;
+        }
+
         switch (change) {
             case MapView.REGION_DID_CHANGE:
                 onMapRegionChangedByUser();
@@ -798,6 +802,10 @@ public class MainMapFragment extends Fragment implements
     }
 
     private void updateMapData(LatLng latLng, double zoom, boolean forced) {
+        if (!isResumed()) {
+            return;
+        }
+
         if (!ConnectionUtils.hasConnection(getActivity())) {
             showConnectionError();
             return;
