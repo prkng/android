@@ -11,17 +11,20 @@ import ng.prk.prkngandroid.util.MapUtils;
 public class City implements Comparable<City> {
     private int id;
     private String name;
-
     @SerializedName(Const.ApiArgs.DISPLAY_NAME)
     private String areaName;
-
     @SerializedName(Const.ApiArgs.GEO_LAT)
     private double latitude;
-
     @SerializedName(Const.ApiArgs.GEO_LNG)
     private double longitude;
     @SerializedName(Const.ApiArgs.URBAN_AREA_RADIUS)
     private int areaRadius; // km
+    private String country;
+    @SerializedName(Const.ApiArgs.COUNTRY_CODE)
+    private String countryCode;
+    private String region;
+    @SerializedName(Const.ApiArgs.REGION_CODE)
+    private String regionCode;
     private double distanceTo;
 
     public int getId() {
@@ -42,6 +45,22 @@ public class City implements Comparable<City> {
 
     public double getAreaRadius() {
         return areaRadius * MapUtils.KILOMETER_IN_METERS;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public String getRegionCode() {
+        return regionCode;
     }
 
     public double getDistanceTo() {

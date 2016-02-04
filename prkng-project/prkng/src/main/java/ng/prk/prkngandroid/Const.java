@@ -103,6 +103,8 @@ public class Const {
         String AREA_NAME = "name_disp";
         String DISPLAY_NAME = "display_name";
         String URBAN_AREA_RADIUS = "urban_area_radius";
+        String COUNTRY_CODE = "country_code";
+        String REGION_CODE = "region_code";
         String USER_ID = "user_id";
         String LOT_ID = "lot_id";
         String SPOT_ID = "slot_id";
@@ -128,6 +130,19 @@ public class Const {
         String CHECKIN_START_TIME = "checkin_time";
         String CHECKIN_END_TIME = "checkout_time";
         String DURATION = "duration";
+        // Mapbox Search
+        String MAPBOX_PROXIMITY = "proximity";
+        String MAPBOX_TOKEN = "access_token";
+        String MAPBOX_COUNTRY = "country";
+        String MAPBOX_REGION = "region";
+        // Foursquare Search
+        String FOURSQUARE_QUERY = "query";
+        String FOURSQUARE_LAT_LNG = "ll";
+        String FOURSQUARE_RADIUS = "radius";
+        String FOURSQUARE_VERSION = "v";
+        String FOURSQUARE_CLIENT_ID = "client_id";
+        String FOURSQUARE_CLIENT_SECRET = "client_secret";
+
     }
 
     public interface ApiValues {
@@ -178,6 +193,14 @@ public class Const {
         String GET_SPOT = "slots/{" + ApiArgs.SPOT_ID + "}";
         String GET_USER_PROFILE = "user/profile";
         String PUT_USER_PROFILE = "user/profile";
+
+        // Search services
+        String SEARCH_MAPBOX = "https://api.mapbox.com/geocoding/v5/" +
+                "mapbox.places/{" + ApiArgs.QUERY + "}.json";
+        String SEARCH_FOURSQUARE = "https://api.foursquare.com/v2/venues/suggestcompletion/";
+    }
+
+    public interface SearchApis {
     }
 
     public interface FragmentTags {

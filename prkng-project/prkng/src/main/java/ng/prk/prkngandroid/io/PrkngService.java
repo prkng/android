@@ -1,5 +1,7 @@
 package ng.prk.prkngandroid.io;
 
+import com.mapbox.geocoder.service.models.GeocoderResponse;
+
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.model.AnalyticsEvent;
 import ng.prk.prkngandroid.model.AnalyticsQuery;
@@ -12,6 +14,7 @@ import ng.prk.prkngandroid.model.PointsGeoJSON;
 import ng.prk.prkngandroid.model.PointsGeoJSONFeature;
 import ng.prk.prkngandroid.model.UploadImageData;
 import ng.prk.prkngandroid.model.UserProfileData;
+import ng.prk.prkngandroid.model.foursquare.FoursquareResults;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -27,6 +30,7 @@ import retrofit2.http.Query;
 
 public interface PrkngService {
     String CONTENT_TYPE = "Content-type: application/json";
+    String CONTENT_TYPE_GEO_JSON = "Content-type: application/vnd.geo+json";
 
     // Send analytics event data
     @FormUrlEncoded
@@ -243,5 +247,26 @@ public interface PrkngService {
     Object updateUserProfile(
             @Header(Const.ApiArgs.API_KEY) String apiKey,
             @Body UserProfileData userProfileData
+    );
+
+    // Search, Mapbox
+    @Headers({CONTENT_TYPE_GEO_JSON})
+    @GET(Const.ApiPaths.SEARCH_MAPBOX)
+    Call<GeocoderResponse> searchMapbox(
+            @Path(Const.ApiArgs.QUERY) String query,
+            @Query(Const.ApiArgs.MAPBOX_TOKEN) String token,
+            @Query(Const.ApiArgs.MAPBOX_PROXIMITY) String lngLat,
+            @Query(Const.ApiArgs.MAPBOX_COUNTRY) String country
+    );
+
+    @Headers({CONTENT_TYPE})
+    @GET(Const.ApiPaths.SEARCH_FOURSQUARE)
+    Call<FoursquareResults> searchFoursquare(
+            @Query(Const.ApiArgs.FOURSQUARE_QUERY) String query,
+            @Query(Const.ApiArgs.FOURSQUARE_LAT_LNG) String latLng,
+            @Query(Const.ApiArgs.FOURSQUARE_RADIUS) double radius,
+            @Query(Const.ApiArgs.FOURSQUARE_CLIENT_ID) String clientId,
+            @Query(Const.ApiArgs.FOURSQUARE_CLIENT_SECRET) String clientSecret,
+            @Query(Const.ApiArgs.FOURSQUARE_VERSION) String version
     );
 }

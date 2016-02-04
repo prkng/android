@@ -4,6 +4,8 @@ import android.support.annotation.WorkerThread;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mapbox.geocoder.service.models.GeocoderResponse;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -12,11 +14,13 @@ import java.util.concurrent.TimeUnit;
 import ng.prk.prkngandroid.BuildConfig;
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.model.CheckinData;
+import ng.prk.prkngandroid.model.City;
 import ng.prk.prkngandroid.model.LinesGeoJSON;
 import ng.prk.prkngandroid.model.LinesGeoJSONFeature;
 import ng.prk.prkngandroid.model.LoginObject;
 import ng.prk.prkngandroid.model.PointsGeoJSON;
 import ng.prk.prkngandroid.model.PointsGeoJSONFeature;
+import ng.prk.prkngandroid.model.foursquare.FoursquareResults;
 import ng.prk.prkngandroid.util.ArrayUtils;
 import ng.prk.prkngandroid.util.CalendarUtils;
 import okhttp3.OkHttpClient;
@@ -408,5 +412,51 @@ public class ApiClient {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
+    }
+
+    public static GeocoderResponse searchMapbox(PrkngService service, String token, String query, City city) {
+        try {
+            final LatLng proximity = city.getLatLng();
+            Response<GeocoderResponse> response = service
+                    .searchMapbox(query,
+                            token,
+                            proximity.getLongitude() + "," + proximity.getLatitude(),
+                            city.getCountryCode().toLowerCase()
+                    )
+                    .execute();
+            if (response != null) {
+                return response.body();
+            }
+//                    .enqueue(cb != null ? cb : new ApiCallback<GeocoderResponse>());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static FoursquareResults searchFoursquare(PrkngService service,
+                                          String clientId, String clientSecret, String version,
+                                          String query, City city
+    ) {
+        try {
+            final LatLng latLng = city.getLatLng();
+            Response<FoursquareResults> response = service
+                    .searchFoursquare(query,
+                            latLng.getLatitude() + "," + latLng.getLongitude(),
+                            city.getAreaRadius(),
+                            clientId,
+                            clientSecret,
+                            version
+                    )
+                    .execute();
+            if (response != null) {
+                return response.body();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

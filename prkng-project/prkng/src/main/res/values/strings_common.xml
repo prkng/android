@@ -32,6 +32,11 @@
         mapbox://styles/arnaudspuhler/cigfc11g0000dcnm73r4o3pi1
     </string>
 
+    <!--Foursquare-->
+    <string name="foursquare_client_id" translatable="false">E5BZKWTZRKG2NN0RPC0WFFOYQRNS31PUSL0XCTUFWTCUFF4S</string>
+    <string name="foursquare_client_secret" translatable="false">JM1LAQRGMBBUWP00FM2YQ10WQZRT2OR1SEJLL1DDG1S2VFRB</string>
+    <string name="foursquare_version" translatable="false">20150813</string>
+
     <!--Carshare off-street lots, excludes communauto-->
     <array name="carshare_lots">
         <!--<item>communauto</item>-->

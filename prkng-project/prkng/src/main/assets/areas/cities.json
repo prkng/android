@@ -5,15 +5,25 @@
     "name": "quebec",
     "urban_area_radius": 20,
     "id": "1",
-    "long": -71.22943997
+    "long": -71.22943997,
+    "country": "Canada",
+    "country_code": "CA",
+    "region": "Quebec",
+    "region_code": "QC",
+    "bounds": {"NW": [], "SE": []}
   },
   {
     "lat": 45.5016889,
     "display_name": "Montréal",
     "name": "montreal",
-    "urban_area_radius": 30,
+    "urban_area_radius": 35,
     "id": "2",
-    "long": -73.567256
+    "long": -73.567256,
+    "country": "Canada",
+    "country_code": "CA",
+    "region": "Quebec",
+    "region_code": "QC",
+    "bounds": {"NW": [], "SE": []}
   },
   {
     "lat": 47.615025,
@@ -21,7 +31,13 @@
     "name": "seattle",
     "urban_area_radius": 30,
     "id": "3",
-    "long": -122.335956
+    "long": -122.335956,
+    "country": "Unites States",
+    "country_code": "US",
+    "region": "Washington",
+    "region_code": "WA",
+    "bounds": {"NW": [], "SE": []}
+
   },
   {
     "lat": 40.712784,
@@ -29,6 +45,11 @@
     "name": "newyork",
     "urban_area_radius": 30,
     "id": "4",
-    "long": -74.005941
+    "long": -74.005941,
+    "country": "Unites States",
+    "country_code": "US",
+    "region": "New York",
+    "region_code": "NY",
+    "bounds": {"NW": [], "SE": []}
   }
 ]

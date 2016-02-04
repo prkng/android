@@ -14,6 +14,7 @@ import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.ui.activity.AboutActivity;
 import ng.prk.prkngandroid.ui.activity.CheckinActivity;
 import ng.prk.prkngandroid.ui.activity.LoginActivity;
+import ng.prk.prkngandroid.ui.activity.SearchActivity;
 import ng.prk.prkngandroid.ui.activity.SettingsActivity;
 import ng.prk.prkngandroid.ui.dialog.DurationDialog;
 import ng.prk.prkngandroid.util.PrkngPrefs;
@@ -68,7 +69,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         final int id = item.getItemId();
-        if (id  == R.id.action_settings) {
+        if (id == R.id.action_search) {
+            startActivity(SearchActivity.newIntent(this));
+
+            return true;
+        } else if (id == R.id.action_settings) {
 
             /**
              * Register a prefsChangeListener to check if user logged-out while in Settings
@@ -122,7 +127,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param intent
      * @return
      */
-    protected boolean isFirstClickFreeIntent(@NonNull  Intent intent) {
+    protected boolean isFirstClickFreeIntent(@NonNull Intent intent) {
         return Intent.ACTION_VIEW.equals(intent.getAction());
     }
 
