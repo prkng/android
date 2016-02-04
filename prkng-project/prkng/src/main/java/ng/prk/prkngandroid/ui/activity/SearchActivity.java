@@ -8,9 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.mapbox.geocoder.service.models.GeocoderFeature;
-
 import ng.prk.prkngandroid.R;
+import ng.prk.prkngandroid.model.base.SearchItem;
 import ng.prk.prkngandroid.ui.activity.base.BaseActivity;
 import ng.prk.prkngandroid.ui.adapter.GeocoderAdapter;
 
@@ -57,7 +56,7 @@ public class SearchActivity extends BaseActivity implements
         Log.v(TAG, "onItemClick, position: " + position
                 + ", id: " + id);
 
-        GeocoderFeature result = mAdapter.getItem(position);
-        vAutoComplete.setText(result.getText());
+        SearchItem result = mAdapter.getItem(position);
+        vAutoComplete.setText(result.getName());
     }
 }

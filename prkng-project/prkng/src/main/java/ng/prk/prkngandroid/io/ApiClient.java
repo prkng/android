@@ -4,7 +4,6 @@ import android.support.annotation.WorkerThread;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mapbox.geocoder.service.models.GeocoderResponse;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
 import java.io.IOException;
@@ -21,6 +20,7 @@ import ng.prk.prkngandroid.model.LoginObject;
 import ng.prk.prkngandroid.model.PointsGeoJSON;
 import ng.prk.prkngandroid.model.PointsGeoJSONFeature;
 import ng.prk.prkngandroid.model.foursquare.FoursquareResults;
+import ng.prk.prkngandroid.model.mapbox.MapboxResults;
 import ng.prk.prkngandroid.util.ArrayUtils;
 import ng.prk.prkngandroid.util.CalendarUtils;
 import okhttp3.OkHttpClient;
@@ -414,10 +414,10 @@ public class ApiClient {
         }
     }
 
-    public static GeocoderResponse searchMapbox(PrkngService service, String token, String query, City city) {
+    public static MapboxResults searchMapbox(PrkngService service, String token, String query, City city) {
         try {
             final LatLng proximity = city.getLatLng();
-            Response<GeocoderResponse> response = service
+            Response<MapboxResults> response = service
                     .searchMapbox(query,
                             token,
                             proximity.getLongitude() + "," + proximity.getLatitude(),

@@ -1,7 +1,5 @@
 package ng.prk.prkngandroid.io;
 
-import com.mapbox.geocoder.service.models.GeocoderResponse;
-
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.model.AnalyticsEvent;
 import ng.prk.prkngandroid.model.AnalyticsQuery;
@@ -15,6 +13,7 @@ import ng.prk.prkngandroid.model.PointsGeoJSONFeature;
 import ng.prk.prkngandroid.model.UploadImageData;
 import ng.prk.prkngandroid.model.UserProfileData;
 import ng.prk.prkngandroid.model.foursquare.FoursquareResults;
+import ng.prk.prkngandroid.model.mapbox.MapboxResults;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -252,7 +251,7 @@ public interface PrkngService {
     // Search, Mapbox
     @Headers({CONTENT_TYPE_GEO_JSON})
     @GET(Const.ApiPaths.SEARCH_MAPBOX)
-    Call<GeocoderResponse> searchMapbox(
+    Call<MapboxResults> searchMapbox(
             @Path(Const.ApiArgs.QUERY) String query,
             @Query(Const.ApiArgs.MAPBOX_TOKEN) String token,
             @Query(Const.ApiArgs.MAPBOX_PROXIMITY) String lngLat,
