@@ -22,6 +22,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -54,6 +55,7 @@ import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.model.ui.SelectedFeature;
 import ng.prk.prkngandroid.ui.activity.CheckinActivity;
 import ng.prk.prkngandroid.ui.activity.LoginActivity;
+import ng.prk.prkngandroid.ui.activity.SearchActivity;
 import ng.prk.prkngandroid.ui.thread.CarshareSpotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.CarshareVehiclesDownloadTask;
 import ng.prk.prkngandroid.ui.thread.LotsDownloadTask;
@@ -98,6 +100,7 @@ public class MainMapFragment extends Fragment implements
     private boolean isDialogShown = false;
     private Bundle initialArguments;
     private City mCurrentCity;
+    private Marker mSearchMarker;
 
     public static MainMapFragment newInstance() {
         return newInstance(null);
@@ -142,6 +145,8 @@ public class MainMapFragment extends Fragment implements
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
 
         initialArguments = (savedInstanceState != null) ? savedInstanceState
                 : getArguments();
@@ -246,6 +251,16 @@ public class MainMapFragment extends Fragment implements
             }
         } else if ((Const.RequestCodes.AUTH_LOGIN == requestCode) && (resultCode == Activity.RESULT_OK)) {
             forceUpdate(null);
+        } else if ((Const.RequestCodes.SEARCH == requestCode) && (resultCode == Activity.RESULT_OK)) {
+            final LatLngZoom latLng = MapUtils.getBundleGeoPoint(data.getExtras());
+            final String title = data.getStringExtra(Const.BundleKeys.MARKER_TITLE);
+            if (latLng != null) {
+                mSearchMarker = MapUtils.addSearchMarker(vMap, latLng, title);
+
+                latLng.setZoom(Const.UiConfig.MY_LOCATION_ZOOM);
+                setCenterCoordinate(latLng);
+            }
+
         }
     }
 
@@ -519,8 +534,10 @@ public class MainMapFragment extends Fragment implements
             return true;
         }
 
-        if (featureId == MapUtils.MARKER_ID_CHECKIN) {
+        if (MapUtils.MARKER_ID_CHECKIN.equals(featureId)) {
             startActivity(CheckinActivity.newIntent(getActivity()));
+            return true;
+        } else if (MapUtils.MARKER_ID_SEARCH.equals(featureId)) {
             return true;
         }
 
@@ -556,6 +573,13 @@ public class MainMapFragment extends Fragment implements
     public void onPostExecute() {
         try {
             vProgressBar.setVisibility(View.GONE);
+
+            if (isResumed() && mSearchMarker != null) {
+                mSearchMarker = MapUtils.addSearchMarker(vMap,
+                        mSearchMarker.getPosition(),
+                        mSearchMarker.getTitle());
+            }
+
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -696,6 +720,19 @@ public class MainMapFragment extends Fragment implements
 
     public Location getUserLocation() {
         return vMap != null ? vMap.getMyLocation() : null;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        final int id = item.getItemId();
+        if (id == R.id.action_search) {
+            startActivityForResult(SearchActivity.newIntent(getActivity(), vMap.getLatLng()),
+                    Const.RequestCodes.SEARCH);
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void requestPermissionIfNeeded() {
@@ -915,9 +952,17 @@ public class MainMapFragment extends Fragment implements
     }
 
     private void selectFeature(String featureId) {
+        if (mFeatureAnnotsList == null) {
+            return;
+        }
+
         // Store the selected feature's ID, for restore
         mSelectedFeature = new SelectedFeature(featureId);
+
         final List<Annotation> annotations = mFeatureAnnotsList.get(featureId);
+        if (annotations == null) {
+            return;
+        }
 
         // Reset the selection array
         mSelectedAnnotsList = new ArrayList<>();

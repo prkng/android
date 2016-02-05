@@ -216,4 +216,12 @@ public class MapUtils {
 
         return false;
     }
+
+    public static Marker addSearchMarker(MapView mapView, LatLng latLng, String title) {
+        return mapView.addMarker(new MarkerOptions()
+                        .snippet(MapUtils.MARKER_ID_SEARCH)
+                        .position(latLng)
+                        .title(title)
+        );
+    }
 }
