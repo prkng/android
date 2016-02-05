@@ -264,8 +264,10 @@ public interface PrkngService {
             @Query(Const.ApiArgs.FOURSQUARE_QUERY) String query,
             @Query(Const.ApiArgs.FOURSQUARE_LAT_LNG) String latLng,
             @Query(Const.ApiArgs.FOURSQUARE_RADIUS) double radius,
+            @Query(Const.ApiArgs.FOURSQUARE_LIMIT) int limit,
             @Query(Const.ApiArgs.FOURSQUARE_CLIENT_ID) String clientId,
             @Query(Const.ApiArgs.FOURSQUARE_CLIENT_SECRET) String clientSecret,
             @Query(Const.ApiArgs.FOURSQUARE_VERSION) String version
+
     );
 }

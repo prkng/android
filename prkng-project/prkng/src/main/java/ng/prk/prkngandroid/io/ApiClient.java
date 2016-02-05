@@ -414,15 +414,20 @@ public class ApiClient {
         }
     }
 
-    public static MapboxResults searchMapbox(PrkngService service, String token, String query, City city) {
+    public static MapboxResults searchMapbox(PrkngService service, String token, String query, LatLng proximity, City city) {
         try {
-            final LatLng proximity = city.getLatLng();
+            String country;
+            try {
+                country = city.getCountryCode().toLowerCase();
+            } catch (NullPointerException e) {
+                country = null;
+            }
+
             Response<MapboxResults> response = service
                     .searchMapbox(query,
                             token,
                             proximity.getLongitude() + "," + proximity.getLatitude(),
-                            city.getCountryCode().toLowerCase()
-                    )
+                            country)
                     .execute();
             if (response != null) {
                 return response.body();
@@ -436,15 +441,15 @@ public class ApiClient {
     }
 
     public static FoursquareResults searchFoursquare(PrkngService service,
-                                          String clientId, String clientSecret, String version,
-                                          String query, City city
+                                                     String clientId, String clientSecret, String version,
+                                                     String query, LatLng proximity, City city
     ) {
         try {
-            final LatLng latLng = city.getLatLng();
             Response<FoursquareResults> response = service
                     .searchFoursquare(query,
-                            latLng.getLatitude() + "," + latLng.getLongitude(),
+                            proximity.getLatitude() + "," + proximity.getLongitude(),
                             city.getAreaRadius(),
+                            Const.UiConfig.FOURSQUARE_LIMIT,
                             clientId,
                             clientSecret,
                             version

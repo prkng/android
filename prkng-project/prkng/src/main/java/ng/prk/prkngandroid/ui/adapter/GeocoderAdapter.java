@@ -2,7 +2,6 @@ package ng.prk.prkngandroid.ui.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +10,10 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.mapbox.geocoder.service.models.GeocoderFeature;
-import com.mapbox.geocoder.service.models.GeocoderResponse;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -22,8 +21,11 @@ import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.io.PrkngService;
 import ng.prk.prkngandroid.model.City;
+import ng.prk.prkngandroid.model.base.SearchItem;
 import ng.prk.prkngandroid.model.foursquare.FoursquareResults;
 import ng.prk.prkngandroid.model.foursquare.MiniVenue;
+import ng.prk.prkngandroid.model.mapbox.Feature;
+import ng.prk.prkngandroid.model.mapbox.MapboxResults;
 import ng.prk.prkngandroid.util.CityBoundsHelper;
 
 public class GeocoderAdapter extends BaseAdapter implements
@@ -31,17 +33,20 @@ public class GeocoderAdapter extends BaseAdapter implements
     private final static String TAG = "GeocoderAdapter";
 
     private final Context context;
+    private final GeocoderFilter geocoderFilter;
+    private List<SearchItem> features;
+
     private final String mapboxToken;
     private final String foursquareClientId;
     private final String foursquareClientSecret;
+
     private final String foursquareVersion;
 
-    private GeocoderFilter geocoderFilter;
-
-    private List<GeocoderFeature> features;
-
-    public GeocoderAdapter(Context context) {
+    public GeocoderAdapter(Context context, LatLng proximity) {
         this.context = context;
+        this.geocoderFilter = new GeocoderFilter(proximity,
+                CityBoundsHelper.getNearestCity(context, proximity));
+
         this.mapboxToken = context.getString(R.string.mapbox_access_token);
         this.foursquareClientId = context.getString(R.string.foursquare_client_id);
         this.foursquareClientSecret = context.getString(R.string.foursquare_client_secret);
@@ -58,7 +63,7 @@ public class GeocoderAdapter extends BaseAdapter implements
     }
 
     @Override
-    public GeocoderFeature getItem(int position) {
+    public SearchItem getItem(int position) {
         return features.get(position);
     }
 
@@ -77,17 +82,19 @@ public class GeocoderAdapter extends BaseAdapter implements
         View view;
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
-            view = inflater.inflate(android.R.layout.simple_dropdown_item_1line, parent, false);
+            view = inflater.inflate(R.layout.list_item_search, parent, false);
         } else {
             view = convertView;
         }
+        final TextView vTitle = (TextView) view.findViewById(R.id.title);
+        final TextView vSubtitle = (TextView) view.findViewById(R.id.subtitle);
 
-        // It always is a textview
-        TextView text = (TextView) view;
-
-        // Set the place name
-        GeocoderFeature feature = getItem(position);
-        text.setText(feature.getPlaceName());
+        // Set the place name and address
+        SearchItem feature = getItem(position);
+        vTitle.setText(feature.getName());
+        if (!TextUtils.isEmpty(feature.getAddress())) {
+            vSubtitle.setText(feature.getAddress());
+        }
 
         return view;
     }
@@ -98,12 +105,6 @@ public class GeocoderAdapter extends BaseAdapter implements
 
     @Override
     public Filter getFilter() {
-        if (geocoderFilter == null) {
-            geocoderFilter = new GeocoderFilter(
-                    CityBoundsHelper.getCityByName(context, "montreal")
-            );
-        }
-
         return geocoderFilter;
     }
 
@@ -111,76 +112,141 @@ public class GeocoderAdapter extends BaseAdapter implements
         private final static String TAG = "GeocoderFilter";
 
         private PrkngService service;
+        private LatLng proximity;
         private City city;
 
-        public GeocoderFilter(City city) {
-            this.service = ApiClient.getServiceLog();
-            this.city = city;
+        public GeocoderFilter(LatLng proximity, City nearestCity) {
+            this.service = ApiClient.getService();
+            this.proximity = proximity;
+            this.city = nearestCity;
         }
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            Log.v(TAG, "performFiltering");
             FilterResults results = new FilterResults();
 
             // No constraint
             if (TextUtils.isEmpty(constraint)) {
                 return results;
             }
+            final String query = constraint.toString();
 
-            GeocoderResponse response = ApiClient.searchMapbox(service,
+            List<Feature> mapboxFeatures = getMapboxItems(query);
+            List<MiniVenue> foursquareVenues = getFoursquareItems(query);
+
+            List<SearchItem> merged = new ArrayList<>();
+            merged.addAll(mapboxFeatures);
+            merged.addAll(foursquareVenues);
+
+            merged = sortUniqueResult(merged, 50);
+
+            results.values = merged;
+            results.count = merged.size();
+            return results;
+        }
+
+        /**
+         * Search Mapbox API
+         * Items are removed if not in city's radius. Distance (from proximity latLng) is computed
+         * to allow for later sort-by-distance
+         *
+         * @param query
+         * @return
+         */
+        private List<Feature> getMapboxItems(String query) {
+            final MapboxResults results = ApiClient.searchMapbox(service,
                     mapboxToken,
-                    constraint.toString(),
+                    query,
+                    proximity,
                     city);
 
-            if (response == null) {
-                return null;
-            }
+            List<Feature> mapboxFeatures = new ArrayList<>();
+            if (results != null) {
+                mapboxFeatures = results.getFeatures();
 
-            final List<GeocoderFeature> features = response.getFeatures();
-
-            Iterator<GeocoderFeature> iterator = features.iterator();
-            while (iterator.hasNext()) {
-                GeocoderFeature f = iterator.next();
-                if (!city.containsInRadius(new LatLng(f.getLatitude(), f.getLongitude()))) {
-                    iterator.remove();
+                Iterator<Feature> iterator = mapboxFeatures.iterator();
+                while (iterator.hasNext()) {
+                    Feature f = iterator.next();
+                    if (!city.containsInRadius(f.getLatLng())) {
+                        iterator.remove();
+                    } else {
+                        f.setDistance(city.getLatLng().distanceTo(f.getLatLng()));
+                    }
                 }
             }
 
-            FoursquareResults foursquareResponse = ApiClient.searchFoursquare(service,
+            return mapboxFeatures;
+        }
+
+        /**
+         * Search Foursquare API
+         * Venues without an address are removed. Typically these are non-places (ex: planes!)
+         *
+         * @param query
+         * @return
+         */
+        private List<MiniVenue> getFoursquareItems(String query) {
+            final FoursquareResults results = ApiClient.searchFoursquare(service,
                     foursquareClientId,
                     foursquareClientSecret,
                     foursquareVersion,
-                    constraint.toString(),
+                    query,
+                    proximity,
                     city
             );
 
-            if (foursquareResponse != null) {
-                List<MiniVenue> venues = foursquareResponse.getVenues();
-                for (MiniVenue venue : venues) {
-                    Log.v(TAG, venue.toString());
+            List<MiniVenue> foursquareVenues = new ArrayList<>();
+            if (results != null) {
+                foursquareVenues = results.getVenues();
+
+                Iterator<MiniVenue> iterator = foursquareVenues.iterator();
+                while (iterator.hasNext()) {
+                    MiniVenue f = iterator.next();
+                    if (TextUtils.isEmpty(f.getAddress())) {
+                        // Remove items without address (wrong category)
+                        iterator.remove();
+                    }
                 }
             }
 
+            return foursquareVenues;
+        }
 
+        /**
+         * Sort the merged list by distance from proximity latLng.
+         * Duplicate items are removed: same if distance <= 50m
+         *
+         * @param merged
+         * @param distance
+         * @return
+         */
+        private List<SearchItem> sortUniqueResult(List<SearchItem> merged, double distance) {
+            if (merged.size() >= 2) {
+                Collections.sort(merged);
 
-            results.values = features;
-            results.count = features.size();
-            return results;
+                Iterator<SearchItem> iterator = merged.iterator();
+                SearchItem previous = iterator.next();
+
+                while (iterator.hasNext()) {
+                    SearchItem current = iterator.next();
+                    if (Double.compare(previous.distanceTo(current), distance) < 0) {
+                        // Items that are less than 50m (example) away are duplicates, removed
+                        iterator.remove();
+                    } else {
+                        previous = current;
+                    }
+                }
+            }
+
+            return merged;
         }
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            Log.v(TAG, "publishResults");
-
             if (results != null && results.count > 0) {
-                features = (List<GeocoderFeature>) results.values;
-                Log.v(TAG, "notifyDataSet Changed");
-
+                features = (List<SearchItem>) results.values;
                 notifyDataSetChanged();
             } else {
-                Log.v(TAG, "notifyDataSet Invalidated");
-
                 notifyDataSetInvalidated();
             }
         }

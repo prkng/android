@@ -1,5 +1,7 @@
 package ng.prk.prkngandroid.model.mapbox;
 
+import android.text.TextUtils;
+
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
 import java.util.List;
@@ -52,8 +54,11 @@ public class Feature extends SearchItem {
 
     @Override
     public String getAddress() {
-        return properties == null ? null :
-                properties.getAddress();
+        if (properties != null && !TextUtils.isEmpty(properties.getAddress())) {
+            return properties.getAddress();
+        } else {
+            return getPlaceName();
+        }
     }
 
     @Override

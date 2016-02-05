@@ -25,6 +25,7 @@ public class MapUtils {
     private final static String TAG = "MapUtils";
     public static final int KILOMETER_IN_METERS = 1000;
     public final static String MARKER_ID_CHECKIN = "checkin_marker";
+    public final static String MARKER_ID_SEARCH = "search_marker";
 
     public static double getMinZoomPerType(int type) {
         switch (type) {

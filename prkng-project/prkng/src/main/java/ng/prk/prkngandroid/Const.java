@@ -31,6 +31,7 @@ public class Const {
         float DEFAULT_DURATION = 0.5f;
         float DRIVING_MIN_SPEED = 25000f; // 25 km/h
         double MIN_CLICK_DISTANCE = 13d; // 13 metres
+        int FOURSQUARE_LIMIT = 10;
     }
 
     public interface AppsIntents {
@@ -139,6 +140,7 @@ public class Const {
         String FOURSQUARE_QUERY = "query";
         String FOURSQUARE_LAT_LNG = "ll";
         String FOURSQUARE_RADIUS = "radius";
+        String FOURSQUARE_LIMIT = "limit";
         String FOURSQUARE_VERSION = "v";
         String FOURSQUARE_CLIENT_ID = "client_id";
         String FOURSQUARE_CLIENT_SECRET = "client_secret";
@@ -228,6 +230,7 @@ public class Const {
         int CHECKIN_REMINDER = 110;
         int CHECKIN_SMART_REMINDER = 111;
         int CITY_SELECTOR = 120;
+        int SEARCH = 130;
     }
 
     public interface BundleKeys {

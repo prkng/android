@@ -182,6 +182,10 @@
     <string name="auth_hint_login_password">Password</string>
     <string name="auth_confirm_password_reset">Please check your email!\r\nYou&#160;will receive instructions on how to enter your new password…</string>
 
+    <!--Search-->
+    <string name="search_hint">Search</string>
+    <string name="search_credits">Powered by Foursquare &amp;&#160;Mapbox</string>
+
     <!--Notifications-->
     <string name="notify_checkin_text">Parked on %s</string>
     <string name="notify_expiry_smart_reminder_text">Parking expires tomorrow</string>
