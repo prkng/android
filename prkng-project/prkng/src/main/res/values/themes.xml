@@ -56,6 +56,13 @@
         <item name="android:windowBackground">@color/color_background</item>
     </style>
 
+    <style name="AppTheme.Search">
+        <item name="colorAccent">@color/color_primary_dark</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/color_background_inv</item>
+    </style>
+
     <style name="AppTheme.NoStatusBar" parent="AppTheme.Translucent">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

@@ -1,13 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <android.support.v7.widget.AppCompatAutoCompleteTextView
-        android:id="@+id/autocomplete"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp" />
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btn_nav_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="16dp"
+                android:src="@drawable/ic_navigation_arrow_back" />
+
+            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/autocomplete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:dropDownAnchor="@+id/appbar"
+                android:hint="@string/search_hint"
+                android:imeOptions="actionSearch"
+                android:inputType="textAutoComplete|textAutoCorrect"
+                android:shadowColor="#00ff00" />
+        </LinearLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <ng.prk.prkngandroid.ui.view.IntroLightTextView
+        style="@style/BigText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:drawableTint="@color/anthracite1"
+        android:drawableTop="@drawable/ic_big_search"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.4"
+        android:text="@string/search_credits"
+        android:textColor="@color/anthracite1"
+        android:textSize="14sp" />
+
+</FrameLayout>
+
+
+
+
