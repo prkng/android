@@ -16,8 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="16dp"
         android:background="?android:attr/selectableItemBackground"
+        android:padding="16dp"
         android:src="@drawable/ic_navigation_arrow_back" />
 
     <ng.prk.prkngandroid.ui.view.IntroLightTextView
