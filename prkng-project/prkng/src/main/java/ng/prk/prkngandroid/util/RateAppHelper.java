@@ -18,9 +18,9 @@ public class RateAppHelper {
         AppRate.with(activity)
                 .setDialogStyle(R.style.PrkngDialogStyle)
                 .setStoreType(AppRate.StoreType.GOOGLEPLAY)
-                .setInstallDays(3) // default 10, 0 means install day.
-                .setLaunchTimes(10) // default 10 times.
-                .setRemindInterval(2) // default 1 day.
+                .setInstallDays(7) // default 10, 0 means install day.
+                .setLaunchTimes(5) // default 10 times.
+                .setRemindInterval(5) // default 1 day.
                 .setShowLaterButton(true) // default true.
                 .setDebug(false) // default false.
                 .setCancelable(true) // default false.
