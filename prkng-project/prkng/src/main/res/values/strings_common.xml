@@ -8,7 +8,7 @@
     <string name="asset_cities">areas/cities.json</string>
 
     <!--Emails-->
-    <string name="email_support" translatable="false">support@prk.ng</string>
+    <string name="email_support" translatable="false">hello@prk.ng</string>
 
     <!--Facebook-->
     <string name="facebook_app_id" translatable="false">1043720578978201</string>
