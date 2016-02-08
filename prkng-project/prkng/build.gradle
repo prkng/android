@@ -36,6 +36,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "API_BASE_URL", '"https://api.prk.ng/v1/"'
             buildConfigField "boolean", "USE_CRASHLYTICS", "true"
+            buildConfigField "boolean", "USE_ANALYTICS", "true"
         }
 
         debug {
@@ -43,6 +44,7 @@ android {
             minifyEnabled false
             buildConfigField "String", "API_BASE_URL", '"https://test.prk.ng/v1/"'
             buildConfigField "boolean", "USE_CRASHLYTICS", "false"
+            buildConfigField "boolean", "USE_ANALYTICS", "false"
         }
 
         debugFacebook.initWith(buildTypes.debug)
