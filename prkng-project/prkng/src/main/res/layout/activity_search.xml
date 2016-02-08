@@ -45,7 +45,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:drawableTint="@color/anthracite1"
         android:drawableTop="@drawable/ic_big_search"
         android:gravity="center"
         android:lineSpacingMultiplier="1.4"
