@@ -258,7 +258,7 @@ public class MainMapFragment extends Fragment implements
             final LatLngZoom latLng = MapUtils.getBundleGeoPoint(data.getExtras());
             final String title = data.getStringExtra(Const.BundleKeys.MARKER_TITLE);
             if (latLng != null) {
-                mSearchMarker = MapUtils.addSearchMarker(vMap, latLng, title);
+                mSearchMarker = MapUtils.addSearchMarker(vMap, latLng, mapAssets.getSearchMarkerIcon());
 
                 latLng.setZoom(Const.UiConfig.MY_LOCATION_ZOOM);
                 setCenterCoordinate(latLng);
@@ -580,7 +580,7 @@ public class MainMapFragment extends Fragment implements
             if (isResumed() && mSearchMarker != null) {
                 mSearchMarker = MapUtils.addSearchMarker(vMap,
                         mSearchMarker.getPosition(),
-                        mSearchMarker.getTitle());
+                        mapAssets.getSearchMarkerIcon());
             }
 
         } catch (NullPointerException e) {

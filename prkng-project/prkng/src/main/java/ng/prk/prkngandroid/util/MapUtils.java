@@ -217,11 +217,11 @@ public class MapUtils {
         return false;
     }
 
-    public static Marker addSearchMarker(MapView mapView, LatLng latLng, String title) {
+    public static Marker addSearchMarker(MapView mapView, LatLng latLng, Icon searchIcon) {
         return mapView.addMarker(new MarkerOptions()
                         .snippet(MapUtils.MARKER_ID_SEARCH)
                         .position(latLng)
-                        .title(title)
+                        .icon(searchIcon)
         );
     }
 }

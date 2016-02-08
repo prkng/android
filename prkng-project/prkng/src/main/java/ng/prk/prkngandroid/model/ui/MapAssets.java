@@ -39,6 +39,7 @@ public class MapAssets {
     private Icon markerIconCarshareCar2go;
     private Icon markerIconCarshareZipcar;
     private Icon markerIconCheckin;
+    private Icon markerIconSearch;
 
     private Bitmap markerBitmapClosed;
     private Bitmap markerBitmapOpen;
@@ -71,6 +72,7 @@ public class MapAssets {
         markerIconCarshareCar2go = iconFactory.fromResource(R.drawable.ic_maps_carshare_car2go);
         markerIconCarshareZipcar = iconFactory.fromResource(R.drawable.ic_maps_carshare_zipcar);
         markerIconCheckin = iconFactory.fromResource(R.drawable.ic_maps_checkin);
+        markerIconSearch = iconFactory.fromResource(R.drawable.ic_maps_search);
 
         lineColorFree = ContextCompat.getColor(context, R.color.map_line_free_spot);
         lineColorPaid = ContextCompat.getColor(context, R.color.map_line_paid_spot);
@@ -148,6 +150,10 @@ public class MapAssets {
 
     public Icon getCheckinMarkerIcon() {
         return markerIconCheckin;
+    }
+
+    public Icon getSearchMarkerIcon() {
+        return markerIconSearch;
     }
 
     public Icon getLotMarkerIconSelected(int price) {
