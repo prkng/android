@@ -204,12 +204,12 @@
     <string name="tutorial_desc_04">Fini les maux de tête et les contraventions: faites comme Sarah et utilisez prkng pour trouver votre prochain stationnement gratuit!</string>
 
     <!--RateApp-->
-    <string name="rate_dialog_title">***Evaluation de l’application</string>
-    <string name="rate_dialog_message">***Vous aimez notre application, voulez-vous prendre un moment pour l’évaluer? Cela ne vous prendra pas plus d’une minute. Merci de votre soutien!</string>
-    <string name="rate_dialog_rate_now_btn">***Évaluer maintenant</string>
-    <string name="rate_dialog_later_btn">***Me rappeler plus tard</string>
-    <string name="rate_dialog_never_btn">***Non, merci</string>
-
+    <string name="rate_dialog_title">Satisfait?</string>
+    <string name="rate_dialog_message">En recommandant prkng sur le Playstore, vous contribuez à la croissance de notre communauté et la qualité de nos données. Merci de votre soutien!</string>
+    <string name="rate_dialog_rate_now_btn">Évaluez!</string>
+    <string name="rate_dialog_later_btn">Avis?</string>
+    <string name="rate_dialog_never_btn">Plus tard</string>
+    
     <!--Accessibility-->
     <string name="navigation_drawer_open">Ouvrir le navigation drawer</string>
     <string name="navigation_drawer_close">Fermer le navigation drawer</string>
