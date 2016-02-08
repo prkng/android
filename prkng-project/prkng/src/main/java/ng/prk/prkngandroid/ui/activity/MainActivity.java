@@ -30,6 +30,7 @@ import ng.prk.prkngandroid.ui.dialog.DurationDialog;
 import ng.prk.prkngandroid.ui.fragment.LotInfoFragment;
 import ng.prk.prkngandroid.ui.fragment.MainMapFragment;
 import ng.prk.prkngandroid.ui.fragment.SpotInfoFragment;
+import ng.prk.prkngandroid.util.AnalyticsUtils;
 import ng.prk.prkngandroid.util.Installation;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 import ng.prk.prkngandroid.util.RateAppHelper;
@@ -104,6 +105,8 @@ public class MainActivity extends BaseActivity implements
         super.onResume();
         PrkngPrefs.getInstance(this).registerPrefsChangeListener(this);
         supportInvalidateOptionsMenu();
+
+        AnalyticsUtils.sendScreenView(this, "MainActivity");
     }
 
     @Override

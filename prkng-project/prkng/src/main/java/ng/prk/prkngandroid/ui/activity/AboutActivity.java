@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.ui.fragment.AboutFragment;
+import ng.prk.prkngandroid.util.AnalyticsUtils;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -30,6 +31,13 @@ public class AboutActivity extends AppCompatActivity {
                     .replace(android.R.id.content, fragment, Const.FragmentTags.ABOUT)
                     .commit();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        AnalyticsUtils.sendScreenView(this, "AboutActivity");
     }
 
     @Override

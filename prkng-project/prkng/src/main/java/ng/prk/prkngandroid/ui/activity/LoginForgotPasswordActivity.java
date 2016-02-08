@@ -19,6 +19,7 @@ import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.io.PrkngApiError;
+import ng.prk.prkngandroid.util.AnalyticsUtils;
 import ng.prk.prkngandroid.util.AuthValidation;
 import ng.prk.prkngandroid.util.EditTextUtils;
 
@@ -57,6 +58,13 @@ public class LoginForgotPasswordActivity extends AppCompatActivity implements
 
         setListeners();
         addValidators();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        AnalyticsUtils.sendScreenView(this, "LoginForgotPasswordActivity");
     }
 
     /**

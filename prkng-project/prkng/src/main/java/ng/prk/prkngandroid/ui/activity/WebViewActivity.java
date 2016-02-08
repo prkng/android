@@ -14,6 +14,7 @@ import android.webkit.WebViewClient;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
+import ng.prk.prkngandroid.util.AnalyticsUtils;
 
 public class WebViewActivity extends AppCompatActivity {
 
@@ -55,6 +56,13 @@ public class WebViewActivity extends AppCompatActivity {
 //                .setColorFilter(getResources().getColor(R.color.color_background), PorterDuff.Mode.SRC_IN);
 
         loadPage(mPage);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        AnalyticsUtils.sendScreenView(this, "WebViewActivity " + mPage);
     }
 
     private void loadPage(String page) {

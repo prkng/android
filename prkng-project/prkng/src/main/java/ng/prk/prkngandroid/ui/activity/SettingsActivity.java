@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.ui.fragment.SettingsFragment;
+import ng.prk.prkngandroid.util.AnalyticsUtils;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -25,5 +26,12 @@ public class SettingsActivity extends AppCompatActivity {
                     .replace(android.R.id.content, fragment, Const.FragmentTags.SETTINGS)
                     .commit();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        AnalyticsUtils.sendScreenView(this, "SettingsActivity");
     }
 }

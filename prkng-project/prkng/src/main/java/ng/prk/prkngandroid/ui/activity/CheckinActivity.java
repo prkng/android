@@ -14,6 +14,7 @@ import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.model.CheckinData;
 import ng.prk.prkngandroid.model.ui.HumanDuration;
+import ng.prk.prkngandroid.util.AnalyticsUtils;
 import ng.prk.prkngandroid.util.CheckinHelper;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 import retrofit2.Call;
@@ -104,6 +105,14 @@ public class CheckinActivity extends AppCompatActivity implements
         }
 
         findViewById(R.id.btn_nav_back).setOnClickListener(this);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        AnalyticsUtils.sendScreenView(this, "CheckinActivity");
     }
 
     @Override

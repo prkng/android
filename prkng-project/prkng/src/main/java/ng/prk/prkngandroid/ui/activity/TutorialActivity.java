@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.ui.adapter.TutorialPagerAdapter;
+import ng.prk.prkngandroid.util.AnalyticsUtils;
 import ng.prk.prkngandroid.util.CrossfadePageTransformer;
 
 public class TutorialActivity extends AppCompatActivity implements View.OnClickListener {
@@ -98,6 +99,13 @@ public class TutorialActivity extends AppCompatActivity implements View.OnClickL
 
         vCircles = (LinearLayout) findViewById(R.id.circles);
         buildCircles(vCircles);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        AnalyticsUtils.sendScreenView(this, "TutorialActivity");
     }
 
     @Override

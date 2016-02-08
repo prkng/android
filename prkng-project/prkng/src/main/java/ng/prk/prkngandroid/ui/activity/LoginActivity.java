@@ -33,6 +33,7 @@ import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.model.LoginObject;
 import ng.prk.prkngandroid.ui.activity.base.BaseActivity;
 import ng.prk.prkngandroid.ui.view.RedSnackbar;
+import ng.prk.prkngandroid.util.AnalyticsUtils;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 import ng.prk.prkngandroid.util.TypefaceHelper;
 
@@ -78,6 +79,13 @@ public class LoginActivity extends BaseActivity implements
         setupGoogleLogin();
 
         logoutIfNecessary();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        AnalyticsUtils.sendScreenView(this, "LoginActivity");
     }
 
     @Override

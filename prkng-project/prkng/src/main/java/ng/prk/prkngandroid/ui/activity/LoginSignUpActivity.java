@@ -21,6 +21,7 @@ import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.model.LoginObject;
 import ng.prk.prkngandroid.ui.view.RedSnackbar;
+import ng.prk.prkngandroid.util.AnalyticsUtils;
 import ng.prk.prkngandroid.util.AuthValidation;
 import ng.prk.prkngandroid.util.EditTextUtils;
 import ng.prk.prkngandroid.util.PrkngPrefs;
@@ -49,6 +50,13 @@ public class LoginSignUpActivity extends LoginEmailActivity implements
 
         setListeners();
         addValidators();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        AnalyticsUtils.sendScreenView(this, "LoginSignUpActivity");
     }
 
     @Override

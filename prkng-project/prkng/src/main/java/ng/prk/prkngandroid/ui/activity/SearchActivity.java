@@ -19,6 +19,7 @@ import ng.prk.prkngandroid.model.City;
 import ng.prk.prkngandroid.model.base.SearchItem;
 import ng.prk.prkngandroid.ui.activity.base.BaseActivity;
 import ng.prk.prkngandroid.ui.adapter.GeocoderAdapter;
+import ng.prk.prkngandroid.util.AnalyticsUtils;
 import ng.prk.prkngandroid.util.CityBoundsHelper;
 import ng.prk.prkngandroid.util.MapUtils;
 import ng.prk.prkngandroid.util.PrkngPrefs;
@@ -58,6 +59,8 @@ public class SearchActivity extends BaseActivity implements
         super.onResume();
 
         vAutoComplete.requestFocus();
+
+        AnalyticsUtils.sendScreenView(this, "AboutActivity");
     }
 
     /**
