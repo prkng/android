@@ -9,6 +9,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <LinearLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
