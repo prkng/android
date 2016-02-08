@@ -207,7 +207,7 @@
     <string name="rate_dialog_title">Satisfait?</string>
     <string name="rate_dialog_message">En recommandant prkng sur le Playstore, vous contribuez à la croissance de notre communauté et la qualité de nos données. Merci de votre soutien!</string>
     <string name="rate_dialog_rate_now_btn">Évaluez!</string>
-    <string name="rate_dialog_later_btn">Avis?</string>
+    <string name="rate_dialog_later_btn">Question?</string>
     <string name="rate_dialog_never_btn">Plus tard</string>
     
     <!--Accessibility-->
