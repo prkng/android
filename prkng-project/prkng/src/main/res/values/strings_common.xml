@@ -24,6 +24,9 @@
         <item>openid</item>
     </array>
 
+    <!--Analytics-->
+    <string name="google_analytics_property" translatable="false">UA-63856349-2</string>
+
     <!--Mapbox-->
     <string name="mapbox_access_token" translatable="false">
         pk.eyJ1IjoiYXJuYXVkc3B1aGxlciIsImEiOiJSaEctSlVnIn0.R8cfngN9KkHYZx54JQdgJA

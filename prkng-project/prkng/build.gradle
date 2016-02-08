@@ -27,7 +27,7 @@ android {
         versionCode 16
         versionName "0.9.1-beta"
 
-//        resConfigs "en", "fr"
+        resConfigs "en", "fr"
 //        resConfigs "nodpi", "mdpi", "hdpi", "xhdpi", "xxhdpi"
     }
     buildTypes {
