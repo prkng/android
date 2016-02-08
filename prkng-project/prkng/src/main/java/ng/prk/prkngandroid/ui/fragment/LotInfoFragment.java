@@ -31,6 +31,7 @@ import ng.prk.prkngandroid.ui.activity.OnMarkerInfoClickListener;
 import ng.prk.prkngandroid.ui.adapter.LotAgendaListAdapter;
 import ng.prk.prkngandroid.ui.thread.LotInfoDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.MarkerInfoUpdateListener;
+import ng.prk.prkngandroid.util.AnalyticsUtils;
 import ng.prk.prkngandroid.util.IntentUtils;
 
 public class LotInfoFragment extends Fragment implements
@@ -133,6 +134,15 @@ public class LotInfoFragment extends Fragment implements
         downloadData(getActivity(), mId);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (isExpanded) {
+            AnalyticsUtils.sendFragmentView(this, mId);
+        }
     }
 
     @Override

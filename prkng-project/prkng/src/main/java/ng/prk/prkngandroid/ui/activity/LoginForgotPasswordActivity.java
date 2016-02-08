@@ -64,7 +64,7 @@ public class LoginForgotPasswordActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
 
-        AnalyticsUtils.sendScreenView(this, "LoginForgotPasswordActivity");
+        AnalyticsUtils.sendActivityView(this);
     }
 
     /**

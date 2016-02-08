@@ -105,7 +105,7 @@ public class TutorialActivity extends AppCompatActivity implements View.OnClickL
     protected void onResume() {
         super.onResume();
 
-        AnalyticsUtils.sendScreenView(this, "TutorialActivity");
+        AnalyticsUtils.sendActivityView(this);
     }
 
     @Override

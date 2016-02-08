@@ -75,7 +75,7 @@ public class LoginEmailActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
 
-        AnalyticsUtils.sendScreenView(this, "LoginEmailActivity");
+        AnalyticsUtils.sendActivityView(this);
     }
 
     @Override

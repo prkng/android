@@ -106,7 +106,7 @@ public class MainActivity extends BaseActivity implements
         PrkngPrefs.getInstance(this).registerPrefsChangeListener(this);
         supportInvalidateOptionsMenu();
 
-        AnalyticsUtils.sendScreenView(this, "MainActivity");
+        AnalyticsUtils.sendActivityView(this);
     }
 
     @Override

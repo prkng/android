@@ -60,7 +60,7 @@ public class SearchActivity extends BaseActivity implements
 
         vAutoComplete.requestFocus();
 
-        AnalyticsUtils.sendScreenView(this, "AboutActivity");
+        AnalyticsUtils.sendActivityView(this);
     }
 
     /**

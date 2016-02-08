@@ -29,6 +29,7 @@ import ng.prk.prkngandroid.ui.activity.OnMarkerInfoClickListener;
 import ng.prk.prkngandroid.ui.adapter.SpotAgendaListAdapter;
 import ng.prk.prkngandroid.ui.thread.SpotInfoDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.MarkerInfoUpdateListener;
+import ng.prk.prkngandroid.util.AnalyticsUtils;
 import ng.prk.prkngandroid.util.CalendarUtils;
 import ng.prk.prkngandroid.util.TypefaceHelper;
 
@@ -115,6 +116,15 @@ public class SpotInfoFragment extends Fragment implements
         downloadData(getActivity(), mId);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (isExpanded) {
+            AnalyticsUtils.sendFragmentView(this, mId);
+        }
     }
 
     @Override

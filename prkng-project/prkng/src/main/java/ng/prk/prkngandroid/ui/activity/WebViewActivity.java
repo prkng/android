@@ -62,7 +62,7 @@ public class WebViewActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        AnalyticsUtils.sendScreenView(this, "WebViewActivity " + mPage);
+        AnalyticsUtils.sendActivityView(this, mPage);
     }
 
     private void loadPage(String page) {

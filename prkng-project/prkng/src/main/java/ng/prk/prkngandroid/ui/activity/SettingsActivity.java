@@ -32,6 +32,6 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        AnalyticsUtils.sendScreenView(this, "SettingsActivity");
+        AnalyticsUtils.sendActivityView(this);
     }
 }

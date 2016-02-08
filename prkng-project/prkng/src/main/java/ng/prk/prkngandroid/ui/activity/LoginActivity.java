@@ -85,7 +85,7 @@ public class LoginActivity extends BaseActivity implements
     protected void onResume() {
         super.onResume();
 
-        AnalyticsUtils.sendScreenView(this, "LoginActivity");
+        AnalyticsUtils.sendActivityView(this);
     }
 
     @Override

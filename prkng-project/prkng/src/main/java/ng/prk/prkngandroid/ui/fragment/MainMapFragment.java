@@ -63,6 +63,7 @@ import ng.prk.prkngandroid.ui.thread.NearestLotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.SpotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.PrkngDataDownloadTask;
 import ng.prk.prkngandroid.ui.view.RedSnackbar;
+import ng.prk.prkngandroid.util.AnalyticsUtils;
 import ng.prk.prkngandroid.util.CityBoundsHelper;
 import ng.prk.prkngandroid.util.ConnectionUtils;
 import ng.prk.prkngandroid.util.MapUtils;
@@ -199,6 +200,8 @@ public class MainMapFragment extends Fragment implements
         if (!ConnectionUtils.hasConnection(getActivity())) {
             showConnectionError();
         }
+
+        AnalyticsUtils.sendFragmentView(this);
     }
 
 
@@ -948,6 +951,8 @@ public class MainMapFragment extends Fragment implements
 
             updateMapData(vMap.getLatLng(), zoom, true);
             vMap.setZoom(zoom, true);
+
+            AnalyticsUtils.sendFragmentView(this, mPrkngMapType);
         }
     }
 

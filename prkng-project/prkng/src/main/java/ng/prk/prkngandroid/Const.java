@@ -312,6 +312,42 @@ public class Const {
         String CITY_SEATTLE = "seattle";
     }
 
+    public interface AnalyticsScreens {
+        // Activities
+        String ABOUT_ACTIVITY = "About";
+        String CHECKIN_ACTIVITY = "Checkin";
+        String LOGIN_ACTIVITY = "Login Services";
+        String LOGIN_SIGNUP_ACTIVITY = "Login Sign-up";
+        String LOGIN_EMAIL_ACTIVITY = "Login Email";
+        String LOGIN_FORGOTPASSWORD_ACTIVITY = "Login Forgot password";
+        String MAIN_ACTIVITY = "Main";
+        String SEARCH_ACTIVITY = "Search";
+        String SETTINGS_ACTIVITY = "Settings";
+        String TUTORIAL_ACTIVITY = "Tutorial";
+        String FAQ_WEBVIEW_ACTIVITY = "FAQ Webview";
+        String TERMS_WEBVIEW_ACTIVITY = "Terms Webview";
+        String PRIVACY_WEBVIEW_ACTIVITY = "Privacy Webview";
+        String WEBVIEW_ACTIVITY = "Webview";
+        // Fragments
+        String AGENDA_LIST_FRAGMENT = "Agenda";
+        String LOT_INFO_FRAGMENT = "Lot Info";
+        String MAP_FRAGMENT = "Map";
+        String MAP_ON_STREET = "Map On-street";
+        String MAP_OFF_STREET = "Map Off-street";
+        String MAP_CARSHARE_VEHICLES = "Map Carshare Vehicles";
+        String MAP_CARSHARE_SPOTS = "Map Carshare Spots";
+        String SPOT_INFO_FRAGMENT = "Spot Info";
+        String TUTORIAL_FRAGMENT = "Tutorial";
+        // Events
+    }
+
+    public interface AnalyticsValues {
+        String TUTORIAL_LOGO = " Logo";
+        String TUTORIAL_PAGE = " #";
+        String SPOT_ID = "spot_id";
+        String LOT_ID = "lot_id";
+    }
+
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     public static final boolean SUPPORTS_M = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;

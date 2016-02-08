@@ -56,7 +56,7 @@ public class LoginSignUpActivity extends LoginEmailActivity implements
     protected void onResume() {
         super.onResume();
 
-        AnalyticsUtils.sendScreenView(this, "LoginSignUpActivity");
+        AnalyticsUtils.sendActivityView(this);
     }
 
     @Override

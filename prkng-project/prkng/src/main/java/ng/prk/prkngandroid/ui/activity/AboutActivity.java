@@ -37,7 +37,7 @@ public class AboutActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        AnalyticsUtils.sendScreenView(this, "AboutActivity");
+        AnalyticsUtils.sendActivityView(this);
     }
 
     @Override

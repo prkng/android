@@ -9,10 +9,13 @@ import android.view.ViewGroup;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
+import ng.prk.prkngandroid.util.AnalyticsUtils;
 
 public class TutorialFragment extends Fragment {
 
     private static final String TAG = "TutorialFragment";
+
+    private int mPage;
 
     public static TutorialFragment newInstance(int page, boolean isInitial) {
         final TutorialFragment fragment = new TutorialFragment();
@@ -27,13 +30,20 @@ public class TutorialFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        final int page = getArguments().getInt(Const.BundleKeys.PAGE, -1);
+        mPage = getArguments().getInt(Const.BundleKeys.PAGE, -1);
 //        final boolean isInitial = getArguments().getBoolean(Const.BundleKeys.IS_INITIAL_ONBOARDING, false);
 
-        return inflater.inflate(getResLayout(page), container, false);
+        return inflater.inflate(getResLayout(mPage), container, false);
     }
 
-    private int getResLayout(int page) {
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        AnalyticsUtils.sendFragmentView(this, mPage);
+    }
+
+    private static int getResLayout(int page) {
         switch (page) {
             case Const.TutorialSections.SPLASH:
                 return R.layout.fragment_tutorial_splash;
