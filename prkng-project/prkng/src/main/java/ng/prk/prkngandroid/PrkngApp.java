@@ -54,12 +54,9 @@ public class PrkngApp extends Application {
     synchronized public Tracker getAnalyticsTracker() {
         if (mTracker == null) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
-            analytics.enableAutoActivityReports(this);
             analytics.setDryRun(!BuildConfig.USE_ANALYTICS);
-            mTracker = analytics.newTracker("UA-63856349-2");
-            mTracker.enableAutoActivityTracking(true);
-            mTracker.setAppId("prkngandroid");
+            mTracker = analytics.newTracker(getString(R.string.google_analytics_property));
+            mTracker.enableAutoActivityTracking(false);
         }
         return mTracker;
     }
