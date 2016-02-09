@@ -137,6 +137,10 @@ public class PrkngPrefs implements
         return mPrefsEditor;
     }
 
+    public boolean isCharshareMode() {
+        return mPrefs.getBoolean(CARSHARE_MODE, true);
+    }
+
     public boolean isOnboarding() {
         final boolean isInitialLaunch = mPrefs.getBoolean(IS_ONBOARDING, true);
 

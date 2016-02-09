@@ -4,8 +4,25 @@
         android:defaultValue="montreal"
         android:key="@string/prefs_city" />
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:defaultValue="true"
         android:key="@string/prefs_notify_expiry" />
+
+    <!--Charshare, MTL defaults-->
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/prefs_carshare_mode" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/prefs_carshare_car2go" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/prefs_carshare_communauto" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/prefs_carshare_automobile" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="@string/prefs_carshare_zipcar" />
 
 </PreferenceScreen>

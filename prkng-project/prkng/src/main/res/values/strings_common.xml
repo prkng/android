@@ -82,6 +82,11 @@
     <string name="prefs_share" translatable="false">prefs_share</string>
     <string name="prefs_city" translatable="false">prefs_city</string>
     <string name="prefs_notify_expiry" translatable="false">prefs_notify_expiry</string>
+    <string name="prefs_carshare_mode" translatable="false">prefs_carshare_mode</string>
+    <string name="prefs_carshare_car2go" translatable="false">prefs_carshare_car2go</string>
+    <string name="prefs_carshare_communauto" translatable="false">prefs_carshare_communauto</string>
+    <string name="prefs_carshare_automobile" translatable="false">prefs_carshare_automobile</string>
+    <string name="prefs_carshare_zipcar" translatable="false">prefs_carshare_zipcar</string>
 
     <!--Prefs arrays-->
     <string-array name="prefs_city_entries">

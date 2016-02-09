@@ -2,20 +2,51 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ListPreference
-        android:dialogTitle="@string/prefs_city_dialog_title"
-        android:entries="@array/prefs_city_entries"
-        android:entryValues="@array/prefs_city_values"
-        android:key="@string/prefs_city"
-        android:title="@string/prefs_city_title" />
+    <PreferenceCategory android:title="@string/prefs_cat_general">
+        <ListPreference
+            android:dialogTitle="@string/prefs_city_dialog_title"
+            android:entries="@array/prefs_city_entries"
+            android:entryValues="@array/prefs_city_values"
+            android:key="@string/prefs_city"
+            android:title="@string/prefs_city_title" />
 
-    <CheckBoxPreference
-        android:key="@string/prefs_notify_expiry"
-        android:summary="@string/prefs_notify_summary"
-        android:title="@string/prefs_notify_title" />
+        <SwitchPreference
+            android:key="@string/prefs_notify_expiry"
+            android:summary="@string/prefs_notify_summary"
+            android:title="@string/prefs_notify_title" />
+    </PreferenceCategory>
 
-    <PreferenceScreen
-        android:key="@string/prefs_toggle_login"
-        android:title="@string/prefs_login_title" />
+    <PreferenceCategory android:title="@string/prefs_cat_carsharing">
+        <SwitchPreference
+            android:key="@string/prefs_carshare_mode"
+            android:title="@string/prefs_carshare_mode_title" />
+
+        <CheckBoxPreference
+            android:dependency="@string/prefs_carshare_mode"
+            android:icon="@drawable/ic_prefs_car2go"
+            android:key="@string/prefs_carshare_car2go"
+            android:title="@string/prefs_car2go_title" />
+        <CheckBoxPreference
+            android:dependency="@string/prefs_carshare_mode"
+            android:icon="@drawable/ic_prefs_communauto"
+            android:key="@string/prefs_carshare_communauto"
+            android:title="@string/prefs_communauto_title" />
+        <CheckBoxPreference
+            android:dependency="@string/prefs_carshare_mode"
+            android:icon="@drawable/ic_prefs_communauto"
+            android:key="@string/prefs_carshare_automobile"
+            android:title="@string/prefs_automobile_title" />
+        <CheckBoxPreference
+            android:dependency="@string/prefs_carshare_mode"
+            android:icon="@drawable/ic_prefs_zipcar"
+            android:key="@string/prefs_carshare_zipcar"
+            android:title="@string/prefs_zipcar_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/prefs_cat_auth">
+        <PreferenceScreen
+            android:key="@string/prefs_toggle_login"
+            android:title="@string/prefs_login_title" />
+    </PreferenceCategory>
 
 </PreferenceScreen>
