@@ -44,6 +44,7 @@ public class MainActivity extends BaseActivity implements
     private static final String TAG = "MainActivity";
 
     private MainMapFragment mapFragment;
+    private boolean mIsCarshareMode;
 
     public static Intent newIntent(Context context, LatLng center) {
         return newIntent(context, new LatLngZoom(center, Const.UiConfig.MY_LOCATION_ZOOM));
@@ -72,12 +73,6 @@ public class MainActivity extends BaseActivity implements
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_on_street), Const.MapSections.ON_STREET, true);
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_off_street), Const.MapSections.OFF_STREET);
-//        tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_carshare_spots), Const.MapSections.CARSHARE_SPOTS);
-//        tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_carshare_vehicles), Const.MapSections.CARSHARE_VEHICLES);
-
         final FragmentManager fm = getSupportFragmentManager();
         mapFragment = (MainMapFragment) fm.findFragmentByTag(Const.FragmentTags.MAP);
         if (mapFragment == null) {
@@ -95,7 +90,7 @@ public class MainActivity extends BaseActivity implements
                     .commit();
         }
 
-        tabLayout.setOnTabSelectedListener(this);
+        setupTabsMode(PrkngPrefs.getInstance(this).isCharshareMode(), true);
 
         RateAppHelper.showRateDialog(this);
     }
@@ -103,7 +98,10 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        PrkngPrefs.getInstance(this).registerPrefsChangeListener(this);
+        final PrkngPrefs prefs = PrkngPrefs.getInstance(this);
+        prefs.registerPrefsChangeListener(this);
+        setupTabsMode(prefs.isCharshareMode());
+
         supportInvalidateOptionsMenu();
 
         AnalyticsUtils.sendActivityView(this);
@@ -274,7 +272,8 @@ public class MainActivity extends BaseActivity implements
      */
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        mapFragment.setMapType(tab.getPosition());
+        mapFragment.setMapType(tab.getPosition() +
+                (mIsCarshareMode ? Const.MapSections.CARSHARE_OFFSET : 0));
     }
 
     /**
@@ -303,6 +302,31 @@ public class MainActivity extends BaseActivity implements
         supportInvalidateOptionsMenu();
 
         mapFragment.forceUpdate(null);
+    }
+
+    private void setupTabsMode(boolean isCarshare) {
+        setupTabsMode(isCarshare, false);
+    }
+
+    private void setupTabsMode(boolean isCarshare, boolean initial) {
+        if (mIsCarshareMode == isCarshare && !initial) {
+            return;
+        }
+        mIsCarshareMode = isCarshare;
+
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.removeAllTabs();
+        if (isCarshare) {
+            tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_carshare_spots),
+                    Const.MapSections.CARSHARE_SPOTS - Const.MapSections.CARSHARE_OFFSET);
+            tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_carshare_vehicles),
+                    Const.MapSections.CARSHARE_VEHICLES - Const.MapSections.CARSHARE_OFFSET);
+        } else {
+            tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_on_street), Const.MapSections.ON_STREET, true);
+            tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_off_street), Const.MapSections.OFF_STREET);
+        }
+
+        tabLayout.setOnTabSelectedListener(this);
     }
 
     private void helloApi() {

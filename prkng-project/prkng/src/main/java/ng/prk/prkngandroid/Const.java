@@ -48,7 +48,8 @@ public class Const {
     }
 
     public interface MapSections {
-        int _COUNT = 4;
+        int _COUNT = 2;
+        int CARSHARE_OFFSET = 2;
         int ON_STREET = 0;
         int OFF_STREET = 1;
         int CARSHARE_SPOTS = 2;
@@ -299,6 +300,11 @@ public class Const {
         String NOTIFY_EXPIRY = "prefs_notify_expiry";
         String TOGGLE_LOGIN = "prefs_toggle_login";
         String CITY = "prefs_city";
+        String CARSHARE_MODE = "prefs_carshare_mode";
+        String CARSHARE_CAR2GO = "prefs_carshare_car2go";
+        String CARSHARE_COMMUNAUTO = "prefs_carshare_communauto";
+        String CARSHARE_AUTOMOBILE = "prefs_carshare_automobile";
+        String CARSHARE_ZIPCAR = "prefs_carshare_zipcar";
         String ONBOARDING = "prefs_onboarding";
         String TERMS = "prefs_terms";
         String PRIVACY = "prefs_privacy";

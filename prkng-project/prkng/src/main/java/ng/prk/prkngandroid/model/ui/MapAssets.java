@@ -28,8 +28,7 @@ public class MapAssets {
     private int lineColorFree;
     private int lineColorPaid;
     private int lineColorSelected;
-    private String[] carshareLotsCompanies;
-    private String[] carshareVehiclesCompanies;
+    private String[] carshareCompanies;
     private Icon markerIconFree;
     private Icon markerIconPaid;
     private Icon markerIconSelected;
@@ -78,8 +77,7 @@ public class MapAssets {
         lineColorPaid = ContextCompat.getColor(context, R.color.map_line_paid_spot);
         lineColorSelected = ContextCompat.getColor(context, R.color.map_line_selected_spot);
         lineWidth = context.getResources().getDimensionPixelSize(R.dimen.map_line_width);
-        carshareLotsCompanies = context.getResources().getStringArray(R.array.carshare_lots);
-        carshareVehiclesCompanies = context.getResources().getStringArray(R.array.carshare_vehicles);
+        carshareCompanies = context.getResources().getStringArray(R.array.carshare_companies);
 
         markerTextSize = res.getDimensionPixelSize(R.dimen.lot_marker_text);
         markerTextTemplate = res.getString(R.string.currency_round);
@@ -126,12 +124,8 @@ public class MapAssets {
         return markerIconTransparent;
     }
 
-    public String[] getCarshareLotsCompanies() {
-        return carshareLotsCompanies;
-    }
-
-    public String[] getCarshareVehiclesCompanies() {
-        return carshareVehiclesCompanies;
+    public String[] getCarshareCompanies() {
+        return carshareCompanies;
     }
 
     public Icon getCarshareVehicleMarkerIcon(String company) {

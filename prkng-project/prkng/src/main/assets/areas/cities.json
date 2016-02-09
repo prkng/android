@@ -10,7 +10,8 @@
     "country_code": "CA",
     "region": "Quebec",
     "region_code": "QC",
-    "bounds": {"NW": [], "SE": []}
+    "bbox": [],
+    "carshare": ["communauto", "auto-mobile"]
   },
   {
     "lat": 45.5016889,
@@ -23,7 +24,8 @@
     "country_code": "CA",
     "region": "Quebec",
     "region_code": "QC",
-    "bounds": {"NW": [], "SE": []}
+    "bbox": [],
+    "carshare": ["car2go", "communauto", "auto-mobile"]
   },
   {
     "lat": 47.615025,
@@ -36,8 +38,8 @@
     "country_code": "US",
     "region": "Washington",
     "region_code": "WA",
-    "bounds": {"NW": [], "SE": []}
-
+    "bbox": [],
+    "carshare": ["car2go", "zipcar"]
   },
   {
     "lat": 40.712784,
@@ -50,6 +52,7 @@
     "country_code": "US",
     "region": "New York",
     "region_code": "NY",
-    "bounds": {"NW": [], "SE": []}
+    "bbox": [],
+    "carshare": ["car2go", "zipcar"]
   }
 ]

@@ -8,9 +8,13 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
+import java.util.List;
+
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
+import ng.prk.prkngandroid.model.City;
 import ng.prk.prkngandroid.ui.activity.LoginActivity;
+import ng.prk.prkngandroid.util.CityBoundsHelper;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public class SettingsFragment extends PreferenceFragment implements
@@ -23,7 +27,6 @@ public class SettingsFragment extends PreferenceFragment implements
     private SharedPreferences mPrefs;
     private Preference pToggleLogin;
     private Preference pCity;
-
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -53,6 +56,7 @@ public class SettingsFragment extends PreferenceFragment implements
         super.onResume();
 
         setupSummaries();
+        setupCarshareCompanies();
 
         /**
          * Set up a listener whenever a key changes
@@ -112,6 +116,7 @@ public class SettingsFragment extends PreferenceFragment implements
 
         if (CITY.equals(key)) {
             pCity.setSummary(getCitySummary(getResources(), mPrefs.getString(CITY, null)));
+            setupCarshareCompanies();
         } else if (AUTH_USER_EMAIL.equals(key)) {
             pToggleLogin.setSummary(mPrefs.getString(AUTH_USER_EMAIL, null));
         } else if (AUTH_API_KEY.equals(key)) {
@@ -125,6 +130,22 @@ public class SettingsFragment extends PreferenceFragment implements
         pCity.setSummary(getCitySummary(getResources(), mPrefs.getString(CITY, null)));
 
         setLoginTitleSummary();
+    }
+
+    private void setupCarshareCompanies() {
+        try {
+            final String presKeyTemplate = getResources().getString(R.string.prefs_carshare_template);
+
+            final City city = CityBoundsHelper.getCityByName(getActivity(), mPrefs.getString(CITY, null));
+            final List<String> cityCompanies = city.getCarshare();
+
+            for (String company : getResources().getStringArray(R.array.carshare_companies)) {
+                findPreference(String.format(presKeyTemplate, company)).
+                        setEnabled(cityCompanies.contains(company));
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setLoginTitleSummary() {

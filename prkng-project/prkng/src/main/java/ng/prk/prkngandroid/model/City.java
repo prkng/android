@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
+import java.util.List;
+
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.util.MapUtils;
 
@@ -26,6 +28,7 @@ public class City implements Comparable<City> {
     @SerializedName(Const.ApiArgs.REGION_CODE)
     private String regionCode;
     private double distanceTo;
+    private List<String> carshare;
 
     public int getId() {
         return id;
@@ -65,6 +68,10 @@ public class City implements Comparable<City> {
 
     public double getDistanceTo() {
         return distanceTo;
+    }
+
+    public List<String> getCarshare() {
+        return carshare;
     }
 
     public void setDistanceTo(double distanceTo) {
