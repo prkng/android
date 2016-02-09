@@ -73,6 +73,8 @@ public class CheckinInfoFragment extends Fragment implements View.OnClickListene
             if (Long.valueOf(remaining).compareTo(DateUtils.MINUTE_IN_MILLIS) <= 0) {
                 // Time is up!
                 vTitle.setText(R.string.checkin_expired);
+                vTitle.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.ic_checkin_expired, 0, 0, 0);
             } else {
 // TODO add prefix on single line
                 final HumanDuration duration = new HumanDuration.Builder(getActivity())
