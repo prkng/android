@@ -67,9 +67,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:drawableLeft="@drawable/ic_smart_reminder"
+                android:drawableLeft="@drawable/ic_smart_reminder_on"
                 android:drawablePadding="16dp"
-                android:text="@string/checkin_smart_reminder" />
+                android:text="@string/checkin_smart_reminder"
+                android:textColor="@color/btn_smart_reminder_text" />
 
 
         </LinearLayout>
@@ -81,8 +82,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:padding="16dp"
         android:background="?android:attr/selectableItemBackground"
+        android:padding="16dp"
         android:src="@drawable/ic_navigation_arrow_back" />
 
     <ng.prk.prkngandroid.ui.view.IntroRegularButton

@@ -171,10 +171,9 @@ public class CheckinActivity extends AppCompatActivity implements
 
     private void toggleSmartReminder(boolean activated) {
         final int icon = activated ?
-                R.drawable.ic_smart_reminder : R.drawable.ic_smart_reminder_off;
+                R.drawable.ic_smart_reminder_on : R.drawable.ic_smart_reminder_off;
         vSmartReminderBtn.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0);
         vSmartReminderBtn.setActivated(activated);
-        vSmartReminderBtn.setAlpha(activated ? 1f : 0.5f);
     }
 
     private void doCheckin(String slotId) {

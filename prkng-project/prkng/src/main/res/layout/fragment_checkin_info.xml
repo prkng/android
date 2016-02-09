@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/map_info_background"
-    android:drawableLeft="@drawable/ic_active_checkin"
+    android:drawableLeft="@drawable/ic_checkin_active"
     android:drawablePadding="16dp"
     android:foreground="?android:attr/selectableItemBackground"
     android:gravity="center_vertical"
