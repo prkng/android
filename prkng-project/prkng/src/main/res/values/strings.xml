@@ -38,16 +38,16 @@
     <string name="prefs_city_dialog_title">Select city</string>
     <string name="prefs_notify_title">Ticket Alert</string>
     <string name="prefs_notify_summary">Get notified 30 min before time’s up</string>
-    <string name="prefs_carshare_mode_title">***CarSharing</string>
+    <string name="prefs_carshare_mode_title">CarSharing Mode</string>
     <string name="prefs_car2go_title">@string/carshare_company_car2go</string>
     <string name="prefs_automobile_title">@string/carshare_company_automobile</string>
     <string name="prefs_communauto_title">@string/carshare_company_communauto</string>
     <string name="prefs_zipcar_title">@string/carshare_company_zipcar</string>
 
     <!--Settings Categories-->
-    <string name="prefs_cat_general">***General</string>
-    <string name="prefs_cat_auth">***Account</string>
-    <string name="prefs_cat_carsharing">***Map mode</string>
+    <string name="prefs_cat_general">General</string>
+    <string name="prefs_cat_auth">Account</string>
+    <string name="prefs_cat_carsharing">Map mode</string>
 
     <!--Prefs/About-->
     <string name="prefs_onboarding_title">Take a tour</string>
@@ -114,8 +114,8 @@
     <!--Map-->
     <string name="map_tab_on_street">On-Street</string>
     <string name="map_tab_off_street">Parking lots</string>
-    <string name="map_tab_carshare_vehicles">***Cars</string>
-    <string name="map_tab_carshare_spots">***Park now</string>
+    <string name="map_tab_carshare_vehicles">Cars</string>
+    <string name="map_tab_carshare_spots">Park now</string>
 
     <!--Calendar-->
     <string name="hour_minutes_format">kk:mm</string>
@@ -211,10 +211,10 @@
     <string name="currency_round">$%d</string>
 
     <!--CarShare-->
-    <string name="carshare_company_car2go">***Car2Go</string>
-    <string name="carshare_company_automobile">***Auto-mobile</string>
-    <string name="carshare_company_communauto">***Communauto</string>
-    <string name="carshare_company_zipcar">***Zipcar</string>
+    <string name="carshare_company_car2go">Car2Go</string>
+    <string name="carshare_company_automobile">Automobile</string>
+    <string name="carshare_company_communauto">Communauto</string>
+    <string name="carshare_company_zipcar">Zipcar</string>
 
     <!--Tutorial-->
     <string name="tutorial_desc_splash">No more parking fines, no more headaches.</string>
