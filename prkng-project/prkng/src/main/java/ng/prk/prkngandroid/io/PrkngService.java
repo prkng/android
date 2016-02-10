@@ -62,7 +62,8 @@ public interface PrkngService {
             @Query(Const.ApiArgs.LATITUDE) double latitude,
             @Query(Const.ApiArgs.LONGITUDE) double longitude,
             @Query(Const.ApiArgs.RADIUS) int radius,
-            @Query(Const.ApiArgs.CARSHARE_COMPANIES) String companies
+            @Query(Const.ApiArgs.CARSHARE_COMPANIES) String companies,
+            @Query(Const.ApiArgs.NEAREST) int nearest
     );
 
     // Return available carshares around the point defined by (x, y)
