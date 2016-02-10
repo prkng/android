@@ -1,5 +1,7 @@
 package ng.prk.prkngandroid.ui.thread;
 
+import android.content.Context;
+
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.annotations.PolylineOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -14,18 +16,27 @@ import ng.prk.prkngandroid.io.PrkngService;
 import ng.prk.prkngandroid.model.GeoJSONFeatureProperties;
 import ng.prk.prkngandroid.model.LinesGeoJSON;
 import ng.prk.prkngandroid.model.LinesGeoJSONFeature;
-import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.PointsGeoJSON;
 import ng.prk.prkngandroid.model.PointsGeoJSONFeature;
 import ng.prk.prkngandroid.model.SpotsAnnotations;
+import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.ui.thread.base.PrkngDataDownloadTask;
+import ng.prk.prkngandroid.util.CarshareUtils;
 
 public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
     private final static String TAG = "CarshareSpotsTask";
 
+    private final Context context;
+
     public CarshareSpotsDownloadTask(MapView mapView, MapAssets mapAssets, MapTaskListener listener) {
         super(mapView, mapAssets, listener);
+
+        this.context = mapView.getContext();
+    }
+
+    protected int getNearest() {
+        return 0;
     }
 
     /**
@@ -42,6 +53,8 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
         final PrkngService service = ApiClient.getService();
 
         final SpotsAnnotations spotsAnnotations = new SpotsAnnotations();
+        spotsAnnotations.setCenterCoordinate(mapGeometry);
+
         try {
             final String apiKey = getApiKey();
 
@@ -65,7 +78,7 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
                 for (LinesGeoJSONFeature feature : spotsFeatures) {
                     final GeoJSONFeatureProperties properties = feature.getProperties();
 
-                    List<List<Double>> coords = feature.getGeometry().getCoordinates();
+                    final List<List<Double>> coords = feature.getGeometry().getCoordinates();
                     LatLng[] pointsArray = new LatLng[coords.size()];
                     int i = 0;
                     for (List<Double> latLng : coords) {
@@ -77,32 +90,34 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
                             .color(properties.isTypePaid() ? mapAssets.getLineColorPaid() : mapAssets.getLineColorFree());
                     spotsAnnotations.addPolyline(feature.getId(), polylineOptions);
 
-                    // Add the polylines dots
-                    if (hasVisibleMarkers) {
-                        List<LatLng> buttons = properties.getButtonLocations();
-                        for (LatLng buttonLatLng : buttons) {
-                            final MarkerOptions markerOptions = new MarkerOptions()
-                                    .position(buttonLatLng)
-                                    .title(properties.getWayName())
-                                    .snippet(feature.getId())
-                                    .icon(properties.isTypePaid() ? mapAssets.getMarkerIconPaid() : mapAssets.getMarkerIconFree());
-
-                            spotsAnnotations.addMarker(feature.getId(), markerOptions);
+                    // Add the visible buttons
+                    List<LatLng> buttons = properties.getButtonLocations();
+                    for (LatLng buttonLatLng : buttons) {
+                        final MarkerOptions markerOptions = new MarkerOptions()
+                                .position(buttonLatLng)
+                                .title(properties.getWayName())
+                                .snippet(feature.getId());
+                        if (hasVisibleMarkers) {
+                            markerOptions.icon(properties.isTypePaid() ? mapAssets.getMarkerIconPaid() : mapAssets.getMarkerIconFree());
+                        } else {
+                            markerOptions.icon(mapAssets.getMarkerIconTransparent());
                         }
+
+                        spotsAnnotations.addMarker(feature.getId(), markerOptions);
                     }
                 }
-
 
 
                 /**
                  * Carshare off-street lots
                  */
-                final PointsGeoJSON lots = ApiClient.getCarshareLots(service,
+                final PointsGeoJSON lots = ApiClient.getNearestCarshareLots(service,
                         apiKey,
                         mapGeometry.getLatitude(),
                         mapGeometry.getLongitude(),
                         mapGeometry.getRadius(),
-                        mapAssets.getCarshareCompanies()
+                        mapAssets.getCarshareCompanies(),
+                        getNearest()
                 );
 
                 // Prepare map annotations: Markers only
@@ -114,9 +129,9 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
                     // TODO replace string
                     final MarkerOptions markerOptions = new MarkerOptions()
                             .position(new LatLng(new LatLng(latLng.get(1), latLng.get(0))))
-                            .title(properties.getCompany() + " " + properties.getName())
-                            .snippet(feature.getId());
-//                            .icon(properties.isTypePaid() ? mapAssets.getMarkerIconPaid() : mapAssets.getMarkerIconFree());
+                            .title(CarshareUtils.getCompanyName(context, properties.getCompany()))
+                            .snippet(properties.getName())
+                            .icon(mapAssets.getCarshareLotMarkerIcon(properties.getCompany()));
 
                     spotsAnnotations.addMarker(feature.getId(), markerOptions);
                 }

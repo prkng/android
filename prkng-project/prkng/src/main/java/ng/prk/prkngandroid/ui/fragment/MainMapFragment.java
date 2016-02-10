@@ -64,6 +64,7 @@ import ng.prk.prkngandroid.ui.thread.SpotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.PrkngDataDownloadTask;
 import ng.prk.prkngandroid.ui.view.RedSnackbar;
 import ng.prk.prkngandroid.util.AnalyticsUtils;
+import ng.prk.prkngandroid.util.CarshareUtils;
 import ng.prk.prkngandroid.util.CityBoundsHelper;
 import ng.prk.prkngandroid.util.ConnectionUtils;
 import ng.prk.prkngandroid.util.MapUtils;
@@ -331,6 +332,9 @@ public class MainMapFragment extends Fragment implements
                 vMap.setLatLng(mCurrentCity.getLatLng());
                 vMap.setZoom(Const.UiConfig.DEFAULT_ZOOM, true);
             }
+        } else if (CarshareUtils.isCarsharePrefsChange(key)) {
+            mapAssets.setCarshareCompanies(PrkngPrefs.getInstance(getActivity())
+                    .getCarshareCompanies(getResources()));
         }
     }
 
@@ -343,10 +347,15 @@ public class MainMapFragment extends Fragment implements
             mapAssets = new MapAssets(vMap);
         }
         mLastMapGeometry = new MapGeometry(vMap.getLatLng(), vMap.getZoom());
-        mPrkngMapType = Const.MapSections.ON_STREET;
+        final boolean isCarshare = PrkngPrefs.getInstance(getActivity()).isCharshareMode();
+        mPrkngMapType = isCarshare ? Const.MapSections.CARSHARE_OFFSET : 0;
     }
 
     private void showCheckinInfo(CheckinData checkin) {
+        if (!isResumed()) {
+            return;
+        }
+
         final FragmentManager fm = getFragmentManager();
         if (checkin == null) {
             final Fragment fragment = fm.findFragmentByTag(Const.FragmentTags.CHECKIN_INFO);
@@ -547,13 +556,20 @@ public class MainMapFragment extends Fragment implements
         switch (mPrkngMapType) {
             case Const.MapSections.ON_STREET:
             case Const.MapSections.OFF_STREET:
+            case Const.MapSections.CARSHARE_SPOTS:
                 unselectFeatureIfNecessary();
                 selectFeature(marker.getSnippet());
 
                 if (listener != null) {
-                    listener.showMarkerInfo(marker, mPrkngMapType);
+                    try {
+                        // For carshare: If we can cast the feature, it means it's a spot not lot
+                        final long isNumber = Long.valueOf(featureId);
+                        listener.showMarkerInfo(marker, mPrkngMapType);
+                        return true;
+                    } catch (NumberFormatException e) {
+                        return false;
+                    }
                 }
-                return true;
             default:
                 return false;
         }

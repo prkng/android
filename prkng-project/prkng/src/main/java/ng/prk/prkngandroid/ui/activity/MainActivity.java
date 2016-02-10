@@ -190,7 +190,6 @@ public class MainActivity extends BaseActivity implements
      */
     @Override
     public void showMarkerInfo(Marker marker, int type) {
-        Log.v(TAG, "showMarkerInfo");
         if (marker == null) {
             hideMarkerInfo();
         } else {
@@ -209,13 +208,13 @@ public class MainActivity extends BaseActivity implements
                     fragment = LotInfoFragment.newInstance(
                             marker.getSnippet(), marker.getTitle(), marker.getPosition());
                     break;
+                case Const.MapSections.CARSHARE_SPOTS:
                 case Const.MapSections.ON_STREET:
                     fragment = SpotInfoFragment.newInstance(
                             marker.getSnippet(), marker.getTitle());
                     break;
                 default:
-                    fragment = null;
-                    break;
+                    return;
             }
 
             ft.replace(R.id.map_info_frame, fragment, Const.FragmentTags.MAP_INFO)
@@ -317,13 +316,13 @@ public class MainActivity extends BaseActivity implements
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.removeAllTabs();
         if (isCarshare) {
-            tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_carshare_spots),
-                    Const.MapSections.CARSHARE_SPOTS - Const.MapSections.CARSHARE_OFFSET);
             tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_carshare_vehicles),
                     Const.MapSections.CARSHARE_VEHICLES - Const.MapSections.CARSHARE_OFFSET);
+            tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_carshare_spots),
+                    Const.MapSections.CARSHARE_SPOTS - Const.MapSections.CARSHARE_OFFSET);
         } else {
-            tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_on_street), Const.MapSections.ON_STREET, true);
-            tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_off_street), Const.MapSections.OFF_STREET);
+            tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_on_street));
+            tabLayout.addTab(tabLayout.newTab().setText(R.string.map_tab_off_street));
         }
 
         tabLayout.setOnTabSelectedListener(this);

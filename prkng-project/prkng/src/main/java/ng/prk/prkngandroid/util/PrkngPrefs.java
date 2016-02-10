@@ -2,9 +2,13 @@ package ng.prk.prkngandroid.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
 import com.mapbox.mapboxsdk.geometry.LatLng;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
@@ -139,6 +143,24 @@ public class PrkngPrefs implements
 
     public boolean isCharshareMode() {
         return mPrefs.getBoolean(CARSHARE_MODE, true);
+    }
+
+    public String[] getCarshareCompanies(Resources res) {
+        final List<String> companies = new ArrayList<>();
+        final String presKeyTemplate = res.getString(R.string.prefs_carshare_template);
+
+        for (String company : res.getStringArray(R.array.carshare_companies)) {
+            final boolean enabled = mPrefs.getBoolean(String.format(presKeyTemplate, company), false);
+            if (enabled) {
+                companies.add(company);
+            }
+        }
+
+        if (companies.size() > 0) {
+            return companies.toArray(new String[companies.size()]);
+        }
+
+        return null;
     }
 
     public boolean isOnboarding() {

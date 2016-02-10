@@ -67,4 +67,17 @@ public class CarshareUtils implements
 //        return 0;
 //    }
 
+
+    public static boolean isCarsharePrefsChange(String key) {
+        switch (key) {
+            case Const.PrefsNames.CARSHARE_MODE:
+            case Const.PrefsNames.CARSHARE_CAR2GO:
+            case Const.PrefsNames.CARSHARE_AUTOMOBILE:
+            case Const.PrefsNames.CARSHARE_COMMUNAUTO:
+            case Const.PrefsNames.CARSHARE_ZIPCAR:
+                return true;
+        }
+
+        return false;
+    }
 }
