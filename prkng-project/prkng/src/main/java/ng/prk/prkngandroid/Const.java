@@ -52,8 +52,8 @@ public class Const {
         int CARSHARE_OFFSET = 2;
         int ON_STREET = 0;
         int OFF_STREET = 1;
-        int CARSHARE_SPOTS = 2;
-        int CARSHARE_VEHICLES = 3;
+        int CARSHARE_VEHICLES = 2;
+        int CARSHARE_SPOTS = 3;
     }
 
     public interface TutorialSections {
@@ -157,8 +157,8 @@ public class Const {
         String SPOT_TYPE_PERMIT = "permit";
         String CAR_TYPE_ELECTRIC = "electric";
         String CARSHARE_COMPANY_CAR2GO = "car2go";
-        String CARSHARE_COMPANY_COMMUNAUTO = "communauto";
         String CARSHARE_COMPANY_AUTOMOBILE = "auto-mobile";
+        String CARSHARE_COMPANY_COMMUNAUTO = "communauto";
         String CARSHARE_COMPANY_ZIPCAR = "zipcar";
         // Following are ISO days-of-week
         String AGENDA_DAY_MONDAY = "1";
@@ -271,6 +271,13 @@ public class Const {
         int OPEN = ParkingRestrType.PAID; // 3
     }
 
+    public interface CarshareCompanies {
+        String CAR2GO = "car2go";
+        String AUTOMOBILE = "auto-mobile";
+        String COMMUNAUTO = "communauto";
+        String ZIPCAR = "zipcar";
+    }
+
     public interface TypeFaces {
         int _COUNT = 3;
         String LIGHT = "fonts/IntroLight.ttf"; // Light
@@ -302,8 +309,8 @@ public class Const {
         String CITY = "prefs_city";
         String CARSHARE_MODE = "prefs_carshare_mode";
         String CARSHARE_CAR2GO = "prefs_carshare_car2go";
-        String CARSHARE_COMMUNAUTO = "prefs_carshare_communauto";
         String CARSHARE_AUTOMOBILE = "prefs_carshare_automobile";
+        String CARSHARE_COMMUNAUTO = "prefs_carshare_communauto";
         String CARSHARE_ZIPCAR = "prefs_carshare_zipcar";
         String ONBOARDING = "prefs_onboarding";
         String TERMS = "prefs_terms";

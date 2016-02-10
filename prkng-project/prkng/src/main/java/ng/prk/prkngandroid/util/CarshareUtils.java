@@ -39,6 +39,20 @@ public class CarshareUtils implements
         return 0;
     }
 
+    public static int getCompanyLotMapIcon(String company) {
+        if (CAR2GO.equals(company)) {
+            return R.drawable.ic_maps_carshare_lot_car2go;
+//        } else if (AUTOMOBILE.equals(company)) {
+//            return R.drawable.ic_maps_carshare_automobile;
+        } else if (COMMUNAUTO.equals(company)) {
+            return R.drawable.ic_maps_carshare_lot_communauto;
+//        } else if (ZIPCAR.equals(company)) {
+//            return R.drawable.ic_maps_carshare_zipcar;
+        }
+
+        return 0;
+    }
+
 //    public static int getCompanySettingsIcon(String company) {
 //        if (CAR2GO.equals(company)) {
 //            return R.drawable.ic_prefs_car2go;
