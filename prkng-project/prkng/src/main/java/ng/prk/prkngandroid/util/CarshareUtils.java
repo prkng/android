@@ -70,7 +70,6 @@ public class CarshareUtils implements
 
     public static boolean isCarsharePrefsChange(String key) {
         switch (key) {
-            case Const.PrefsNames.CARSHARE_MODE:
             case Const.PrefsNames.CARSHARE_CAR2GO:
             case Const.PrefsNames.CARSHARE_AUTOMOBILE:
             case Const.PrefsNames.CARSHARE_COMMUNAUTO:

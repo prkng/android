@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.preference.SwitchPreference;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.model.City;
 import ng.prk.prkngandroid.ui.activity.LoginActivity;
+import ng.prk.prkngandroid.util.CarshareUtils;
 import ng.prk.prkngandroid.util.CityBoundsHelper;
 import ng.prk.prkngandroid.util.PrkngPrefs;
 
@@ -27,6 +30,7 @@ public class SettingsFragment extends PreferenceFragment implements
     private SharedPreferences mPrefs;
     private Preference pToggleLogin;
     private Preference pCity;
+    private SwitchPreference pCarshareMode;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -45,6 +49,7 @@ public class SettingsFragment extends PreferenceFragment implements
         mPrefs = pm.getSharedPreferences();
         pToggleLogin = findPreference(TOGGLE_LOGIN);
         pCity = findPreference(CITY);
+        pCarshareMode = (SwitchPreference) findPreference(CARSHARE_MODE);
 
         // Listeners
         pToggleLogin.setOnPreferenceClickListener(this);
@@ -123,6 +128,11 @@ public class SettingsFragment extends PreferenceFragment implements
             final String apiKey = mPrefs.getString(AUTH_API_KEY, null);
             final boolean isLoggedIn = apiKey != null && !apiKey.isEmpty();
             pToggleLogin.setTitle(isLoggedIn ? R.string.prefs_logout_title : R.string.prefs_login_title);
+        } else if (CarshareUtils.isCarsharePrefsChange(key)) {
+            if (isEmptyCarshareMode()) {
+                pCarshareMode.setChecked(false);
+                ((CheckBoxPreference) findPreference(key)).setChecked(true);
+            }
         }
     }
 
@@ -146,6 +156,23 @@ public class SettingsFragment extends PreferenceFragment implements
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean isEmptyCarshareMode() {
+        try {
+            final String presKeyTemplate = getResources().getString(R.string.prefs_carshare_template);
+
+            for (String company : getResources().getStringArray(R.array.carshare_companies)) {
+                CheckBoxPreference checkBox = (CheckBoxPreference) findPreference(String.format(presKeyTemplate, company));
+                if (checkBox.isEnabled() && checkBox.isChecked()) {
+                    return false;
+                }
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        return true;
     }
 
     private void setLoginTitleSummary() {
