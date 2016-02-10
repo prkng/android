@@ -42,9 +42,9 @@
 
     <!--Carshare off-street lots, excludes communauto-->
     <array name="carshare_companies">
-        <item>communauto</item>
-        <item>auto-mobile</item>
         <item>car2go</item>
+        <item>auto-mobile</item>
+        <item>communauto</item>
         <item>zipcar</item>
     </array>
 
@@ -76,8 +76,8 @@
     <string name="prefs_notify_expiry" translatable="false">prefs_notify_expiry</string>
     <string name="prefs_carshare_mode" translatable="false">prefs_carshare_mode</string>
     <string name="prefs_carshare_car2go" translatable="false">prefs_carshare_car2go</string>
-    <string name="prefs_carshare_communauto" translatable="false">prefs_carshare_communauto</string>
     <string name="prefs_carshare_automobile" translatable="false">prefs_carshare_auto-mobile</string>
+    <string name="prefs_carshare_communauto" translatable="false">prefs_carshare_communauto</string>
     <string name="prefs_carshare_zipcar" translatable="false">prefs_carshare_zipcar</string>
     <string name="prefs_carshare_template" translatable="false">prefs_carshare_%s</string>
 

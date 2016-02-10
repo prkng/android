@@ -16,6 +16,7 @@ import com.mapbox.mapboxsdk.views.MapView;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
+import ng.prk.prkngandroid.util.CarshareUtils;
 
 public class MapAssets {
     private final static String TAG = "MapAssets";
@@ -33,12 +34,12 @@ public class MapAssets {
     private Icon markerIconPaid;
     private Icon markerIconSelected;
     private Icon markerIconTransparent;
-    private Icon markerIconCarshareCommunauto;
-    private Icon markerIconCarshareAutomobile;
-    private Icon markerIconCarshareCar2go;
-    private Icon markerIconCarshareZipcar;
     private Icon markerIconCheckin;
     private Icon markerIconSearch;
+    private Icon markerIconCarshareCar2go;
+    private Icon markerIconCarshareAutomobile;
+    private Icon markerIconCarshareCommunauto;
+    private Icon markerIconCarshareZipcar;
 
     private Bitmap markerBitmapClosed;
     private Bitmap markerBitmapOpen;
@@ -65,13 +66,18 @@ public class MapAssets {
         markerIconPaid = iconFactory.fromResource(R.drawable.ic_spot_paid);
         markerIconSelected = iconFactory.fromResource(R.drawable.ic_spot_selected);
         markerIconTransparent = iconFactory.fromResource(R.drawable.ic_spot_transparent);
-
-        markerIconCarshareCommunauto = iconFactory.fromResource(R.drawable.ic_maps_carshare_communauto);
-        markerIconCarshareAutomobile = iconFactory.fromResource(R.drawable.ic_maps_carshare_automobile);
-        markerIconCarshareCar2go = iconFactory.fromResource(R.drawable.ic_maps_carshare_car2go);
-        markerIconCarshareZipcar = iconFactory.fromResource(R.drawable.ic_maps_carshare_zipcar);
         markerIconCheckin = iconFactory.fromResource(R.drawable.ic_maps_checkin);
         markerIconSearch = iconFactory.fromResource(R.drawable.ic_maps_search);
+
+        markerIconCarshareCar2go = iconFactory.fromResource(
+                CarshareUtils.getCompanyMapIcon(Const.CarshareCompanies.CAR2GO));
+        markerIconCarshareAutomobile = iconFactory.fromResource(
+                CarshareUtils.getCompanyMapIcon(Const.CarshareCompanies.AUTOMOBILE));
+        markerIconCarshareCommunauto = iconFactory.fromResource(
+                CarshareUtils.getCompanyMapIcon(Const.CarshareCompanies.COMMUNAUTO));
+        markerIconCarshareZipcar = iconFactory.fromResource(
+                CarshareUtils.getCompanyMapIcon(Const.CarshareCompanies.ZIPCAR));
+
 
         lineColorFree = ContextCompat.getColor(context, R.color.map_line_free_spot);
         lineColorPaid = ContextCompat.getColor(context, R.color.map_line_paid_spot);
@@ -130,13 +136,29 @@ public class MapAssets {
 
     public Icon getCarshareVehicleMarkerIcon(String company) {
         switch (company) {
-            case Const.ApiValues.CARSHARE_COMPANY_COMMUNAUTO:
-                return markerIconCarshareCommunauto;
-            case Const.ApiValues.CARSHARE_COMPANY_AUTOMOBILE:
-                return markerIconCarshareAutomobile;
-            case Const.ApiValues.CARSHARE_COMPANY_CAR2GO:
+            case Const.CarshareCompanies.CAR2GO:
                 return markerIconCarshareCar2go;
-            case Const.ApiValues.CARSHARE_COMPANY_ZIPCAR:
+            case Const.CarshareCompanies.AUTOMOBILE:
+                return markerIconCarshareAutomobile;
+            case Const.CarshareCompanies.COMMUNAUTO:
+                return markerIconCarshareCommunauto;
+            case Const.CarshareCompanies.ZIPCAR:
+                return markerIconCarshareZipcar;
+        }
+        return null;
+    }
+
+    public Icon getCarshareLotMarkerIcon(String company) {
+        switch (company) {
+            case Const.CarshareCompanies.CAR2GO:
+                // TODO
+                return markerIconCarshareCar2go;
+            case Const.CarshareCompanies.AUTOMOBILE:
+                return markerIconCarshareAutomobile;
+            case Const.CarshareCompanies.COMMUNAUTO:
+                // TODO
+                return markerIconCarshareCommunauto;
+            case Const.CarshareCompanies.ZIPCAR:
                 return markerIconCarshareZipcar;
         }
         return null;

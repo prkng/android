@@ -11,7 +11,7 @@
     "region": "Quebec",
     "region_code": "QC",
     "bbox": [],
-    "carshare": ["communauto", "auto-mobile"]
+    "carshare": ["auto-mobile", "communauto"]
   },
   {
     "lat": 45.5016889,
@@ -25,7 +25,7 @@
     "region": "Quebec",
     "region_code": "QC",
     "bbox": [],
-    "carshare": ["car2go", "communauto", "auto-mobile"]
+    "carshare": ["car2go", "auto-mobile", "communauto"]
   },
   {
     "lat": 47.615025,

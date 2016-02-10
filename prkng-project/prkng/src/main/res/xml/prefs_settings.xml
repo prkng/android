@@ -29,13 +29,13 @@
         <CheckBoxPreference
             android:dependency="@string/prefs_carshare_mode"
             android:icon="@drawable/ic_prefs_communauto"
-            android:key="@string/prefs_carshare_communauto"
-            android:title="@string/prefs_communauto_title" />
+            android:key="@string/prefs_carshare_automobile"
+            android:title="@string/prefs_automobile_title" />
         <CheckBoxPreference
             android:dependency="@string/prefs_carshare_mode"
             android:icon="@drawable/ic_prefs_communauto"
-            android:key="@string/prefs_carshare_automobile"
-            android:title="@string/prefs_automobile_title" />
+            android:key="@string/prefs_carshare_communauto"
+            android:title="@string/prefs_communauto_title" />
         <CheckBoxPreference
             android:dependency="@string/prefs_carshare_mode"
             android:icon="@drawable/ic_prefs_zipcar"
