@@ -345,6 +345,8 @@ public class MainMapFragment extends Fragment implements
         // Load map assets and colors
         if (mapAssets == null) {
             mapAssets = new MapAssets(vMap);
+            mapAssets.setCarshareCompanies(PrkngPrefs.getInstance(getActivity())
+                    .getCarshareCompanies(getResources()));
         }
         mLastMapGeometry = new MapGeometry(vMap.getLatLng(), vMap.getZoom());
         final boolean isCarshare = PrkngPrefs.getInstance(getActivity()).isCharshareMode();

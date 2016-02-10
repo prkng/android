@@ -40,6 +40,8 @@ public class MapAssets {
     private Icon markerIconCarshareAutomobile;
     private Icon markerIconCarshareCommunauto;
     private Icon markerIconCarshareZipcar;
+    private Icon markerIconCarshareLotCar2go;
+    private Icon markerIconCarshareLotCommunauto;
 
     private Bitmap markerBitmapClosed;
     private Bitmap markerBitmapOpen;
@@ -77,13 +79,16 @@ public class MapAssets {
                 CarshareUtils.getCompanyMapIcon(Const.CarshareCompanies.COMMUNAUTO));
         markerIconCarshareZipcar = iconFactory.fromResource(
                 CarshareUtils.getCompanyMapIcon(Const.CarshareCompanies.ZIPCAR));
-
+        markerIconCarshareLotCar2go = iconFactory.fromResource(
+                CarshareUtils.getCompanyLotMapIcon(Const.CarshareCompanies.CAR2GO));
+        markerIconCarshareLotCommunauto = iconFactory.fromResource(
+                CarshareUtils.getCompanyLotMapIcon(Const.CarshareCompanies.COMMUNAUTO));
 
         lineColorFree = ContextCompat.getColor(context, R.color.map_line_free_spot);
         lineColorPaid = ContextCompat.getColor(context, R.color.map_line_paid_spot);
         lineColorSelected = ContextCompat.getColor(context, R.color.map_line_selected_spot);
         lineWidth = context.getResources().getDimensionPixelSize(R.dimen.map_line_width);
-        carshareCompanies = context.getResources().getStringArray(R.array.carshare_companies);
+        carshareCompanies = new String[]{};
 
         markerTextSize = res.getDimensionPixelSize(R.dimen.lot_marker_text);
         markerTextTemplate = res.getString(R.string.currency_round);
@@ -134,6 +139,10 @@ public class MapAssets {
         return carshareCompanies;
     }
 
+    public void setCarshareCompanies(String[] companies) {
+        this.carshareCompanies = companies;
+    }
+
     public Icon getCarshareVehicleMarkerIcon(String company) {
         switch (company) {
             case Const.CarshareCompanies.CAR2GO:
@@ -151,17 +160,12 @@ public class MapAssets {
     public Icon getCarshareLotMarkerIcon(String company) {
         switch (company) {
             case Const.CarshareCompanies.CAR2GO:
-                // TODO
-                return markerIconCarshareCar2go;
-            case Const.CarshareCompanies.AUTOMOBILE:
-                return markerIconCarshareAutomobile;
+                return markerIconCarshareLotCar2go;
             case Const.CarshareCompanies.COMMUNAUTO:
-                // TODO
-                return markerIconCarshareCommunauto;
-            case Const.CarshareCompanies.ZIPCAR:
-                return markerIconCarshareZipcar;
+                return markerIconCarshareLotCommunauto;
+            default:
+                return getCarshareVehicleMarkerIcon(company);
         }
-        return null;
     }
 
     public Icon getCheckinMarkerIcon() {
