@@ -22,6 +22,7 @@ import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.StreetViewPanoramaView;
 import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
+import com.google.android.gms.maps.model.StreetViewPanoramaLocation;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
 import java.util.ArrayList;
@@ -69,6 +70,7 @@ public class LotInfoFragment extends Fragment implements
     private StreetView mStreetView;
     private boolean isExpanded;
     private StreetViewPanoramaView vStreetViewPanoramaView;
+    private View vStreetViewDelayFix;
     private Handler mHandler = new Handler();
 
     public static LotInfoFragment newInstance(String id, String title, LatLng latLng) {
@@ -140,6 +142,7 @@ public class LotInfoFragment extends Fragment implements
         vMainPrice = (TextView) view.findViewById(R.id.main_price);
         vHourlyPrice = (TextView) view.findViewById(R.id.hourly_price);
         vStreetViewPanoramaView = (StreetViewPanoramaView) view.findViewById(R.id.street_view_panorama);
+        vStreetViewDelayFix = view.findViewById(R.id.destreet_view_delay_fix);
 
         if (vStreetViewPanoramaView != null) {
             vStreetViewPanoramaView.onCreate(savedInstanceState);
@@ -318,24 +321,32 @@ public class LotInfoFragment extends Fragment implements
                         panorama.setPosition(streetView.getLatLng());
                     } else {
                         panorama.setPosition(streetView.getId());
-
-                        mHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (panorama.getLocation() == null) {
-                                    Log.v(TAG, "run, fix position");
-
-                                    panorama.setPosition(streetView.getLatLng());
-                                }
-                            }
-                        }, 1000);
                     }
 
-                    panorama.animateTo(new StreetViewPanoramaCamera.Builder()
-                            .zoom(Const.UiConfig.STREET_VIEW_ZOOM)
-                            .bearing(streetView.getHead())
-                            .build(), 100);
+                    panorama.setOnStreetViewPanoramaChangeListener(new StreetViewPanorama.OnStreetViewPanoramaChangeListener() {
+                        @Override
+                        public void onStreetViewPanoramaChange(StreetViewPanoramaLocation streetViewPanoramaLocation) {
+                            Log.v(TAG, "onStreetViewPanoramaChange"
+                                            + ", panoId = " + streetViewPanoramaLocation.panoId
+                            );
 
+                            if (streetViewPanoramaLocation == null) {
+                                Log.e(TAG, "run, fix position");
+                            } else {
+                                panorama.animateTo(new StreetViewPanoramaCamera.Builder()
+                                        .zoom(Const.UiConfig.STREET_VIEW_ZOOM)
+                                        .bearing(streetView.getHead())
+                                        .build(), 2000);
+                                vStreetViewPanoramaView.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        vStreetViewDelayFix.setVisibility(View.GONE);
+                                    }
+                                }, 2000);
+                            }
+
+                        }
+                    });
                 }
             });
         }

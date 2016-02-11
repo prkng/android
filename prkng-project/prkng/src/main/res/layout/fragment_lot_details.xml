@@ -131,8 +131,7 @@
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/current_status"
-        android:visibility="gone" />
+        android:layout_below="@+id/current_status" />
 
     <!--<TextView-->
     <!--android:layout_width="match_parent"-->
@@ -145,9 +144,17 @@
     <com.google.android.gms.maps.StreetViewPanoramaView
         android:id="@+id/street_view_panorama"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="260dp"
+        android:layout_below="@+id/current_status" />
+
+    <ImageView
+        android:id="@+id/destreet_view_delay_fix"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
         android:layout_below="@+id/current_status"
-        android:background="#00ff00" />
+        android:alpha="0.99"
+        android:scaleType="centerCrop"
+        android:src="@drawable/city_tile_dark" />
 
     <ProgressBar
         android:id="@+id/progress"
