@@ -130,8 +130,24 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/current_status" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/current_status"
+        android:visibility="gone" />
+
+    <!--<TextView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_below="@+id/current_status"-->
+    <!--android:background="#00ff00"-->
+    <!--android:gravity="center"-->
+    <!--android:text="Street View" />-->
+
+    <com.google.android.gms.maps.StreetViewPanoramaView
+        android:id="@+id/street_view_panorama"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/current_status"
+        android:background="#00ff00" />
 
     <ProgressBar
         android:id="@+id/progress"

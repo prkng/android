@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
+import com.google.android.gms.maps.StreetViewPanorama;
+import com.google.android.gms.maps.StreetViewPanoramaView;
+import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
 import java.util.ArrayList;
@@ -26,6 +32,7 @@ import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.model.BusinessIntervalList;
 import ng.prk.prkngandroid.model.LotAttrs;
 import ng.prk.prkngandroid.model.LotCurrentStatus;
+import ng.prk.prkngandroid.model.StreetView;
 import ng.prk.prkngandroid.model.ui.HumanDuration;
 import ng.prk.prkngandroid.ui.activity.OnMarkerInfoClickListener;
 import ng.prk.prkngandroid.ui.adapter.LotAgendaListAdapter;
@@ -59,7 +66,10 @@ public class LotInfoFragment extends Fragment implements
     private LotCurrentStatus mStatus;
     private int mCapacity;
     private LotAttrs mAttrs;
+    private StreetView mStreetView;
     private boolean isExpanded;
+    private StreetViewPanoramaView vStreetViewPanoramaView;
+    private Handler mHandler = new Handler();
 
     public static LotInfoFragment newInstance(String id, String title, LatLng latLng) {
         final LotInfoFragment fragment = new LotInfoFragment();
@@ -82,6 +92,7 @@ public class LotInfoFragment extends Fragment implements
         clone.mStatus = fragment.mStatus;
         clone.mCapacity = fragment.mCapacity;
         clone.mAttrs = fragment.mAttrs;
+        clone.mStreetView = fragment.mStreetView;
         clone.mLatLng = fragment.mLatLng;
 
         final Bundle bundle = fragment.getArguments();
@@ -128,6 +139,11 @@ public class LotInfoFragment extends Fragment implements
         vRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
         vMainPrice = (TextView) view.findViewById(R.id.main_price);
         vHourlyPrice = (TextView) view.findViewById(R.id.hourly_price);
+        vStreetViewPanoramaView = (StreetViewPanoramaView) view.findViewById(R.id.street_view_panorama);
+
+        if (vStreetViewPanoramaView != null) {
+            vStreetViewPanoramaView.onCreate(savedInstanceState);
+        }
 
         setupLayout(view);
 
@@ -139,6 +155,9 @@ public class LotInfoFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
+        if (vStreetViewPanoramaView != null) {
+            vStreetViewPanoramaView.onResume();
+        }
 
         if (isExpanded) {
             AnalyticsUtils.sendFragmentView(this, mId);
@@ -278,10 +297,47 @@ public class LotInfoFragment extends Fragment implements
     }
 
     @Override
-    public void setAttributes(LotAttrs attrs) {
+    public void setAttributes(LotAttrs attrs, final StreetView streetView) {
+        Log.v(TAG, "setAttributes "
+                + String.format("streetView = %s", streetView));
+
         this.mAttrs = attrs;
+        this.mStreetView = streetView;
         if (mAdapter != null) {
             mAdapter.setFooterAttrs(attrs);
+        }
+
+        if (vStreetViewPanoramaView != null) {
+            Log.v(TAG, "getStreetViewPanoramaAsync");
+            vStreetViewPanoramaView.getStreetViewPanoramaAsync(new OnStreetViewPanoramaReadyCallback() {
+                @Override
+                public void onStreetViewPanoramaReady(final StreetViewPanorama panorama) {
+                    panorama.setUserNavigationEnabled(false);
+
+                    if (TextUtils.isEmpty(streetView.getId())) {
+                        panorama.setPosition(streetView.getLatLng());
+                    } else {
+                        panorama.setPosition(streetView.getId());
+
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (panorama.getLocation() == null) {
+                                    Log.v(TAG, "run, fix position");
+
+                                    panorama.setPosition(streetView.getLatLng());
+                                }
+                            }
+                        }, 1000);
+                    }
+
+                    panorama.animateTo(new StreetViewPanoramaCamera.Builder()
+                            .zoom(Const.UiConfig.STREET_VIEW_ZOOM)
+                            .bearing(streetView.getHead())
+                            .build(), 100);
+
+                }
+            });
         }
     }
 
@@ -327,7 +383,7 @@ public class LotInfoFragment extends Fragment implements
         } else {
             setDataset(mDataset);
             setCurrentStatus(mStatus, mCapacity);
-            setAttributes(mAttrs);
+            setAttributes(mAttrs, mStreetView);
         }
     }
 

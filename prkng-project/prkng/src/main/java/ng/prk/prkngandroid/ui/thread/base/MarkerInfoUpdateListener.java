@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.model.LotAttrs;
 import ng.prk.prkngandroid.model.LotCurrentStatus;
+import ng.prk.prkngandroid.model.StreetView;
 
 public interface MarkerInfoUpdateListener {
     //    replace by setProperties
@@ -21,7 +22,7 @@ public interface MarkerInfoUpdateListener {
 
     //    replace by setProperties
     @Deprecated
-    void setAttributes(LotAttrs attrs);
+    void setAttributes(LotAttrs attrs, StreetView streetView);
 
     void onFailure(PrkngApiError e);
 

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.util.List;
+
 import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.io.PrkngApiError;
 import ng.prk.prkngandroid.io.PrkngService;
@@ -43,6 +45,11 @@ public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureP
             final String apiKey = PrkngPrefs.getInstance(context).getApiKey();
 
             PointsGeoJSONFeature spotFeatures = ApiClient.getParkingLotInfo(service, apiKey, lotId);
+
+            final List<Double> coords = spotFeatures.getGeometry().getCoordinates();
+            spotFeatures.getProperties().getStreetView()
+                    .setLatLng(coords.get(1), coords.get(0));
+
             return spotFeatures.getProperties();
 
         } catch (NullPointerException e) {
@@ -71,7 +78,7 @@ public class LotInfoDownloadTask extends AsyncTask<String, Void, GeoJSONFeatureP
                 final int capacity = properties.getCapacity();
                 listener.setCurrentStatus(status, capacity);
 
-                listener.setAttributes(properties.getAttrs());
+                listener.setAttributes(properties.getAttrs(), properties.getStreetView());
             }
         } catch (NullPointerException e) {
             e.printStackTrace();

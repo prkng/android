@@ -3,4 +3,6 @@
     <!--Placeholders-->
     <string name="login_email">mudar@prk.ng</string>
     <string name="login_password">mudar123</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyD_dC1TnCAORevffx4dx59YQPLF1Y_tR0I</string>
+
 </resources>

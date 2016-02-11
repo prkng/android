@@ -23,6 +23,7 @@ import ng.prk.prkngandroid.model.LotAttrs;
 import ng.prk.prkngandroid.model.LotCurrentStatus;
 import ng.prk.prkngandroid.model.RestrInterval;
 import ng.prk.prkngandroid.model.RestrIntervalsList;
+import ng.prk.prkngandroid.model.StreetView;
 import ng.prk.prkngandroid.model.ui.HumanDuration;
 import ng.prk.prkngandroid.ui.activity.CheckinActivity;
 import ng.prk.prkngandroid.ui.activity.OnMarkerInfoClickListener;
@@ -223,7 +224,7 @@ public class SpotInfoFragment extends Fragment implements
     }
 
     @Override
-    public void setAttributes(LotAttrs attrs) {
+    public void setAttributes(LotAttrs attrs, StreetView streetView) {
 
     }
 
