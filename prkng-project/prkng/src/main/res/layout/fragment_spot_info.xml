@@ -30,7 +30,7 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="right|center_vertical"
             android:drawableTop="@drawable/ic_checkin_btn"
             android:text="@string/btn_checkin"
             android:textAllCaps="false"
