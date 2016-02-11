@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +24,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
@@ -98,8 +100,10 @@ public class LoginActivity extends BaseActivity implements
         final int id = v.getId();
 
         if (id == R.id.btn_google) {
-            startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient),
-                    Const.RequestCodes.AUTH_LOGIN_GOOGLE);
+            if (checkGooglePlayServices()) {
+                startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient),
+                        Const.RequestCodes.AUTH_LOGIN_GOOGLE);
+            }
         } else if (id == R.id.btn_email) {
             startActivityForResult(LoginSignUpActivity.newIntent(this),
                     Const.RequestCodes.AUTH_LOGIN_EMAIL);
@@ -161,12 +165,6 @@ public class LoginActivity extends BaseActivity implements
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Log.e(TAG, "onConnectionFailed");
-                    }
-                })
                 .setAccountName(null)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
@@ -208,6 +206,24 @@ public class LoginActivity extends BaseActivity implements
         vFacebookButton.setTypeface(TypefaceHelper.getTypeface(this, Const.TypeFaces.REGULAR));
     }
 
+    private boolean checkGooglePlayServices() {
+        final GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+        final int result = googleApiAvailability.isGooglePlayServicesAvailable(this);
+        if (result != ConnectionResult.SUCCESS) {
+            if (googleApiAvailability.isUserResolvableError(result)) {
+                googleApiAvailability
+                        .getErrorDialog(this,
+                                result,
+                                Const.RequestCodes.AUTH_LOGIN_GOOGLE_RESOLVE)
+                        .show();
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
     private void handleGoogleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             // Signed in successfully
@@ -220,9 +236,20 @@ public class LoginActivity extends BaseActivity implements
                 e.printStackTrace();
             }
         } else {
+            final Status status = result.getStatus();
+            if (status.isCanceled() || status.isInterrupted()) {
+                return;
+            }
+
+            String msg = GoogleApiAvailability.getInstance()
+                    .getErrorString(status.getStatusCode());
+            if (TextUtils.isEmpty(msg)) {
+                msg = String.valueOf(status.getStatusCode());
+            }
+
             final String message = String.format(
                     getResources().getString(R.string.snackbar_auth_error_google),
-                    result.getStatus().getStatusMessage()
+                    msg
             );
             RedSnackbar.make(findViewById(R.id.root_view),
                     message,
