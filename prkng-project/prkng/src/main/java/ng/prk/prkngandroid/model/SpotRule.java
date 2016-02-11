@@ -8,7 +8,6 @@ import java.util.List;
 import ng.prk.prkngandroid.Const;
 
 public class SpotRule {
-    private String address;
     private SpotRuleAgenda agenda;
     private String code;
     private String description;
@@ -27,10 +26,6 @@ public class SpotRule {
     // NOTE: needs to be wrapper type (Integer) to handle NULL value
     @SerializedName(Const.ApiArgs.TIME_MAX_PARKING)
     private Integer timeMaxParking;
-
-    public String getAddress() {
-        return address;
-    }
 
     public SpotRuleAgenda getAgenda() {
         return agenda;
