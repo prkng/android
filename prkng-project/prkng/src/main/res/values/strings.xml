@@ -96,7 +96,7 @@
     <string name="dialog_cities_title">Select city</string>
 
     <!--Snackbar-->
-    <string name="snackbar_map_zoom_needed">Please zoom in to update map.</string>
+    <string name="snackbar_map_zoom_needed">Please Zoom in to street level.</string>
     <string name="snackbar_location_permission_needed">Location permission is needed for map accuracy.</string>
     <string name="snackbar_auth_error_facebook">Facebook error: %s</string>
     <string name="snackbar_auth_error_google">Google error: %s</string>
