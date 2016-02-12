@@ -48,17 +48,17 @@
     <string name="prefs_cat_general">General</string>
     <string name="prefs_cat_auth">Account</string>
     <string name="prefs_cat_carsharing">Map mode</string>
-    <string name="prefs_cat_feedback">Feedback</string>
-    <string name="prefs_cat_help">Help</string>
-    <string name="prefs_cat_legal">Legal</string>
+    <string name="prefs_cat_feedback">***Feedback</string>
+    <string name="prefs_cat_help">***Help</string>
+    <string name="prefs_cat_legal">***Legal</string>
 
     <!--Prefs/About-->
     <string name="prefs_onboarding_title">Take a tour</string>
     <string name="prefs_support_title">Support</string>
     <string name="prefs_faq_title">Frequently asked questions</string>
     <string name="prefs_terms_title">Terms of Use</string>
-    <string name="prefs_privacy_title">Privacy policy</string>
-    <string name="prefs_rate_app_title">Review on Google Play</string>
+    <string name="prefs_privacy_title">***Privacy policy</string>
+    <string name="prefs_rate_app_title">***Review on Google Play</string>
     <string name="prefs_version_title">Version</string>
 
     <!--Menu actions-->
@@ -66,7 +66,7 @@
     <string name="action_timer">Duration</string>
     <string name="action_user_account">User activity</string>
     <string name="action_settings">Settings</string>
-    <string name="action_carshare_mode">CarShare mode</string>
+    <string name="action_carshare_mode">@string/prefs_carshare_mode_title</string>
     <string name="action_about">About</string>
     <string name="action_checkin">Checkin</string>
     <string name="action_share">Share</string>
@@ -84,7 +84,7 @@
     <string name="btn_checkout">Leave spot</string>
     <string name="btn_info">Info</string>
     <string name="btn_try_again">Retry</string>
-    <string name="btn_forgot_password">Forgot password?</string>
+    <string name="btn_forgot_password">***Forgot password?</string>
     <string name="btn_reset_password">Reset password</string>
     <string name="btn_available_cities">Available cities</string>
     <string name="btn_select_duration">Select duration</string>
