@@ -73,6 +73,7 @@ public class MainActivity extends BaseActivity implements
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         final FragmentManager fm = getSupportFragmentManager();
         mapFragment = (MainMapFragment) fm.findFragmentByTag(Const.FragmentTags.MAP);
