@@ -47,12 +47,17 @@
     <string name="prefs_cat_general">General</string>
     <string name="prefs_cat_auth">Compte</string>
     <string name="prefs_cat_carsharing">Expérience</string>
+    <string name="prefs_cat_feedback">***Commentaires</string>
+    <string name="prefs_cat_help">***Aide</string>
+    <string name="prefs_cat_legal">***Légal</string>
 
     <!--Prefs/About-->
     <string name="prefs_onboarding_title">Faire le tour</string>
     <string name="prefs_support_title">Support</string>
     <string name="prefs_faq_title">Foire aux questions</string>
     <string name="prefs_terms_title">Conditions d’utilisation</string>
+    <string name="prefs_privacy_title">***Privacy policy</string>
+    <string name="prefs_rate_app_title">***Review on Google Play</string>
     <string name="prefs_version_title">Version</string>
 
     <!--Menu actions-->
@@ -60,11 +65,11 @@
     <string name="action_timer">Durée</string>
     <string name="action_user_account">Activité</string>
     <string name="action_settings">Réglages</string>
+    <string name="action_carshare_mode">@string/prefs_carshare_mode_title</string>
     <string name="action_about">À propos</string>
     <string name="action_checkin">Parqué!</string>
     <string name="action_share">Partager</string>
     <string name="action_rate">Évaluer</string>
-    <string name="action_help_password">Mot de passe oublié?</string>
 
     <!--Buttons-->
     <string name="btn_ok">OK</string>
@@ -75,9 +80,10 @@
     <string name="btn_skip">Passer</string>
     <string name="btn_done">D’accord</string>
     <string name="btn_checkin">Parqué</string>
-    <string name="btn_checkout">Quitter la place</string>
+    <string name="btn_checkout">Quitter ma place</string>
     <string name="btn_info">Info</string>
     <string name="btn_try_again">Réessayer</string>
+    <string name="btn_forgot_password">Mot de passe oublié?</string>
     <string name="btn_reset_password">Mot de passe oublié?</string>
     <string name="btn_available_cities">Villes disponibles</string>
     <string name="btn_select_duration">Selectionner une durée</string>
