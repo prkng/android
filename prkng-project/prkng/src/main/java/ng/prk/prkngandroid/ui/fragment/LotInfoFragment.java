@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -71,7 +70,6 @@ public class LotInfoFragment extends Fragment implements
     private boolean isExpanded;
     private StreetViewPanoramaView vStreetViewPanoramaView;
     private View vStreetViewDelayFix;
-    private Handler mHandler = new Handler();
 
     public static LotInfoFragment newInstance(String id, String title, LatLng latLng) {
         final LotInfoFragment fragment = new LotInfoFragment();
@@ -144,15 +142,20 @@ public class LotInfoFragment extends Fragment implements
         vStreetViewPanoramaView = (StreetViewPanoramaView) view.findViewById(R.id.street_view_panorama);
         vStreetViewDelayFix = view.findViewById(R.id.destreet_view_delay_fix);
 
-        if (vStreetViewPanoramaView != null) {
-            vStreetViewPanoramaView.onCreate(savedInstanceState);
-        }
-
         setupLayout(view);
 
         downloadData(getActivity(), mId);
 
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (vStreetViewPanoramaView != null) {
+            vStreetViewPanoramaView.onCreate(savedInstanceState);
+        }
     }
 
     @Override
@@ -164,6 +167,42 @@ public class LotInfoFragment extends Fragment implements
 
         if (isExpanded) {
             AnalyticsUtils.sendFragmentView(this, mId);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (vStreetViewPanoramaView != null) {
+            vStreetViewPanoramaView.onPause();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (vStreetViewPanoramaView != null) {
+            vStreetViewPanoramaView.onSaveInstanceState(outState);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (vStreetViewPanoramaView != null) {
+            vStreetViewPanoramaView.onDestroy();
+        }
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+
+        if (vStreetViewPanoramaView != null) {
+            vStreetViewPanoramaView.onLowMemory();
         }
     }
 
@@ -301,9 +340,6 @@ public class LotInfoFragment extends Fragment implements
 
     @Override
     public void setAttributes(LotAttrs attrs, final StreetView streetView) {
-        Log.v(TAG, "setAttributes "
-                + String.format("streetView = %s", streetView));
-
         this.mAttrs = attrs;
         this.mStreetView = streetView;
         if (mAdapter != null) {
@@ -311,40 +347,37 @@ public class LotInfoFragment extends Fragment implements
         }
 
         if (vStreetViewPanoramaView != null) {
-            Log.v(TAG, "getStreetViewPanoramaAsync");
             vStreetViewPanoramaView.getStreetViewPanoramaAsync(new OnStreetViewPanoramaReadyCallback() {
                 @Override
                 public void onStreetViewPanoramaReady(final StreetViewPanorama panorama) {
+                    vStreetViewPanoramaView.setVisibility(View.VISIBLE);
                     panorama.setUserNavigationEnabled(false);
+                    panorama.setPanningGesturesEnabled(false);
+                    panorama.setZoomGesturesEnabled(false);
 
-                    if (TextUtils.isEmpty(streetView.getId())) {
-                        panorama.setPosition(streetView.getLatLng());
-                    } else {
+                    if (!TextUtils.isEmpty(streetView.getId())) {
                         panorama.setPosition(streetView.getId());
                     }
 
                     panorama.setOnStreetViewPanoramaChangeListener(new StreetViewPanorama.OnStreetViewPanoramaChangeListener() {
                         @Override
                         public void onStreetViewPanoramaChange(StreetViewPanoramaLocation streetViewPanoramaLocation) {
-                            Log.v(TAG, "onStreetViewPanoramaChange"
-                                            + ", panoId = " + streetViewPanoramaLocation.panoId
-                            );
-
                             if (streetViewPanoramaLocation == null) {
-                                Log.e(TAG, "run, fix position");
+                                Log.v(TAG, "Location not found: " + streetView.getId());
                             } else {
                                 panorama.animateTo(new StreetViewPanoramaCamera.Builder()
                                         .zoom(Const.UiConfig.STREET_VIEW_ZOOM)
                                         .bearing(streetView.getHead())
-                                        .build(), 2000);
+                                        .build(), Const.UiConfig.STREET_VIEW_DELAY);
                                 vStreetViewPanoramaView.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        vStreetViewDelayFix.setVisibility(View.GONE);
+                                        ObjectAnimator
+                                                .ofFloat(vStreetViewDelayFix, View.ALPHA, 1, 0)
+                                                .start();
                                     }
-                                }, 2000);
+                                }, Const.UiConfig.STREET_VIEW_DELAY);
                             }
-
                         }
                     });
                 }

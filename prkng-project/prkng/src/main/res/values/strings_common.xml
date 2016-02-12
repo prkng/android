@@ -63,7 +63,7 @@
     <!--<string name="server_client_id" translatable="false">AIzaSyBmdx2I4cv12g-zgQwqw6nIDtZ3yssMvJU</string>-->
     <!--<string name="project_id" translatable="false">propane-passkey-858</string>-->
     <string name="oauth_web_client_id" translatable="false">632562278503-lceq0ir5d5pqs6fofojdr4opimj8q3l2.apps.googleusercontent.com</string>
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyD_dC1TnCAORevffx4dx59YQPLF1Y_tR0I</string>
+    <string name="google_maps_key">AIzaSyCfBIY519Fk6MZVo_OWX27sjSUSzFhFDXs</string>
 
     <!--Preferences keys-->
     <string name="prefs_toggle_login" translatable="false">prefs_toggle_login</string>
