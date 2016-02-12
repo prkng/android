@@ -43,7 +43,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="@string/btn_register" />
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/color_primary"
+            android:text="@string/btn_register"
+            android:textColor="@color/color_text" />
 
         <ng.prk.prkngandroid.ui.view.IntroRegularButton
             android:id="@+id/btn_login_email"
