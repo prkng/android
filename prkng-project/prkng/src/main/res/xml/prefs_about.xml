@@ -1,29 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceScreen
-        android:key="@string/prefs_onboarding"
-        android:title="@string/prefs_onboarding_title" />
 
-    <Preference
-        android:key="@string/prefs_faq"
-        android:title="@string/prefs_faq_title" />
+    <PreferenceCategory android:title="@string/prefs_cat_feedback">
+        <PreferenceScreen
+            android:key="@string/prefs_rate_app"
+            android:title="@string/prefs_rate_app_title" />
 
-    <PreferenceScreen
-        android:key="@string/prefs_terms"
-        android:title="@string/prefs_terms_title" />
+        <Preference
+            android:summary="@string/email_support"
+            android:title="@string/prefs_support_title">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/mail_to_contact" />
+        </Preference>
+    </PreferenceCategory>
 
-    <PreferenceScreen
-        android:key="@string/prefs_privacy"
-        android:title="Privacy policy" />
+    <PreferenceCategory android:title="@string/prefs_cat_help">
+        <Preference
+            android:key="@string/prefs_faq"
+            android:title="@string/prefs_faq_title" />
 
-    <Preference
-        android:summary="@string/email_support"
-        android:title="@string/prefs_support_title">
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:data="@string/mail_to_contact" />
-    </Preference>
+        <PreferenceScreen
+            android:key="@string/prefs_onboarding"
+            android:title="@string/prefs_onboarding_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/prefs_cat_legal">
+        <PreferenceScreen
+            android:key="@string/prefs_privacy"
+            android:title="@string/prefs_privacy_title" />
+
+        <PreferenceScreen
+            android:key="@string/prefs_terms"
+            android:title="@string/prefs_terms_title" />
+    </PreferenceCategory>
 
     <PreferenceScreen
         android:enabled="false"

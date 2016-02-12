@@ -71,6 +71,7 @@
     <string name="prefs_terms" translatable="false">prefs_terms</string>
     <string name="prefs_faq" translatable="false">prefs_faq</string>
     <string name="prefs_privacy" translatable="false">prefs_privacy</string>
+    <string name="prefs_rate_app" translatable="false">prefs_rate_app</string>
     <string name="prefs_contact" translatable="false">prefs_contact</string>
     <string name="prefs_share" translatable="false">prefs_share</string>
     <string name="prefs_city" translatable="false">prefs_city</string>

@@ -1,11 +1,14 @@
 package ng.prk.prkngandroid.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
+import hotchemi.android.rate.AppRate;
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.ui.activity.TutorialActivity;
@@ -32,6 +35,7 @@ public class AboutFragment extends PreferenceFragment implements
         findPreference(TERMS).setOnPreferenceClickListener(this);
         findPreference(FAQ).setOnPreferenceClickListener(this);
         findPreference(PRIVACY).setOnPreferenceClickListener(this);
+        findPreference(RATE_APP).setOnPreferenceClickListener(this);
     }
 
     @Override
@@ -40,6 +44,14 @@ public class AboutFragment extends PreferenceFragment implements
 
         if (ONBOARDING.equals(key)) {
             startActivity(TutorialActivity.newIntent(getActivity(), false));
+        } else if (RATE_APP.equals(key)) {
+            AppRate.setRateDialogAgreed(getActivity());
+            /**
+             * Launch Playstore to rate app
+             */
+            final Intent viewIntent = new Intent(Intent.ACTION_VIEW);
+            viewIntent.setData(Uri.parse(getResources().getString(R.string.url_playstore)));
+            startActivity(viewIntent);
         } else if (TERMS.equals(key) || FAQ.equals(key) || PRIVACY.equals(key)) {
             startActivity(WebViewActivity.newIntent(getActivity(), key));
         }

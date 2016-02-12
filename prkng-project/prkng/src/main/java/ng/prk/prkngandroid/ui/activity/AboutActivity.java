@@ -65,15 +65,6 @@ public class AboutActivity extends AppCompatActivity {
             startActivity(sendIntent);
 
             return true;
-//        } else if (item.getItemId() == R.id.action_rate) {
-//            /**
-//             * Launch Playstore to rate app
-//             */
-//            final Intent viewIntent = new Intent(Intent.ACTION_VIEW);
-//            viewIntent.setData(Uri.parse(getResources().getString(R.string.url_playstore)));
-//            startActivity(viewIntent);
-//
-//            return true;
         }
 
         return super.onOptionsItemSelected(item);

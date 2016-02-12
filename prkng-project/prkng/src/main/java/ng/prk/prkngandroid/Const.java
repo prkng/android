@@ -317,6 +317,7 @@ public class Const {
         String ONBOARDING = "prefs_onboarding";
         String TERMS = "prefs_terms";
         String PRIVACY = "prefs_privacy";
+        String RATE_APP = "prefs_rate_app";
         String FAQ = "prefs_faq";
     }
 
