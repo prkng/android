@@ -207,7 +207,7 @@
 
     <!--CarShare-->
     <string name="carshare_company_car2go">Car2Go</string>
-    <string name="carshare_company_automobile">Automobile</string>
+    <string name="carshare_company_automobile">Auto-mobile</string>
     <string name="carshare_company_communauto">Communauto</string>
     <string name="carshare_company_zipcar">Zipcar</string>
 
