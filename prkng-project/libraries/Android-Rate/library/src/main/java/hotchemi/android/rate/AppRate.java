@@ -69,6 +69,10 @@ public class AppRate {
         return passSignificantEvent(activity, singleton.shouldShowRateDialog());
     }
 
+    public static void setRateDialogAgreed(Context context) {
+        PreferenceHelper.setAgreeShowDialog(context, false);
+    }
+
     private static boolean passSignificantEvent(Activity activity, boolean shouldShow) {
         int eventTimes = getEventTimes(activity);
         PreferenceHelper.setEventTimes(activity, ++eventTimes);
@@ -203,6 +207,8 @@ public class AppRate {
         options.setDialogStyle(resourceId);
         return this;
     }
+
+
 
     public void monitor() {
         if (isFirstLaunch(context)) {
