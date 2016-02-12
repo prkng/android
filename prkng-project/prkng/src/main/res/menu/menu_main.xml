@@ -35,14 +35,22 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_carshare_mode"
+        android:checkable="true"
         android:orderInCategory="130"
+        android:title="@string/action_carshare_mode"
+        android:titleCondensed="@string/action_carshare_mode"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="140"
         android:title="@string/action_settings"
         android:titleCondensed="@string/action_settings"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_about"
-        android:orderInCategory="140"
+        android:orderInCategory="150"
         android:title="@string/action_about"
         android:titleCondensed="@string/action_about"
         app:showAsAction="never" />

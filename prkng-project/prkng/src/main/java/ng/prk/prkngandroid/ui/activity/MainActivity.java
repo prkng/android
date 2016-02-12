@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.crashlytics.android.Crashlytics;
 import com.mapbox.mapboxsdk.annotations.Marker;
@@ -133,7 +134,25 @@ public class MainActivity extends BaseActivity implements
         menu.findItem(R.id.action_timer)
                 .setIcon(getTimerIcon());
 
+        menu.findItem(R.id.action_carshare_mode)
+                .setChecked(mIsCarshareMode);
+
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_carshare_mode) {
+            final boolean toggled = !item.isChecked();
+
+            item.setChecked(toggled);
+            PrkngPrefs.getInstance(this).setCarshareMode(toggled);
+            setupTabsMode(toggled);
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

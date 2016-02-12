@@ -145,6 +145,11 @@ public class PrkngPrefs implements
         return mPrefs.getBoolean(CARSHARE_MODE, true);
     }
 
+    public void setCarshareMode(boolean enabled) {
+        edit().putBoolean(CARSHARE_MODE, enabled)
+                .apply();
+    }
+
     public String[] getCarshareCompanies(Resources res) {
         final List<String> companies = new ArrayList<>();
         final String presKeyTemplate = res.getString(R.string.prefs_carshare_template);
