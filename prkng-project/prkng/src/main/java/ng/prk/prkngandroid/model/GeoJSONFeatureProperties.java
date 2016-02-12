@@ -98,6 +98,10 @@ public class GeoJSONFeatureProperties {
         return capacity == null ? Const.UNKNOWN_VALUE : capacity;
     }
 
+    public int getAvailableOrCapacity() {
+        return available == null ? Const.UNKNOWN_VALUE : capacity;
+    }
+
     public String getCity() {
         return city;
     }

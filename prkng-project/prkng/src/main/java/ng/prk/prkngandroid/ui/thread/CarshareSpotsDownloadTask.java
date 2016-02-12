@@ -111,7 +111,7 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
                 /**
                  * Carshare off-street lots
                  */
-                final PointsGeoJSON lots = ApiClient.getNearestCarshareLots(service,
+                final PointsGeoJSON lots = ApiClient.getNearestCarshareLots(ApiClient.getService(),
                         apiKey,
                         mapGeometry.getLatitude(),
                         mapGeometry.getLongitude(),
@@ -131,7 +131,10 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
                             .position(new LatLng(new LatLng(latLng.get(1), latLng.get(0))))
                             .title(CarshareUtils.getCompanyName(context, properties.getCompany()))
                             .snippet(properties.getName())
-                            .icon(mapAssets.getCarshareLotMarkerIcon(properties.getCompany()));
+                            .icon(mapAssets.getCarshareLotMarkerIcon(
+                                    properties.getCompany(),
+                                    properties.getAvailableOrCapacity()
+                            ));
 
                     spotsAnnotations.addMarker(feature.getId(), markerOptions);
                 }
