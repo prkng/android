@@ -29,7 +29,20 @@
         android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_forgot_password"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/color_primary"
+        android:text="@string/btn_login"
+        android:textColor="@color/color_text" />
+
+    <ng.prk.prkngandroid.ui.view.IntroRegularButton
+        android:id="@+id/btn_forgot_password"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="@string/btn_login" />
+        android:text="@string/btn_forgot_password" />
 
 </RelativeLayout>

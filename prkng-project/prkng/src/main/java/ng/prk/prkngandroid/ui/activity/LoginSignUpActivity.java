@@ -7,8 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -57,24 +55,6 @@ public class LoginSignUpActivity extends LoginEmailActivity implements
         super.onResume();
 
         AnalyticsUtils.sendActivityView(this);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return false;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_help) {
-            final String email = EditTextUtils.getText(vEmail);
-
-            startActivity(LoginForgotPasswordActivity.newIntent(this,
-                            AuthValidation.isValidEmail(email) ? email : null)
-            );
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

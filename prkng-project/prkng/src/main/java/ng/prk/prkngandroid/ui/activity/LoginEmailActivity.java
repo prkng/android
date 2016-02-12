@@ -9,10 +9,9 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -31,7 +30,8 @@ import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public class LoginEmailActivity extends AppCompatActivity implements
         View.OnFocusChangeListener,
-        TextView.OnEditorActionListener {
+        TextView.OnEditorActionListener,
+        View.OnClickListener {
     private static final String TAG = "LoginEmailActivity";
 
     protected MaterialEditText vEmail;
@@ -76,26 +76,6 @@ public class LoginEmailActivity extends AppCompatActivity implements
         super.onResume();
 
         AnalyticsUtils.sendActivityView(this);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_login_email, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_help) {
-            final String email = EditTextUtils.getText(vEmail);
-
-            startActivity(LoginForgotPasswordActivity.newIntent(this,
-                            AuthValidation.isValidEmail(email) ? email : null)
-            );
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -145,12 +125,12 @@ public class LoginEmailActivity extends AppCompatActivity implements
         vEmail.setOnFocusChangeListener(this);
         vPassword.setOnFocusChangeListener(this);
 
-        findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                submitForm();
-            }
-        });
+        findViewById(R.id.btn_submit).setOnClickListener(this);
+
+        final Button btn = (Button) findViewById(R.id.btn_forgot_password);
+        if (btn != null) {
+            btn.setOnClickListener(this);
+        }
     }
 
     private void addValidators() {
@@ -195,6 +175,20 @@ public class LoginEmailActivity extends AppCompatActivity implements
                     }
                 })
                 .show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        final int id = v.getId();
+        if (id == R.id.btn_submit) {
+            submitForm();
+        } else if (id == R.id.btn_forgot_password) {
+            final String email = EditTextUtils.getText(vEmail);
+
+            startActivity(LoginForgotPasswordActivity.newIntent(this,
+                            AuthValidation.isValidEmail(email) ? email : null)
+            );
+        }
     }
 
     private class LoginTask extends AsyncTask<LoginUser, Void, LoginObject> {
