@@ -257,7 +257,7 @@ public class MainMapFragment extends Fragment implements
             forceUpdate(null);
         } else if ((Const.RequestCodes.SEARCH == requestCode) && (resultCode == Activity.RESULT_OK)) {
             final LatLngZoom latLng = MapUtils.getBundleGeoPoint(data.getExtras());
-            final String title = data.getStringExtra(Const.BundleKeys.MARKER_TITLE);
+//            final String title = data.getStringExtra(Const.BundleKeys.MARKER_TITLE);
             if (latLng != null) {
                 mSearchMarker = MapUtils.addSearchMarker(vMap, latLng, mapAssets.getSearchMarkerIcon());
 
@@ -747,6 +747,11 @@ public class MainMapFragment extends Fragment implements
     public boolean onOptionsItemSelected(MenuItem item) {
         final int id = item.getItemId();
         if (id == R.id.action_search) {
+            if (mSearchMarker != null) {
+                vMap.removeMarker(mSearchMarker);
+                mSearchMarker = null;
+            }
+
             startActivityForResult(SearchActivity.newIntent(getActivity(), vMap.getLatLng()),
                     Const.RequestCodes.SEARCH);
 
