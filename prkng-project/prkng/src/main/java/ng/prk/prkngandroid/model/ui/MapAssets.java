@@ -157,15 +157,17 @@ public class MapAssets {
         return null;
     }
 
-    public Icon getCarshareLotMarkerIcon(String company) {
-        switch (company) {
-            case Const.CarshareCompanies.CAR2GO:
-                return markerIconCarshareLotCar2go;
-            case Const.CarshareCompanies.COMMUNAUTO:
-                return markerIconCarshareLotCommunauto;
-            default:
-                return getCarshareVehicleMarkerIcon(company);
-        }
+    public Icon getCarshareLotMarkerIcon(String company, int available) {
+//        switch (company) {
+//            case Const.CarshareCompanies.CAR2GO:
+//                return markerIconCarshareLotCar2go;
+//            case Const.CarshareCompanies.COMMUNAUTO:
+//                return markerIconCarshareLotCommunauto;
+//            default:
+//                return getCarshareVehicleMarkerIcon(company);
+//        }
+
+        return getCarshareVehicleMarkerIcon(company);
     }
 
     public Icon getCheckinMarkerIcon() {
