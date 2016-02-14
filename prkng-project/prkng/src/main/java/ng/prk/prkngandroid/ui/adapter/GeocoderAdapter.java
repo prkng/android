@@ -61,7 +61,11 @@ public class GeocoderAdapter extends BaseAdapter implements
 
     @Override
     public SearchItem getItem(int position) {
-        return features.get(position);
+        if (features != null && position < getCount()) {
+            return features.get(position);
+        } else {
+            return null;
+        }
     }
 
     @Override

@@ -119,7 +119,7 @@ public class MapUtils {
         return Double.MAX_VALUE;
     }
 
-    public static LatLngZoom getInitialCenterCoordinates(MapView mapView, Bundle extras) throws UnsupportedAreaException {
+    private static LatLngZoom getInitialCenterCoordinates(MapView mapView, Bundle extras) throws UnsupportedAreaException {
         // First, start by checking bundle coordinates (from Intent or savedInstance)
         if (extras != null) {
             final LatLngZoom latLngZoom = getBundleGeoPoint(extras);
