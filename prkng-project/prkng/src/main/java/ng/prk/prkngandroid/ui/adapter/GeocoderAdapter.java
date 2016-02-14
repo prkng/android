@@ -44,6 +44,7 @@ public class GeocoderAdapter extends BaseAdapter implements
 
     public GeocoderAdapter(Context context, LatLng proximity) {
         this.context = context;
+        this.features = new ArrayList<>();
         this.geocoderFilter = new GeocoderFilter(proximity,
                 CityBoundsHelper.getNearestCity(context, proximity));
 
@@ -52,10 +53,6 @@ public class GeocoderAdapter extends BaseAdapter implements
         this.foursquareClientSecret = context.getString(R.string.foursquare_client_secret);
         this.foursquareVersion = context.getString(R.string.foursquare_version);
     }
-
-    /*
-     * Required by BaseAdapter
-     */
 
     @Override
     public int getCount() {
@@ -72,13 +69,11 @@ public class GeocoderAdapter extends BaseAdapter implements
         return position;
     }
 
-    /*
+    /**
      * Get a View that displays the data at the specified position in the data set.
      */
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Get view
         View view;
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
@@ -99,10 +94,10 @@ public class GeocoderAdapter extends BaseAdapter implements
         return view;
     }
 
-    /*
-     * Required by Filterable
+    /**
+     * Implements Filterable
+     * Returns a filter that can be used to constrain data with a filtering pattern
      */
-
     @Override
     public Filter getFilter() {
         return geocoderFilter;
