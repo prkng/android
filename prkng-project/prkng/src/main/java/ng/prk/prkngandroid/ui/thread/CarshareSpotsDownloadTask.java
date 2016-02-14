@@ -111,13 +111,14 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
                 /**
                  * Carshare off-street lots
                  */
+                final boolean skipNearest = spotsAnnotations.getPolylines().size() > 0;
                 final PointsGeoJSON lots = ApiClient.getNearestCarshareLots(ApiClient.getService(),
                         apiKey,
                         mapGeometry.getLatitude(),
                         mapGeometry.getLongitude(),
                         mapGeometry.getRadius(),
                         mapAssets.getCarshareCompanies(),
-                        getNearest()
+                        skipNearest ? 0 : getNearest()
                 );
 
                 // Prepare map annotations: Markers only
