@@ -19,7 +19,6 @@ import ng.prk.prkngandroid.model.SpotsAnnotations;
 import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.ui.thread.base.PrkngDataDownloadTask;
 import ng.prk.prkngandroid.util.CarshareUtils;
-import ng.prk.prkngandroid.util.PrkngPrefs;
 
 public class CarshareVehiclesDownloadTask extends PrkngDataDownloadTask {
     private final static String TAG = "CarshareVehiclesTask";
@@ -30,6 +29,10 @@ public class CarshareVehiclesDownloadTask extends PrkngDataDownloadTask {
         super(mapView, mapAssets, listener);
 
         this.context = mapView.getContext();
+    }
+
+    protected int getNearest() {
+        return 0;
     }
 
     /**
@@ -57,7 +60,8 @@ public class CarshareVehiclesDownloadTask extends PrkngDataDownloadTask {
                         mapGeometry.getLatitude(),
                         mapGeometry.getLongitude(),
                         mapGeometry.getRadius(),
-                        mapAssets.getCarshareCompanies()
+                        mapAssets.getCarshareCompanies(),
+                        getNearest()
                 );
 
                 // Prepare map annotations: Markers only

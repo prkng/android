@@ -4,10 +4,10 @@ import com.mapbox.mapboxsdk.views.MapView;
 
 import ng.prk.prkngandroid.model.ui.MapAssets;
 
-public class NearestLotsDownloadTask extends LotsDownloadTask {
-    private final static String TAG = "LotsTask";
+public class NearestCarshareSpotsDownloadTask extends CarshareSpotsDownloadTask {
+    private final static String TAG = "NearestCarshareSpotsTask";
 
-    public NearestLotsDownloadTask(MapView mapView, MapAssets mapAssets, MapTaskListener listener) {
+    public NearestCarshareSpotsDownloadTask(MapView mapView, MapAssets mapAssets, MapTaskListener listener) {
         super(mapView, mapAssets, listener);
     }
 
@@ -20,5 +20,4 @@ public class NearestLotsDownloadTask extends LotsDownloadTask {
     protected boolean forceBoundingBox() {
         return true;
     }
-
 }

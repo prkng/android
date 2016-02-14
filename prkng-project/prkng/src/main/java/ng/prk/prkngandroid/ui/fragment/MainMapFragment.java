@@ -59,6 +59,8 @@ import ng.prk.prkngandroid.ui.activity.SearchActivity;
 import ng.prk.prkngandroid.ui.thread.CarshareSpotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.CarshareVehiclesDownloadTask;
 import ng.prk.prkngandroid.ui.thread.LotsDownloadTask;
+import ng.prk.prkngandroid.ui.thread.NearestCarshareSpotsDownloadTask;
+import ng.prk.prkngandroid.ui.thread.NearestCarshareVehiclesDownloadTask;
 import ng.prk.prkngandroid.ui.thread.NearestLotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.SpotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.base.PrkngDataDownloadTask;
@@ -77,7 +79,6 @@ public class MainMapFragment extends Fragment implements
         MapView.OnMarkerClickListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
     private final static String TAG = "MainMapFragment";
-    private final static double RADIUS_FIX = 1.4d;
     private static final long ANIMATION_DURATION = 400L; // Mapbox's anim is 300
 
     @Deprecated
@@ -470,7 +471,7 @@ public class MainMapFragment extends Fragment implements
         try {
             MapUtils.setInitialCenterCoordinates(vMap, initialArguments);
 
-            updateMapData(vMap.getLatLng(), vMap.getZoom());
+            updateMapData(vMap.getLatLng(), vMap.getZoom(), true);
         } catch (UnsupportedAreaException e) {
             if (!isDialogShown) {
                 isDialogShown = listener.showCitiesDialog(vMap.getLatLng());
@@ -650,17 +651,8 @@ public class MainMapFragment extends Fragment implements
         if (Const.MapSections.ON_STREET == mPrkngMapType) {
             if (Double.compare(Const.UiConfig.SPOTS_MIN_ZOOM, vMap.getZoom()) < 0) {
                 // First, check zoom level
-                mSnackbar = RedSnackbar.make(vMap,
-                        R.string.snackbar_on_street_zoom_out,
-                        Snackbar.LENGTH_LONG)
-                        .setAction(R.string.btn_zoom_out,
-                                new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        vMap.setZoom(Const.UiConfig.SPOTS_MIN_ZOOM, true);
-                                    }
-                                });
-                mSnackbar.show();
+                showZoomOutSnackbar(R.string.snackbar_on_street_zoom_out,
+                        Const.UiConfig.SPOTS_MIN_ZOOM);
             } else if (Float.compare(getDurationFilter(), Const.UiConfig.DEFAULT_DURATION) > 0) {
                 // Second, check duration filter
                 mSnackbar = RedSnackbar.make(vMap,
@@ -680,32 +672,57 @@ public class MainMapFragment extends Fragment implements
         } else if (Const.MapSections.OFF_STREET == mPrkngMapType) {
             if (Double.compare(Const.UiConfig.LOTS_MIN_ZOOM, vMap.getZoom()) < 0) {
                 // First, check zoom level
-                mSnackbar = RedSnackbar.make(vMap,
-                        R.string.snackbar_off_street_zoom_out,
-                        Snackbar.LENGTH_LONG)
-                        .setAction(R.string.btn_zoom_out,
-                                new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        vMap.setZoom(Const.UiConfig.LOTS_MIN_ZOOM, true);
-                                    }
-                                });
-                mSnackbar.show();
+                showZoomOutSnackbar(R.string.snackbar_off_street_zoom_out,
+                        Const.UiConfig.LOTS_MIN_ZOOM);
             } else {
                 // Second, search for nearest lot
-                mSnackbar = RedSnackbar.make(vMap,
-                        R.string.snackbar_off_street_empty_result,
-                        Snackbar.LENGTH_LONG)
-                        .setAction(R.string.btn_view_nearest,
-                                new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        updateMapData(vMap.getLatLng(), vMap.getZoom(), true);
-                                    }
-                                });
-                mSnackbar.show();
+                showNearestResultSnackbar(R.string.snackbar_off_street_empty_result);
+            }
+        } else if (Const.MapSections.CARSHARE_SPOTS == mPrkngMapType) {
+            if (Double.compare(Const.UiConfig.CARSHARE_SPOTS_MIN_ZOOM, vMap.getZoom()) < 0) {
+                // First, check zoom level
+                showZoomOutSnackbar(R.string.snackbar_carshare_spots_street_zoom_out,
+                        Const.UiConfig.CARSHARE_SPOTS_MIN_ZOOM);
+            } else {
+                showNearestResultSnackbar(R.string.snackbar_carshare_spots_street_zoom_out);
+            }
+        } else if (Const.MapSections.CARSHARE_VEHICLES == mPrkngMapType) {
+            if (Double.compare(Const.UiConfig.CARSHARE_VEHICLES_MIN_ZOOM, vMap.getZoom()) < 0) {
+                // First, check zoom level
+                showZoomOutSnackbar(R.string.snackbar_carshare_vehicules_street_zoom_out,
+                        Const.UiConfig.CARSHARE_VEHICLES_MIN_ZOOM);
+            } else {
+                showNearestResultSnackbar(R.string.snackbar_carshare_vehicules_street_zoom_out);
             }
         }
+    }
+
+    private void showZoomOutSnackbar(int message, final double zoom) {
+        mSnackbar = RedSnackbar.make(vMap,
+                message,
+                Snackbar.LENGTH_LONG)
+                .setAction(R.string.btn_zoom_out,
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                vMap.setZoom(zoom, true);
+                            }
+                        });
+        mSnackbar.show();
+    }
+
+    private void showNearestResultSnackbar(int message) {
+        mSnackbar = RedSnackbar.make(vMap,
+                message,
+                Snackbar.LENGTH_LONG)
+                .setAction(R.string.btn_view_nearest,
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                updateMapData(vMap.getLatLng(), vMap.getZoom(), true);
+                            }
+                        });
+        mSnackbar.show();
     }
 
     @Override
@@ -909,10 +926,12 @@ public class MainMapFragment extends Fragment implements
                     mTask = new SpotsDownloadTask(vMap, mapAssets, this);
                     break;
                 case Const.MapSections.CARSHARE_SPOTS:
-                    mTask = new CarshareSpotsDownloadTask(vMap, mapAssets, this);
+                    mTask = forced ? new NearestCarshareSpotsDownloadTask(vMap, mapAssets, this) :
+                            new CarshareSpotsDownloadTask(vMap, mapAssets, this);
                     break;
                 case Const.MapSections.CARSHARE_VEHICLES:
-                    mTask = new CarshareVehiclesDownloadTask(vMap, mapAssets, this);
+                    mTask = forced ? new NearestCarshareVehiclesDownloadTask(vMap, mapAssets, this) :
+                            new CarshareVehiclesDownloadTask(vMap, mapAssets, this);
                     break;
             }
 
@@ -976,8 +995,13 @@ public class MainMapFragment extends Fragment implements
             mPrkngMapType = type;
             final double zoom = MapUtils.getMinZoomPerType(type);
 
-            updateMapData(vMap.getLatLng(), zoom, true);
             vMap.setZoom(zoom, true);
+            vMap.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    updateMapData(vMap.getLatLng(), zoom, true);
+                }
+            }, ANIMATION_DURATION);
 
             AnalyticsUtils.sendFragmentView(this, mPrkngMapType);
         }
