@@ -305,7 +305,7 @@ public class ApiClient {
 
     @WorkerThread
     public static PointsGeoJSON getCarshareVehicles(PrkngService service, String apiKey, double latitude, double longitude, int radius) throws PrkngApiError {
-        return getCarshareVehicles(service, apiKey, latitude, longitude, radius, null);
+        return getCarshareVehicles(service, apiKey, latitude, longitude, radius, null, 0);
     }
 
     /**
@@ -320,14 +320,15 @@ public class ApiClient {
      * @return
      */
     @WorkerThread
-    public static PointsGeoJSON getCarshareVehicles(PrkngService service, String apiKey, double latitude, double longitude, int radius, String[] companies) throws PrkngApiError {
+    public static PointsGeoJSON getCarshareVehicles(PrkngService service, String apiKey, double latitude, double longitude, int radius, String[] companies, int nearest) throws PrkngApiError {
         try {
             final Response<PointsGeoJSON> response = service
                     .getCarshareVehicles(apiKey,
                             latitude,
                             longitude,
                             radius,
-                            ArrayUtils.join(companies))
+                            ArrayUtils.join(companies),
+                            nearest)
                     .execute();
             if (response != null) {
                 return response.body();
