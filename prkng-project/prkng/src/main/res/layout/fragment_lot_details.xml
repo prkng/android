@@ -16,7 +16,6 @@
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#00ffff"
             android:fitsSystemWindows="false"
             app:expandedTitleMarginStart="0dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
@@ -196,5 +195,5 @@
         android:layout_height="wrap_content"
         android:fitsSystemWindows="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-    
+
 </android.support.design.widget.CoordinatorLayout>

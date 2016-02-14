@@ -76,6 +76,11 @@ public class MainActivity extends BaseActivity implements
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         final FragmentManager fm = getSupportFragmentManager();
+
+        if (savedInstanceState != null) {
+            hideMarkerInfo(fm.findFragmentByTag(Const.FragmentTags.MAP_INFO));
+        }
+
         mapFragment = (MainMapFragment) fm.findFragmentByTag(Const.FragmentTags.MAP);
         if (mapFragment == null) {
             final double latitude = getIntent().getDoubleExtra(Const.BundleKeys.LATITUDE, Const.UNKNOWN_VALUE);

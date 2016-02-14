@@ -44,7 +44,7 @@ import ng.prk.prkngandroid.util.IntentUtils;
 public class LotInfoFragment extends Fragment implements
         MarkerInfoUpdateListener,
         View.OnClickListener {
-    private static final String TAG = "SpotInfoFragment";
+    private static final String TAG = "LotInfoFragment";
 
     private OnMarkerInfoClickListener listener;
     private TextView vTitle;
@@ -142,20 +142,23 @@ public class LotInfoFragment extends Fragment implements
         vStreetViewPanoramaView = (StreetViewPanoramaView) view.findViewById(R.id.street_view_panorama);
         vStreetViewDelayFix = view.findViewById(R.id.destreet_view_delay_fix);
 
+        mAdapter = new LotAgendaListAdapter(getContext(), R.layout.list_item_lot_agenda);
+
+        if (vStreetViewPanoramaView != null) {
+            // StreetView instance must be saved in a separate Bundle
+            final Bundle streetViewSavedInstanceState = (savedInstanceState != null) ?
+                    savedInstanceState.getBundle(Const.BundleKeys.STREET_VIEW_FIX) : null;
+            vStreetViewPanoramaView.onCreate(streetViewSavedInstanceState);
+            if (streetViewSavedInstanceState != null) {
+                // When restoring instance, the delayFix view is not needed
+//                vStreetViewDelayFix.setVisibility(View.GONE);
+            }
+        }
         setupLayout(view);
 
         downloadData(getActivity(), mId);
 
         return view;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        if (vStreetViewPanoramaView != null) {
-            vStreetViewPanoramaView.onCreate(savedInstanceState);
-        }
     }
 
     @Override
@@ -181,11 +184,16 @@ public class LotInfoFragment extends Fragment implements
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
+        // We need to save the StreetView saved state on a separate Bundle,
+        // this must be done before saving any of your own or your base class's variables
+        // Ref: https://code.google.com/p/gmaps-api-issues/issues/detail?id=6237#c9
         if (vStreetViewPanoramaView != null) {
-            vStreetViewPanoramaView.onSaveInstanceState(outState);
+            final Bundle streetViewSaveState = new Bundle(outState);
+            vStreetViewPanoramaView.onSaveInstanceState(streetViewSaveState);
+            outState.putBundle(Const.BundleKeys.STREET_VIEW_FIX, streetViewSaveState);
         }
+
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -271,14 +279,9 @@ public class LotInfoFragment extends Fragment implements
 
         final Resources res = getResources();
 
-        if (status != null) {
-            Log.v(TAG, status.toString());
-        }
-
         if (status != null && !status.isFree()) {
             final int dailyPrice = status.getMainPriceRounded();
             final int hourlyPrice = status.getHourlyPriceRounded();
-            Log.v(TAG, "dailyPrice = " + dailyPrice);
 
             if (dailyPrice != Const.UNKNOWN_VALUE) {
                 vMainPrice.setText(String.format(
@@ -320,10 +323,8 @@ public class LotInfoFragment extends Fragment implements
     @Override
     public void setDataset(ArrayList list) {
         mDataset = (BusinessIntervalList) list;
-        Log.v(TAG, "setDataset: OK. size: " + mDataset.size());
         if (vRecyclerView != null) {
             mAdapter.swapDataset(mDataset);
-            Log.v(TAG, "setDataset: OK. size: " + mDataset.size());
         }
 
         hideProgressBar();
@@ -357,29 +358,37 @@ public class LotInfoFragment extends Fragment implements
 
                     if (!TextUtils.isEmpty(streetView.getId())) {
                         panorama.setPosition(streetView.getId());
-                    }
 
-                    panorama.setOnStreetViewPanoramaChangeListener(new StreetViewPanorama.OnStreetViewPanoramaChangeListener() {
-                        @Override
-                        public void onStreetViewPanoramaChange(StreetViewPanoramaLocation streetViewPanoramaLocation) {
-                            if (streetViewPanoramaLocation == null) {
-                                Log.v(TAG, "Location not found: " + streetView.getId());
-                            } else {
-                                panorama.animateTo(new StreetViewPanoramaCamera.Builder()
-                                        .zoom(Const.UiConfig.STREET_VIEW_ZOOM)
-                                        .bearing(streetView.getHead())
-                                        .build(), Const.UiConfig.STREET_VIEW_DELAY);
-                                vStreetViewPanoramaView.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ObjectAnimator
-                                                .ofFloat(vStreetViewDelayFix, View.ALPHA, 1, 0)
-                                                .start();
+                        panorama.setOnStreetViewPanoramaChangeListener(new StreetViewPanorama.OnStreetViewPanoramaChangeListener() {
+                            @Override
+                            public void onStreetViewPanoramaChange(StreetViewPanoramaLocation streetViewPanoramaLocation) {
+                                if (streetViewPanoramaLocation == null) {
+                                    Log.v(TAG, "Location not found. panoramaId: " + streetView.getId());
+                                    return;
+                                }
+
+                                try {
+                                    if (streetView.getId().equals(streetViewPanoramaLocation.panoId)) {
+                                        panorama.animateTo(new StreetViewPanoramaCamera.Builder()
+                                                .zoom(Const.UiConfig.STREET_VIEW_ZOOM)
+                                                .bearing(streetView.getHead())
+                                                .build(), Const.UiConfig.STREET_VIEW_DELAY);
+
+                                        vStreetViewPanoramaView.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ObjectAnimator
+                                                        .ofFloat(vStreetViewDelayFix, View.ALPHA, 1, 0)
+                                                        .start();
+                                            }
+                                        }, Const.UiConfig.STREET_VIEW_DELAY);
                                     }
-                                }, Const.UiConfig.STREET_VIEW_DELAY);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
             });
         }
@@ -404,7 +413,6 @@ public class LotInfoFragment extends Fragment implements
             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             vRecyclerView.setLayoutManager(layoutManager);
 
-            mAdapter = new LotAgendaListAdapter(getContext(), R.layout.list_item_lot_agenda);
             vRecyclerView.setAdapter(mAdapter);
 
             view.findViewById(R.id.btn_nav_back).setOnClickListener(this);
@@ -420,10 +428,8 @@ public class LotInfoFragment extends Fragment implements
 
     private void downloadData(Context context, String id) {
         if (mDataset == null) {
-            (new LotInfoDownloadTask(
-                    context,
-                    this)
-            ).execute(id);
+            new LotInfoDownloadTask(context, this)
+                    .execute(id);
         } else {
             setDataset(mDataset);
             setCurrentStatus(mStatus, mCapacity);

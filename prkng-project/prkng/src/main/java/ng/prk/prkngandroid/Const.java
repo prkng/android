@@ -28,7 +28,7 @@ public class Const {
         double MONTREAL_NATURAL_NORTH_ROTATION = -34.0d;
         LatLng MONTREAL_LAT_LNG = new LatLng(45.5016889d, -73.567256d);
         float STREET_VIEW_ZOOM = 0.75f;
-        int STREET_VIEW_DELAY = 2000; // 2sec, animate camera after loading
+        long STREET_VIEW_DELAY = DateUtils.SECOND_IN_MILLIS; // 1sec, animate camera after loading
         float LOT_INFO_ATTRS_OPACITY = 0.55f;
         float DEFAULT_DURATION = 0.5f;
         float DRIVING_MIN_SPEED = 25000f; // 25 km/h
@@ -251,6 +251,8 @@ public class Const {
         String IS_EXPANDED = "is_expanded";
         String DURATION = "duration";
         String CITY = "city";
+        // Ref: https://code.google.com/p/gmaps-api-issues/issues/detail?id=6237#c9
+        String STREET_VIEW_FIX = "street_view_state";
     }
 
     /**

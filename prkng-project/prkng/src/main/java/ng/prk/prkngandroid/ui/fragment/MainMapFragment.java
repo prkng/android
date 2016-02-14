@@ -725,10 +725,14 @@ public class MainMapFragment extends Fragment implements
         vMap.postDelayed(new Runnable() {
             @Override
             public void run() {
-                vMap.addOnMapChangedListener(MainMapFragment.this);
-                mLastMapGeometry.setLatitude(center.getLatitude());
-                mLastMapGeometry.setLongitude(center.getLongitude());
-                mLastMapGeometry.setZoomAndRadius(center.getZoom(), vMap.fromScreenLocation(new PointF(0, 0)));
+                try {
+                    vMap.addOnMapChangedListener(MainMapFragment.this);
+                    mLastMapGeometry.setLatitude(center.getLatitude());
+                    mLastMapGeometry.setLongitude(center.getLongitude());
+                    mLastMapGeometry.setZoomAndRadius(center.getZoom(), vMap.fromScreenLocation(new PointF(0, 0)));
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
             }
         }, ANIMATION_DURATION);
     }
