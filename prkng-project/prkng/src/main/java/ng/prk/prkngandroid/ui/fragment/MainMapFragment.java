@@ -689,10 +689,10 @@ public class MainMapFragment extends Fragment implements
         } else if (Const.MapSections.CARSHARE_VEHICLES == mPrkngMapType) {
             if (Double.compare(Const.UiConfig.CARSHARE_VEHICLES_MIN_ZOOM, vMap.getZoom()) < 0) {
                 // First, check zoom level
-                showZoomOutSnackbar(R.string.snackbar_carshare_vehicules_street_zoom_out,
+                showZoomOutSnackbar(R.string.snackbar_carshare_vehicles_street_zoom_out,
                         Const.UiConfig.CARSHARE_VEHICLES_MIN_ZOOM);
             } else {
-                showNearestResultSnackbar(R.string.snackbar_carshare_vehicules_street_zoom_out);
+                showNearestResultSnackbar(R.string.snackbar_carshare_vehicles_street_zoom_out);
             }
         }
     }

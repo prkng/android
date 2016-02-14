@@ -111,8 +111,8 @@
     <string name="snackbar_on_street_duration_empty_result">Uh oh! You can’t park here for %d hours.</string>
     <string name="snackbar_off_street_zoom_out">Uh oh! No parking lots available here.</string>
     <string name="snackbar_off_street_empty_result">@string/snackbar_off_street_zoom_out</string>
-    <string name="snackbar_carshare_vehicules_street_zoom_out">***Uh oh! No cars available here.</string>
-    <string name="snackbar_carshare_vehicules_street_empty_result">@string/snackbar_carshare_vehicules_street_zoom_out</string>
+    <string name="snackbar_carshare_vehicles_street_zoom_out">***Uh oh! No cars available here.</string>
+    <string name="snackbar_carshare_vehicules_street_empty_result">@string/snackbar_carshare_vehicles_street_zoom_out</string>
     <string name="snackbar_carshare_spots_street_zoom_out">***Uh oh! You can’t park here at this time.</string>
     <string name="snackbar_carshare_spots_street_empty_result">@string/snackbar_carshare_spots_street_zoom_out</string>
     <string name="snackbar_connection_error">Oops, make sure your internet connection is active and try again.</string>
