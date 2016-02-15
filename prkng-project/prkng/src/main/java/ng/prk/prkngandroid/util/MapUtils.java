@@ -20,12 +20,11 @@ import java.util.List;
 import ng.prk.prkngandroid.Const;
 import ng.prk.prkngandroid.io.UnsupportedAreaException;
 import ng.prk.prkngandroid.model.CheckinData;
+import ng.prk.prkngandroid.model.ui.JsonSnippet;
 
 public class MapUtils {
     private final static String TAG = "MapUtils";
     public static final int KILOMETER_IN_METERS = 1000;
-    public final static String MARKER_ID_CHECKIN = "checkin_marker";
-    public final static String MARKER_ID_SEARCH = "search_marker";
 
     public static double getMinZoomPerType(int type) {
         switch (type) {
@@ -196,9 +195,12 @@ public class MapUtils {
     public static void addCheckinMarkerIfAvailable(MapView mapView, Icon checkinIcon) {
         final CheckinData checkin = PrkngPrefs.getInstance(mapView.getContext()).getCheckinData();
         if (checkin != null) {
+            final JsonSnippet snippet = new JsonSnippet.Builder()
+                    .checkin()
+                    .build();
             mapView.addMarker(new MarkerOptions()
                     .icon(checkinIcon)
-                    .snippet(MARKER_ID_CHECKIN)
+                    .snippet(JsonSnippet.toJson(snippet))
                     .position(checkin.getLatLng()));
         }
     }
@@ -207,7 +209,7 @@ public class MapUtils {
         for (Annotation annotation : mapView.getAllAnnotations()) {
             if (annotation instanceof Marker) {
                 final Marker marker = (Marker) annotation;
-                if (MARKER_ID_CHECKIN.equals(marker.getSnippet())) {
+                if (JsonSnippet.fromJson(marker.getSnippet()).isCheckin()) {
                     mapView.removeMarker(marker);
                     return true;
                 }
@@ -218,10 +220,13 @@ public class MapUtils {
     }
 
     public static Marker addSearchMarker(MapView mapView, LatLng latLng, Icon searchIcon) {
+        final JsonSnippet snippet = new JsonSnippet.Builder()
+                .search()
+                .build();
         return mapView.addMarker(new MarkerOptions()
-                        .snippet(MapUtils.MARKER_ID_SEARCH)
-                        .position(latLng)
-                        .icon(searchIcon)
+                .snippet(JsonSnippet.toJson(snippet))
+                .position(latLng)
+                .icon(searchIcon)
         );
     }
 }

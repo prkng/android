@@ -1,5 +1,6 @@
 package ng.prk.prkngandroid.ui.thread;
 
+import com.google.gson.Gson;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.annotations.PolylineOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -16,6 +17,7 @@ import ng.prk.prkngandroid.model.LinesGeoJSON;
 import ng.prk.prkngandroid.model.LinesGeoJSONFeature;
 import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.SpotsAnnotations;
+import ng.prk.prkngandroid.model.ui.JsonSnippet;
 import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.ui.thread.base.PrkngDataDownloadTask;
 
@@ -44,6 +46,7 @@ public class SpotsDownloadTask extends PrkngDataDownloadTask {
 
         try {
             final String apiKey = getApiKey();
+            final Gson gson = JsonSnippet.getGson();
 
             if (apiKey != null && mapGeometry != null) {
                 // Get API data
@@ -77,11 +80,16 @@ public class SpotsDownloadTask extends PrkngDataDownloadTask {
 
                     // Add the visible buttons
                     List<LatLng> buttons = properties.getButtonLocations();
+                    final String snippet = JsonSnippet.toJson(
+                            new JsonSnippet.Builder()
+                                    .id(feature.getId())
+                                    .build(),
+                            gson);
                     for (LatLng buttonLatLng : buttons) {
                         final MarkerOptions markerOptions = new MarkerOptions()
                                 .position(buttonLatLng)
                                 .title(properties.getWayName())
-                                .snippet(feature.getId());
+                                .snippet(snippet);
                         if (hasVisibleMarkers) {
                             markerOptions.icon(properties.isTypePaid() ? mapAssets.getMarkerIconPaid() : mapAssets.getMarkerIconFree());
                         } else {

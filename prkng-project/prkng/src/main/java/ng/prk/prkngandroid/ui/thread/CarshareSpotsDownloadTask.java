@@ -2,6 +2,7 @@ package ng.prk.prkngandroid.ui.thread;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.annotations.PolylineOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -20,6 +21,7 @@ import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.PointsGeoJSON;
 import ng.prk.prkngandroid.model.PointsGeoJSONFeature;
 import ng.prk.prkngandroid.model.SpotsAnnotations;
+import ng.prk.prkngandroid.model.ui.JsonSnippet;
 import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.ui.thread.base.PrkngDataDownloadTask;
 import ng.prk.prkngandroid.util.CarshareUtils;
@@ -57,6 +59,7 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
 
         try {
             final String apiKey = getApiKey();
+            final Gson gson = JsonSnippet.getGson();
 
             if (apiKey != null && mapGeometry != null) {
                 /**
@@ -93,10 +96,13 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
                     // Add the visible buttons
                     List<LatLng> buttons = properties.getButtonLocations();
                     for (LatLng buttonLatLng : buttons) {
+                        final JsonSnippet snippet = new JsonSnippet.Builder()
+                                .id(feature.getId())
+                                .build();
                         final MarkerOptions markerOptions = new MarkerOptions()
                                 .position(buttonLatLng)
                                 .title(properties.getWayName())
-                                .snippet(feature.getId());
+                                .snippet(JsonSnippet.toJson(snippet, gson));
                         if (hasVisibleMarkers) {
                             markerOptions.icon(properties.isTypePaid() ? mapAssets.getMarkerIconPaid() : mapAssets.getMarkerIconFree());
                         } else {
@@ -127,11 +133,16 @@ public class CarshareSpotsDownloadTask extends PrkngDataDownloadTask {
                     final GeoJSONFeatureProperties properties = feature.getProperties();
 
                     final List<Double> latLng = feature.getGeometry().getCoordinates();
-                    // TODO replace string
+                    final JsonSnippet snippet = new JsonSnippet.Builder()
+                            .title(properties.getName())
+                            .company(properties.getCompany())
+                            .capacity(properties.getCapacity())
+                            .available(properties.getAvailable())
+                            .build();
                     final MarkerOptions markerOptions = new MarkerOptions()
                             .position(new LatLng(new LatLng(latLng.get(1), latLng.get(0))))
                             .title(CarshareUtils.getCompanyName(context, properties.getCompany()))
-                            .snippet(properties.getName())
+                            .snippet(JsonSnippet.toJson(snippet, gson))
                             .icon(mapAssets.getCarshareLotMarkerIcon(
                                     properties.getCompany(),
                                     properties.getAvailableOrCapacity()

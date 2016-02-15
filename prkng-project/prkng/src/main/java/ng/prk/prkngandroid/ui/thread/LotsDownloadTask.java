@@ -1,5 +1,6 @@
 package ng.prk.prkngandroid.ui.thread;
 
+import com.google.gson.Gson;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.views.MapView;
@@ -16,6 +17,7 @@ import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.PointsGeoJSON;
 import ng.prk.prkngandroid.model.PointsGeoJSONFeature;
 import ng.prk.prkngandroid.model.SpotsAnnotations;
+import ng.prk.prkngandroid.model.ui.JsonSnippet;
 import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.ui.thread.base.PrkngDataDownloadTask;
 import ng.prk.prkngandroid.util.CalendarUtils;
@@ -48,6 +50,7 @@ public class LotsDownloadTask extends PrkngDataDownloadTask {
         spotsAnnotations.setCenterCoordinate(mapGeometry);
         try {
             final String apiKey = getApiKey();
+            final Gson gson = JsonSnippet.getGson();
 
             if (apiKey != null && mapGeometry != null) {
                 // Get API data
@@ -79,10 +82,13 @@ public class LotsDownloadTask extends PrkngDataDownloadTask {
                     }
 
                     final List<Double> latLng = feature.getGeometry().getCoordinates();
+                    final JsonSnippet snippet = new JsonSnippet.Builder()
+                            .id(feature.getId())
+                            .build();
                     final MarkerOptions markerOptions = new MarkerOptions()
                             .position(new LatLng(new LatLng(latLng.get(1), latLng.get(0))))
                             .title(properties.getAddress())
-                            .snippet(feature.getId())
+                            .snippet(JsonSnippet.toJson(snippet, gson))
                             .icon(mapAssets.getLotMarkerIcon(price, type, price == bestPrice));
 
                     spotsAnnotations.addMarker(feature.getId(), markerOptions);

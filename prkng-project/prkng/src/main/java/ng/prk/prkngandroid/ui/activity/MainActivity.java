@@ -25,6 +25,7 @@ import ng.prk.prkngandroid.R;
 import ng.prk.prkngandroid.io.ApiCallback;
 import ng.prk.prkngandroid.io.ApiClient;
 import ng.prk.prkngandroid.model.CheckinData;
+import ng.prk.prkngandroid.model.ui.JsonSnippet;
 import ng.prk.prkngandroid.ui.activity.base.BaseActivity;
 import ng.prk.prkngandroid.ui.dialog.CitiesDialog;
 import ng.prk.prkngandroid.ui.dialog.DurationDialog;
@@ -231,12 +232,15 @@ public class MainActivity extends BaseActivity implements
             switch (type) {
                 case Const.MapSections.OFF_STREET:
                     fragment = LotInfoFragment.newInstance(
-                            marker.getSnippet(), marker.getTitle(), marker.getPosition());
+                            JsonSnippet.parseId(marker.getSnippet()),
+                            marker.getTitle(),
+                            marker.getPosition());
                     break;
                 case Const.MapSections.CARSHARE_SPOTS:
                 case Const.MapSections.ON_STREET:
                     fragment = SpotInfoFragment.newInstance(
-                            marker.getSnippet(), marker.getTitle());
+                            JsonSnippet.parseId(marker.getSnippet()),
+                            marker.getTitle());
                     break;
                 default:
                     return;

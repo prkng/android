@@ -51,11 +51,14 @@ import ng.prk.prkngandroid.io.UnsupportedAreaException;
 import ng.prk.prkngandroid.model.CheckinData;
 import ng.prk.prkngandroid.model.City;
 import ng.prk.prkngandroid.model.MapGeometry;
+import ng.prk.prkngandroid.model.ui.JsonSnippet;
 import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.model.ui.SelectedFeature;
 import ng.prk.prkngandroid.ui.activity.CheckinActivity;
 import ng.prk.prkngandroid.ui.activity.LoginActivity;
 import ng.prk.prkngandroid.ui.activity.SearchActivity;
+import ng.prk.prkngandroid.ui.adapter.CarshareLotInfoWindowAdapter;
+import ng.prk.prkngandroid.ui.adapter.CarshareVehicleInfoWindowAdapter;
 import ng.prk.prkngandroid.ui.thread.CarshareSpotsDownloadTask;
 import ng.prk.prkngandroid.ui.thread.CarshareVehiclesDownloadTask;
 import ng.prk.prkngandroid.ui.thread.LotsDownloadTask;
@@ -104,6 +107,7 @@ public class MainMapFragment extends Fragment implements
     private Bundle initialArguments;
     private City mCurrentCity;
     private Marker mSearchMarker;
+    private LayoutInflater mInflater;
 
     public static MainMapFragment newInstance() {
         return newInstance(null);
@@ -159,6 +163,7 @@ public class MainMapFragment extends Fragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mInflater = inflater;
         final View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         vProgressBar = (CircleProgressBar) view.findViewById(R.id.progressBar);
@@ -352,6 +357,7 @@ public class MainMapFragment extends Fragment implements
         mLastMapGeometry = new MapGeometry(vMap.getLatLng(), vMap.getZoom());
         final boolean isCarshare = PrkngPrefs.getInstance(getActivity()).isCharshareMode();
         mPrkngMapType = isCarshare ? Const.MapSections.CARSHARE_OFFSET : 0;
+        setInfoWindowAdapter(mPrkngMapType);
     }
 
     private void showCheckinInfo(CheckinData checkin) {
@@ -542,17 +548,18 @@ public class MainMapFragment extends Fragment implements
      */
     @Override
     public boolean onMarkerClick(@NonNull Marker marker) {
-        final String featureId = marker.getSnippet();
+        final JsonSnippet snippet = JsonSnippet.fromJson(marker.getSnippet());
+        final String featureId = snippet.getId();
         final String selectedId = mSelectedFeature == null ? null : mSelectedFeature.getId();
         if (featureId != null && featureId.equals(selectedId)) {
             // Skip if re-clicked the same Feature
             return true;
         }
 
-        if (MapUtils.MARKER_ID_CHECKIN.equals(featureId)) {
+        if (snippet.isCheckin()) {
             startActivity(CheckinActivity.newIntent(getActivity()));
             return true;
-        } else if (MapUtils.MARKER_ID_SEARCH.equals(featureId)) {
+        } else if (snippet.isSearch()) {
             return true;
         }
 
@@ -561,18 +568,14 @@ public class MainMapFragment extends Fragment implements
             case Const.MapSections.OFF_STREET:
             case Const.MapSections.CARSHARE_SPOTS:
                 unselectFeatureIfNecessary();
-                selectFeature(marker.getSnippet());
+                selectFeature(JsonSnippet.parseId(marker.getSnippet()));
 
-                if (listener != null) {
-                    try {
-                        // For carshare: If we can cast the feature, it means it's a spot not lot
-                        final long isNumber = Long.valueOf(featureId);
-                        listener.showMarkerInfo(marker, mPrkngMapType);
-                        return true;
-                    } catch (NumberFormatException e) {
-                        return false;
-                    }
+                if (listener != null && !snippet.isCarshareLot()) {
+                    listener.showMarkerInfo(marker, mPrkngMapType);
+                    return true;
                 }
+
+                return false;
             default:
                 return false;
         }
@@ -993,6 +996,8 @@ public class MainMapFragment extends Fragment implements
         if (type != mPrkngMapType) {
             vMap.removeAllAnnotations();
             mPrkngMapType = type;
+            setInfoWindowAdapter(type);
+
             final double zoom = MapUtils.getMinZoomPerType(type);
 
             vMap.setZoom(zoom, true);
@@ -1004,6 +1009,20 @@ public class MainMapFragment extends Fragment implements
             }, ANIMATION_DURATION);
 
             AnalyticsUtils.sendFragmentView(this, mPrkngMapType);
+        }
+    }
+
+    private void setInfoWindowAdapter(int type) {
+        switch (type) {
+            case Const.MapSections.CARSHARE_VEHICLES:
+                vMap.setInfoWindowAdapter(new CarshareVehicleInfoWindowAdapter(mInflater));
+                break;
+            case Const.MapSections.CARSHARE_SPOTS:
+                vMap.setInfoWindowAdapter(new CarshareLotInfoWindowAdapter(mInflater));
+                break;
+            default:
+                vMap.setInfoWindowAdapter(null);
+                break;
         }
     }
 

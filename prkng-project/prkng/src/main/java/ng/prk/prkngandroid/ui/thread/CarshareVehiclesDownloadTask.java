@@ -2,6 +2,7 @@ package ng.prk.prkngandroid.ui.thread;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.views.MapView;
@@ -16,6 +17,7 @@ import ng.prk.prkngandroid.model.MapGeometry;
 import ng.prk.prkngandroid.model.PointsGeoJSON;
 import ng.prk.prkngandroid.model.PointsGeoJSONFeature;
 import ng.prk.prkngandroid.model.SpotsAnnotations;
+import ng.prk.prkngandroid.model.ui.JsonSnippet;
 import ng.prk.prkngandroid.model.ui.MapAssets;
 import ng.prk.prkngandroid.ui.thread.base.PrkngDataDownloadTask;
 import ng.prk.prkngandroid.util.CarshareUtils;
@@ -66,14 +68,24 @@ public class CarshareVehiclesDownloadTask extends PrkngDataDownloadTask {
 
                 // Prepare map annotations: Markers only
                 final List<PointsGeoJSONFeature> lotsFeatures = lots.getFeatures();
+                final Gson gson = JsonSnippet.getGson();
+
                 for (PointsGeoJSONFeature feature : lotsFeatures) {
                     final GeoJSONFeatureProperties properties = feature.getProperties();
 
                     final List<Double> latLng = feature.getGeometry().getCoordinates();
+                    final JsonSnippet snippet = new JsonSnippet.Builder()
+                            .id(feature.getId())
+                            .title(properties.getName())
+                            .company(properties.getCompany())
+                            .fuel(properties.getFuel())
+                            .partnerId(properties.getPartnerId())
+                            .build();
+                    Log.v(TAG, snippet.toString());
                     final MarkerOptions markerOptions = new MarkerOptions()
                             .position(new LatLng(new LatLng(latLng.get(1), latLng.get(0))))
                             .title(CarshareUtils.getCompanyName(context, properties.getCompany()))
-                            .snippet(properties.getName())
+                            .snippet(JsonSnippet.toJson(snippet, gson))
                             .icon(mapAssets.getCarshareVehicleMarkerIcon(properties.getCompany()));
 
                     spotsAnnotations.addMarker(feature.getId(), markerOptions);
