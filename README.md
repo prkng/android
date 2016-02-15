@@ -20,7 +20,7 @@ Park Smarter. Discover spots around you, instantly. Check out parking lots nearb
 * [ACCESS WIFI STATE](http://developer.android.com/reference/android/Manifest.permission.html#ACCESS_WIFI_STATE)
 
 ##Libraries
-* [Mapbox SDK for Android](https://github.com/mapbox/mapbox-gl-native): Render Mapbox styles in mobile, desktop, and node applications using C++ and OpenGL. 4.0.0-SNAPSHOT.
+* [Mapbox SDK for Android](https://github.com/mapbox/mapbox-gl-native): Render Mapbox styles in mobile, desktop, and node applications using C++ and OpenGL. 3.2.0-SNAPSHOT.
 * [Facebook SDK for Android](https://developers.facebook.com/docs/android/): Version 4.9.0.
 * [Crashlytics SDK for Android](https://fabric.io/kits/android/crashlytics/summary): Version 2.5.5.
 * [Retrofit](http://square.github.io/retrofit/): A type-safe REST client for Android and Java. Version 2.0.0-SNAPSHOT.
