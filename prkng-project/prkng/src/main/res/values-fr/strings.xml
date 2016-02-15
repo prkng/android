@@ -125,6 +125,8 @@
     <string name="map_tab_on_street">Sur-rue</string>
     <string name="map_tab_carshare_vehicles">Véhicules</string>
     <string name="map_tab_carshare_spots">Se stationner</string>
+    <string name="carshare_vehicle_fuel_percentage">%d%%</string>
+    <string name="carshare_vehicle_name_partner_id">%1$s, #%2$s</string>
 
     <!--Calendar-->
     <string name="hour_minutes_format">kk&#160;:&#160;mm</string>
