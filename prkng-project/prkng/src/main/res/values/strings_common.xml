@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">prkng</string>
-    <string name="app_version" translatable="false">0.9.5-beta</string>
+    <string name="app_version" translatable="false">0.9.8-beta</string>
 
     <!--URLs-->
     <string name="url_playstore" translatable="false">https://play.google.com/store/apps/details?id=ng.prk.prkngandroid</string>
