@@ -110,8 +110,8 @@
     <string name="snackbar_on_street_duration_empty_result">Vous ne pouvez vous stationner ici pour %d heures.</string>
     <string name="snackbar_off_street_zoom_out">Uh oh! Il n’y a pas de lots disponibles ici.</string>
     <string name="snackbar_off_street_empty_result">@string/snackbar_off_street_zoom_out</string>
-    <string name="snackbar_carshare_vehicules_street_zoom_out">Uh oh! Il n’y a pas de véhicules ici présentement.</string>
-    <string name="snackbar_carshare_vehicules_street_empty_result">@string/snackbar_carshare_vehicules_street_zoom_out</string>
+    <string name="snackbar_carshare_vehicles_street_zoom_out">Uh oh! Il n’y a pas de véhicules ici présentement.</string>
+    <string name="snackbar_carshare_vehicles_street_empty_result">@string/snackbar_carshare_vehicles_street_zoom_out</string>
     <string name="snackbar_carshare_spots_street_zoom_out">Uh oh! Vous ne pouvez vous stationner ici présentement.</string>
     <string name="snackbar_carshare_spots_street_empty_result">@string/snackbar_carshare_spots_street_zoom_out</string>
     <string name="snackbar_connection_error">Oops, assurez-vous d’avoir une connexion réseau.</string>
