@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_map_info_window">
+
+    <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+        android:id="@+id/figure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/snippet"
+        android:layout_alignTop="@+id/title"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:textColor="@color/red2"
+        android:textSize="@dimen/text_size_1" />
+
+    <ng.prk.prkngandroid.ui.view.IntroRegularTextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@+id/figure"
+        android:textColor="@color/red2"
+        android:textSize="@dimen/text_size_3" />
+
+    <ng.prk.prkngandroid.ui.view.IntroLightTextView
+        android:id="@+id/snippet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/title"
+        android:layout_below="@+id/title"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:textColor="@color/red2"
+        android:textSize="@dimen/text_size_4" />
+</RelativeLayout>

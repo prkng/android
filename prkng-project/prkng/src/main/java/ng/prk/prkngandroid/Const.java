@@ -95,6 +95,7 @@ public class Const {
         String LIMIT = "limit";
         String CITY = "city";
         String PARTNER_NAME = "partner_name";
+        String PARTNER_ID = "partner_id";
         String PAID_HOURLY_RATE = "paid_hourly_rate";
         String PERMIT_NO = "permit_no";
         String RESTRICT_TYPES = "restrict_types";

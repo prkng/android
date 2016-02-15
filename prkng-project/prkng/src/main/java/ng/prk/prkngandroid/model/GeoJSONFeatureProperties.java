@@ -39,6 +39,9 @@ public class GeoJSONFeatureProperties {
      * Carshare vehicles
      */
     private String company;
+    private Integer fuel;
+    @SerializedName(Const.ApiArgs.PARTNER_ID)
+    private String partnerId;
 
     /**
      * Supported Areas
@@ -120,6 +123,14 @@ public class GeoJSONFeatureProperties {
 
     public String getCompany() {
         return company;
+    }
+
+    public int getFuel() {
+        return fuel == null ? Const.UNKNOWN_VALUE : fuel;
+    }
+
+    public String getPartnerId() {
+        return partnerId;
     }
 
     public String getName() {
