@@ -158,16 +158,16 @@ public class MapAssets {
     }
 
     public Icon getCarshareLotMarkerIcon(String company, int available) {
-//        switch (company) {
-//            case Const.CarshareCompanies.CAR2GO:
-//                return markerIconCarshareLotCar2go;
-//            case Const.CarshareCompanies.COMMUNAUTO:
-//                return markerIconCarshareLotCommunauto;
-//            default:
+        switch (company) {
+            case Const.CarshareCompanies.CAR2GO:
+                return markerIconCarshareLotCar2go;
+            case Const.CarshareCompanies.COMMUNAUTO:
+                return markerIconCarshareLotCommunauto;
+            default:
+                // TODO Zipcar and Auto-mobile use the Communauto lot green icon
+                return markerIconCarshareLotCommunauto;
 //                return getCarshareVehicleMarkerIcon(company);
-//        }
-
-        return getCarshareVehicleMarkerIcon(company);
+        }
     }
 
     public Icon getCheckinMarkerIcon() {
