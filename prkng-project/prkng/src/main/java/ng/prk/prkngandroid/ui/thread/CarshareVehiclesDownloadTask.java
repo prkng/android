@@ -81,7 +81,6 @@ public class CarshareVehiclesDownloadTask extends PrkngDataDownloadTask {
                             .fuel(properties.getFuel())
                             .partnerId(properties.getPartnerId())
                             .build();
-                    Log.v(TAG, snippet.toString());
                     final MarkerOptions markerOptions = new MarkerOptions()
                             .position(new LatLng(new LatLng(latLng.get(1), latLng.get(0))))
                             .title(CarshareUtils.getCompanyName(context, properties.getCompany()))
