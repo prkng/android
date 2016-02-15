@@ -47,17 +47,17 @@
     <string name="prefs_cat_general">General</string>
     <string name="prefs_cat_auth">Compte</string>
     <string name="prefs_cat_carsharing">Expérience</string>
-    <string name="prefs_cat_feedback">***Commentaires</string>
-    <string name="prefs_cat_help">***Aide</string>
-    <string name="prefs_cat_legal">***Légal</string>
+    <string name="prefs_cat_feedback">Commentaires</string>
+    <string name="prefs_cat_help">Aide</string>
+    <string name="prefs_cat_legal">Légal</string>
 
     <!--Prefs/About-->
     <string name="prefs_onboarding_title">Faire le tour</string>
     <string name="prefs_support_title">Support</string>
     <string name="prefs_faq_title">Foire aux questions</string>
     <string name="prefs_terms_title">Conditions d’utilisation</string>
-    <string name="prefs_privacy_title">***Privacy policy</string>
-    <string name="prefs_rate_app_title">***Review on Google Play</string>
+    <string name="prefs_privacy_title">Politique de confidentialité</string>
+    <string name="prefs_rate_app_title">Allez noter l'app!</string>
     <string name="prefs_version_title">Version</string>
 
     <!--Menu actions-->
@@ -110,9 +110,9 @@
     <string name="snackbar_on_street_duration_empty_result">Vous ne pouvez vous stationner ici pour %d heures.</string>
     <string name="snackbar_off_street_zoom_out">Uh oh! Il n’y a pas de lots disponibles ici.</string>
     <string name="snackbar_off_street_empty_result">@string/snackbar_off_street_zoom_out</string>
-    <string name="snackbar_carshare_vehicles_street_zoom_out">***Uh oh! No cars available here.</string>
-    <string name="snackbar_carshare_vehicules_street_empty_result">@string/snackbar_carshare_vehicles_street_zoom_out</string>
-    <string name="snackbar_carshare_spots_street_zoom_out">***Uh oh! You can’t park here at this time.</string>
+    <string name="snackbar_carshare_vehicules_street_zoom_out">Uh oh! Il n'y a pas de véhicules ici présentement.</string>
+    <string name="snackbar_carshare_vehicules_street_empty_result">@string/snackbar_carshare_vehicules_street_zoom_out</string>
+    <string name="snackbar_carshare_spots_street_zoom_out">Uh oh! Vous ne pouvez vous stationner ici présentement.</string>
     <string name="snackbar_carshare_spots_street_empty_result">@string/snackbar_carshare_spots_street_zoom_out</string>
     <string name="snackbar_connection_error">Oops, assurez-vous d’avoir une connexion réseau.</string>
 
@@ -220,8 +220,6 @@
     <string name="carshare_company_automobile">Auto-mobile</string>
     <string name="carshare_company_communauto">Communauto</string>
     <string name="carshare_company_zipcar">Zipcar</string>
-    <string name="carshare_vehicle_fuel_percentage">%d%%</string>
-    <string name="carshare_vehicle_name_partner_id">%1$s, #%2$s</string>
 
     <!--Tutorial-->
     <string name="tutorial_desc_splash">Terminé les contraventions et les maux de tête.</string>
