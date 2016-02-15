@@ -48,17 +48,17 @@
     <string name="prefs_cat_general">General</string>
     <string name="prefs_cat_auth">Account</string>
     <string name="prefs_cat_carsharing">Map mode</string>
-    <string name="prefs_cat_feedback">***Feedback</string>
-    <string name="prefs_cat_help">***Help</string>
-    <string name="prefs_cat_legal">***Legal</string>
+    <string name="prefs_cat_feedback">Feedback</string>
+    <string name="prefs_cat_help">Help</string>
+    <string name="prefs_cat_legal">Legal</string>
 
     <!--Prefs/About-->
     <string name="prefs_onboarding_title">Take a tour</string>
     <string name="prefs_support_title">Support</string>
     <string name="prefs_faq_title">Frequently asked questions</string>
     <string name="prefs_terms_title">Terms of Use</string>
-    <string name="prefs_privacy_title">***Privacy policy</string>
-    <string name="prefs_rate_app_title">***Review on Google Play</string>
+    <string name="prefs_privacy_title">Privacy policy</string>
+    <string name="prefs_rate_app_title">Show us your love</string>
     <string name="prefs_version_title">Version</string>
 
     <!--Menu actions-->
@@ -84,7 +84,7 @@
     <string name="btn_checkout">Leave spot</string>
     <string name="btn_info">Info</string>
     <string name="btn_try_again">Retry</string>
-    <string name="btn_forgot_password">***Forgot password?</string>
+    <string name="btn_forgot_password">Forgot password?</string>
     <string name="btn_reset_password">Reset password</string>
     <string name="btn_available_cities">Available cities</string>
     <string name="btn_select_duration">Select duration</string>
@@ -111,9 +111,9 @@
     <string name="snackbar_on_street_duration_empty_result">Uh oh! You can’t park here for %d hours.</string>
     <string name="snackbar_off_street_zoom_out">Uh oh! No parking lots available here.</string>
     <string name="snackbar_off_street_empty_result">@string/snackbar_off_street_zoom_out</string>
-    <string name="snackbar_carshare_vehicles_street_zoom_out">***Uh oh! No cars available here.</string>
-    <string name="snackbar_carshare_vehicules_street_empty_result">@string/snackbar_carshare_vehicles_street_zoom_out</string>
-    <string name="snackbar_carshare_spots_street_zoom_out">***Uh oh! You can’t park here at this time.</string>
+    <string name="snackbar_carshare_vehicules_street_zoom_out">Uh oh! No cars available here.</string>
+    <string name="snackbar_carshare_vehicules_street_empty_result">@string/snackbar_carshare_vehicules_street_zoom_out</string>
+    <string name="snackbar_carshare_spots_street_zoom_out">Uh oh! You can’t park here at this time.</string>
     <string name="snackbar_carshare_spots_street_empty_result">@string/snackbar_carshare_spots_street_zoom_out</string>
     <string name="snackbar_connection_error">Oops, make sure your internet connection is active and try again.</string>
 
@@ -225,8 +225,6 @@
     <string name="carshare_company_automobile">Auto-mobile</string>
     <string name="carshare_company_communauto">Communauto</string>
     <string name="carshare_company_zipcar">Zipcar</string>
-    <string name="carshare_vehicle_fuel_percentage">%d%%</string>
-    <string name="carshare_vehicle_name_partner_id">%1$s, #%2$s</string>
 
     <!--Tutorial-->
     <string name="tutorial_desc_splash">No more parking fines, no&#160;more headaches.</string>
