@@ -25,6 +25,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:layout_toRightOf="@+id/figure"
+        android:maxWidth="128dp"
         android:textColor="@color/red2"
         android:textSize="@dimen/text_size_3" />
 
@@ -36,6 +37,9 @@
         android:layout_below="@+id/title"
         android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:maxWidth="128dp"
         android:textColor="@color/red2"
         android:textSize="@dimen/text_size_4" />
 </RelativeLayout>
