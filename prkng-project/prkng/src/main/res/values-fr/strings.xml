@@ -220,6 +220,8 @@
     <string name="carshare_company_automobile">Auto-mobile</string>
     <string name="carshare_company_communauto">Communauto</string>
     <string name="carshare_company_zipcar">Zipcar</string>
+    <string name="carshare_vehicle_fuel_percentage">%d%%</string>
+    <string name="carshare_vehicle_name_partner_id">%1$s, #%2$s</string>
 
     <!--Tutorial-->
     <string name="tutorial_desc_splash">Terminé les contraventions et les maux de tête.</string>
