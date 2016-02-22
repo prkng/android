@@ -77,6 +77,10 @@ public class SearchActivity extends BaseActivity implements
     }
 
     private void onSearchItemSelected(SearchItem item) {
+        if (item == null) {
+            return;
+        }
+
         vAutoComplete.setText(item.getName());
 
         final Intent data = new Intent();
@@ -130,8 +134,10 @@ public class SearchActivity extends BaseActivity implements
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO) {
-            onSearchItemSelected(mAdapter.getItem(0));
-            return true;
+            if (mAdapter.getCount() > 0) {
+                onSearchItemSelected(mAdapter.getItem(0));
+                return true;
+            }
         }
 
         return false;
