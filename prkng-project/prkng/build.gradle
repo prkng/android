@@ -24,8 +24,8 @@ android {
         applicationId "ng.prk.prkngandroid"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 22
-        versionName "0.9.8-beta"
+        versionCode 23
+        versionName "0.9.8.1-beta"
 
         resConfigs "en", "fr"
 //        resConfigs "nodpi", "mdpi", "hdpi", "xhdpi", "xxhdpi"
