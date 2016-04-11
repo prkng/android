@@ -142,7 +142,7 @@ public class SpotRules {
     private static long getFreeParkingRemainingTime(RestrIntervalsList intervals, int today, long now) {
         final RestrInterval nextRestrInterval = getNextRestrIntervalWeekLooped(intervals, today, now);
 
-        final boolean isWeekLoop = (intervals.get(0) == nextRestrInterval);
+        final boolean isWeekLoop = (intervals.get(0) == nextRestrInterval && nextRestrInterval.isBefore(now));
         final int nbDays = isWeekLoop ? CalendarUtils.WEEK_IN_DAYS :
                 CalendarUtils.subtractDaysOfWeekLooped(nextRestrInterval.getDayOfWeek(), today);
 
