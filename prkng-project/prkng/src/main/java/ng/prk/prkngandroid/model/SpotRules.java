@@ -101,9 +101,9 @@ public class SpotRules {
                 // Add a 24hrs no-restriction rule
                 final int day = CalendarUtils.getIsoDayOfWeekLooped(i, today);
                 restrList.add(new RestrInterval.Builder(day)
-                                .type(Const.ParkingRestrType.NONE)
-                                .allDay()
-                                .build()
+                        .type(Const.ParkingRestrType.NONE)
+                        .allDay()
+                        .build()
                 );
             } else {
                 Collections.sort(restrList);
@@ -120,15 +120,15 @@ public class SpotRules {
      * @param intervals The agenda's intervals, sorted and starting today
      * @param today     Today's dayOfWeek
      * @param now       the daytime current timestamp, should be in a FreeParking interval
-     * @return RestrInterval
+     * @return Index of the next RestrInterval
      */
-    private static RestrInterval getNextRestrIntervalWeekLooped(RestrIntervalsList intervals, int today, long now) {
+    private static int findNextRestrIntervalWeekLooped(RestrIntervalsList intervals, int today, long now) {
         int indexNext = intervals.findNextRestrIntervalToday(now, today);
         if (indexNext == Const.UNKNOWN_VALUE) {
             indexNext = 0;
         }
 
-        return intervals.get(indexNext);
+        return indexNext;
     }
 
     /**
@@ -140,9 +140,12 @@ public class SpotRules {
      * @return Millis remaining before the end of current interval
      */
     private static long getFreeParkingRemainingTime(RestrIntervalsList intervals, int today, long now) {
-        final RestrInterval nextRestrInterval = getNextRestrIntervalWeekLooped(intervals, today, now);
+        // b-23 hotfix on 2016-04-19
+        final int indexNext = findNextRestrIntervalWeekLooped(intervals, today, now);
+        final RestrInterval nextRestrInterval = intervals.get(indexNext);
 
-        final boolean isWeekLoop = (intervals.get(0) == nextRestrInterval && nextRestrInterval.isBefore(now));
+        final boolean isWeekLoop = (indexNext == 0 && nextRestrInterval.isBefore(now));
+
         final int nbDays = isWeekLoop ? CalendarUtils.WEEK_IN_DAYS :
                 CalendarUtils.subtractDaysOfWeekLooped(nextRestrInterval.getDayOfWeek(), today);
 
