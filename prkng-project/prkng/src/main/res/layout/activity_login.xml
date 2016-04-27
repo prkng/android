@@ -32,7 +32,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginBottom="24dp"
                 android:scaleType="centerInside"
-                android:src="@drawable/logo_login_beta" />
+                android:src="@drawable/logo_login" />
 
             <ng.prk.prkngandroid.ui.view.IntroRegularTextView
                 android:id="@+id/title"

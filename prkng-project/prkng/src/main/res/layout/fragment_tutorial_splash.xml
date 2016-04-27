@@ -19,7 +19,7 @@
         android:id="@+id/tutorial_image"
         style="@style/TutorialImage"
         android:scaleType="centerInside"
-        android:src="@drawable/logo_login_beta" />
+        android:src="@drawable/logo_login" />
 
 
     <ng.prk.prkngandroid.ui.view.IntroLightTextView
