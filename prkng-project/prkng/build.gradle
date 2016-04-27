@@ -25,7 +25,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 24
-        versionName "0.9.8.2-test"
+        versionName "1.0"
 
         resConfigs "en", "fr"
 //        resConfigs "nodpi", "mdpi", "hdpi", "xhdpi", "xxhdpi"
